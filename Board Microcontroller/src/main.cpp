@@ -1,20 +1,65 @@
-/*#include <Arduino.h>
+#define FILE_PATH "/config/data.txt"
+#define BUFFER_SIZE 128#include <Arduino.h>
 #include <FS.h>
 #include <LittleFS.h>
+#include <Wire.h>
+#include "Adafruit_SHT4x.h"
 
-#define FORMAT_LITTLEFS_IF_FAILED true
-#define FILE_PATH "/config/data.txt"
-#define BUFFER_SIZE 128
+// Global flag to track if filesystem is available
+bool filesystemAvailable = false;
+// Counter for indexing serial prints
+uint32_t printIndex = 0;
 
+// Create an instance of the SHT4x sensor
+Adafruit_SHT4x sht4 = Adafruit_SHT4x();
+
+// Function declarations
 void handleCommand(String command);
 void writeFile(fs::FS &fs, const char *path, const char *message);
 void readFile(fs::FS &fs, const char *path);
+void listFiles(fs::FS &fs);
+void readSensor();
+
+// Variable to track time for sensor readings
+unsigned long lastSensorReadTime = 0;
+const unsigned long sensorReadInterval = 1000; // 1 second in milliseconds
 
 void setup() {
+    // USB Mass Storage should be disabled via platformio.ini settings
+    
     Serial.begin(115200);
-    delay(2000);  // Delay for 2 seconds
-    // Initialize LittleFS
-    LittleFS.begin(true, "/littlefs", 10, "ffat");
+    delay(2000);  // Delay for 2 seconds to allow serial connection
+    
+    // Initialize LittleFS with the specified parameters
+    if (!LittleFS.begin(true, "/litlefs", 10, "ffat")) {
+        Serial.println("LittleFS Mount Failed. Continuing without file system...");
+        filesystemAvailable = false;
+    } else {
+        Serial.println("LittleFS mounted successfully");
+        filesystemAvailable = true;
+    }
+    
+    // Initialize the second I2C bus (Wire1) for STEMMA QT connector
+    // STEMMA QT pins on Adafruit QT Py ESP32-S3 are 40 (SCL1) and 41 (SDA1)
+    Wire1.begin(41, 40);
+    
+    Serial.println("SHT41 Temperature and Humidity Sensor Test");
+    
+    // Initialize the SHT4x sensor on Wire1
+    if (!sht4.begin(&Wire1)) {
+        Serial.println("Couldn't find SHT41 sensor on the STEMMA QT connector!");
+        // Continue anyway, as the sensor might be connected later
+    } else {
+        Serial.println("SHT41 sensor found!");
+        
+        // Set precision to high
+        sht4.setPrecision(SHT4X_HIGH_PRECISION);
+        Serial.println("Precision set to HIGH");
+        
+        // Disable heater
+        sht4.setHeater(SHT4X_NO_HEATER);
+        Serial.println("Heater disabled");
+    }
 }
 
 void loop() {
@@ -32,6 +77,33 @@ void loop() {
             inputBuffer += c;
         }
     }
+    
+    // Read sensor at regular intervals if serial is open
+    unsigned long currentMillis = millis();
+    if (Serial && (currentMillis - lastSensorReadTime >= sensorReadInterval)) {
+        readSensor();
+        lastSensorReadTime = currentMillis;
+    }
+}
+
+// Read temperature and humidity from the SHT41 sensor
+void readSensor() {
+    // Read temperature and humidity
+    sensors_event_t humidity, temp;
+    
+    // Check if sensor read was successful
+    if (sht4.getEvent(&humidity, &temp)) {
+        // Print with index and formatted temperature and humidity
+        Serial.print("INDEX:");
+        Serial.print(printIndex++);
+        Serial.print(" | TEMP:");
+        Serial.print(temp.temperature, 2);
+        Serial.print("C | HUM:");
+        Serial.print(humidity.relative_humidity, 2);
+        Serial.println("%");
+    } else {
+        Serial.println("Failed to read from SHT41 sensor!");
+    }
 }
 
 // Process SCPI commands
@@ -39,6 +111,11 @@ void handleCommand(String command) {
     command.trim();  // Remove leading and trailing spaces
 
     if (command.startsWith(":FILE:WRITE ")) {
+        if (!filesystemAvailable) {
+            Serial.println("ERROR: Filesystem not available");
+            return;
+        }
+        
         // Extract message enclosed in quotes
         int firstQuote = command.indexOf('"');
         int lastQuote = command.lastIndexOf('"');
@@ -52,8 +129,22 @@ void handleCommand(String command) {
         }
 
     } else if (command == ":FILE:READ?") {
+        if (!filesystemAvailable) {
+            Serial.println("ERROR: Filesystem not available");
+            return;
+        }
         readFile(LittleFS, FILE_PATH);
-
+    
+    } else if (command == ":FILE:LIST?") {
+        if (!filesystemAvailable) {
+            Serial.println("ERROR: Filesystem not available");
+            return;
+        }
+        listFiles(LittleFS);
+    
+    } else if (command == ":SENSOR:READ?") {
+        readSensor();
+        
     } else {
         Serial.println("ERROR: Unknown command");
     }
@@ -105,8 +196,6 @@ void listFiles(fs::FS &fs) {
 void readFile(fs::FS &fs, const char *path) {
     Serial.printf("Attempting to read file: %s\n", path);
 
-    listFiles(fs);  // List files before reading
-
     File file = fs.open(path);
     if (!file || file.isDirectory()) {
         Serial.println("ERROR: Failed to open file for reading");
@@ -119,69 +208,4 @@ void readFile(fs::FS &fs, const char *path) {
     }
     Serial.println();
     file.close();
-}*/
-#include <Arduino.h>
-#include "Adafruit_Si7021.h"
-
-bool enableHeater = false;
-uint8_t loopCnt = 0;
-
-Adafruit_Si7021 sensor = Adafruit_Si7021();
-
-void setup() {
-  Serial.begin(115200);
-
-  // wait for serial port to open
-  while (!Serial) {
-    delay(10);
-  }
-
-  Serial.println("Si7021 test!");
-  
-  if (!sensor.begin()) {
-    Serial.println("Did not find Si7021 sensor!");
-    while (true)
-      ;
-  }
-
-  Serial.print("Found model ");
-  switch(sensor.getModel()) {
-    case SI_Engineering_Samples:
-      Serial.print("SI engineering samples"); break;
-    case SI_7013:
-      Serial.print("Si7013"); break;
-    case SI_7020:
-      Serial.print("Si7020"); break;
-    case SI_7021:
-      Serial.print("Si7021"); break;
-    case SI_UNKNOWN:
-    default:
-      Serial.print("Unknown");
-  }
-  Serial.print(" Rev(");
-  Serial.print(sensor.getRevision());
-  Serial.print(")");
-  Serial.print(" Serial #"); Serial.print(sensor.sernum_a, HEX); Serial.println(sensor.sernum_b, HEX);
-}
-
-void loop() {
-  Serial.print("Humidity:    ");
-  Serial.print(sensor.readHumidity(), 2);
-  Serial.print("\tTemperature: ");
-  Serial.println(sensor.readTemperature(), 2);
-  delay(1000);
-
-  // Toggle heater enabled state every 30 seconds
-  // An ~1.8 degC temperature increase can be noted when heater is enabled
-  if (++loopCnt == 30) {
-    enableHeater = !enableHeater;
-    sensor.heater(enableHeater);
-    Serial.print("Heater Enabled State: ");
-    if (sensor.isHeaterEnabled())
-      Serial.println("ENABLED");
-    else
-      Serial.println("DISABLED");
-       
-    loopCnt = 0;
-  }
 }
