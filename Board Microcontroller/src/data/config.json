@@ -1,0 +1,11 @@
+{
+    "Board ID": "GPower EM-1",
+    "I2C Sensors": [
+        {
+            "Sensor Name": "I2C01",
+            "Sensor Type": "SHT41",
+            "Address (HEX)": 68
+        }
+    ],
+    "SPI Sensors": []
+}

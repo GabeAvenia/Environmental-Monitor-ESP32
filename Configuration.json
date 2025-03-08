@@ -1,0 +1,22 @@
+{
+    "Board ID": "Board 1",
+    "I2C Sensors": [
+        {
+            "Sensor Name": "I2C01",
+            "Sensor Type": "Adafruit Si7021",
+            "Address (HEX)": 64
+        },
+        {
+            "Sensor Name": "I2C02",
+            "Sensor Type": "SHT41",
+            "Address (HEX)": 68
+        }
+    ],
+    "SPI Sensors": [
+        {
+            "Sensor Name": "SPI01",
+            "Sensor Type": "Adafruit PT100 RTD",
+            "SS Pin": 1
+        }
+    ]
+}
