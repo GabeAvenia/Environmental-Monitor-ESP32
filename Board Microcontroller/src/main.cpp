@@ -54,8 +54,16 @@ void setup() {
 }
 
 void loop() {
-  // Process incoming commands
-  commManager->processIncomingData();
+  // Add direct serial command handling for testing
+  if (Serial.available()) {
+    String input = Serial.readStringUntil('\n');
+    if (input.equals("TEST")) {
+      Serial.println("Serial communication test successful");
+    } else {
+      // Process regular commands through the communication manager
+      commManager->processIncomingData();
+    }
+  }
   
   // Update sensor readings periodically
   unsigned long currentTime = millis();

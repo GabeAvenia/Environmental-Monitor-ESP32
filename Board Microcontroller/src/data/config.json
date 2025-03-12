@@ -4,7 +4,7 @@
         {
             "Sensor Name": "I2C01",
             "Sensor Type": "SHT41",
-            "Address (HEX)": 68
+            "Address (HEX)": 44
         }
     ],
     "SPI Sensors": []

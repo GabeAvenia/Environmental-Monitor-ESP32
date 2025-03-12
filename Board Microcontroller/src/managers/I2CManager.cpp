@@ -8,10 +8,9 @@ I2CManager::~I2CManager() {
     // Nothing to clean up for now
 }
 
-bool I2CManager::begin(int sda, int scl, uint32_t frequency) {
+bool I2CManager::begin(int sda, int scl) {
     // Use Wire1 with pins 41 and 40
     wire->begin(sda, scl);
-    wire->setClock(frequency);
     errorHandler->logInfo("I2C initialized on Wire1 with pins SDA:" + String(sda) + " SCL:" + String(scl));
     return true;
 }

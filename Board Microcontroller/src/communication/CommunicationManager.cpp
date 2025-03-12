@@ -1,5 +1,5 @@
 #include "CommunicationManager.h"
-#include "VrekerSCPIWrapper.h"  // Include the wrapper instead of the SCPI parser directly
+#include "VrekerSCPIWrapper.h" // Include the wrapper instead of directly including SCPI library
 #include "../Constants.h"
 
 // Initialize the singleton instance
@@ -30,13 +30,51 @@ void CommunicationManager::setupCommands() {
     scpiParser->RegisterCommand(F("SYST:CONF?"), getConfigHandler);
     scpiParser->RegisterCommand(F("SYST:CONF:BOARD:ID"), setBoardIdHandler);
     
+    // Add a simple echo command for testing
+    scpiParser->RegisterCommand(F("ECHO"), [](SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface) {
+        String message = parameters.Size() > 0 ? parameters[0] : "ECHO";
+        interface.println("ECHO: " + message);
+    });
+    
     errorHandler->logInfo("SCPI commands registered");
 }
 
 void CommunicationManager::processIncomingData() {
-    // Process any data in the serial buffer
     if (Serial.available()) {
-        scpiParser->ProcessInput(Serial, "\n");
+        // Direct command handling for testing
+        String rawCommand = Serial.readStringUntil('\n');
+        rawCommand.trim();
+        
+        errorHandler->logInfo("Received raw command: '" + rawCommand + "'");
+        
+        if (rawCommand == "TEST") {
+            Serial.println("Serial communication test successful");
+            return;
+        }
+        
+        // Manual command processing for key commands (bypass SCPI parser issues)
+        if (rawCommand == "*IDN?") {
+            String response = String(Constants::PRODUCT_NAME) + "," + 
+                              configManager->getBoardIdentifier() + "," +
+                              String(Constants::FIRMWARE_VERSION);
+            errorHandler->logInfo("Sending IDN response: " + response);
+            Serial.println(response);
+            return;
+        }
+        
+        if (rawCommand == "MEAS:TEMP?") {
+            SensorReading reading = sensorManager->getLatestReading("I2C01");
+            errorHandler->logInfo("Sending temperature: " + String(reading.temperature));
+            Serial.println(reading.temperature);
+            return;
+        }
+        
+        if (rawCommand == "MEAS:HUM?") {
+            SensorReading reading = sensorManager->getLatestReading("I2C01");
+            errorHandler->logInfo("Sending humidity: " + String(reading.humidity));
+            Serial.println(reading.humidity);
+            return;
+        }
     }
 }
 

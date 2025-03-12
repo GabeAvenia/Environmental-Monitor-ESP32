@@ -14,7 +14,7 @@ public:
     I2CManager(ErrorHandler* err);
     ~I2CManager();
     
-    bool begin(int sda = 41, int scl = 40, uint32_t frequency = 100000);
+    bool begin(int sda = 41, int scl = 40);
     bool scanBus(std::vector<int>& addresses);
     TwoWire* getWire();
 };
