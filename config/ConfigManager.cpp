@@ -38,14 +38,8 @@ bool ConfigManager::loadConfigFromFile() {
         return false;
     }
     
-    // Extract configuration - look for both old and new key names for backward compatibility
-    if (!doc["Environmental Monitor ID"].isNull()) {
-        boardId = doc["Environmental Monitor ID"].as<String>();
-    } else if (!doc["Board ID"].isNull()) {
-        boardId = doc["Board ID"].as<String>();
-    } else {
-        boardId = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
-    }
+    // Extract configuration
+    boardId = doc["Board ID"].as<String>();
     
     // Clear existing configurations
     sensorConfigs.clear();
@@ -58,17 +52,9 @@ bool ConfigManager::loadConfigFromFile() {
         config.type = sensor["Sensor Type"].as<String>();
         config.address = sensor["Address (HEX)"].as<int>();
         config.isSPI = false;
-        
-        // Read polling rate with a default if not present
-        config.pollingRate = 1000; // Default 1 second
-        if (!sensor["Polling Rate[1000 ms]"].isNull()) {
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-        }
-        
         sensorConfigs.push_back(config);
         
-        errorHandler->logInfo("Loaded I2C sensor: " + config.name + " (" + config.type + ") at address 0x" + 
-                           String(config.address, HEX) + " polling rate: " + String(config.pollingRate) + "ms");
+        errorHandler->logInfo("Loaded I2C sensor: " + config.name + " (" + config.type + ") at address 0x" + String(config.address, HEX));
     }
     
     // Load SPI sensors
@@ -79,17 +65,9 @@ bool ConfigManager::loadConfigFromFile() {
         config.type = sensor["Sensor Type"].as<String>();
         config.address = sensor["SS Pin"].as<int>();
         config.isSPI = true;
-        
-        // Read polling rate with a default if not present
-        config.pollingRate = 1000; // Default 1 second
-        if (!sensor["Polling Rate[1000 ms]"].isNull()) {
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-        }
-        
         sensorConfigs.push_back(config);
         
-        errorHandler->logInfo("Loaded SPI sensor: " + config.name + " (" + config.type + ") on SS pin " + 
-                           String(config.address) + " polling rate: " + String(config.pollingRate) + "ms");
+        errorHandler->logInfo("Loaded SPI sensor: " + config.name + " (" + config.type + ") on SS pin " + String(config.address));
     }
     
     return true;
@@ -100,7 +78,7 @@ bool ConfigManager::createDefaultConfig() {
     JsonDocument doc;
     
     // Create default configuration
-    doc["Environmental Monitor ID"] = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
+    doc["Board ID"] = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
     
     // Add I2C sensors array and first sensor
     JsonArray i2cSensors = doc["I2C Sensors"].to<JsonArray>();
@@ -108,7 +86,6 @@ bool ConfigManager::createDefaultConfig() {
     i2cSensor["Sensor Name"] = "I2C01";
     i2cSensor["Sensor Type"] = "SHT41";
     i2cSensor["Address (HEX)"] = 0x44;  // SHT41 default address
-    i2cSensor["Polling Rate[1000 ms]"] = 1000;  // Default 1 second
     
     // Add empty SPI sensors array
     doc["SPI Sensors"] = JsonArray();
@@ -158,8 +135,8 @@ bool ConfigManager::setBoardIdentifier(String identifier) {
         return false;
     }
     
-    // Update the board ID - use the new key name
-    doc["Environmental Monitor ID"] = boardId;
+    // Update the board ID
+    doc["Board ID"] = boardId;
     
     // Save the updated configuration
     configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "w");
@@ -225,13 +202,11 @@ bool ConfigManager::updateSensorConfigs(const std::vector<SensorConfig>& configs
             sensor["Sensor Name"] = config.name;
             sensor["Sensor Type"] = config.type;
             sensor["SS Pin"] = config.address;
-            sensor["Polling Rate[1000 ms]"] = config.pollingRate;
         } else {
             JsonObject sensor = i2cSensors.add<JsonObject>();
             sensor["Sensor Name"] = config.name;
             sensor["Sensor Type"] = config.type;
             sensor["Address (HEX)"] = config.address;
-            sensor["Polling Rate[1000 ms]"] = config.pollingRate;
         }
     }
     

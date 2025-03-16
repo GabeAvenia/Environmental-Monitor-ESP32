@@ -1,10 +1,11 @@
 {
-    "Board ID": "GPower EM-1",
+    "Environmental Monitor ID": "GPower EM-ec1c97bacc",
     "I2C Sensors": [
         {
             "Sensor Name": "I2C01",
             "Sensor Type": "SHT41",
-            "Address (HEX)": 44
+            "Address (HEX)": 104,
+            "Polling Rate[1000 ms]": 1000
         }
     ],
     "SPI Sensors": []

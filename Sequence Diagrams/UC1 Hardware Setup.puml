@@ -1,0 +1,28 @@
+@startuml
+title UC1: Hardware Setup
+
+actor Engineer
+participant Board
+participant Sensors
+participant Computer
+
+Engineer -> Board: Mount in fixture
+Engineer -> Sensors: Connect to Qwiic ports
+
+alt Multiple same-address sensors
+    Engineer -> Board: Connect via multiplexer
+end
+
+Engineer -> Computer: Connect USB
+Engineer -> Board: Power on
+
+Board -> Board: Initialize
+Board -> Board: LED on
+Board -> Sensors: Detect
+
+alt Detection successful
+    Board -> Engineer: Status LED ready
+else Detection failed
+    Board -> Engineer: Error LED on
+end
+@enduml

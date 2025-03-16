@@ -3,7 +3,6 @@
 #include "../Constants.h"
 #include "../sensors/readings/TemperatureReading.h"
 #include "../sensors/readings/HumidityReading.h"
-#include "../sensors/interfaces/InterfaceTypes.h"
 
 // Initialize the singleton instance
 CommunicationManager* CommunicationManager::instance = nullptr;
@@ -100,13 +99,13 @@ void CommunicationManager::processIncomingData() {
             
             for (auto sensor : sensors) {
                 String capabilities = "";
-                if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) capabilities += "T";
-                if (sensor->supportsInterface(InterfaceType::HUMIDITY)) capabilities += "H";
-                if (sensor->supportsInterface(InterfaceType::PRESSURE)) capabilities += "P";
-                if (sensor->supportsInterface(InterfaceType::CO2)) capabilities += "C";
+                if (dynamic_cast<ITemperatureSensor*>(sensor)) capabilities += "T";
+                if (dynamic_cast<IHumiditySensor*>(sensor)) capabilities += "H";
+                if (dynamic_cast<IPressureSensor*>(sensor)) capabilities += "P";
+                if (dynamic_cast<ICO2Sensor*>(sensor)) capabilities += "C";
                 
                 Serial.println(sensor->getName() + "," + 
-                              sensor->getTypeString() + "," +
+                              dynamic_cast<BaseSensor*>(sensor)->getTypeString() + "," +
                               capabilities + "," +
                               (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED"));
             }
@@ -119,10 +118,8 @@ void CommunicationManager::processIncomingData() {
             return;
         }
         
-        // For SCPI_Parser, we need to use the correct function
-        char buff[rawCommand.length() + 1];
-        rawCommand.toCharArray(buff, rawCommand.length() + 1);
-        scpiParser->ProcessInput(Serial, buff);
+        // Try to handle with SCPI parser
+        scpiParser->ProcessInput(rawCommand, Serial);
     }
 }
 
@@ -173,13 +170,13 @@ void listSensorsHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stre
     
     for (auto sensor : sensors) {
         String capabilities = "";
-        if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) capabilities += "T";
-        if (sensor->supportsInterface(InterfaceType::HUMIDITY)) capabilities += "H";
-        if (sensor->supportsInterface(InterfaceType::PRESSURE)) capabilities += "P";
-        if (sensor->supportsInterface(InterfaceType::CO2)) capabilities += "C";
+        if (dynamic_cast<ITemperatureSensor*>(sensor)) capabilities += "T";
+        if (dynamic_cast<IHumiditySensor*>(sensor)) capabilities += "H";
+        if (dynamic_cast<IPressureSensor*>(sensor)) capabilities += "P";
+        if (dynamic_cast<ICO2Sensor*>(sensor)) capabilities += "C";
         
         interface.println(sensor->getName() + "," + 
-                         sensor->getTypeString() + "," +
+                         dynamic_cast<BaseSensor*>(sensor)->getTypeString() + "," +
                          capabilities + "," +
                          (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED"));
     }

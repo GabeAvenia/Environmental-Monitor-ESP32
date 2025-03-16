@@ -1,0 +1,29 @@
+@startuml
+skinparam sequenceMessageAlign center
+title UC3: Configuring Environmental Monitor
+
+actor Engineer
+participant LabVIEW
+participant Board
+participant Storage
+
+Engineer -> LabVIEW: Create Board ID String
+Engineer -> LabVIEW: Create sensor config (ID, port..)
+
+LabVIEW -> LabVIEW:Connect.vi
+LabVIEW -> Board: Open connection
+
+LabVIEW -> LabVIEW: Configure Board ID.vi
+LabVIEW -> Board: Send ID command
+Board -> Storage: Save ID
+Board -> LabVIEW: Return status
+
+LabVIEW -> LabVIEW: Configure Peripherals.vi
+LabVIEW -> Board: Send sensor config
+Board -> Board: Validate config
+Board -> Storage: Save config
+Board -> LabVIEW: Return status
+
+LabVIEW -> LabVIEW: Disconnect.vi
+LabVIEW -> Board: Close connection
+@enduml

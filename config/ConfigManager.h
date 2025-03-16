@@ -9,17 +9,15 @@
 struct SensorConfig {
     String name;
     String type;
-    int address;     // I2C address or SPI SS pin
-    bool isSPI;      // True if this is an SPI sensor
-    uint32_t pollingRate; // Polling rate in milliseconds
+    int address;  // I2C address or SPI SS pin
+    bool isSPI;   // True if this is an SPI sensor
     
     // Equality operator for comparing configurations
     bool operator==(const SensorConfig& other) const {
         return name == other.name && 
                type == other.type && 
                address == other.address && 
-               isSPI == other.isSPI &&
-               pollingRate == other.pollingRate;
+               isSPI == other.isSPI;
     }
     
     // Inequality operator

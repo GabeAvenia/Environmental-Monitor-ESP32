@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <map>
+#include <set>
 #include <memory>
 #include <ArduinoJson.h>
 
@@ -16,19 +16,6 @@
 #include "../config/ConfigManager.h"
 #include "../error/ErrorHandler.h"
 
-// Structure to track sensor update times
-struct SensorUpdateInfo {
-    String sensorName;          // Name of the sensor
-    uint32_t pollingRateMs;     // How often to update in milliseconds
-    uint64_t lastUpdateTime;    // Last time this sensor was updated
-    
-    SensorUpdateInfo() : 
-        sensorName(""), pollingRateMs(1000), lastUpdateTime(0) {}
-    
-    SensorUpdateInfo(const String& name, uint32_t rate) : 
-        sensorName(name), pollingRateMs(rate), lastUpdateTime(0) {}
-};
-
 class SensorManager {
 private:
     SensorRegistry registry;
@@ -36,7 +23,6 @@ private:
     ConfigManager* configManager;
     I2CManager* i2cManager;
     ErrorHandler* errorHandler;
-    std::map<String, SensorUpdateInfo> sensorUpdateInfo;
     
     /**
      * @brief Compare old and new configurations to identify sensors to add, remove, or reconfigure.
@@ -92,7 +78,7 @@ public:
     bool reconfigureSensors(const String& configJson);
     
     /**
-     * @brief Update readings from all sensors that are due for an update.
+     * @brief Update readings from all sensors.
      * 
      * @return Number of sensors successfully updated.
      */

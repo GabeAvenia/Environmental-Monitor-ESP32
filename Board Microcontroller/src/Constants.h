@@ -9,6 +9,11 @@ namespace Constants {
     // File system paths
     static const char* CONFIG_FILE_PATH = "/config.json";
     
+    // Configuration keys
+    static const char* CONFIG_MONITOR_ID = "Environmental Monitor ID";
+    static const char* CONFIG_I2C_SENSORS = "I2C Sensors";
+    static const char* CONFIG_SPI_SENSORS = "SPI Sensors";
+    
     // SCPI command tokens
     namespace SCPI {
         static const char* IDN = "*IDN?";

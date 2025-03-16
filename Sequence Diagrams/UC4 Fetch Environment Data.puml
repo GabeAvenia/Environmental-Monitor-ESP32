@@ -1,0 +1,36 @@
+@startuml
+skinparam sequenceMessageAlign center
+title UC4: Fetch Environment Data
+
+actor Engineer
+participant LabVIEW
+participant Board
+participant Sensors
+participant Display
+
+Engineer -> LabVIEW: Place Fetch Data.vi
+Engineer -> LabVIEW: Select sensors to read
+Engineer -> LabVIEW: Run
+
+alt Single acquisition
+    Engineer -> LabVIEW: Execute once
+else Continuous polling
+    Engineer -> LabVIEW: Place in While loop
+    Engineer -> LabVIEW: Set loop delay
+end
+
+loop Each poll
+    LabVIEW -> Board: Send MEAS commands
+    Board -> Sensors: Read values
+    Sensors -> Board: Return readings
+    Board -> LabVIEW: Return data
+    
+    LabVIEW -> Display: Update indicators
+    LabVIEW -> LabVIEW: Display data (optional)
+    LabVIEW -> LabVIEW: Log data (optional)
+end
+
+alt Continuous mode
+    Engineer -> LabVIEW: Stop loop when done
+end
+@enduml

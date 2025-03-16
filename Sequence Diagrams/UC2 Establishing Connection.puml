@@ -1,0 +1,27 @@
+@startuml
+title UC2: Establishing Connection
+skinparam sequenceMessageAlign center
+actor Engineer
+participant LabVIEW
+participant Board
+participant Sensors
+
+Engineer -> LabVIEW: Launch with drivers
+Engineer -> LabVIEW: Run Identify Environmental Monitor.vi
+
+LabVIEW -> Board: Scan COM ports
+
+alt Found
+    Board -> LabVIEW: Return board IDs
+    LabVIEW -> Engineer: Display boards
+else Not found
+    LabVIEW -> Engineer: "No devices found"
+end
+
+Engineer -> LabVIEW: Run Scan Sensors.vi
+LabVIEW -> Board: Request scan
+Board -> Sensors: Scan I2C bus
+Sensors -> Board: Return addresses
+Board -> LabVIEW: Return sensor list
+LabVIEW -> Engineer: Display sensors
+@enduml

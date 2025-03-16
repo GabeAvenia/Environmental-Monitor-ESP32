@@ -43,12 +43,11 @@ bool SensorManager::initializeSensors() {
     auto sensorConfigs = configManager->getSensorConfigs();
     bool atLeastOneInitialized = false;
     
-    // Clear any existing sensors and update info
+    // Clear any existing sensors
     auto existingSensors = registry.clear();
     for (auto sensor : existingSensors) {
         delete sensor;
     }
-    sensorUpdateInfo.clear();
     
     // Create and initialize sensors
     for (const auto& config : sensorConfigs) {
@@ -79,13 +78,7 @@ bool SensorManager::initializeSensors() {
         
         // Register the sensor
         registry.registerSensor(sensor);
-        
-        // Set up polling info
-        SensorUpdateInfo updateInfo(config.name, config.pollingRate);
-        sensorUpdateInfo[config.name] = updateInfo;
-        
-        errorHandler->logInfo("Sensor added to system: " + config.name + " with polling rate: " + 
-                           String(config.pollingRate) + "ms");
+        errorHandler->logInfo("Sensor added to system: " + config.name);
         atLeastOneInitialized = true;
     }
     
@@ -119,13 +112,6 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
         config.type = sensor["Sensor Type"].as<String>();
         config.address = sensor["Address (HEX)"].as<int>();
         config.isSPI = false;
-        
-        // Read polling rate with a default if not present
-        config.pollingRate = 1000; // Default 1 second
-        if (!sensor["Polling Rate[1000 ms]"].isNull()) {
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-        }
-        
         newConfigs.push_back(config);
     }
     
@@ -137,13 +123,6 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
         config.type = sensor["Sensor Type"].as<String>();
         config.address = sensor["SS Pin"].as<int>();
         config.isSPI = true;
-        
-        // Read polling rate with a default if not present
-        config.pollingRate = 1000; // Default 1 second
-        if (!sensor["Polling Rate[1000 ms]"].isNull()) {
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-        }
-        
         newConfigs.push_back(config);
     }
     
@@ -161,20 +140,6 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
         if (sensor) {
             errorHandler->logInfo("Removing sensor: " + sensorName);
             delete sensor;
-            
-            // Remove from update info
-            sensorUpdateInfo.erase(sensorName);
-        }
-    }
-    
-    // Update polling rates for sensors that remain but may have changed
-    for (const auto& config : newConfigs) {
-        auto it = sensorUpdateInfo.find(config.name);
-        if (it != sensorUpdateInfo.end() && it->second.pollingRateMs != config.pollingRate) {
-            errorHandler->logInfo("Updating polling rate for sensor: " + config.name + 
-                               " from " + String(it->second.pollingRateMs) + 
-                               "ms to " + String(config.pollingRate) + "ms");
-            it->second.pollingRateMs = config.pollingRate;
         }
     }
     
@@ -205,13 +170,6 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
         
         // Register the sensor
         registry.registerSensor(sensor);
-        
-        // Set up polling info
-        SensorUpdateInfo updateInfo(config.name, config.pollingRate);
-        sensorUpdateInfo[config.name] = updateInfo;
-        
-        errorHandler->logInfo("Sensor added to system: " + config.name + " with polling rate: " + 
-                           String(config.pollingRate) + "ms");
     }
     
     return allSuccess;
@@ -283,38 +241,25 @@ bool SensorManager::testI2CCommunication(int address) {
 
 int SensorManager::updateReadings() {
     int successCount = 0;
-    unsigned long currentTime = millis();
+    auto sensors = registry.getAllSensors();
     
-    // Use traditional loop instead of structured binding (C++17 feature)
-    for (auto it = sensorUpdateInfo.begin(); it != sensorUpdateInfo.end(); ++it) {
-        const String& sensorName = it->first;
-        SensorUpdateInfo& updateInfo = it->second;
-        
-        // Check if it's time to update this sensor
-        if (currentTime - updateInfo.lastUpdateTime >= updateInfo.pollingRateMs) {
-            ISensor* sensor = findSensor(sensorName);
-            if (sensor && sensor->isConnected()) {
-                bool success = false;
-                
-                // Update readings based on sensor type
-                if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-                    ITemperatureSensor* tempSensor = 
-                        static_cast<ITemperatureSensor*>(sensor->getInterface(InterfaceType::TEMPERATURE));
-                    float temp = tempSensor->readTemperature();
-                    success = !isnan(temp);
-                }
-                
-                if (sensor->supportsInterface(InterfaceType::HUMIDITY)) {
-                    IHumiditySensor* humSensor = 
-                        static_cast<IHumiditySensor*>(sensor->getInterface(InterfaceType::HUMIDITY));
-                    float hum = humSensor->readHumidity();
-                    success = success || !isnan(hum);
-                }
-                
-                if (success) {
-                    successCount++;
-                    updateInfo.lastUpdateTime = currentTime;
-                }
+    for (auto sensor : sensors) {
+        if (sensor->isConnected()) {
+            // Update readings based on sensor type
+            bool success = false;
+            
+            if (auto tempSensor = dynamic_cast<ITemperatureSensor*>(sensor)) {
+                float temp = tempSensor->readTemperature();
+                success = !isnan(temp);
+            }
+            
+            if (auto humSensor = dynamic_cast<IHumiditySensor*>(sensor)) {
+                float hum = humSensor->readHumidity();
+                success = success || !isnan(hum);
+            }
+            
+            if (success) {
+                successCount++;
             }
         }
     }
@@ -329,7 +274,8 @@ TemperatureReading SensorManager::getTemperature(const String& sensorName) {
         return TemperatureReading();
     }
     
-    if (!sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
+    ITemperatureSensor* tempSensor = dynamic_cast<ITemperatureSensor*>(sensor);
+    if (!tempSensor) {
         errorHandler->logWarning("Sensor does not support temperature: " + sensorName);
         return TemperatureReading();
     }
@@ -338,9 +284,6 @@ TemperatureReading SensorManager::getTemperature(const String& sensorName) {
         errorHandler->logWarning("Attempted to read temperature from disconnected sensor: " + sensorName);
         return TemperatureReading();
     }
-    
-    ITemperatureSensor* tempSensor = 
-        static_cast<ITemperatureSensor*>(sensor->getInterface(InterfaceType::TEMPERATURE));
     
     float value = tempSensor->readTemperature();
     return TemperatureReading(value, tempSensor->getTemperatureTimestamp());
@@ -353,7 +296,8 @@ HumidityReading SensorManager::getHumidity(const String& sensorName) {
         return HumidityReading();
     }
     
-    if (!sensor->supportsInterface(InterfaceType::HUMIDITY)) {
+    IHumiditySensor* humSensor = dynamic_cast<IHumiditySensor*>(sensor);
+    if (!humSensor) {
         errorHandler->logWarning("Sensor does not support humidity: " + sensorName);
         return HumidityReading();
     }
@@ -362,9 +306,6 @@ HumidityReading SensorManager::getHumidity(const String& sensorName) {
         errorHandler->logWarning("Attempted to read humidity from disconnected sensor: " + sensorName);
         return HumidityReading();
     }
-    
-    IHumiditySensor* humSensor = 
-        static_cast<IHumiditySensor*>(sensor->getInterface(InterfaceType::HUMIDITY));
     
     float value = humSensor->readHumidity();
     return HumidityReading(value, humSensor->getHumidityTimestamp());
