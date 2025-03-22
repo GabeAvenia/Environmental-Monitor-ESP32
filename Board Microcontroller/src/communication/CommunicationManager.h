@@ -20,6 +20,10 @@ void listSensorsHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stre
 void getConfigHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface);
 void setBoardIdHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface);
 void updateConfigHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface);
+void streamStartHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface);
+void streamStopHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface);
+void streamStatusHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface);
+void verboseLogHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface);
 
 class CommunicationManager {
 private:
@@ -27,6 +31,15 @@ private:
     SensorManager* sensorManager;
     ConfigManager* configManager;
     ErrorHandler* errorHandler;
+    
+    // Streaming functionality
+    bool isStreaming;
+    unsigned long lastStreamTime;
+    unsigned long streamInterval;
+    std::vector<String> streamingSensors;
+    
+    // Verbose logging control
+    bool verboseLogging;
     
     // Singleton instance for callback access
     static CommunicationManager* instance;
@@ -38,6 +51,16 @@ public:
     void begin(long baudRate);
     void setupCommands();
     void processIncomingData();
+    
+    // Streaming methods
+    bool startStreaming(const std::vector<String>& sensorNames);
+    void stopStreaming();
+    bool isCurrentlyStreaming() const;
+    void handleStreaming();
+    
+    // Logging control
+    void setVerboseLogging(bool enable);
+    bool isVerboseLogging() const;
     
     // Getter methods for use in callbacks
     static CommunicationManager* getInstance();

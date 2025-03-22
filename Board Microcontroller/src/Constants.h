@@ -22,5 +22,9 @@ namespace Constants {
         static const char* LIST_SENSORS = "SYST:SENS:LIST?";
         static const char* GET_CONFIG = "SYST:CONF?";
         static const char* SET_BOARD_ID = "SYST:CONF:BOARD:ID";
+        static const char* STREAM_START = "STREAM:START";
+        static const char* STREAM_STOP = "STREAM:STOP";
+        static const char* STREAM_STATUS = "STREAM:STATUS?";
+        static const char* VERBOSE_LOG = "SYST:LOG:VERB"; // New command for verbose logging
     }
 }
