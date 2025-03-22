@@ -5,6 +5,10 @@
 #include "../sensors/readings/HumidityReading.h"
 #include "../sensors/interfaces/InterfaceTypes.h"
 
+// Forward declare diagnostic functions
+void testFilesystemHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface);
+void testUpdateConfigHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface);
+
 // Initialize the singleton instance
 CommunicationManager* CommunicationManager::instance = nullptr;
 
@@ -46,6 +50,10 @@ void CommunicationManager::setupCommands() {
     // Register logging control command
     scpiParser->RegisterCommand(F("SYST:LOG:VERB"), verboseLogHandler);
     
+    // Register diagnostic test commands
+    scpiParser->RegisterCommand(F("TEST:FS"), testFilesystemHandler);
+    scpiParser->RegisterCommand(F("TEST:UPDATE"), testUpdateConfigHandler);
+    
     // Add a simple echo command for testing
     scpiParser->RegisterCommand(F("ECHO"), [](SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface) {
         String message = parameters.Size() > 0 ? String(parameters[0]) : "ECHO";
@@ -70,7 +78,13 @@ void CommunicationManager::processIncomingData() {
         String rawCommand = Serial.readStringUntil('\n');
         rawCommand.trim();
         
+        // Always log the received command, even if verbose is off
         errorHandler->logInfo("Received raw command: '" + rawCommand + "'");
+        
+        // If verbose is on, echo the command back to the user
+        if (verboseLogging) {
+            Serial.println("ECHO: " + rawCommand);  // Add this line
+        }
         
         if (rawCommand == "TEST") {
             Serial.println("Serial communication test successful");
@@ -140,6 +154,28 @@ void CommunicationManager::processIncomingData() {
             return;
         }
         
+        // Handle config update manually
+        if (rawCommand.startsWith("SYST:CONF:UPDATE")) {
+            String jsonConfig = rawCommand.substring(15); // Length of "SYST:CONF:UPDATE "
+            jsonConfig.trim();
+            
+            errorHandler->logInfo("Processing config update: " + jsonConfig.substring(0, 50) + "...");
+            
+            bool success = configManager->updateConfigFromJson(jsonConfig);
+            Serial.println(success ? "OK" : "ERROR");
+            return;
+        }
+        
+        // Handle board ID update
+        if (rawCommand.startsWith("SYST:CONF:BOARD:ID")) {
+            String newId = rawCommand.substring(18); // Length of "SYST:CONF:BOARD:ID "
+            newId.trim();
+            
+            bool success = configManager->setBoardIdentifier(newId);
+            Serial.println(success ? "OK" : "ERROR");
+            return;
+        }
+        
         // Handle streaming commands manually
         if (rawCommand.startsWith("STREAM:START")) {
             std::vector<String> sensorNames;
@@ -201,6 +237,17 @@ void CommunicationManager::processIncomingData() {
             
             setVerboseLogging(enableVerbose);
             Serial.println("OK");
+            return;
+        }
+        
+        // Handle diagnostic commands manually
+        if (rawCommand == "TEST:FS") {
+            testFilesystemHandler(SCPI_Commands(), SCPI_Parameters(), Serial);
+            return;
+        }
+        
+        if (rawCommand == "TEST:UPDATE") {
+            testUpdateConfigHandler(SCPI_Commands(), SCPI_Parameters(), Serial);
             return;
         }
         
@@ -358,6 +405,84 @@ void verboseLogHandler(SCPI_Commands commands, SCPI_Parameters parameters, Strea
     
     mgr->setVerboseLogging(enableVerbose);
     interface.println("OK");
+}
+
+// Diagnostic handler implementations
+void testFilesystemHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface) {
+    auto mgr = CommunicationManager::getInstance();
+    ErrorHandler* errorHandler = mgr->getErrorHandler();
+    
+    errorHandler->logInfo("Testing filesystem operations");
+    interface.println("==== Filesystem Test ====");
+    
+    // Check if config file exists
+    if (LittleFS.exists(Constants::CONFIG_FILE_PATH)) {
+        interface.println("Config file exists");
+    } else {
+        interface.println("Config file DOES NOT exist");
+    }
+    
+    // Try to read config file
+    File configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "r");
+    if (configFile) {
+        String content = configFile.readString();
+        interface.println("Content length: " + String(content.length()) + " bytes");
+        interface.println("First 100 chars: " + content.substring(0, 100));
+        configFile.close();
+    } else {
+        interface.println("FAILED to open config file for reading");
+    }
+    
+    // Try writing a test file
+    File testFile = LittleFS.open("/test.txt", "w");
+    if (testFile) {
+        testFile.println("Test file written at: " + String(millis()));
+        testFile.close();
+        interface.println("Successfully wrote test file");
+    } else {
+        interface.println("FAILED to write test file");
+    }
+    
+    // Try reading the test file back
+    testFile = LittleFS.open("/test.txt", "r");
+    if (testFile) {
+        interface.println("Test file content: " + testFile.readString());
+        testFile.close();
+    } else {
+        interface.println("FAILED to read test file");
+    }
+    
+    // Test filesystem info
+    size_t totalBytes = LittleFS.totalBytes();
+    size_t usedBytes = LittleFS.usedBytes();
+    interface.println("Filesystem info:");
+    interface.println("Total: " + String(totalBytes) + " bytes");
+    interface.println("Used: " + String(usedBytes) + " bytes");
+    interface.println("Free: " + String(totalBytes - usedBytes) + " bytes");
+    
+    interface.println("==== End of Test ====");
+}
+
+void testUpdateConfigHandler(SCPI_Commands commands, SCPI_Parameters parameters, Stream& interface) {
+    auto mgr = CommunicationManager::getInstance();
+    ConfigManager* configMgr = mgr->getConfigManager();
+    
+    interface.println("==== Direct Config Update Test ====");
+    
+    // Create a simple test configuration
+    String testConfig = "{\"Board ID\":\"GPower TEST-CONFIG\",\"I2C Sensors\":[{\"Sensor Name\":\"TEST-SENSOR\",\"Sensor Type\":\"SHT41\",\"I2C Port\":\"I2C0\",\"Address (HEX)\":68,\"Polling Rate[1000 ms]\":1000}],\"SPI Sensors\":[]}";
+    
+    interface.println("Using test config: " + testConfig);
+    
+    // Try to update
+    bool success = configMgr->updateConfigFromJson(testConfig);
+    interface.println("Update result: " + String(success ? "SUCCESS" : "FAILURE"));
+    
+    // Read back current config
+    String currentConfig = configMgr->getConfigJson();
+    interface.println("Current config: " + currentConfig);
+    
+    interface.println("==== End of Test ====");
 }
 
 // Streaming methods implementation

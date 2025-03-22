@@ -4,9 +4,24 @@
         {
             "Sensor Name": "I2C01",
             "Sensor Type": "SHT41",
-            "Address (HEX)": 104,
+            "I2C Port": "I2C0",
+            "Address (HEX)": 68,
+            "Polling Rate[1000 ms]": 1000
+        },
+        {
+            "Sensor Name": "I2C02",
+            "Sensor Type": "Adafruit Si7021",
+            "I2C Port": "I2C1",
+            "Address (HEX)": 64,
             "Polling Rate[1000 ms]": 1000
         }
     ],
-    "SPI Sensors": []
+    "SPI Sensors": [
+        {
+            "Sensor Name": "PT100",
+            "Sensor Type": "Adafruit PT100 RTD",
+            "SS Pin": 0,
+            "Polling Rate[1000 ms]": 2000
+        }
+    ]
 }

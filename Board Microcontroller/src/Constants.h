@@ -25,6 +25,8 @@ namespace Constants {
         static const char* STREAM_START = "STREAM:START";
         static const char* STREAM_STOP = "STREAM:STOP";
         static const char* STREAM_STATUS = "STREAM:STATUS?";
-        static const char* VERBOSE_LOG = "SYST:LOG:VERB"; // New command for verbose logging
+
+        static const char* VERBOSE_LOG = "SYST:LOG:VERB";
+        static const char* UPDATE_CONFIG = "SYST:CONF:UPDATE";
     }
 }

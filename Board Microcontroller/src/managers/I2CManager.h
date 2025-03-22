@@ -5,13 +5,28 @@
 #include <vector>
 #include "../error/ErrorHandler.h"
 
+// Define I2C port identifiers
+enum class I2CPort {
+    I2C0,   // Default I2C bus (GPIO7-SDA, GPIO6-SCL)
+    I2C1    // Secondary I2C bus (GPIO40-SDA, GPIO41-SCL)
+};
+
 class I2CManager {
 private:
-    TwoWire* wire;
+    TwoWire* wire0;   // Primary I2C bus (Wire)
+    TwoWire* wire1;   // Secondary I2C bus (Wire1)
     ErrorHandler* errorHandler;
-    bool initialized;
-    int sdaPin;
-    int sclPin;
+    bool initialized0;
+    bool initialized1;
+    
+    // Pin definitions for I2C buses
+    // I2C0
+    int sda0Pin;  // GPIO7 (A3/SDA)
+    int scl0Pin;  // GPIO6 (A2/SCL)
+    
+    // I2C1
+    int sda1Pin;  // GPIO40 (SCL1, marked as MTDO)
+    int scl1Pin;  // GPIO41 (SDA1, marked as MTDI)
     
 public:
     /**
@@ -27,55 +42,69 @@ public:
     ~I2CManager();
     
     /**
-     * @brief Initialize the I2C bus.
+     * @brief Initialize both I2C buses.
      * 
-     * @param sda SDA pin number.
-     * @param scl SCL pin number.
+     * @return true if at least one bus was initialized, false if both failed.
+     */
+    bool begin();
+    
+    /**
+     * @brief Initialize a specific I2C bus.
+     * 
+     * @param port The I2C port to initialize.
      * @return true if initialization succeeded, false otherwise.
      */
-    bool begin(int sda = 41, int scl = 40);
+    bool beginPort(I2CPort port);
     
     /**
-     * @brief Check if the I2C manager is initialized.
+     * @brief Check if a specific I2C port is initialized.
      * 
-     * @return true if initialized, false otherwise.
+     * @param port The I2C port to check.
+     * @return true if the port is initialized, false otherwise.
      */
-    bool isInitialized() const;
+    bool isPortInitialized(I2CPort port) const;
     
     /**
-     * @brief Scan the I2C bus for devices.
+     * @brief Scan an I2C bus for devices.
      * 
+     * @param port The I2C port to scan.
      * @param addresses Output vector that will be filled with found addresses.
      * @return true if at least one device was found, false otherwise.
      */
-    bool scanBus(std::vector<int>& addresses);
+    bool scanBus(I2CPort port, std::vector<int>& addresses);
     
     /**
-     * @brief Get the I2C bus object.
+     * @brief Get the TwoWire object for a specific I2C port.
      * 
-     * @return Pointer to the TwoWire object.
+     * @param port The I2C port.
+     * @return Pointer to the TwoWire object, or nullptr if not initialized.
      */
-    TwoWire* getWire();
+    TwoWire* getWire(I2CPort port);
     
     /**
-     * @brief Check if a device is present at the specified address.
+     * @brief Check if a device is present at the specified address on a specific I2C port.
      * 
+     * @param port The I2C port to check.
      * @param address The I2C address to check.
      * @return true if a device is present, false otherwise.
      */
-    bool devicePresent(int address);
+    bool devicePresent(I2CPort port, int address);
     
     /**
-     * @brief Get the SDA pin number.
+     * @brief Convert a string port name to I2CPort enum.
      * 
-     * @return The SDA pin number.
+     * @param portName The string port name (e.g., "I2C0", "I2C1").
+     * @return The corresponding I2CPort enum value.
      */
-    int getSdaPin() const;
+    static I2CPort stringToPort(const String& portName);
     
     /**
-     * @brief Get the SCL pin number.
+     * @brief Convert I2CPort enum to string.
      * 
-     * @return The SCL pin number.
+     * @param port The I2CPort enum value.
+     * @return The string representation of the port.
      */
-    int getSclPin() const;
+    static String portToString(I2CPort port);
+
+    
 };

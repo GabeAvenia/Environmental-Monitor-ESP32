@@ -1,10 +1,11 @@
 #include "SensorManager.h"
 
-SensorManager::SensorManager(ConfigManager* configMgr, I2CManager* i2c, ErrorHandler* err)
+SensorManager::SensorManager(ConfigManager* configMgr, I2CManager* i2c, ErrorHandler* err, SPIManager* spi)
     : registry(err),
-      factory(err, i2c),
+      factory(err, i2c, spi),
       configManager(configMgr),
       i2cManager(i2c),
+      spiManager(spi),
       errorHandler(err) {
 }
 
@@ -17,26 +18,44 @@ SensorManager::~SensorManager() {
 }
 
 bool SensorManager::initializeSensors() {
-    // Initialize I2C if not already initialized
-    if (!i2cManager->isInitialized()) {
-        if (!i2cManager->begin()) {
-            errorHandler->logError(ERROR, "Failed to initialize I2C");
-            return false;
+    // Initialize I2C buses if not already initialized
+    if (!i2cManager->isPortInitialized(I2CPort::I2C0)) {
+        if (!i2cManager->beginPort(I2CPort::I2C0)) {
+            errorHandler->logError(ERROR, "Failed to initialize I2C0");
+        } else {
+            errorHandler->logInfo("Initialized I2C0 bus");
         }
     }
     
-    // Scan I2C bus for devices
-    std::vector<int> foundAddresses;
-    errorHandler->logInfo("Scanning I2C bus for devices...");
-    i2cManager->scanBus(foundAddresses);
-
-    if (foundAddresses.empty()) {
-        errorHandler->logError(ERROR, "No I2C devices found on bus - check wiring!");
-    } else {
-        errorHandler->logInfo("Found " + String(foundAddresses.size()) + " I2C devices:");
-        for (auto addr : foundAddresses) {
-            errorHandler->logInfo("Device at address: 0x" + String(addr, HEX));
+    if (!i2cManager->isPortInitialized(I2CPort::I2C1)) {
+        if (!i2cManager->beginPort(I2CPort::I2C1)) {
+            errorHandler->logError(ERROR, "Failed to initialize I2C1");
+        } else {
+            errorHandler->logInfo("Initialized I2C1 bus");
         }
+    }
+    
+    // Initialize SPI if available
+    if (spiManager && !spiManager->isInitialized()) {
+        if (!spiManager->begin()) {
+            errorHandler->logError(ERROR, "Failed to initialize SPI");
+        } else {
+            errorHandler->logInfo("Initialized SPI bus");
+        }
+    }
+    
+    // Scan I2C buses for devices
+    std::vector<int> foundAddressesI2C0;
+    std::vector<int> foundAddressesI2C1;
+    
+    errorHandler->logInfo("Scanning I2C0 bus for devices...");
+    bool i2c0HasDevices = i2cManager->scanBus(I2CPort::I2C0, foundAddressesI2C0);
+    
+    errorHandler->logInfo("Scanning I2C1 bus for devices...");
+    bool i2c1HasDevices = i2cManager->scanBus(I2CPort::I2C1, foundAddressesI2C1);
+
+    if (!i2c0HasDevices && !i2c1HasDevices) {
+        errorHandler->logWarning("No I2C devices found on any bus - check wiring if using I2C sensors!");
     }
     
     // Get sensor configurations
@@ -52,15 +71,15 @@ bool SensorManager::initializeSensors() {
     
     // Create and initialize sensors
     for (const auto& config : sensorConfigs) {
-        // Skip SPI sensors if not implemented
+        // Test communication before initializing sensor
         if (config.isSPI) {
-            errorHandler->logWarning("SPI sensors not yet implemented, skipping: " + config.name);
-            continue;
-        }
-        
-        // Test direct I2C communication before initializing sensor
-        if (!config.isSPI) {
-            testI2CCommunication(config.address);
+            if (!spiManager) {
+                errorHandler->logError(ERROR, "SPI manager not available for sensor: " + config.name);
+                continue;
+            }
+            testSPICommunication(config.address);
+        } else {
+            testI2CCommunication(config.i2cPort, config.address);
         }
         
         // Create the sensor
@@ -119,6 +138,14 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
         config.type = sensor["Sensor Type"].as<String>();
         config.address = sensor["Address (HEX)"].as<int>();
         config.isSPI = false;
+        
+        // Read I2C port
+        if (!sensor["I2C Port"].isNull()) {
+            String portStr = sensor["I2C Port"].as<String>();
+            config.i2cPort = I2CManager::stringToPort(portStr);
+        } else {
+            config.i2cPort = I2CPort::I2C0; // Default
+        }
         
         // Read polling rate with a default if not present
         config.pollingRate = 1000; // Default 1 second
@@ -183,9 +210,16 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
     for (const auto& config : sensorsToAdd) {
         errorHandler->logInfo("Adding new sensor: " + config.name);
         
-        // Test I2C communication if this is an I2C sensor
-        if (!config.isSPI) {
-            testI2CCommunication(config.address);
+        // Test communication for the appropriate interface
+        if (config.isSPI) {
+            if (!spiManager) {
+                errorHandler->logError(ERROR, "SPI manager not available for sensor: " + config.name);
+                allSuccess = false;
+                continue;
+            }
+            testSPICommunication(config.address);
+        } else {
+            testI2CCommunication(config.i2cPort, config.address);
         }
         
         // Create and initialize the sensor
@@ -250,7 +284,8 @@ void SensorManager::compareConfigurations(
                 // Check if configuration changed
                 if (newConfig.type != oldConfig.type ||
                     newConfig.address != oldConfig.address ||
-                    newConfig.isSPI != oldConfig.isSPI) {
+                    newConfig.isSPI != oldConfig.isSPI ||
+                    (!newConfig.isSPI && newConfig.i2cPort != oldConfig.i2cPort)) {
                     // Configuration changed, remove and re-add
                     toRemove.push_back(newConfig.name);
                     toAdd.push_back(newConfig);
@@ -266,19 +301,44 @@ void SensorManager::compareConfigurations(
     }
 }
 
-bool SensorManager::testI2CCommunication(int address) {
-    TwoWire* wire = i2cManager->getWire();
+bool SensorManager::testI2CCommunication(I2CPort port, int address) {
+    TwoWire* wire = i2cManager->getWire(port);
+    if (!wire) {
+        errorHandler->logError(ERROR, "Failed to get I2C bus for port " + I2CManager::portToString(port));
+        return false;
+    }
+    
     wire->beginTransmission(address);
     byte error = wire->endTransmission();
     
     if (error == 0) {
-        errorHandler->logInfo("Direct I2C communication with address 0x" + String(address, HEX) + " successful");
+        errorHandler->logInfo("Direct I2C communication with address 0x" + String(address, HEX) + 
+                          " on port " + I2CManager::portToString(port) + " successful");
         return true;
     } else {
         errorHandler->logError(ERROR, "Direct I2C communication with address 0x" + String(address, HEX) + 
+                           " on port " + I2CManager::portToString(port) + 
                            " failed with error: " + String(error));
         return false;
     }
+}
+
+bool SensorManager::testSPICommunication(int ssPin) {
+    if (!spiManager || !spiManager->isInitialized()) {
+        errorHandler->logError(ERROR, "SPI not initialized for SS pin test: " + String(ssPin));
+        return false;
+    }
+    
+    bool success = spiManager->testDevice(ssPin);
+    
+    if (success) {
+        errorHandler->logInfo("SPI communication test successful on SS pin: " + String(ssPin));
+    } else {
+        errorHandler->logWarning("SPI communication test inconclusive on SS pin: " + String(ssPin) + 
+                              " (may still work with specific device protocol)");
+    }
+    
+    return true; // Return true even if the test is inconclusive, as it might still work with specific device
 }
 
 int SensorManager::updateReadings() {

@@ -4,13 +4,15 @@
 #include <vector>
 #include <LittleFS.h>
 #include "../error/ErrorHandler.h"
+#include "../managers/I2CManager.h"
 
 // Structure for sensor configurations
 struct SensorConfig {
     String name;
     String type;
-    int address;     // I2C address or SPI SS pin
-    bool isSPI;      // True if this is an SPI sensor
+    int address;         // I2C address or SPI SS pin
+    bool isSPI;          // True if this is an SPI sensor
+    I2CPort i2cPort;     // Which I2C bus to use (only for I2C sensors)
     uint32_t pollingRate; // Polling rate in milliseconds
     
     // Equality operator for comparing configurations
@@ -19,6 +21,7 @@ struct SensorConfig {
                type == other.type && 
                address == other.address && 
                isSPI == other.isSPI &&
+               i2cPort == other.i2cPort &&
                pollingRate == other.pollingRate;
     }
     

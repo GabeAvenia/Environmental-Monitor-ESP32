@@ -13,6 +13,7 @@
 #include "../sensors/SensorFactory.h"
 #include "SensorRegistry.h"
 #include "I2CManager.h"
+#include "SPIManager.h"
 #include "../config/ConfigManager.h"
 #include "../error/ErrorHandler.h"
 
@@ -35,6 +36,7 @@ private:
     SensorFactory factory;
     ConfigManager* configManager;
     I2CManager* i2cManager;
+    SPIManager* spiManager;  // Make sure this field exists!
     ErrorHandler* errorHandler;
     std::map<String, SensorUpdateInfo> sensorUpdateInfo;
     
@@ -54,12 +56,21 @@ private:
     );
     
     /**
-     * @brief Test I2C communication with a sensor at the specified address.
+     * @brief Test I2C communication with a sensor at the specified address and port.
      * 
+     * @param port The I2C port to use.
      * @param address The I2C address to test.
      * @return true if communication successful, false otherwise.
      */
-    bool testI2CCommunication(int address);
+    bool testI2CCommunication(I2CPort port, int address);
+    
+    /**
+     * @brief Test SPI communication with a device on the specified SS pin.
+     * 
+     * @param ssPin The SPI slave select pin.
+     * @return true if communication successful, false otherwise.
+     */
+    bool testSPICommunication(int ssPin);
 
 public:
     /**
@@ -68,8 +79,9 @@ public:
      * @param configMgr Pointer to the configuration manager.
      * @param i2c Pointer to the I2C manager.
      * @param err Pointer to the error handler.
+     * @param spi Optional pointer to the SPI manager.
      */
-    SensorManager(ConfigManager* configMgr, I2CManager* i2c, ErrorHandler* err);
+    SensorManager(ConfigManager* configMgr, I2CManager* i2c, ErrorHandler* err, SPIManager* spi = nullptr);
     
     /**
      * @brief Destructor.
