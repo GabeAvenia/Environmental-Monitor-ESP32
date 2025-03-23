@@ -6,11 +6,11 @@ I2CManager::I2CManager(ErrorHandler* err)
       initialized1(false),
       sda0Pin(7),   // GPIO7 (A3/SDA)
       scl0Pin(6),   // GPIO6 (A2/SCL)
-      sda1Pin(40),  // GPIO40 (SCL1, marked as MTDO)
-      scl1Pin(41)   // GPIO41 (SDA1, marked as MTDI)
+      sda1Pin(41),  // GPIO41 (SDA1, STEMMA QT)
+      scl1Pin(40)   // GPIO40 (SCL1, STEMMA QT)
 {
     wire0 = &Wire1;    // Primary I2C bus
-    wire1 = &Wire;   // Secondary I2C bus
+    wire1 = &Wire;     // Secondary I2C bus
 }
 
 I2CManager::~I2CManager() {

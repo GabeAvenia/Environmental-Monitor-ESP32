@@ -1,15 +1,18 @@
 #include "PT100Sensor.h"
 
 PT100Sensor::PT100Sensor(const String& sensorName, int ssPinNum, SPIManager* spiMgr, ErrorHandler* err,
-                         float referenceResistor, int wireCount)
+                        float referenceResistor, int wireCount)
     : BaseSensor(sensorName, SensorType::PT100_RTD, err),
-      max31865(ssPinNum), // Initialize MAX31865 with CS pin
-      spiManager(spiMgr),
-      ssPin(ssPinNum),
-      rRef(referenceResistor),
-      numWires(wireCount),
-      lastTemperature(NAN),
-      tempTimestamp(0) {
+    max31865(ssPinNum), // Use the physical pin directly for MAX31865
+    spiManager(spiMgr),
+    ssPin(ssPinNum),    // Store the physical pin
+    rRef(referenceResistor),
+    numWires(wireCount),
+    lastTemperature(NAN),
+    tempTimestamp(0) {
+
+    // Log the physical pin being used
+    logInfo("PT100 sensor using physical SS pin: " + String(ssPin));
 }
 
 PT100Sensor::~PT100Sensor() {

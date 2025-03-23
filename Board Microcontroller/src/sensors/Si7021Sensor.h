@@ -23,8 +23,6 @@ private:
     int i2cAddress;                           ///< I2C address of the sensor
     mutable float lastTemperature;            ///< Last temperature reading
     mutable float lastHumidity;               ///< Last humidity reading
-    mutable unsigned long tempTimestamp;      ///< Timestamp of last temperature reading
-    mutable unsigned long humidityTimestamp;  ///< Timestamp of last humidity reading
     
     /**
      * @brief Update both temperature and humidity readings from the sensor.
@@ -75,14 +73,18 @@ public:
      * 
      * @return Timestamp in milliseconds (from millis()).
      */
-    unsigned long getTemperatureTimestamp() const override;
+    unsigned long getTemperatureTimestamp() const override {
+        return 0; // Not tracking timestamps
+    }
     
     /**
      * @brief Get the timestamp of the last humidity reading.
      * 
      * @return Timestamp in milliseconds (from millis()).
      */
-    unsigned long getHumidityTimestamp() const override;
+    unsigned long getHumidityTimestamp() const override {
+        return 0; // Not tracking timestamps
+    }
     
     /**
      * @brief Perform a self-test to verify the sensor is functioning properly.

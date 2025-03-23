@@ -9,7 +9,16 @@
 #define DEFAULT_SPI_MOSI_PIN 37
 #define DEFAULT_SPI_MISO_PIN 35
 #define DEFAULT_SPI_SCK_PIN 36
-#define DEFAULT_SPI_SS_PIN 18
+#define DEFAULT_SPI_SS_PIN -1 //avoid auto-registration
+
+// Define the GPIO pins corresponding to A0-A3
+#define SS_PIN_A0 18  // GPIO18
+#define SS_PIN_A1 17  // GPIO17
+#define SS_PIN_A2 9   // GPIO9
+#define SS_PIN_A3 8   // GPIO8
+
+// Number of supported SS pins
+#define MAX_SS_PINS 4
 
 /**
  * @brief Class for managing SPI communications with sensors.
@@ -24,11 +33,25 @@ private:
     int misoPin;
     int sckPin;
     std::vector<int> ssPins; // List of all slave select pins
+    static int ssPinMapping[MAX_SS_PINS]; // Mapping array for SS pins
     
     // Settings for different devices
     SPISettings defaultSettings;
     
 public:
+    /**
+     * @brief Map a logical SS pin index to a physical pin number.
+     * 
+     * @param logicalPin The logical SS pin index.
+     * @return The physical pin number.
+     */
+    int mapLogicalToPhysicalPin(int logicalPin) {
+        if (logicalPin >= 0 && logicalPin < MAX_SS_PINS) {
+            return ssPinMapping[logicalPin];
+        }
+        return logicalPin; // Return unchanged if out of range
+    }
+
     /**
      * @brief Constructor for SPIManager.
      * 

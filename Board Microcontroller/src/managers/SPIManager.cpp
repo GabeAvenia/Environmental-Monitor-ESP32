@@ -9,6 +9,13 @@ SPIManager::SPIManager(ErrorHandler* err)
       defaultSettings(1000000, MSBFIRST, SPI_MODE0) {
 }
 
+int SPIManager::ssPinMapping[MAX_SS_PINS] = {
+    SS_PIN_A0,  // Index 0 -> GPIO18 (A0)
+    SS_PIN_A1,  // Index 1 -> GPIO17 (A1)
+    SS_PIN_A2,  // Index 2 -> GPIO9  (A2)
+    SS_PIN_A3   // Index 3 -> GPIO8  (A3)
+};
+
 SPIManager::~SPIManager() {
     // Nothing to clean up
 }
@@ -30,6 +37,8 @@ bool SPIManager::begin(int mosi, int miso, int sck) {
     errorHandler->logInfo("SPI initialized with pins MOSI:" + String(mosiPin) + 
                           " MISO:" + String(misoPin) + 
                           " SCK:" + String(sckPin));
+    
+    // Don't auto-register any SS pin
     return true;
 }
 
@@ -38,22 +47,30 @@ bool SPIManager::isInitialized() const {
 }
 
 bool SPIManager::registerSSPin(int ssPin) {
+    // Map logical index to physical pin if needed
+    int physicalPin = ssPin;
+    if (ssPin >= 0 && ssPin < MAX_SS_PINS) {
+        physicalPin = ssPinMapping[ssPin];
+        errorHandler->logInfo("Mapping logical SS index " + String(ssPin) + 
+                             " to physical pin " + String(physicalPin));
+    }
+    
     // Check if pin is already registered
     for (int pin : ssPins) {
-        if (pin == ssPin) {
-            errorHandler->logWarning("SS pin " + String(ssPin) + " already registered");
+        if (pin == physicalPin) {
+            errorHandler->logInfo("SS pin " + String(physicalPin) + " already registered");
             return true; // Already registered, so technically successful
         }
     }
     
     // Configure the pin as output
-    pinMode(ssPin, OUTPUT);
-    digitalWrite(ssPin, HIGH); // Inactive state
+    pinMode(physicalPin, OUTPUT);
+    digitalWrite(physicalPin, HIGH); // Inactive state
     
     // Add to the list
-    ssPins.push_back(ssPin);
+    ssPins.push_back(physicalPin);
     
-    errorHandler->logInfo("Registered SS pin " + String(ssPin));
+    errorHandler->logInfo("Registered SS pin " + String(physicalPin));
     return true;
 }
 
@@ -63,10 +80,16 @@ bool SPIManager::beginTransaction(int ssPin, SPISettings settings) {
         return false;
     }
     
+    // Map logical index to physical pin if needed
+    int physicalPin = ssPin;
+    if (ssPin >= 0 && ssPin < MAX_SS_PINS) {
+        physicalPin = ssPinMapping[ssPin];
+    }
+    
     // Make sure the SS pin is registered
     bool pinFound = false;
     for (int pin : ssPins) {
-        if (pin == ssPin) {
+        if (pin == physicalPin) {
             pinFound = true;
             break;
         }
@@ -74,18 +97,25 @@ bool SPIManager::beginTransaction(int ssPin, SPISettings settings) {
     
     if (!pinFound) {
         // Auto-register the pin if not found
-        registerSSPin(ssPin);
+        registerSSPin(ssPin); // This will handle the mapping
+        physicalPin = (ssPin >= 0 && ssPin < MAX_SS_PINS) ? ssPinMapping[ssPin] : ssPin;
     }
     
     // Begin transaction
     SPI.beginTransaction(settings);
-    digitalWrite(ssPin, LOW); // Active state
+    digitalWrite(physicalPin, LOW); // Active state
     
     return true;
 }
 
 void SPIManager::endTransaction(int ssPin) {
-    digitalWrite(ssPin, HIGH); // Inactive state
+    // Map logical index to physical pin if needed
+    int physicalPin = ssPin;
+    if (ssPin >= 0 && ssPin < MAX_SS_PINS) {
+        physicalPin = ssPinMapping[ssPin];
+    }
+    
+    digitalWrite(physicalPin, HIGH); // Inactive state
     SPI.endTransaction();
 }
 

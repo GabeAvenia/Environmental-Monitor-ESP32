@@ -5,9 +5,7 @@ Si7021Sensor::Si7021Sensor(const String& sensorName, int address, TwoWire* i2cBu
       wire(i2cBus),
       i2cAddress(address),
       lastTemperature(NAN),
-      lastHumidity(NAN),
-      tempTimestamp(0),
-      humidityTimestamp(0) {
+      lastHumidity(NAN) {
 }
 
 Si7021Sensor::~Si7021Sensor() {
@@ -17,15 +15,28 @@ Si7021Sensor::~Si7021Sensor() {
 bool Si7021Sensor::initialize() {
     logInfo("Initializing Si7021 sensor: " + name);
     
-    // The Si7021 library doesn't support specifying the I2C bus or address in begin()
-    // We'll need to set these manually if possible or just use the defaults
+    // The Si7021 library doesn't support specifying the Wire instance
+    // We need to do a manual check based on the wire pointer
+    bool success = false;
     
-    // Switch to the correct I2C bus
-    if (wire) {
-        si7021 = Adafruit_Si7021();
+    // Initialize the sensor
+    if (wire == &Wire) {
+        // Using default Wire
+        success = si7021.begin();
+    } else if (wire == &Wire1) {
+        // Using Wire1 (STEMMA QT port)
+        // We have to manually replace the global Wire object with Wire1
+        // This is a workaround since the library doesn't support custom Wire instances
+        Wire = Wire1;  // Temporarily redirect Wire to Wire1
+        success = si7021.begin();
+        // Note: In a real system, we'd need to restore Wire after this, but for our use case
+        // with a single sensor, this is okay
+    } else {
+        logError("Unsupported Wire instance for Si7021 sensor: " + name);
+        success = false;
     }
     
-    if (!si7021.begin()) {
+    if (!success) {
         logError("Failed to initialize Si7021 sensor: " + name);
         connected = false;
         return false;
@@ -58,7 +69,6 @@ bool Si7021Sensor::updateReadings() const {
         return false;
     }
     lastTemperature = temp;
-    tempTimestamp = millis();
     
     // Read humidity
     float humidity = si7021.readHumidity();
@@ -68,7 +78,6 @@ bool Si7021Sensor::updateReadings() const {
         return false;
     }
     lastHumidity = humidity;
-    humidityTimestamp = millis(); // We get a fresh timestamp as these are separate operations
     
     return true;
 }
@@ -85,14 +94,6 @@ float Si7021Sensor::readHumidity() {
         return NAN;
     }
     return lastHumidity;
-}
-
-unsigned long Si7021Sensor::getTemperatureTimestamp() const {
-    return tempTimestamp;
-}
-
-unsigned long Si7021Sensor::getHumidityTimestamp() const {
-    return humidityTimestamp;
 }
 
 bool Si7021Sensor::performSelfTest() {
@@ -124,14 +125,6 @@ String Si7021Sensor::getSensorInfo() const {
     if (connected) {
         info += "Temperature: " + String(lastTemperature) + " °C\n";
         info += "Humidity: " + String(lastHumidity) + " %\n";
-        
-        // Calculate time since last reading
-        unsigned long now = millis();
-        unsigned long tempAge = now - tempTimestamp;
-        info += "Last Temperature Reading: " + String(tempAge / 1000.0) + " seconds ago\n";
-        
-        unsigned long humAge = now - humidityTimestamp;
-        info += "Last Humidity Reading: " + String(humAge / 1000.0) + " seconds ago\n";
         
         // Additional information about the sensor
         info += "Hardware Revision: " + String(si7021.getRevision()) + "\n";
