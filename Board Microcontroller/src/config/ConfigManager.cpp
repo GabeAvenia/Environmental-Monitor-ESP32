@@ -406,121 +406,79 @@ String ConfigManager::getConfigJson() {
 }
 
 // Update configuration from JSON string
+// Refactored updateConfigFromJson method
 bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
-    errorHandler->logInfo("Received config update: " + jsonConfig);
-    Serial.println("DEBUG: Updating config with: " + jsonConfig.substring(0, 50) + "...");
+    // Log a shorter version of the config to avoid huge logs
+    errorHandler->logInfo("Received config update: " + 
+                          jsonConfig.substring(0, std::min(50, (int)jsonConfig.length())) + 
+                          (jsonConfig.length() > 50 ? "..." : ""));
     
-    // First, ensure we have valid JSON by finding the opening brace
+    // Extract clean JSON data by finding the opening brace
     int jsonStart = jsonConfig.indexOf('{');
     if (jsonStart < 0) {
         errorHandler->logError(ERROR, "No JSON object found in config");
         return false;
     }
-    
-    // Extract clean JSON data
     String cleanJson = jsonConfig.substring(jsonStart);
     
     // Parse the JSON
     JsonDocument doc;
-    
     DeserializationError error = deserializeJson(doc, cleanJson);
     
-    if (error) {
-        errorHandler->logError(ERROR, "Failed to parse JSON config: " + String(error.c_str()));
-        Serial.println("DEBUG: JSON parse error: " + String(error.c_str()));
+    if (error || doc.overflowed()) {
+        errorHandler->logError(ERROR, "Failed to parse JSON config: " + 
+                              (error ? String(error.c_str()) : "Document too large"));
+        return false;
+    }
+
+    // Standardize ID field (convert legacy format if needed)
+    standardizeConfigFields(doc);
+    
+    // Save to file
+    if (!writeConfigToFile(doc)) {
         return false;
     }
     
-    // Check if deserialization exceeded memory limits
-    if (doc.overflowed()) {
-        errorHandler->logError(ERROR, "JSON document too large for available memory");
-        Serial.println("DEBUG: JSON document overflow");
-        return false;
-    }
-    
-    Serial.println("DEBUG: JSON parsed successfully");
-    
-    // Check which ID field is used
-    if (doc["Environmental Monitor ID"]) {
-        Serial.println("DEBUG: Found 'Environmental Monitor ID'");
-        // Convert to Board ID
-        doc["Board ID"] = doc["Environmental Monitor ID"];
-        doc.remove("Environmental Monitor ID");
-    } else if (doc["Board ID"]) {
-        Serial.println("DEBUG: Found 'Board ID'");
-    } else {
-        Serial.println("DEBUG: No ID field found");
-    }
-    
-    // Test serializing to string to see what we're about to write
-    String serializedDoc;
-    serializeJson(doc, serializedDoc);
-    Serial.println("DEBUG: About to write: " + serializedDoc.substring(0, 50) + "...");
-    
-    // Check if the file exists and can be opened for reading
-    if (LittleFS.exists(Constants::CONFIG_FILE_PATH)) {
-        Serial.println("DEBUG: Config file exists");
-        File testFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "r");
-        if (testFile) {
-            testFile.close();
-            Serial.println("DEBUG: Confirmed config file can be opened for reading");
-        } else {
-            Serial.println("DEBUG: Config file exists but CANNOT be opened for reading");
-        }
-    } else {
-        Serial.println("DEBUG: Config file does not exist");
-    }
-    
-    // Save to file - force file creation
-    Serial.println("DEBUG: Attempting to open config file for writing...");
-    File configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "w");
-    if (!configFile) {
-        errorHandler->logError(ERROR, "Failed to open config file for writing");
-        Serial.println("DEBUG: Failed to open config file for writing!");
-        return false;
-    }
-    
-    Serial.println("DEBUG: Config file opened for writing");
-    
-    size_t written = serializeJson(doc, configFile);
-    if (written == 0) {
-        errorHandler->logError(ERROR, "Failed to write config");
-        Serial.println("DEBUG: Failed to write config - 0 bytes written");
-        configFile.close();
-        return false;
-    }
-    
-    Serial.println("DEBUG: Wrote " + String(written) + " bytes to config file");
-    configFile.close();
-    
-    // Verify the file was written correctly
-    configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "r");
-    if (!configFile) {
-        errorHandler->logError(ERROR, "Failed to open config file for verification");
-        Serial.println("DEBUG: Can't open config file for verification!");
-        return false;
-    }
-    
-    String fileContent = configFile.readString();
-    configFile.close();
-    
-    Serial.println("DEBUG: Read back file content: " + fileContent.substring(0, 50) + "...");
-    
-    // Attempt to reload the configuration
-    Serial.println("DEBUG: Reloading configuration...");
+    // Reload and notify
     bool success = loadConfigFromFile();
-    
     if (success) {
-        Serial.println("DEBUG: Config reloaded successfully");
         errorHandler->logInfo("Config reloaded successfully, notifying listeners");
-        
-        // Count how many callbacks are registered
-        Serial.println("DEBUG: Notifying " + String(changeCallbacks.size()) + " callbacks");
         notifyConfigChanged(jsonConfig);
     } else {
-        Serial.println("DEBUG: Failed to reload configuration!");
         errorHandler->logError(ERROR, "Failed to reload configuration");
     }
     
     return success;
+}
+
+// Helper to standardize config fields (handle older formats)
+void ConfigManager::standardizeConfigFields(JsonDocument& doc) {
+    // Check which ID field is used
+    if (doc.containsKey("Environmental Monitor ID")) {
+        // Convert to Board ID
+        doc["Board ID"] = doc["Environmental Monitor ID"];
+        doc.remove("Environmental Monitor ID");
+    } else if (!doc.containsKey("Board ID")) {
+        // Add default ID if none exists
+        doc["Board ID"] = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
+    }
+}
+
+// Helper to write config to file
+bool ConfigManager::writeConfigToFile(const JsonDocument& doc) {
+    File configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "w");
+    if (!configFile) {
+        errorHandler->logError(ERROR, "Failed to open config file for writing");
+        return false;
+    }
+    
+    size_t written = serializeJson(doc, configFile);
+    configFile.close();
+    
+    if (written == 0) {
+        errorHandler->logError(ERROR, "Failed to write config - 0 bytes written");
+        return false;
+    }
+    
+    return true;
 }

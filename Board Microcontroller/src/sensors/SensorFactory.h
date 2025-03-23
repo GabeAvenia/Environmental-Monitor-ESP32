@@ -27,37 +27,15 @@ private:
     SPIManager* spiManager;
     
     /**
-     * @brief Create an SHT41 sensor instance.
+     * @brief Create a sensor using the template method pattern.
      * 
-     * @param config The sensor configuration.
-     * @return Pointer to the created sensor, or nullptr if creation failed.
+     * @tparam SensorType The type of sensor to create
+     * @param config The sensor configuration
+     * @return Pointer to the created sensor, or nullptr if creation failed
      */
-    ISensor* createSHT41Sensor(const SensorConfig& config);
+    template<typename SensorType>
+    ISensor* createI2CSensor(const SensorConfig& config);
     
-    /**
-     * @brief Create a BME280 sensor instance.
-     * 
-     * @param config The sensor configuration.
-     * @return Pointer to the created sensor, or nullptr if creation failed.
-     */
-    ISensor* createBME280Sensor(const SensorConfig& config);
-    
-    /**
-     * @brief Create a TMP117 sensor instance.
-     * 
-     * @param config The sensor configuration.
-     * @return Pointer to the created sensor, or nullptr if creation failed.
-     */
-    ISensor* createTMP117Sensor(const SensorConfig& config);
-
-    /**
-     * @brief Create a Si7021 sensor instance.
-     * 
-     * @param config The sensor configuration.
-     * @return Pointer to the created sensor, or nullptr if creation failed.
-     */
-    ISensor* createSi7021Sensor(const SensorConfig& config);
-
     /**
      * @brief Create a PT100 RTD sensor instance.
      * 
@@ -65,6 +43,17 @@ private:
      * @return Pointer to the created sensor, or nullptr if creation failed.
      */
     ISensor* createPT100Sensor(const SensorConfig& config);
+    
+    /**
+     * @brief Parse additional settings for PT100 sensors.
+     * 
+     * @param additional The additional settings string
+     * @param refResistor Output parameter for reference resistor value
+     * @param wireMode Output parameter for wire mode
+     */
+    void parseAdditionalPT100Settings(const String& additional, 
+                                      float& refResistor, 
+                                      int& wireMode);
 
 public:
     /**

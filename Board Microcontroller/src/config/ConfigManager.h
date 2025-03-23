@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <vector>
 #include <LittleFS.h>
+#include <ArduinoJson.h>
 #include "../error/ErrorHandler.h"
 #include "../managers/I2CManager.h"
 
@@ -50,6 +51,10 @@ private:
     bool loadConfigFromFile();
     bool createDefaultConfig();
     void notifyConfigChanged(const String& newConfig);
+    
+    // New helper methods
+    void standardizeConfigFields(JsonDocument& doc);
+    bool writeConfigToFile(const JsonDocument& doc);
 
 public:
     // Constructor
