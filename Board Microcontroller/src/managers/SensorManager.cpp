@@ -119,10 +119,17 @@ bool SensorManager::initializeSensors() {
 bool SensorManager::reconfigureSensors(const String& configJson) {
     // Parse the new configuration
     JsonDocument doc;
+    
     DeserializationError error = deserializeJson(doc, configJson);
     
     if (error) {
         errorHandler->logError(ERROR, "Failed to parse sensor configuration JSON: " + String(error.c_str()));
+        return false;
+    }
+    
+    // Check for memory overflow
+    if (doc.overflowed()) {
+        errorHandler->logError(ERROR, "Sensor configuration too large for available memory");
         return false;
     }
     
@@ -153,6 +160,13 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
             config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
         }
         
+        // Read additional settings if present
+        if (!sensor["Additional"].isNull()) {
+            config.additional = sensor["Additional"].as<String>();
+        } else {
+            config.additional = ""; // Default to empty string
+        }
+        
         newConfigs.push_back(config);
     }
     
@@ -171,6 +185,13 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
             config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
         }
         
+        // Read additional settings if present
+        if (!sensor["Additional"].isNull()) {
+            config.additional = sensor["Additional"].as<String>();
+        } else {
+            config.additional = ""; // Default to empty string
+        }
+        
         newConfigs.push_back(config);
     }
     
@@ -180,7 +201,10 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
     compareConfigurations(oldConfigs, newConfigs, sensorsToAdd, sensorsToRemove);
     
     // Update the configuration in the ConfigManager
+    // IMPORTANT: Disable notifications to prevent recursion
+    configManager->disableNotifications(true);
     configManager->updateSensorConfigs(newConfigs);
+    configManager->disableNotifications(false);
     
     // Remove sensors that are no longer in the configuration
     for (const auto& sensorName : sensorsToRemove) {

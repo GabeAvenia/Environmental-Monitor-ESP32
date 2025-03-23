@@ -8,13 +8,6 @@
 #include "managers/SensorManager.h"
 #include "communication/CommunicationManager.h"
 
-// SPI pin definitions
-#define SPI_MOSI_PIN 37
-#define SPI_MISO_PIN 35
-#define SPI_SCK_PIN 36
-#define SPI_SS1_PIN 18
-#define SPI_SS2_PIN 17
-
 // Global components
 ErrorHandler* errorHandler = nullptr;
 ConfigManager* configManager = nullptr;
@@ -58,20 +51,16 @@ void setup() {
     // Register for configuration changes
     configManager->registerChangeCallback(onConfigChanged);
     
-    // Initialize SPI manager with the proper pins
-    if (!spiManager->begin(SPI_MOSI_PIN, SPI_MISO_PIN, SPI_SCK_PIN)) {
+    // Initialize SPI manager with the default pins from the header file
+    if (!spiManager->begin()) {
         errorHandler->logError(ERROR, "Failed to initialize SPI. Continuing with limited functionality.");
     } else {
-        // Register SS pins
-        spiManager->registerSSPin(SPI_SS1_PIN);
-        spiManager->registerSSPin(SPI_SS2_PIN);
+        // Register SS pins - use the default SS pin we defined
+        spiManager->registerSSPin(DEFAULT_SPI_SS_PIN); // This is pin 18 as per your working example
     }
     
     // Create sensor manager with both I2C and SPI support
     sensorManager = new SensorManager(configManager, i2cManager, errorHandler, spiManager);
-    
-    // Initialize communication manager
-    commManager = new CommunicationManager(sensorManager, configManager, errorHandler);
     
     // Initialize sensors
     if (!sensorManager->initializeSensors()) {
@@ -79,6 +68,7 @@ void setup() {
     }
     
     // Setup communication
+    commManager = new CommunicationManager(sensorManager, configManager, errorHandler);
     commManager->begin(115200);
     commManager->setupCommands();
     

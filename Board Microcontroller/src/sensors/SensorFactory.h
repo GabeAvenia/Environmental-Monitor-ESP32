@@ -148,16 +148,74 @@ private:
             return nullptr;
         }
         
-        // Create a PT100 sensor with the specified configuration
-        // Default reference resistor is 430.0 ohms for Adafruit board
-        // Default to 3-wire PT100
+        // Default values
+        float referenceResistor = 430.0; // Default reference resistor in ohms
+        int wireMode = 3;               // Default to 3-wire mode
+        
+        // Parse additional settings if provided
+        if (config.additional.length() > 0) {
+            // Parse wire mode
+            if (config.additional.indexOf("Wire mode:") >= 0 || 
+                config.additional.indexOf("wire mode:") >= 0 ||
+                config.additional.indexOf("Wire:") >= 0) {
+                
+                // Extract the number before "wire"
+                int pos = config.additional.indexOf("-wire");
+                if (pos > 0) {
+                    // Look for a digit before "-wire"
+                    char digitChar = '0';
+                    for (int i = pos - 1; i >= 0; i--) {
+                        if (isDigit(config.additional.charAt(i))) {
+                            digitChar = config.additional.charAt(i);
+                            break;
+                        }
+                    }
+                    if (digitChar >= '2' && digitChar <= '4') {
+                        wireMode = digitChar - '0';
+                        errorHandler->logInfo("PT100 wire mode set to " + String(wireMode) + "-wire from additional settings");
+                    }
+                }
+            }
+            
+            // Parse reference resistor value
+            if (config.additional.indexOf("Ref:") >= 0 || 
+                config.additional.indexOf("ref:") >= 0 ||
+                config.additional.indexOf("Resistor:") >= 0) {
+                
+                int pos = config.additional.indexOf("Ref:") >= 0 ? config.additional.indexOf("Ref:") + 4 : 
+                        (config.additional.indexOf("ref:") >= 0 ? config.additional.indexOf("ref:") + 4 : 
+                        (config.additional.indexOf("Resistor:") >= 0 ? config.additional.indexOf("Resistor:") + 10 : -1));
+                
+                if (pos > 0) {
+                    String valStr = "";
+                    for (unsigned int i = pos; i < config.additional.length() && (isDigit(config.additional.charAt(i)) || config.additional.charAt(i) == '.'); i++) {
+                        valStr += config.additional.charAt(i);
+                    }
+                    
+                    if (valStr.length() > 0) {
+                        float val = valStr.toFloat();
+                        if (val > 100.0 && val < 10000.0) { // Sanity check for resistor value
+                            referenceResistor = val;
+                            errorHandler->logInfo("PT100 reference resistor set to " + String(referenceResistor) + " ohms from additional settings");
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Use the specified SS pin from config, or default to pin 18 if 0
+        int ssPin = (config.address != 0) ? config.address : DEFAULT_SPI_SS_PIN;
+        
+        // Create with hardware SPI
+        errorHandler->logInfo("Creating PT100 sensor with hardware SPI: CS:" + String(ssPin));
+        
         PT100Sensor* sensor = new PT100Sensor(
             config.name,
-            config.address, // SS Pin
+            ssPin,
             spiManager,
             errorHandler,
-            430.0, // Reference resistor value
-            3      // 3-wire PT100
+            referenceResistor,
+            wireMode
         );
         
         return sensor;

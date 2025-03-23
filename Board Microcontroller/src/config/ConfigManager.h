@@ -14,6 +14,7 @@ struct SensorConfig {
     bool isSPI;          // True if this is an SPI sensor
     I2CPort i2cPort;     // Which I2C bus to use (only for I2C sensors)
     uint32_t pollingRate; // Polling rate in milliseconds
+    String additional;   // Additional sensor-specific settings
     
     // Equality operator for comparing configurations
     bool operator==(const SensorConfig& other) const {
@@ -22,7 +23,8 @@ struct SensorConfig {
                address == other.address && 
                isSPI == other.isSPI &&
                i2cPort == other.i2cPort &&
-               pollingRate == other.pollingRate;
+               pollingRate == other.pollingRate &&
+               additional == other.additional;
     }
     
     // Inequality operator
@@ -40,6 +42,9 @@ private:
     String boardId;
     std::vector<SensorConfig> sensorConfigs;
     std::vector<ConfigChangeCallback> changeCallbacks;
+    
+    // Flag to prevent recursive notification
+    bool notifyingCallbacks;
     
     // Private helper methods
     bool loadConfigFromFile();
@@ -65,4 +70,7 @@ public:
     
     // Change notification
     void registerChangeCallback(ConfigChangeCallback callback);
+    
+    // Method to safely disable notifications (for recursive operations)
+    void disableNotifications(bool disable);
 };

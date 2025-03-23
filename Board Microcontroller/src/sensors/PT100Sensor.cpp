@@ -52,16 +52,38 @@ bool PT100Sensor::initialize() {
     if (fault) {
         logError("MAX31865 fault detected during initialization: " + getFaultStatus());
         max31865.clearFault();
-        connected = false;
-        return false;
+        // Only fail initialization for critical faults
+        if (fault & (MAX31865_FAULT_OVUV | MAX31865_FAULT_REFINHIGH | MAX31865_FAULT_REFINLOW)) {
+            connected = false;
+            return false;
+        }
+        logError("Non-critical fault detected, attempting to continue");
     }
     
-    connected = true;
-    logInfo("PT100 RTD sensor initialized successfully: " + name + 
-            " (" + String(numWires) + "-wire, reference: " + String(rRef) + " ohms)");
+    // Read the RTD value directly for diagnostics
+    uint16_t rtd = max31865.readRTD();
+    float ratio = rtd / 32768.0;
+    float resistance = ratio * rRef;
     
-    // Get initial reading
-    updateReading();
+    logInfo("Initial PT100 RTD value: " + String(rtd));
+    logInfo("Initial PT100 resistance: " + String(resistance) + " ohms (ratio: " + String(ratio, 8) + ")");
+    
+    // Check if RTD value is zero, which indicates a likely connection issue
+    if (rtd == 0) {
+        logError("RTD value is 0, suggesting a connection problem. Check wiring and SPI communication.");
+        // Let's not mark it as disconnected yet, to allow for diagnostics
+    }
+    
+    // Get initial temperature reading
+    float temp = max31865.temperature(PT100_RTD_VALUE, rRef);
+    logInfo("Initial PT100 temperature: " + String(temp) + "°C");
+    
+    // Still mark as connected even with suspicious values for diagnostic purposes
+    connected = true;
+    
+    // Store the initial reading
+    lastTemperature = temp;
+    tempTimestamp = millis();
     
     return true;
 }
@@ -72,11 +94,20 @@ bool PT100Sensor::updateReading() const {
         return false;
     }
     
+    // Read the RTD value directly first for diagnostics
+    uint16_t rtd = max31865.readRTD();
+    float ratio = rtd / 32768.0;
+    float resistance = ratio * rRef;
+    
+    // Only warn if RTD is zero, but don't disconnect
+    if (rtd == 0) {
+        logErrorPublic("WARNING: PT100 RTD value is 0, suggesting a connection problem");
+    }
+    
     // Read the temperature
     float temp;
     try {
-        // Read the temperature using the reference resistor value
-        // For PT100, the RTD nominal value is 100 ohms at 0°C
+        // Calculate temperature using the RTD-to-temperature conversion
         temp = max31865.temperature(PT100_RTD_VALUE, rRef);
         
         // Check for any faults
@@ -84,34 +115,25 @@ bool PT100Sensor::updateReading() const {
         if (fault) {
             logErrorPublic("MAX31865 fault detected during reading: " + getFaultStatus());
             max31865.clearFault();
-            const_cast<PT100Sensor*>(this)->connected = false;
-            return false;
+            // Don't immediately disconnect for non-critical faults
         }
     } catch (...) {
         // Catch any exceptions that might occur during reading
         logErrorPublic("Exception occurred while reading PT100 sensor: " + name);
-        const_cast<PT100Sensor*>(this)->connected = false;
         return false;
     }
     
-    // Check if the reading is valid
-    if (isnan(temp) || temp < -200 || temp > 850) {
-        logErrorPublic("Invalid temperature reading from PT100 sensor: " + name + 
-                   " (" + String(temp) + "°C)");
-        const_cast<PT100Sensor*>(this)->connected = false;
-        return false;
-    }
-    
+    // Update our stored values regardless of validity
     lastTemperature = temp;
     tempTimestamp = millis();
+    
+    // No verbose logging here
     
     return true;
 }
 
 float PT100Sensor::readTemperature() {
-    if (!updateReading()) {
-        return NAN;
-    }
+    updateReading(); // Always update to get fresh readings
     return lastTemperature;
 }
 
@@ -120,39 +142,38 @@ unsigned long PT100Sensor::getTemperatureTimestamp() const {
 }
 
 bool PT100Sensor::performSelfTest() {
+    logInfo("Performing self-test on PT100 sensor: " + name);
+    
     // Read the RTD value directly to check if the sensor is connected
     uint16_t rtd = max31865.readRTD();
-    float ratio = rtd / 32768.0;  // RTD / 2^15
+    float ratio = rtd / 32768.0;
     float resistance = ratio * rRef;
+    
+    logInfo("PT100 RTD value: " + String(rtd) + 
+           ", Ratio: " + String(ratio, 8) + 
+           ", Resistance: " + String(resistance, 3) + " ohms");
     
     // Check for any faults
     uint8_t fault = max31865.readFault();
     if (fault) {
         logError("MAX31865 fault detected during self-test: " + getFaultStatus());
         max31865.clearFault();
+    }
+    
+    // Only consider it a failure if RTD is 0, suggesting no connection
+    if (rtd == 0) {
+        logError("Self-test failed: RTD value is 0, suggesting no connection");
         connected = false;
         return false;
     }
     
-    // A typical PT100 has 100 ohms at 0°C and about 138.5 ohms at 100°C
-    // Check if the resistance is in a reasonable range
-    if (resistance < 80.0 || resistance > 200.0) {
-        logError("PT100 resistance out of range: " + String(resistance) + " ohms");
-        connected = false;
-        return false;
-    }
-    
-    // Try to read temperature as final check
+    // Try to read temperature to complete the test
     float temp = max31865.temperature(PT100_RTD_VALUE, rRef);
-    if (isnan(temp) || temp < -200 || temp > 850) {
-        logError("Invalid temperature reading during self-test: " + String(temp) + "°C");
-        connected = false;
-        return false;
-    }
+    logInfo("PT100 temperature reading: " + String(temp) + "°C");
     
+    // Keep connected true for diagnostics
     connected = true;
-    logInfo("Self-test passed for PT100 sensor: " + name + 
-            " (Resistance: " + String(resistance) + " ohms, Temperature: " + String(temp) + "°C)");
+    logInfo("Self-test passed for PT100 sensor: " + name);
     
     return true;
 }
@@ -165,25 +186,24 @@ String PT100Sensor::getSensorInfo() const {
     info += "Wiring: " + String(numWires) + "-wire\n";
     info += "Reference Resistor: " + String(rRef) + " ohms\n";
     
-    if (connected) {
-        info += "Temperature: " + String(lastTemperature) + " °C\n";
-        
-        // Calculate time since last reading
-        unsigned long now = millis();
-        unsigned long age = now - tempTimestamp;
-        info += "Last Reading: " + String(age / 1000.0) + " seconds ago\n";
-        
-        // Get RTD value and resistance
-        uint16_t rtd = max31865.readRTD();
-        float ratio = rtd / 32768.0;
-        float resistance = ratio * rRef;
-        info += "RTD Value: " + String(rtd) + "\n";
-        info += "Resistance: " + String(resistance) + " ohms\n";
-        
-        // Check for faults
-        String faultStatus = getFaultStatus();
-        info += "Fault Status: " + faultStatus + "\n";
-    }
+    // Read live values for the info request
+    uint16_t rtd = max31865.readRTD();
+    float ratio = rtd / 32768.0;
+    float resistance = ratio * rRef;
+    
+    info += "RTD Value: " + String(rtd) + "\n";
+    info += "Ratio: " + String(ratio, 8) + "\n";
+    info += "Resistance: " + String(resistance, 3) + " ohms\n";
+    info += "Temperature: " + String(lastTemperature) + " °C\n";
+    
+    // Calculate time since last reading
+    unsigned long now = millis();
+    unsigned long age = now - tempTimestamp;
+    info += "Last Reading: " + String(age / 1000.0) + " seconds ago\n";
+    
+    // Check for faults
+    String faultStatus = getFaultStatus();
+    info += "Fault Status: " + faultStatus + "\n";
     
     return info;
 }

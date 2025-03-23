@@ -9,8 +9,8 @@ I2CManager::I2CManager(ErrorHandler* err)
       sda1Pin(40),  // GPIO40 (SCL1, marked as MTDO)
       scl1Pin(41)   // GPIO41 (SDA1, marked as MTDI)
 {
-    wire0 = &Wire;    // Primary I2C bus
-    wire1 = &Wire1;   // Secondary I2C bus
+    wire0 = &Wire1;    // Primary I2C bus
+    wire1 = &Wire;   // Secondary I2C bus
 }
 
 I2CManager::~I2CManager() {

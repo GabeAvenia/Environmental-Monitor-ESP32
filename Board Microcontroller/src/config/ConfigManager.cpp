@@ -3,12 +3,44 @@
 #include "../Constants.h"
 
 // Constructor
-ConfigManager::ConfigManager(ErrorHandler* err) : errorHandler(err) {
+ConfigManager::ConfigManager(ErrorHandler* err) : errorHandler(err), notifyingCallbacks(false) {
 }
 
 // Initialize the configuration manager
 bool ConfigManager::begin() {
     return loadConfigFromFile();
+}
+
+void ConfigManager::disableNotifications(bool disable) {
+    notifyingCallbacks = disable;
+}
+
+// Register a callback for configuration changes
+void ConfigManager::registerChangeCallback(ConfigChangeCallback callback) {
+    if (callback) {
+        changeCallbacks.push_back(callback);
+        Serial.println("DEBUG: Registered config change callback, total callbacks: " + String(changeCallbacks.size()));
+    }
+}
+
+// Notify all registered callbacks about a configuration change
+void ConfigManager::notifyConfigChanged(const String& newConfig) {
+    // Prevent recursive notifications
+    if (notifyingCallbacks) {
+        errorHandler->logWarning("Preventing recursive notification of config changes");
+        return;
+    }
+    
+    notifyingCallbacks = true;
+    
+    Serial.println("DEBUG: Notifying " + String(changeCallbacks.size()) + " callbacks about config change");
+    for (auto callback : changeCallbacks) {
+        Serial.println("DEBUG: Calling a callback...");
+        callback(newConfig);
+    }
+    
+    notifyingCallbacks = false;
+    Serial.println("DEBUG: All callbacks notified");
 }
 
 // Load configuration from the JSON file
@@ -44,12 +76,19 @@ bool ConfigManager::loadConfigFromFile() {
     
     // Parse JSON
     JsonDocument doc;
+    
     DeserializationError error = deserializeJson(doc, configFile);
     configFile.close();
     
     if (error) {
         Serial.println("DEBUG: Failed to parse config: " + String(error.c_str()));
         errorHandler->logError(ERROR, "Failed to parse config: " + String(error.c_str()));
+        return false;
+    }
+    
+    // Check if deserialization exceeded memory limits
+    if (doc.overflowed()) {
+        errorHandler->logError(ERROR, "Config too large for available memory");
         return false;
     }
     
@@ -106,6 +145,14 @@ bool ConfigManager::loadConfigFromFile() {
                 Serial.println("DEBUG: Using default polling rate: 1000ms");
             }
             
+            // Read additional settings
+            if (!sensor["Additional"].isNull()) {
+                config.additional = sensor["Additional"].as<String>();
+                Serial.println("DEBUG: Additional settings: " + config.additional);
+            } else {
+                config.additional = ""; // Empty string for no additional settings
+            }
+            
             sensorConfigs.push_back(config);
             
             Serial.println("DEBUG: Added I2C sensor: " + config.name);
@@ -139,6 +186,14 @@ bool ConfigManager::loadConfigFromFile() {
                 Serial.println("DEBUG: Using default polling rate: 1000ms");
             }
             
+            // Read additional settings
+            if (!sensor["Additional"].isNull()) {
+                config.additional = sensor["Additional"].as<String>();
+                Serial.println("DEBUG: Additional settings: " + config.additional);
+            } else {
+                config.additional = ""; // Empty string for no additional settings
+            }
+            
             sensorConfigs.push_back(config);
             
             Serial.println("DEBUG: Added SPI sensor: " + config.name);
@@ -164,6 +219,7 @@ bool ConfigManager::createDefaultConfig() {
     i2cSensor["I2C Port"] = "I2C0";
     i2cSensor["Address (HEX)"] = 0x44;  // SHT41 default address
     i2cSensor["Polling Rate[1000 ms]"] = 1000;  // Default 1 second
+    i2cSensor["Additional"] = "";  // No additional settings by default
     
     // Add empty SPI sensors array
     doc["SPI Sensors"] = JsonArray();
@@ -286,6 +342,10 @@ bool ConfigManager::updateSensorConfigs(const std::vector<SensorConfig>& configs
             sensor["Sensor Type"] = config.type;
             sensor["SS Pin"] = config.address;
             sensor["Polling Rate[1000 ms]"] = config.pollingRate;
+            // Add the additional field
+            if (config.additional.length() > 0) {
+                sensor["Additional"] = config.additional;
+            }
         } else {
             JsonObject sensor = i2cSensors.add<JsonObject>();
             sensor["Sensor Name"] = config.name;
@@ -293,6 +353,10 @@ bool ConfigManager::updateSensorConfigs(const std::vector<SensorConfig>& configs
             sensor["I2C Port"] = I2CManager::portToString(config.i2cPort);
             sensor["Address (HEX)"] = config.address;
             sensor["Polling Rate[1000 ms]"] = config.pollingRate;
+            // Add the additional field
+            if (config.additional.length() > 0) {
+                sensor["Additional"] = config.additional;
+            }
         }
     }
     
@@ -312,10 +376,12 @@ bool ConfigManager::updateSensorConfigs(const std::vector<SensorConfig>& configs
     configFile.close();
     errorHandler->logInfo("Updated sensor configurations");
     
-    // Notify about the configuration change
-    String configJson;
-    serializeJson(doc, configJson);
-    notifyConfigChanged(configJson);
+    // Notify about the configuration change, but only if we're not already in a notification
+    if (!notifyingCallbacks) {
+        String configJson;
+        serializeJson(doc, configJson);
+        notifyConfigChanged(configJson);
+    }
     
     return true;
 }
@@ -344,13 +410,31 @@ bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
     errorHandler->logInfo("Received config update: " + jsonConfig);
     Serial.println("DEBUG: Updating config with: " + jsonConfig.substring(0, 50) + "...");
     
+    // First, ensure we have valid JSON by finding the opening brace
+    int jsonStart = jsonConfig.indexOf('{');
+    if (jsonStart < 0) {
+        errorHandler->logError(ERROR, "No JSON object found in config");
+        return false;
+    }
+    
+    // Extract clean JSON data
+    String cleanJson = jsonConfig.substring(jsonStart);
+    
     // Parse the JSON
     JsonDocument doc;
-    DeserializationError error = deserializeJson(doc, jsonConfig);
+    
+    DeserializationError error = deserializeJson(doc, cleanJson);
     
     if (error) {
         errorHandler->logError(ERROR, "Failed to parse JSON config: " + String(error.c_str()));
         Serial.println("DEBUG: JSON parse error: " + String(error.c_str()));
+        return false;
+    }
+    
+    // Check if deserialization exceeded memory limits
+    if (doc.overflowed()) {
+        errorHandler->logError(ERROR, "JSON document too large for available memory");
+        Serial.println("DEBUG: JSON document overflow");
         return false;
     }
     
@@ -439,22 +523,4 @@ bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
     }
     
     return success;
-}
-
-// Register a callback for configuration changes
-void ConfigManager::registerChangeCallback(ConfigChangeCallback callback) {
-    if (callback) {
-        changeCallbacks.push_back(callback);
-        Serial.println("DEBUG: Registered config change callback, total callbacks: " + String(changeCallbacks.size()));
-    }
-}
-
-// Notify all registered callbacks about a configuration change
-void ConfigManager::notifyConfigChanged(const String& newConfig) {
-    Serial.println("DEBUG: Notifying " + String(changeCallbacks.size()) + " callbacks about config change");
-    for (auto callback : changeCallbacks) {
-        Serial.println("DEBUG: Calling a callback...");
-        callback(newConfig);
-    }
-    Serial.println("DEBUG: All callbacks notified");
 }

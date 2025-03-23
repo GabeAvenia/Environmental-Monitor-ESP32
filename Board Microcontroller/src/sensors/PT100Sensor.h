@@ -18,14 +18,14 @@
  */
 class PT100Sensor : public BaseSensor, 
                     public ITemperatureSensor {
-                        private:
-                        mutable Adafruit_MAX31865 max31865;   ///< Underlying Adafruit driver
-                        SPIManager* spiManager;               ///< SPI manager for communication
-                        int ssPin;                            ///< SPI slave select pin
-                        float rRef;                           ///< Reference resistor value (430.0 ohms by default)
-                        int numWires;                         ///< Number of wires (2, 3, or 4)
-                        mutable float lastTemperature;        ///< Last temperature reading
-                        mutable unsigned long tempTimestamp;  ///< Timestamp of last temperature reading
+private:
+    mutable Adafruit_MAX31865 max31865;   ///< Underlying Adafruit driver
+    SPIManager* spiManager;               ///< SPI manager for communication
+    int ssPin;                            ///< SPI slave select pin
+    float rRef;                           ///< Reference resistor value (430.0 ohms by default)
+    int numWires;                         ///< Number of wires (2, 3, or 4)
+    mutable float lastTemperature;        ///< Last temperature reading
+    mutable unsigned long tempTimestamp;  ///< Timestamp of last temperature reading
     
     /**
      * @brief Update temperature reading from the sensor.

@@ -156,7 +156,7 @@ void CommunicationManager::processIncomingData() {
         
         // Handle config update manually
         if (rawCommand.startsWith("SYST:CONF:UPDATE")) {
-            String jsonConfig = rawCommand.substring(15); // Length of "SYST:CONF:UPDATE "
+            String jsonConfig = rawCommand.substring(17); // Length of "SYST:CONF:UPDATE "
             jsonConfig.trim();
             
             errorHandler->logInfo("Processing config update: " + jsonConfig.substring(0, 50) + "...");

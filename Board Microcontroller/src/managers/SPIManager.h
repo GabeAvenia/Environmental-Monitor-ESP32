@@ -5,6 +5,12 @@
 #include <vector>
 #include "../error/ErrorHandler.h"
 
+// Define default SPI pins matching your working setup
+#define DEFAULT_SPI_MOSI_PIN 37
+#define DEFAULT_SPI_MISO_PIN 35
+#define DEFAULT_SPI_SCK_PIN 36
+#define DEFAULT_SPI_SS_PIN 18
+
 /**
  * @brief Class for managing SPI communications with sensors.
  */
@@ -43,7 +49,8 @@ public:
      * @param sck SCK pin number.
      * @return true if initialization succeeded, false otherwise.
      */
-    bool begin(int mosi = 37, int miso = 35, int sck = 36);
+    bool begin(int mosi = DEFAULT_SPI_MOSI_PIN, int miso = DEFAULT_SPI_MISO_PIN, 
+               int sck = DEFAULT_SPI_SCK_PIN);
     
     /**
      * @brief Check if the SPI manager is initialized.
@@ -108,4 +115,25 @@ public:
      * @return Reference to the SPI object.
      */
     SPIClass& getSPI();
+    
+    /**
+     * @brief Get the MOSI pin.
+     * 
+     * @return The MOSI pin number.
+     */
+    int getMosiPin() const { return mosiPin; }
+    
+    /**
+     * @brief Get the MISO pin.
+     * 
+     * @return The MISO pin number.
+     */
+    int getMisoPin() const { return misoPin; }
+    
+    /**
+     * @brief Get the SCK pin.
+     * 
+     * @return The SCK pin number.
+     */
+    int getSckPin() const { return sckPin; }
 };
