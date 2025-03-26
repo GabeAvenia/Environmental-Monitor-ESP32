@@ -6,6 +6,5 @@
 enum class InterfaceType {
     TEMPERATURE,
     HUMIDITY,
-    PRESSURE,
     CO2
 };

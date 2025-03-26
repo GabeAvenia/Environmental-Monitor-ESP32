@@ -363,11 +363,6 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
         values.push_back(humReading.valid ? String(humReading.value) : "NA");
     }
     
-    // For future expansion - placeholders
-    if (readPres && sensor->supportsInterface(InterfaceType::PRESSURE)) {
-        values.push_back("NA");
-    }
-    
     if (readCO2 && sensor->supportsInterface(InterfaceType::CO2)) {
         values.push_back("NA");
     }
@@ -379,10 +374,9 @@ bool CommunicationManager::handleListSensors(const std::vector<String>& params) 
     
     for (auto sensor : sensors) {
         String capabilities = "";
-        if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) capabilities += "T";
-        if (sensor->supportsInterface(InterfaceType::HUMIDITY)) capabilities += "H";
-        if (sensor->supportsInterface(InterfaceType::PRESSURE)) capabilities += "P";
-        if (sensor->supportsInterface(InterfaceType::CO2)) capabilities += "C";
+        if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) capabilities += "TEMP";
+        if (sensor->supportsInterface(InterfaceType::HUMIDITY)) capabilities += "HUM";
+        if (sensor->supportsInterface(InterfaceType::CO2)) capabilities += "C02";
         
         Serial.println(sensor->getName() + "," + 
                       sensor->getTypeString() + "," +
@@ -641,12 +635,7 @@ void CommunicationManager::handleStreaming() {
                 HumidityReading humReading = sensorManager->getHumidity(config.sensorName);
                 values.push_back(humReading.valid ? String(humReading.value) : "NA");
             }
-            
-            // Add pressure if requested and available
-            if (config.streamPressure && sensor->supportsInterface(InterfaceType::PRESSURE)) {
-                values.push_back("NA"); // Placeholder
-            }
-            
+
             // Add CO2 if requested and available
             if (config.streamCO2 && sensor->supportsInterface(InterfaceType::CO2)) {
                 values.push_back("NA"); // Placeholder
