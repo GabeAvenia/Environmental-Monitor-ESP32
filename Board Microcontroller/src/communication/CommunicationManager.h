@@ -111,10 +111,17 @@ private:
      */
     bool processCommand(const String& command, const std::vector<String>& params);
     
+    /**
+     * Collect readings from a sensor into a values vector
+     * @param sensorName - The name of the sensor to read from
+     * @param measurements - The measurements to read (comma-separated or empty for all)
+     * @param values - Vector to collect the values into
+     */
+    void collectSensorReadings(const String& sensorName, const String& measurements, std::vector<String>& values);
+    
     // Command handler methods
     bool handleIdentify(const std::vector<String>& params);
-    bool handleMeasureTemperature(const std::vector<String>& params);
-    bool handleMeasureHumidity(const std::vector<String>& params);
+    bool handleMeasureSingle(const std::vector<String>& params);
     bool handleListSensors(const std::vector<String>& params);
     bool handleGetConfig(const std::vector<String>& params);
     bool handleSetBoardId(const std::vector<String>& params);

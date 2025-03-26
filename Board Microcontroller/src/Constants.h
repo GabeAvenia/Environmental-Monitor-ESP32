@@ -17,8 +17,7 @@ namespace Constants {
     // SCPI command tokens
     namespace SCPI {
         static const char* IDN = "*IDN?";
-        static const char* MEASURE_TEMP = "MEAS:TEMP?";
-        static const char* MEASURE_HUM = "MEAS:HUM?";
+        static const char* MEASURE_SINGLE = "MEAS:SINGLE";
         static const char* LIST_SENSORS = "SYST:SENS:LIST?";
         static const char* GET_CONFIG = "SYST:CONF?";
         static const char* SET_BOARD_ID = "SYST:CONF:BOARD:ID";

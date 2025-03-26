@@ -34,11 +34,8 @@ void CommunicationManager::registerCommandHandlers() {
     commandHandlers[Constants::SCPI::IDN] = 
         [this](const std::vector<String>& params) { return handleIdentify(params); };
     
-    commandHandlers[Constants::SCPI::MEASURE_TEMP] = 
-        [this](const std::vector<String>& params) { return handleMeasureTemperature(params); };
-    
-    commandHandlers[Constants::SCPI::MEASURE_HUM] = 
-        [this](const std::vector<String>& params) { return handleMeasureHumidity(params); };
+    commandHandlers[Constants::SCPI::MEASURE_SINGLE] = 
+        [this](const std::vector<String>& params) { return handleMeasureSingle(params); };
     
     commandHandlers[Constants::SCPI::LIST_SENSORS] = 
         [this](const std::vector<String>& params) { return handleListSensors(params); };
@@ -94,26 +91,16 @@ void CommunicationManager::setupCommands() {
             CommunicationManager::getInstance()->handleIdentify(params);
         });
         
-    // MEAS:TEMP? command
-    scpiParser->RegisterCommand(F("MEAS:TEMP?"), 
+    // MEAS:SINGLE command
+    scpiParser->RegisterCommand(F("MEAS:SINGLE"), 
         [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
             std::vector<String> params;
             for (size_t i = 0; i < parameters.Size(); i++) {
                 params.push_back(String(parameters[i]));
             }
-            CommunicationManager::getInstance()->handleMeasureTemperature(params);
+            CommunicationManager::getInstance()->handleMeasureSingle(params);
         });
-        
-    // MEAS:HUM? command
-    scpiParser->RegisterCommand(F("MEAS:HUM?"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleMeasureHumidity(params);
-        });
-        
+
     // SYST:SENS:LIST? command
     scpiParser->RegisterCommand(F("SYST:SENS:LIST?"), 
         [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
@@ -298,29 +285,92 @@ bool CommunicationManager::handleIdentify(const std::vector<String>& params) {
     String response = String(Constants::PRODUCT_NAME) + "," + 
                       configManager->getBoardIdentifier() + "," +
                       String(Constants::FIRMWARE_VERSION);
-    errorHandler->logInfo("Sending IDN response: " + response);
     Serial.println(response);
     return true;
 }
 
-bool CommunicationManager::handleMeasureTemperature(const std::vector<String>& params) {
-    // Default to first sensor if none specified
-    String sensorName = params.size() > 0 ? params[0] : "I2C01";
+bool CommunicationManager::handleMeasureSingle(const std::vector<String>& params) {
+    std::vector<String> values;
     
-    TemperatureReading reading = sensorManager->getTemperature(sensorName);
-    errorHandler->logInfo("Sending temperature: " + String(reading.value) + " for sensor " + sensorName);
-    Serial.println(reading.valid ? String(reading.value) : "ERROR");
+    if (params.empty()) {
+        // No sensors specified, use all available
+        auto registry = sensorManager->getRegistry();
+        auto allSensors = registry.getAllSensors();
+        
+        for (auto sensor : allSensors) {
+            collectSensorReadings(sensor->getName(), "", values);
+        }
+    } else {
+        // Process each parameter
+        for (const auto& param : params) {
+            // Check if parameter contains a colon (sensor:measurements format)
+            int colonPos = param.indexOf(':');
+            if (colonPos > 0) {
+                String sensorName = param.substring(0, colonPos);
+                String measurements = param.substring(colonPos + 1);
+                
+                collectSensorReadings(sensorName, measurements, values);
+            } else {
+                // No measurements specified, default to all
+                collectSensorReadings(param, "", values);
+            }
+        }
+    }
+    
+    // Output a single CSV line with all collected values
+    if (!values.empty()) {
+        String csvLine = values[0];
+        for (size_t i = 1; i < values.size(); i++) {
+            csvLine += "," + values[i];
+        }
+        Serial.println(csvLine);
+    }
+    
     return true;
 }
 
-bool CommunicationManager::handleMeasureHumidity(const std::vector<String>& params) {
-    // Default to first sensor if none specified
-    String sensorName = params.size() > 0 ? params[0] : "I2C01";
+void CommunicationManager::collectSensorReadings(const String& sensorName, const String& measurements, std::vector<String>& values) {
+    ISensor* sensor = sensorManager->findSensor(sensorName);
+    if (!sensor) {
+        values.push_back("ERROR");
+        return;
+    }
     
-    HumidityReading reading = sensorManager->getHumidity(sensorName);
-    errorHandler->logInfo("Sending humidity: " + String(reading.value) + " for sensor " + sensorName);
-    Serial.println(reading.valid ? String(reading.value) : "ERROR");
-    return true;
+    if (!sensor->isConnected()) {
+        values.push_back("ERROR");
+        return;
+    }
+    
+    // Determine which measurements to take
+    bool useAllMeasurements = measurements.length() == 0;
+    String upperMeasurements = measurements;
+    upperMeasurements.toUpperCase();
+    
+    bool readTemp = useAllMeasurements || upperMeasurements.indexOf("TEMP") >= 0;
+    bool readHum = useAllMeasurements || upperMeasurements.indexOf("HUM") >= 0;
+    bool readPres = useAllMeasurements || upperMeasurements.indexOf("PRES") >= 0;
+    bool readCO2 = useAllMeasurements || upperMeasurements.indexOf("CO2") >= 0;
+    
+    // Read temperature if supported and requested
+    if (readTemp && sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
+        TemperatureReading tempReading = sensorManager->getTemperature(sensorName);
+        values.push_back(tempReading.valid ? String(tempReading.value) : "NA");
+    }
+    
+    // Read humidity if supported and requested
+    if (readHum && sensor->supportsInterface(InterfaceType::HUMIDITY)) {
+        HumidityReading humReading = sensorManager->getHumidity(sensorName);
+        values.push_back(humReading.valid ? String(humReading.value) : "NA");
+    }
+    
+    // For future expansion - placeholders
+    if (readPres && sensor->supportsInterface(InterfaceType::PRESSURE)) {
+        values.push_back("NA");
+    }
+    
+    if (readCO2 && sensor->supportsInterface(InterfaceType::CO2)) {
+        values.push_back("NA");
+    }
 }
 
 bool CommunicationManager::handleListSensors(const std::vector<String>& params) {
@@ -571,53 +621,45 @@ void CommunicationManager::handleStreaming() {
     if (currentTime - lastStreamTime >= streamInterval) {
         lastStreamTime = currentTime;
         
-        // Stream data for each sensor configuration
+        std::vector<String> values;
+        
+        // Collect data for each sensor configuration
         for (const auto& config : streamingConfigs) {
             ISensor* sensor = sensorManager->findSensor(config.sensorName);
             if (!sensor || !sensor->isConnected()) {
                 continue;
             }
             
-            // Build output for each measurement type
-            String output = config.sensorName;
-            bool hasData = false;
-            
             // Add temperature if requested and available
             if (config.streamTemperature && sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
                 TemperatureReading tempReading = sensorManager->getTemperature(config.sensorName);
-                output += ",TEMP," + (tempReading.valid ? String(tempReading.value) : "NA");
-                hasData = true;
+                values.push_back(tempReading.valid ? String(tempReading.value) : "NA");
             }
             
             // Add humidity if requested and available
             if (config.streamHumidity && sensor->supportsInterface(InterfaceType::HUMIDITY)) {
                 HumidityReading humReading = sensorManager->getHumidity(config.sensorName);
-                output += ",HUM," + (humReading.valid ? String(humReading.value) : "NA");
-                hasData = true;
+                values.push_back(humReading.valid ? String(humReading.value) : "NA");
             }
             
             // Add pressure if requested and available
             if (config.streamPressure && sensor->supportsInterface(InterfaceType::PRESSURE)) {
-                // Assuming we have a PressureReading class similar to the others
-                // PressureReading pressureReading = sensorManager->getPressure(config.sensorName);
-                // output += ",PRES," + (pressureReading.valid ? String(pressureReading.value) : "NA");
-                output += ",PRES,NA"; // Placeholder until pressure reading is implemented
-                hasData = true;
+                values.push_back("NA"); // Placeholder
             }
             
             // Add CO2 if requested and available
             if (config.streamCO2 && sensor->supportsInterface(InterfaceType::CO2)) {
-                // Assuming we have a CO2Reading class similar to the others
-                // CO2Reading co2Reading = sensorManager->getCO2(config.sensorName);
-                // output += ",CO2," + (co2Reading.valid ? String(co2Reading.value) : "NA");
-                output += ",CO2,NA"; // Placeholder until CO2 reading is implemented
-                hasData = true;
+                values.push_back("NA"); // Placeholder
             }
-            
-            // Only send output if we have at least one measurement
-            if (hasData) {
-                Serial.println(output);
+        }
+        
+        // Output a single CSV line with all collected values
+        if (!values.empty()) {
+            String csvLine = values[0];
+            for (size_t i = 1; i < values.size(); i++) {
+                csvLine += "," + values[i];
             }
+            Serial.println(csvLine);
         }
     }
 }
