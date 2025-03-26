@@ -379,14 +379,35 @@ bool CommunicationManager::handleUpdateConfig(const std::vector<String>& params)
 }
 
 bool CommunicationManager::handleStreamStart(const std::vector<String>& params) {
-    std::vector<String> sensorNames;
+    std::vector<StreamingConfig> configs;
     
-    // Each parameter is a sensor name
+    // Process each parameter
     for (const auto& param : params) {
-        sensorNames.push_back(param);
+        // Check if parameter contains a colon (sensor:measurements format)
+        int colonPos = param.indexOf(':');
+        if (colonPos > 0) {
+            String sensorName = param.substring(0, colonPos);
+            String measurements = param.substring(colonPos + 1);
+            
+            // Handle comma-separated measurement types
+            measurements.replace(',', ' '); // Convert commas to spaces for easier parsing
+            
+            configs.push_back(StreamingConfig(sensorName, measurements));
+            
+            if (verboseLogging) {
+                Serial.println("[INFO] Configuring " + sensorName + " to stream: " + measurements);
+            }
+        } else {
+            // No measurements specified, default to all
+            configs.push_back(StreamingConfig(param));
+            
+            if (verboseLogging) {
+                Serial.println("[INFO] Configuring " + param + " to stream all measurements");
+            }
+        }
     }
     
-    bool success = startStreaming(sensorNames);
+    bool success = startStreaming(configs);
     Serial.println(success ? "OK" : "ERROR");
     return success;
 }
@@ -459,39 +480,39 @@ bool CommunicationManager::isVerboseLogging() const {
 }
 
 // Streaming methods implementation
-bool CommunicationManager::startStreaming(const std::vector<String>& sensorNames) {
-    if (sensorNames.empty()) {
-        // If no sensors specified, use all available sensors
+bool CommunicationManager::startStreaming(const std::vector<StreamingConfig>& configs) {
+    if (configs.empty()) {
+        // If no configs specified, use all available sensors with all measurements
         auto registry = sensorManager->getRegistry();
         auto allSensors = registry.getAllSensors();
         
-        std::vector<String> allSensorNames;
+        std::vector<StreamingConfig> allConfigs;
         for (auto sensor : allSensors) {
-            allSensorNames.push_back(sensor->getName());
+            allConfigs.push_back(StreamingConfig(sensor->getName()));
         }
         
-        return startStreaming(allSensorNames);
+        return startStreaming(allConfigs);
     }
     
     // Validate all sensors exist and find the fastest polling rate
     bool allValid = true;
     uint32_t fastestRate = UINT32_MAX;
     
-    auto configs = configManager->getSensorConfigs();
+    auto sensorConfigs = configManager->getSensorConfigs();
     
-    for (const auto& name : sensorNames) {
-        if (!sensorManager->findSensor(name)) {
-            errorHandler->logInfo("Cannot start streaming: sensor not found: " + name);
+    for (const auto& config : configs) {
+        if (!sensorManager->findSensor(config.sensorName)) {
+            errorHandler->logInfo("Cannot start streaming: sensor not found: " + config.sensorName);
             allValid = false;
             continue;
         }
         
         // Find this sensor's config to get its polling rate
-        for (const auto& config : configs) {
-            if (config.name == name) {
+        for (const auto& sensorConfig : sensorConfigs) {
+            if (sensorConfig.name == config.sensorName) {
                 // Update fastest rate if this one is faster
-                if (config.pollingRate < fastestRate) {
-                    fastestRate = config.pollingRate;
+                if (sensorConfig.pollingRate < fastestRate) {
+                    fastestRate = sensorConfig.pollingRate;
                 }
                 break;
             }
@@ -508,16 +529,16 @@ bool CommunicationManager::startStreaming(const std::vector<String>& sensorNames
     }
     
     // Set streaming parameters
-    streamingSensors = sensorNames;
+    streamingConfigs = configs;
     streamInterval = fastestRate;
     lastStreamTime = 0; // Force immediate update
     isStreaming = true;
     
     if (verboseLogging) {
-        Serial.println("[INFO] Started streaming " + String(streamingSensors.size()) + 
+        Serial.println("[INFO] Started streaming " + String(streamingConfigs.size()) + 
                     " sensors at " + String(streamInterval) + "ms interval");
     }
-    errorHandler->logInfo("Started streaming " + String(streamingSensors.size()) + 
+    errorHandler->logInfo("Started streaming " + String(streamingConfigs.size()) + 
                        " sensors at " + String(streamInterval) + "ms interval");
     return true;
 }
@@ -525,7 +546,7 @@ bool CommunicationManager::startStreaming(const std::vector<String>& sensorNames
 void CommunicationManager::stopStreaming() {
     if (isStreaming) {
         isStreaming = false;
-        streamingSensors.clear();
+        streamingConfigs.clear();
         if (verboseLogging) {
             Serial.println("[INFO] Stopped streaming");
         }
@@ -550,35 +571,53 @@ void CommunicationManager::handleStreaming() {
     if (currentTime - lastStreamTime >= streamInterval) {
         lastStreamTime = currentTime;
         
-        // Stream data for each sensor
-        for (const auto& sensorName : streamingSensors) {
-            ISensor* sensor = sensorManager->findSensor(sensorName);
+        // Stream data for each sensor configuration
+        for (const auto& config : streamingConfigs) {
+            ISensor* sensor = sensorManager->findSensor(config.sensorName);
             if (!sensor || !sensor->isConnected()) {
                 continue;
             }
             
-            String output = sensorName + ",";
+            // Build output for each measurement type
+            String output = config.sensorName;
+            bool hasData = false;
             
-            // Add temperature if available
-            if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-                TemperatureReading tempReading = sensorManager->getTemperature(sensorName);
-                output += tempReading.valid ? String(tempReading.value) : "NA";
-            } else {
-                output += "NA";
+            // Add temperature if requested and available
+            if (config.streamTemperature && sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
+                TemperatureReading tempReading = sensorManager->getTemperature(config.sensorName);
+                output += ",TEMP," + (tempReading.valid ? String(tempReading.value) : "NA");
+                hasData = true;
             }
             
-            output += ",";
-            
-            // Add humidity if available
-            if (sensor->supportsInterface(InterfaceType::HUMIDITY)) {
-                HumidityReading humReading = sensorManager->getHumidity(sensorName);
-                output += humReading.valid ? String(humReading.value) : "NA";
-            } else {
-                output += "NA";
+            // Add humidity if requested and available
+            if (config.streamHumidity && sensor->supportsInterface(InterfaceType::HUMIDITY)) {
+                HumidityReading humReading = sensorManager->getHumidity(config.sensorName);
+                output += ",HUM," + (humReading.valid ? String(humReading.value) : "NA");
+                hasData = true;
             }
             
-            // Send data
-            Serial.println(output);
+            // Add pressure if requested and available
+            if (config.streamPressure && sensor->supportsInterface(InterfaceType::PRESSURE)) {
+                // Assuming we have a PressureReading class similar to the others
+                // PressureReading pressureReading = sensorManager->getPressure(config.sensorName);
+                // output += ",PRES," + (pressureReading.valid ? String(pressureReading.value) : "NA");
+                output += ",PRES,NA"; // Placeholder until pressure reading is implemented
+                hasData = true;
+            }
+            
+            // Add CO2 if requested and available
+            if (config.streamCO2 && sensor->supportsInterface(InterfaceType::CO2)) {
+                // Assuming we have a CO2Reading class similar to the others
+                // CO2Reading co2Reading = sensorManager->getCO2(config.sensorName);
+                // output += ",CO2," + (co2Reading.valid ? String(co2Reading.value) : "NA");
+                output += ",CO2,NA"; // Placeholder until CO2 reading is implemented
+                hasData = true;
+            }
+            
+            // Only send output if we have at least one measurement
+            if (hasData) {
+                Serial.println(output);
+            }
         }
     }
 }

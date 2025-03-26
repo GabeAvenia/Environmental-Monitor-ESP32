@@ -95,10 +95,10 @@ bool ConfigManager::loadConfigFromFile() {
     Serial.println("DEBUG: JSON parsed successfully");
     
     // Extract configuration - look for both old and new key names for backward compatibility
-    if (doc["Environmental Monitor ID"]) {
+    if (!doc["Environmental Monitor ID"].isNull()) {
         boardId = doc["Environmental Monitor ID"].as<String>();
         Serial.println("DEBUG: Using Environmental Monitor ID: " + boardId);
-    } else if (doc["Board ID"]) {
+    } else if (!doc["Board ID"].isNull()) {
         boardId = doc["Board ID"].as<String>();
         Serial.println("DEBUG: Using Board ID: " + boardId);
     } else {
@@ -270,7 +270,7 @@ bool ConfigManager::setBoardIdentifier(String identifier) {
     }
     
     // Check whether to use Environmental Monitor ID or Board ID
-    if (doc["Environmental Monitor ID"]) {
+    if (!doc["Environmental Monitor ID"].isNull()) {
         doc["Environmental Monitor ID"] = boardId;
     } else {
         // Update the board ID - use Board ID key
@@ -454,11 +454,11 @@ bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
 // Helper to standardize config fields (handle older formats)
 void ConfigManager::standardizeConfigFields(JsonDocument& doc) {
     // Check which ID field is used
-    if (doc.containsKey("Environmental Monitor ID")) {
+    if (!doc["Environmental Monitor ID"].isNull()) {
         // Convert to Board ID
         doc["Board ID"] = doc["Environmental Monitor ID"];
         doc.remove("Environmental Monitor ID");
-    } else if (!doc.containsKey("Board ID")) {
+    } else if (doc["Board ID"].isNull()) {
         // Add default ID if none exists
         doc["Board ID"] = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
     }

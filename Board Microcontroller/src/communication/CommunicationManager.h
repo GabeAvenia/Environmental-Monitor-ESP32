@@ -21,6 +21,53 @@ class Stream;
  */
 typedef std::function<bool(const std::vector<String>&)> CommandHandler;
 
+/**
+ * @brief Configuration for streaming a specific sensor's measurements
+ */
+struct StreamingConfig {
+    String sensorName;
+    bool streamTemperature;
+    bool streamHumidity;
+    bool streamPressure;
+    bool streamCO2;
+    
+    /**
+     * @brief Constructor with default to stream all measurements
+     * 
+     * @param name Sensor name
+     */
+    StreamingConfig(const String& name) : 
+        sensorName(name), 
+        streamTemperature(true),
+        streamHumidity(true), 
+        streamPressure(true),
+        streamCO2(true) {}
+    
+    /**
+     * @brief Constructor with specific measurements to stream
+     * 
+     * @param name Sensor name
+     * @param measurements String containing measurement codes (TEMP, HUM, PRES, CO2)
+     */
+    StreamingConfig(const String& name, const String& measurements) : 
+        sensorName(name), 
+        streamTemperature(false),
+        streamHumidity(false), 
+        streamPressure(false),
+        streamCO2(false) {
+        
+        // Convert to uppercase for case-insensitive comparison
+        String upperMeasurements = measurements;
+        upperMeasurements.toUpperCase();
+        
+        // Parse measurements string (e.g., "TEMP,HUM" for temperature and humidity)
+        if (upperMeasurements.indexOf("TEMP") >= 0) streamTemperature = true;
+        if (upperMeasurements.indexOf("HUM") >= 0) streamHumidity = true;
+        if (upperMeasurements.indexOf("PRES") >= 0) streamPressure = true;
+        if (upperMeasurements.indexOf("CO2") >= 0) streamCO2 = true;
+    }
+};
+
 class CommunicationManager {
 private:
     SCPI_Parser* scpiParser;
@@ -35,7 +82,7 @@ private:
     bool isStreaming;
     unsigned long lastStreamTime;
     unsigned long streamInterval;
-    std::vector<String> streamingSensors;
+    std::vector<StreamingConfig> streamingConfigs;
     
     // Verbose logging control
     bool verboseLogging;
@@ -55,8 +102,6 @@ private:
      * Register all commands with their handlers
      */
     void registerCommandHandlers();
-    
-    // No helper method needed for SCPI registration due to API limitations
     
     /**
      * Process a command using the registered handler
@@ -91,7 +136,7 @@ public:
     void processIncomingData();
     
     // Streaming methods
-    bool startStreaming(const std::vector<String>& sensorNames);
+    bool startStreaming(const std::vector<StreamingConfig>& configs);
     void stopStreaming();
     bool isCurrentlyStreaming() const;
     void handleStreaming();
