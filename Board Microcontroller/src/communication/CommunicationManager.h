@@ -84,8 +84,8 @@ private:
     unsigned long streamInterval;
     std::vector<StreamingConfig> streamingConfigs;
     
-    // Verbose logging control
-    bool verboseLogging;
+    // Static reference to UART debug serial
+    static Print* uartDebugSerial;
     
     // Singleton instance for callback access
     static CommunicationManager* instance;
@@ -129,10 +129,18 @@ private:
     bool handleStreamStart(const std::vector<String>& params);
     bool handleStreamStop(const std::vector<String>& params);
     bool handleStreamStatus(const std::vector<String>& params);
-    bool handleVerboseLog(const std::vector<String>& params);
     bool handleTestFilesystem(const std::vector<String>& params);
     bool handleTestUpdateConfig(const std::vector<String>& params);
     bool handleEcho(const std::vector<String>& params);
+    
+    // Message routing command handlers
+    bool handleMessageRoutingStatus(const std::vector<String>& params);
+    bool handleMessageRoutingSet(const std::vector<String>& params);
+    bool handleSetMessageRoute(const std::vector<String>& params, const String& severity);
+    bool handleInfoRoute(const std::vector<String>& params);
+    bool handleWarningRoute(const std::vector<String>& params);
+    bool handleErrorRoute(const std::vector<String>& params);
+    bool handleCriticalRoute(const std::vector<String>& params);
     
 public:
     CommunicationManager(SensorManager* sensorMgr, ConfigManager* configMgr, ErrorHandler* err);
@@ -148,13 +156,15 @@ public:
     bool isCurrentlyStreaming() const;
     void handleStreaming();
     
-    // Logging control
-    void setVerboseLogging(bool enable);
-    bool isVerboseLogging() const;
-    
     // Getter methods for use in callbacks
     static CommunicationManager* getInstance();
     SensorManager* getSensorManager();
     ConfigManager* getConfigManager();
     ErrorHandler* getErrorHandler();
+    
+    /**
+     * @brief Set the UART debug serial pointer for message routing
+     * @param debugSerial Pointer to the debug serial
+     */
+    static void setUartDebugSerialPtr(Print* debugSerial);
 };

@@ -8,6 +8,12 @@
 #include "managers/SensorManager.h"
 #include "communication/CommunicationManager.h"
 
+// Define UART pins for debug output
+#define UART_TX_PIN 14  // GPIO14
+#define UART_RX_PIN 15  // GPIO15
+
+// Forward declaration for setting the debug serial in the CommunicationManager
+void setUartDebugSerial(Print* debugSerial);
 
 // Global components
 ErrorHandler* errorHandler = nullptr;
@@ -16,7 +22,11 @@ I2CManager* i2cManager = nullptr;
 SPIManager* spiManager = nullptr;
 SensorManager* sensorManager = nullptr;
 CommunicationManager* commManager = nullptr;
+HardwareSerial* debugSerial = nullptr;
 
+// Global references to serial ports
+Print* usbSerial = nullptr;
+Print* uartDebugSerial = nullptr;
 
 // Configuration change callback
 void onConfigChanged(const String& newConfig) {
@@ -26,21 +36,49 @@ void onConfigChanged(const String& newConfig) {
     }
 }
 
+// Helper function to pass debug serial to communication manager
+void setUartDebugSerial(Print* debugSerial) {
+    if (commManager) {
+        CommunicationManager::setUartDebugSerialPtr(debugSerial);
+    }
+}
+
 void setup() {
+    // Initialize USB Serial for command interface
     Serial.begin(115200);
     delay(50); // Give serial time to initialize
     Serial.setRxBufferSize(2048); // Increase buffer to handle larger commands
+    usbSerial = &Serial;
     
+    // Initialize UART for debug messages
+    debugSerial = &Serial2;
+    debugSerial->begin(115200, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
+    delay(50); // Give serial time to initialize
+    uartDebugSerial = debugSerial;
+
     // Initialize LittleFS with the specific configuration
     if (!LittleFS.begin(true, "/litlefs", 10, "ffat")) {
         Serial.println("LittleFS mount failed! System halted.");
+        if (debugSerial) {
+            debugSerial->println("LittleFS mount failed! System halted.");
+        }
         while (1) delay(1000);
     }
     
-    Serial.println("Starting " + String(Constants::PRODUCT_NAME) + " v" + String(Constants::FIRMWARE_VERSION));
+    // Welcome message on both interfaces
+    if (usbSerial) {
+        usbSerial->println("Starting " + String(Constants::PRODUCT_NAME) + " v" + String(Constants::FIRMWARE_VERSION));
+    }
+    if (uartDebugSerial) {
+        uartDebugSerial->println("Debug UART initialized");
+        uartDebugSerial->println("Starting " + String(Constants::PRODUCT_NAME) + " v" + String(Constants::FIRMWARE_VERSION));
+    }
+    
+    // Initialize error handler with both output streams
+    errorHandler = new ErrorHandler(usbSerial, uartDebugSerial);
+    errorHandler->logInfo("Error handler initialized with custom routing");
     
     // Initialize components
-    errorHandler = new ErrorHandler(&Serial);
     configManager = new ConfigManager(errorHandler);
     i2cManager = new I2CManager(errorHandler);
     spiManager = new SPIManager(errorHandler);
@@ -73,10 +111,20 @@ void setup() {
     // Setup communication
     commManager = new CommunicationManager(sensorManager, configManager, errorHandler);
     commManager->begin(115200);
+    
+    // Pass the UART debug serial to the CommManager
+    setUartDebugSerial(uartDebugSerial);
+    
     commManager->setupCommands();
     
     errorHandler->logInfo("System initialization complete");
-    Serial.println("System ready. Environmental Monitor ID: " + configManager->getBoardIdentifier());
+    
+    if (usbSerial) {
+        usbSerial->println("System ready. Environmental Monitor ID: " + configManager->getBoardIdentifier());
+    }
+    if (uartDebugSerial) {
+        uartDebugSerial->println("Debug serial ready. Environmental Monitor ID: " + configManager->getBoardIdentifier());
+    }
 }
 
 void loop() {

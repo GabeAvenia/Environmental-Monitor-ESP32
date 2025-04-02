@@ -1,7 +1,6 @@
 #pragma once
 
 namespace Constants {
-    // Alternative approach for constants that works in C++14
     // Product identification
     static const char* PRODUCT_NAME = "GPower Environmental Monitor";
     static const char* FIRMWARE_VERSION = "1.0.0";
@@ -16,16 +15,29 @@ namespace Constants {
     
     // SCPI command tokens
     namespace SCPI {
+        // System identification
         static const char* IDN = "*IDN?";
+        
+        // Measurement commands
         static const char* MEASURE_SINGLE = "MEAS:SINGLE";
+        
+        // System commands
         static const char* LIST_SENSORS = "SYST:SENS:LIST?";
         static const char* GET_CONFIG = "SYST:CONF?";
         static const char* SET_BOARD_ID = "SYST:CONF:BOARD:ID";
+        static const char* UPDATE_CONFIG = "SYST:CONF:UPDATE";
+        
+        // Streaming commands
         static const char* STREAM_START = "STREAM:START";
         static const char* STREAM_STOP = "STREAM:STOP";
         static const char* STREAM_STATUS = "STREAM:STATUS?";
-
-        static const char* VERBOSE_LOG = "SYST:LOG:VERB";
-        static const char* UPDATE_CONFIG = "SYST:CONF:UPDATE";
+        
+        // Message routing commands
+        static const char* MSG_ROUTE_STATUS = "SYST:LOG:ROUTE?";
+        static const char* MSG_ROUTE_SET = "SYST:LOG:ROUTE";
+        static const char* MSG_ROUTE_INFO = "SYST:LOG:INFO:ROUTE";
+        static const char* MSG_ROUTE_WARNING = "SYST:LOG:WARN:ROUTE";
+        static const char* MSG_ROUTE_ERROR = "SYST:LOG:ERR:ROUTE";
+        static const char* MSG_ROUTE_CRITICAL = "SYST:LOG:CRIT:ROUTE";
     }
 }

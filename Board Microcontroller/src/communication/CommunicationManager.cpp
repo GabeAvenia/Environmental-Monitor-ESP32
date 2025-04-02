@@ -7,6 +7,8 @@
 
 // Initialize the singleton instance
 CommunicationManager* CommunicationManager::instance = nullptr;
+// Initialize the UART debug serial
+Print* CommunicationManager::uartDebugSerial = nullptr;
 
 CommunicationManager::CommunicationManager(SensorManager* sensorMgr, ConfigManager* configMgr, ErrorHandler* err) :
     sensorManager(sensorMgr),
@@ -14,8 +16,7 @@ CommunicationManager::CommunicationManager(SensorManager* sensorMgr, ConfigManag
     errorHandler(err),
     isStreaming(false),
     lastStreamTime(0),
-    streamInterval(1000),
-    verboseLogging(false) {
+    streamInterval(1000) {
     instance = this;
     scpiParser = new SCPI_Parser();
 }
@@ -27,6 +28,10 @@ CommunicationManager::~CommunicationManager() {
 void CommunicationManager::begin(long baudRate) {
     errorHandler->logInfo("Communication manager initialized");
     registerCommandHandlers();
+}
+
+void CommunicationManager::setUartDebugSerialPtr(Print* debugSerial) {
+    uartDebugSerial = debugSerial;
 }
 
 void CommunicationManager::registerCommandHandlers() {
@@ -58,9 +63,6 @@ void CommunicationManager::registerCommandHandlers() {
     commandHandlers[Constants::SCPI::STREAM_STATUS] = 
         [this](const std::vector<String>& params) { return handleStreamStatus(params); };
     
-    commandHandlers[Constants::SCPI::VERBOSE_LOG] = 
-        [this](const std::vector<String>& params) { return handleVerboseLog(params); };
-    
     // Testing commands
     commandHandlers["TEST:FS"] = 
         [this](const std::vector<String>& params) { return handleTestFilesystem(params); };
@@ -76,6 +78,25 @@ void CommunicationManager::registerCommandHandlers() {
         
     commandHandlers["ECHO"] = 
         [this](const std::vector<String>& params) { return handleEcho(params); };
+        
+    // Message routing commands
+    commandHandlers[Constants::SCPI::MSG_ROUTE_STATUS] = 
+        [this](const std::vector<String>& params) { return handleMessageRoutingStatus(params); };
+
+    commandHandlers[Constants::SCPI::MSG_ROUTE_SET] = 
+        [this](const std::vector<String>& params) { return handleMessageRoutingSet(params); };
+
+    commandHandlers[Constants::SCPI::MSG_ROUTE_INFO] = 
+        [this](const std::vector<String>& params) { return handleInfoRoute(params); };
+
+    commandHandlers[Constants::SCPI::MSG_ROUTE_WARNING] = 
+        [this](const std::vector<String>& params) { return handleWarningRoute(params); };
+
+    commandHandlers[Constants::SCPI::MSG_ROUTE_ERROR] = 
+        [this](const std::vector<String>& params) { return handleErrorRoute(params); };
+
+    commandHandlers[Constants::SCPI::MSG_ROUTE_CRITICAL] = 
+        [this](const std::vector<String>& params) { return handleCriticalRoute(params); };
 }
 
 void CommunicationManager::setupCommands() {
@@ -165,38 +186,56 @@ void CommunicationManager::setupCommands() {
             CommunicationManager::getInstance()->handleStreamStatus(params);
         });
         
-    // SYST:LOG:VERB command
-    scpiParser->RegisterCommand(F("SYST:LOG:VERB"), 
+    // Message routing commands
+    scpiParser->RegisterCommand(F("SYST:LOG:ROUTE?"), 
+        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
+            std::vector<String> params;
+            CommunicationManager::getInstance()->handleMessageRoutingStatus(params);
+        });
+
+    scpiParser->RegisterCommand(F("SYST:LOG:ROUTE"), 
         [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
             std::vector<String> params;
             for (size_t i = 0; i < parameters.Size(); i++) {
                 params.push_back(String(parameters[i]));
             }
-            CommunicationManager::getInstance()->handleVerboseLog(params);
+            CommunicationManager::getInstance()->handleMessageRoutingSet(params);
         });
-        
-    // TEST:FS command
-    scpiParser->RegisterCommand(F("TEST:FS"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            CommunicationManager::getInstance()->handleTestFilesystem(params);
-        });
-        
-    // TEST:UPDATE command
-    scpiParser->RegisterCommand(F("TEST:UPDATE"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            CommunicationManager::getInstance()->handleTestUpdateConfig(params);
-        });
-        
-    // ECHO command
-    scpiParser->RegisterCommand(F("ECHO"), 
+
+    scpiParser->RegisterCommand(F("SYST:LOG:INFO:ROUTE"), 
         [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
             std::vector<String> params;
             for (size_t i = 0; i < parameters.Size(); i++) {
                 params.push_back(String(parameters[i]));
             }
-            CommunicationManager::getInstance()->handleEcho(params);
+            CommunicationManager::getInstance()->handleInfoRoute(params);
+        });
+
+    scpiParser->RegisterCommand(F("SYST:LOG:WARN:ROUTE"), 
+        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
+            std::vector<String> params;
+            for (size_t i = 0; i < parameters.Size(); i++) {
+                params.push_back(String(parameters[i]));
+            }
+            CommunicationManager::getInstance()->handleWarningRoute(params);
+        });
+
+    scpiParser->RegisterCommand(F("SYST:LOG:ERR:ROUTE"), 
+        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
+            std::vector<String> params;
+            for (size_t i = 0; i < parameters.Size(); i++) {
+                params.push_back(String(parameters[i]));
+            }
+            CommunicationManager::getInstance()->handleErrorRoute(params);
+        });
+
+    scpiParser->RegisterCommand(F("SYST:LOG:CRIT:ROUTE"), 
+        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
+            std::vector<String> params;
+            for (size_t i = 0; i < parameters.Size(); i++) {
+                params.push_back(String(parameters[i]));
+            }
+            CommunicationManager::getInstance()->handleCriticalRoute(params);
         });
     
     errorHandler->logInfo("SCPI commands registered");
@@ -254,13 +293,8 @@ void CommunicationManager::processIncomingData() {
         String rawCommand = Serial.readStringUntil('\n');
         rawCommand.trim();
         
-        // Always log the received command
-        errorHandler->logInfo("Received raw command: '" + rawCommand + "'");
-        
-        // Echo command if verbose logging is enabled
-        if (verboseLogging) {
-            Serial.println("ECHO: " + rawCommand);
-        }
+        // Log the received command
+        errorHandler->logInfo("Received command: '" + rawCommand + "'");
         
         // Parse and process command
         String command;
@@ -399,7 +433,9 @@ bool CommunicationManager::handleSetBoardId(const std::vector<String>& params) {
     }
     
     bool success = configManager->setBoardIdentifier(params[0]);
-    Serial.println(success ? "OK" : "ERROR");
+    if (!success) {
+        Serial.println("ERROR: Failed to set board ID");
+    }
     return success;
 }
 
@@ -418,7 +454,9 @@ bool CommunicationManager::handleUpdateConfig(const std::vector<String>& params)
     
     errorHandler->logInfo("Processing config update: " + jsonConfig.substring(0, 50) + "...");
     bool success = configManager->updateConfigFromJson(jsonConfig);
-    Serial.println(success ? "OK" : "ERROR");
+    if (!success) {
+        Serial.println("ERROR: Failed to update configuration");
+    }
     return success;
 }
 
@@ -438,45 +476,29 @@ bool CommunicationManager::handleStreamStart(const std::vector<String>& params) 
             
             configs.push_back(StreamingConfig(sensorName, measurements));
             
-            if (verboseLogging) {
-                Serial.println("[INFO] Configuring " + sensorName + " to stream: " + measurements);
-            }
+            errorHandler->logInfo("Configuring " + sensorName + " to stream: " + measurements);
         } else {
             // No measurements specified, default to all
             configs.push_back(StreamingConfig(param));
             
-            if (verboseLogging) {
-                Serial.println("[INFO] Configuring " + param + " to stream all measurements");
-            }
+            errorHandler->logInfo("Configuring " + param + " to stream all measurements");
         }
     }
     
     bool success = startStreaming(configs);
-    Serial.println(success ? "OK" : "ERROR");
+    if (!success) {
+        Serial.println("ERROR: Failed to start streaming");
+    }
     return success;
 }
 
 bool CommunicationManager::handleStreamStop(const std::vector<String>& params) {
     stopStreaming();
-    Serial.println("OK");
     return true;
 }
 
 bool CommunicationManager::handleStreamStatus(const std::vector<String>& params) {
     Serial.println(isStreaming ? "RUNNING" : "STOPPED");
-    return true;
-}
-
-bool CommunicationManager::handleVerboseLog(const std::vector<String>& params) {
-    bool enableVerbose = false;
-    
-    if (!params.empty()) {
-        String param = params[0];
-        enableVerbose = (param == "ON" || param == "1");
-    }
-    
-    setVerboseLogging(enableVerbose);
-    Serial.println("OK");
     return true;
 }
 
@@ -498,6 +520,96 @@ bool CommunicationManager::handleEcho(const std::vector<String>& params) {
     return true;
 }
 
+// Message routing command handlers
+bool CommunicationManager::handleMessageRoutingStatus(const std::vector<String>& params) {
+    String status = errorHandler->getRoutingStatus();
+    Serial.println(status);
+    return true;
+}
+
+bool CommunicationManager::handleMessageRoutingSet(const std::vector<String>& params) {
+    if (params.empty()) {
+        Serial.println("ERROR: No routing option specified");
+        return false;
+    }
+    
+    String option = params[0];
+    option.toUpperCase();
+    
+    if (option == "ON" || option == "ENABLE" || option == "1") {
+        errorHandler->enableCustomRouting(true);
+        errorHandler->logInfo("Custom message routing enabled");
+    } else if (option == "OFF" || option == "DISABLE" || option == "0") {
+        errorHandler->enableCustomRouting(false);
+        errorHandler->logInfo("Custom message routing disabled");
+    } else {
+        Serial.println("ERROR: Invalid option. Use ON/OFF, ENABLE/DISABLE, or 1/0");
+        return false;
+    }
+    
+    return true;
+}
+
+bool CommunicationManager::handleSetMessageRoute(const std::vector<String>& params, const String& severity) {
+    if (params.empty()) {
+        Serial.println("ERROR: No routing destination specified");
+        return false;
+    }
+    
+    String destination = params[0];
+    destination.toUpperCase();
+    
+    Print* targetStream = nullptr;
+    
+    // Determine the target stream based on the destination
+    if (destination == "USB" || destination == "SERIAL") {
+        targetStream = &Serial;
+    } else if (destination == "UART" || destination == "DEBUG") {
+        targetStream = uartDebugSerial;
+    } else if (destination == "NONE" || destination == "OFF") {
+        targetStream = nullptr;
+    } else if (destination == "BOTH") {
+        Serial.println("ERROR: 'BOTH' option not supported yet");
+        return false;
+    } else {
+        Serial.println("ERROR: Invalid destination. Use USB, UART, NONE, or BOTH");
+        return false;
+    }
+    
+    // Set the routing based on severity
+    if (severity.equalsIgnoreCase("INFO")) {
+        errorHandler->setInfoOutput(targetStream);
+    } else if (severity.equalsIgnoreCase("WARNING")) {
+        errorHandler->setWarningOutput(targetStream);
+    } else if (severity.equalsIgnoreCase("ERROR")) {
+        errorHandler->setErrorOutput(targetStream);
+    } else if (severity.equalsIgnoreCase("CRITICAL")) {
+        errorHandler->setCriticalOutput(targetStream);
+    } else {
+        Serial.println("ERROR: Invalid severity level");
+        return false;
+    }
+    
+    errorHandler->logInfo(severity + " messages routed to " + destination);
+    return true;
+}
+
+bool CommunicationManager::handleInfoRoute(const std::vector<String>& params) {
+    return handleSetMessageRoute(params, "INFO");
+}
+
+bool CommunicationManager::handleWarningRoute(const std::vector<String>& params) {
+    return handleSetMessageRoute(params, "WARNING");
+}
+
+bool CommunicationManager::handleErrorRoute(const std::vector<String>& params) {
+    return handleSetMessageRoute(params, "ERROR");
+}
+
+bool CommunicationManager::handleCriticalRoute(const std::vector<String>& params) {
+    return handleSetMessageRoute(params, "CRITICAL");
+}
+
 CommunicationManager* CommunicationManager::getInstance() {
     return instance;
 }
@@ -512,15 +624,6 @@ ConfigManager* CommunicationManager::getConfigManager() {
 
 ErrorHandler* CommunicationManager::getErrorHandler() {
     return errorHandler;
-}
-
-void CommunicationManager::setVerboseLogging(bool enable) {
-    verboseLogging = enable;
-    errorHandler->logInfo(enable ? "Verbose logging enabled" : "Verbose logging disabled");
-}
-
-bool CommunicationManager::isVerboseLogging() const {
-    return verboseLogging;
 }
 
 // Streaming methods implementation
@@ -578,10 +681,6 @@ bool CommunicationManager::startStreaming(const std::vector<StreamingConfig>& co
     lastStreamTime = 0; // Force immediate update
     isStreaming = true;
     
-    if (verboseLogging) {
-        Serial.println("[INFO] Started streaming " + String(streamingConfigs.size()) + 
-                    " sensors at " + String(streamInterval) + "ms interval");
-    }
     errorHandler->logInfo("Started streaming " + String(streamingConfigs.size()) + 
                        " sensors at " + String(streamInterval) + "ms interval");
     return true;
@@ -591,9 +690,6 @@ void CommunicationManager::stopStreaming() {
     if (isStreaming) {
         isStreaming = false;
         streamingConfigs.clear();
-        if (verboseLogging) {
-            Serial.println("[INFO] Stopped streaming");
-        }
         errorHandler->logInfo("Stopped streaming");
     }
 }
