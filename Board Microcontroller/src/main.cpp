@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include <LittleFS.h>
+#include <esp_task_wdt.h>
+#include <esp_system.h>
 #include "Constants.h"
 #include "error/ErrorHandler.h"
 #include "config/ConfigManager.h"
@@ -9,8 +11,16 @@
 #include "communication/CommunicationManager.h"
 
 // Define UART pins for debug output
-#define UART_TX_PIN 14  // GPIO14
-#define UART_RX_PIN 15  // GPIO15
+#define UART_TX_PIN 5   // GPIO 5
+#define UART_RX_PIN 16  // GPIO 16
+
+// Watchdog configuration - disabled by default
+// We'll use a much longer timeout as the hardware watchdog was causing issues
+#define WATCHDOG_TIMEOUT_SECONDS 30  // Increased to 30 seconds
+#define WATCHDOG_ENABLED false       // Disable the watchdog by default
+
+unsigned long lastWatchdogFeed = 0;
+bool watchdogEnabled = false;
 
 // Forward declaration for setting the debug serial in the CommunicationManager
 void setUartDebugSerial(Print* debugSerial);
@@ -27,6 +37,30 @@ HardwareSerial* debugSerial = nullptr;
 // Global references to serial ports
 Print* usbSerial = nullptr;
 Print* uartDebugSerial = nullptr;
+
+// Watchdog functions
+void enableWatchdog() {
+    if (WATCHDOG_ENABLED) {
+        esp_task_wdt_init(WATCHDOG_TIMEOUT_SECONDS, true); // true = panic on timeout
+        esp_task_wdt_add(NULL); // Add current task to WDT
+        watchdogEnabled = true;
+        if (errorHandler) {
+            errorHandler->logInfo("Hardware watchdog enabled with timeout: " + String(WATCHDOG_TIMEOUT_SECONDS) + "s");
+        }
+    } else {
+        watchdogEnabled = false;
+        if (errorHandler) {
+            errorHandler->logInfo("Hardware watchdog disabled");
+        }
+    }
+}
+
+void feedWatchdog() {
+    if (watchdogEnabled) {
+        esp_task_wdt_reset();
+        lastWatchdogFeed = millis();
+    }
+}
 
 // Configuration change callback
 void onConfigChanged(const String& newConfig) {
@@ -55,6 +89,12 @@ void setup() {
     debugSerial->begin(115200, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
     delay(50); // Give serial time to initialize
     uartDebugSerial = debugSerial;
+    
+    // Initialize hardware watchdog
+    enableWatchdog();
+    
+    // Feed watchdog to indicate we're alive
+    feedWatchdog();
 
     // Initialize LittleFS with the specific configuration
     if (!LittleFS.begin(true, "/litlefs", 10, "ffat")) {
@@ -62,8 +102,14 @@ void setup() {
         if (debugSerial) {
             debugSerial->println("LittleFS mount failed! System halted.");
         }
-        while (1) delay(1000);
+        while (1) { 
+            delay(1000);
+            feedWatchdog(); // Keep feeding watchdog even in error state
+        }
     }
+    
+    // Feed watchdog after filesystem initialization
+    feedWatchdog();
     
     // Welcome message on both interfaces
     if (usbSerial) {
@@ -78,14 +124,23 @@ void setup() {
     errorHandler = new ErrorHandler(usbSerial, uartDebugSerial);
     errorHandler->logInfo("Error handler initialized with custom routing");
     
+    // Feed watchdog after error handler initialization
+    feedWatchdog();
+    
     // Initialize components
     configManager = new ConfigManager(errorHandler);
     i2cManager = new I2CManager(errorHandler);
     spiManager = new SPIManager(errorHandler);
     
+    // Feed watchdog after manager initialization
+    feedWatchdog();
+    
     if (!configManager->begin()) {
         errorHandler->logCritical("Failed to initialize configuration. System halted.");
-        while (1) delay(1000);
+        while (1) {
+            delay(1000);
+            feedWatchdog(); // Keep feeding watchdog even in error state
+        }
     }
     
     // Register for configuration changes
@@ -100,6 +155,9 @@ void setup() {
         errorHandler->logInfo("Registered logical SS pins 0-3");
     }
     
+    // Feed watchdog after SPI initialization
+    feedWatchdog();
+    
     // Create sensor manager with both I2C and SPI support
     sensorManager = new SensorManager(configManager, i2cManager, errorHandler, spiManager);
     
@@ -107,6 +165,9 @@ void setup() {
     if (!sensorManager->initializeSensors()) {
         errorHandler->logWarning("Some sensors failed to initialize");
     }
+    
+    // Feed watchdog after sensor initialization
+    feedWatchdog();
     
     // Setup communication
     commManager = new CommunicationManager(sensorManager, configManager, errorHandler);
@@ -116,6 +177,9 @@ void setup() {
     setUartDebugSerial(uartDebugSerial);
     
     commManager->setupCommands();
+    
+    // Final watchdog feed after full initialization
+    feedWatchdog();
     
     errorHandler->logInfo("System initialization complete");
     
@@ -128,12 +192,22 @@ void setup() {
 }
 
 void loop() {
-    // Process incoming commands
-    commManager->processIncomingData();
+    // Feed watchdog if enabled
+    feedWatchdog();
+    
+    // Process commands if available
+    if (Serial && Serial.available() > 0) {
+        commManager->processCommandLine();
+    }
     
     // Update sensor readings based on individual polling rates
     sensorManager->updateReadings();
     
+    // Handle streaming if active
+    if (commManager->isCurrentlyStreaming()) {
+        commManager->handleStreamingOnly();
+    }
+    
     // Small delay to prevent hogging the CPU
-    delay(10);
+    delay(5);
 }

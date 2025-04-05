@@ -84,6 +84,13 @@ private:
     unsigned long streamInterval;
     std::vector<StreamingConfig> streamingConfigs;
     
+    // Buffer management
+    int streamBufferFullRetries;  // Counter for buffer full conditions
+    const int MAX_BUFFER_FULL_RETRIES = 3;  // Max retries before stopping
+    
+    // Flag to prevent sending data after stopping streaming
+    bool justStoppedStreaming;
+    
     // Static reference to UART debug serial
     static Print* uartDebugSerial;
     
@@ -149,6 +156,16 @@ public:
     void begin(long baudRate);
     void setupCommands();
     void processIncomingData();
+    
+    /**
+     * @brief Process a single incoming command line
+     */
+    void processCommandLine();
+    
+    /**
+     * @brief Handle only streaming without processing commands
+     */
+    void handleStreamingOnly();
     
     // Streaming methods
     bool startStreaming(const std::vector<StreamingConfig>& configs);
