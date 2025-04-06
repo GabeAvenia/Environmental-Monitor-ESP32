@@ -358,10 +358,10 @@ bool SensorManager::updateSensorCache(const String& sensorName, bool forceUpdate
     unsigned long currentTime = millis();
     bool updated = false;
     
-    // Update temperature if supported and needed
+    // Update temperature if supported
     if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-        // Check if cache is stale or update is forced
-        if (forceUpdate || (currentTime - cache.tempTimestamp) > maxCacheAge || !cache.tempValid) {
+        // Simpler condition: update if forced or cache is expired
+        if (forceUpdate || (currentTime - cache.tempTimestamp) >= maxCacheAge) {
             ITemperatureSensor* tempSensor = 
                 static_cast<ITemperatureSensor*>(sensor->getInterface(InterfaceType::TEMPERATURE));
             
@@ -374,10 +374,10 @@ bool SensorManager::updateSensorCache(const String& sensorName, bool forceUpdate
         }
     }
     
-    // Update humidity if supported and needed
+    // Update humidity if supported
     if (sensor->supportsInterface(InterfaceType::HUMIDITY)) {
-        // Check if cache is stale or update is forced
-        if (forceUpdate || (currentTime - cache.humTimestamp) > maxCacheAge || !cache.humValid) {
+        // Simpler condition: update if forced or cache is expired
+        if (forceUpdate || (currentTime - cache.humTimestamp) >= maxCacheAge) {
             IHumiditySensor* humSensor = 
                 static_cast<IHumiditySensor*>(sensor->getInterface(InterfaceType::HUMIDITY));
             

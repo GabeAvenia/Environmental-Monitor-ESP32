@@ -44,8 +44,14 @@ void ConfigManager::notifyConfigChanged(const String& newConfig) {
 }
 
 // Load configuration from the JSON file
+// Complete rewrite of loadConfigFromFile function in ConfigManager.cpp
 bool ConfigManager::loadConfigFromFile() {
     errorHandler->logInfo("Loading config file");
+    
+    // Define polling rate constraints
+    const uint32_t DEFAULT_POLLING_RATE = 1000;   // Default: 1 second
+    const uint32_t MIN_POLLING_RATE = 50;         // Minimum: 50ms
+    const uint32_t MAX_POLLING_RATE = 300000;     // Maximum: 5 minutes (300 seconds)
     
     // Check if config file exists
     if (!LittleFS.exists(Constants::CONFIG_FILE_PATH)) {
@@ -66,7 +72,6 @@ bool ConfigManager::loadConfigFromFile() {
     
     String fileContent = configFile.readString();
     errorHandler->logInfo("Read " + String(fileContent.length()) + " bytes from config file");
-    errorHandler->logInfo("Content: " + fileContent.substring(0, 50) + "...");
     
     // Need to reopen the file since we've read it to the end
     configFile.close();
@@ -74,7 +79,6 @@ bool ConfigManager::loadConfigFromFile() {
     
     // Parse JSON
     JsonDocument doc;
-    
     DeserializationError error = deserializeJson(doc, configFile);
     configFile.close();
     
@@ -91,7 +95,7 @@ bool ConfigManager::loadConfigFromFile() {
     
     errorHandler->logInfo("JSON parsed successfully");
     
-    // Extract configuration - look for both old and new key names for backward compatibility
+    // Extract board identifier - handle both old and new key names for backward compatibility
     if (!doc["Environmental Monitor ID"].isNull()) {
         boardId = doc["Environmental Monitor ID"].as<String>();
         errorHandler->logInfo("Using Environmental Monitor ID: " + boardId);
@@ -133,13 +137,27 @@ bool ConfigManager::loadConfigFromFile() {
                 errorHandler->logInfo("Sensor defaulting to I2C0 (no port specified)");
             }
             
-            // Read polling rate with a default if not present
-            config.pollingRate = 1000; // Default 1 second
+            // Read and validate polling rate
             if (!sensor["Polling Rate[1000 ms]"].isNull()) {
-                config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
+                uint32_t rate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
+                // Apply validation rules
+                if (rate < MIN_POLLING_RATE) {
+                    errorHandler->logWarning("Polling rate too low for sensor " + config.name + 
+                                             " (" + String(rate) + "ms), using " + 
+                                             String(MIN_POLLING_RATE) + "ms minimum");
+                    config.pollingRate = MIN_POLLING_RATE;
+                } else if (rate > MAX_POLLING_RATE) {
+                    errorHandler->logWarning("Polling rate too high for sensor " + config.name + 
+                                             " (" + String(rate) + "ms), using " + 
+                                             String(MAX_POLLING_RATE) + "ms maximum");
+                    config.pollingRate = MAX_POLLING_RATE;
+                } else {
+                    config.pollingRate = rate;
+                }
                 errorHandler->logInfo("Sensor polling rate: " + String(config.pollingRate) + "ms");
             } else {
-                errorHandler->logInfo("Using default polling rate: 1000ms");
+                config.pollingRate = DEFAULT_POLLING_RATE;
+                errorHandler->logInfo("Using default polling rate: " + String(DEFAULT_POLLING_RATE) + "ms");
             }
             
             // Read additional settings
@@ -151,7 +169,6 @@ bool ConfigManager::loadConfigFromFile() {
             }
             
             sensorConfigs.push_back(config);
-            
             errorHandler->logInfo("Added I2C sensor: " + config.name);
         }
     }
@@ -174,13 +191,27 @@ bool ConfigManager::loadConfigFromFile() {
             // SPI sensors don't use I2C port
             config.i2cPort = I2CPort::I2C0; // Default value, not used
             
-            // Read polling rate with a default if not present
-            config.pollingRate = 1000; // Default 1 second
+            // Read and validate polling rate
             if (!sensor["Polling Rate[1000 ms]"].isNull()) {
-                config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
+                uint32_t rate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
+                // Apply validation rules
+                if (rate < MIN_POLLING_RATE) {
+                    errorHandler->logWarning("Polling rate too low for sensor " + config.name + 
+                                             " (" + String(rate) + "ms), using " + 
+                                             String(MIN_POLLING_RATE) + "ms minimum");
+                    config.pollingRate = MIN_POLLING_RATE;
+                } else if (rate > MAX_POLLING_RATE) {
+                    errorHandler->logWarning("Polling rate too high for sensor " + config.name + 
+                                             " (" + String(rate) + "ms), using " + 
+                                             String(MAX_POLLING_RATE) + "ms maximum");
+                    config.pollingRate = MAX_POLLING_RATE;
+                } else {
+                    config.pollingRate = rate;
+                }
                 errorHandler->logInfo("Sensor polling rate: " + String(config.pollingRate) + "ms");
             } else {
-                errorHandler->logInfo("Using default polling rate: 1000ms");
+                config.pollingRate = DEFAULT_POLLING_RATE;
+                errorHandler->logInfo("Using default polling rate: " + String(DEFAULT_POLLING_RATE) + "ms");
             }
             
             // Read additional settings
@@ -192,7 +223,6 @@ bool ConfigManager::loadConfigFromFile() {
             }
             
             sensorConfigs.push_back(config);
-            
             errorHandler->logInfo("Added SPI sensor: " + config.name);
         }
     }
@@ -203,6 +233,8 @@ bool ConfigManager::loadConfigFromFile() {
 
 // Create a default configuration file
 bool ConfigManager::createDefaultConfig() {
+    const uint32_t DEFAULT_POLLING_RATE = 1000;  // Default: 1 second
+    
     JsonDocument doc;
     
     // Create default configuration
@@ -215,7 +247,7 @@ bool ConfigManager::createDefaultConfig() {
     i2cSensor["Sensor Type"] = "SHT41";
     i2cSensor["I2C Port"] = "I2C0";
     i2cSensor["Address (HEX)"] = 0x44;  // SHT41 default address
-    i2cSensor["Polling Rate[1000 ms]"] = 1000;  // Default 1 second
+    i2cSensor["Polling Rate[1000 ms]"] = DEFAULT_POLLING_RATE;
     i2cSensor["Additional"] = "";  // No additional settings by default
     
     // Add empty SPI sensors array

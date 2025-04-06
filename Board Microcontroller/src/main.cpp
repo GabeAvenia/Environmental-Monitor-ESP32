@@ -78,6 +78,8 @@ void setUartDebugSerial(Print* debugSerial) {
 // Find fastest polling rate from sensor configurations
 uint32_t getFastestPollingRate() {
     uint32_t fastestRate = UINT32_MAX;
+    const uint32_t MIN_POLL_RATE = 50;      // 50ms minimum
+    const uint32_t MAX_POLL_RATE = 300000;  // 5 minutes maximum
     
     if (configManager) {
         auto sensorConfigs = configManager->getSensorConfigs();
@@ -89,9 +91,13 @@ uint32_t getFastestPollingRate() {
         }
     }
     
-    // Apply a reasonable minimum and default
-    if (fastestRate == UINT32_MAX || fastestRate < 100) {
-        fastestRate = DEFAULT_POLLING_INTERVAL;
+    // Apply range validation and default
+    if (fastestRate == UINT32_MAX) {
+        fastestRate = DEFAULT_POLLING_INTERVAL; // Use default (1000ms)
+    } else if (fastestRate < MIN_POLL_RATE) {
+        fastestRate = MIN_POLL_RATE;            // Enforce minimum
+    } else if (fastestRate > MAX_POLL_RATE) {
+        fastestRate = MAX_POLL_RATE;            // Enforce maximum
     }
     
     return fastestRate;
@@ -184,10 +190,8 @@ void setup() {
     
     // Configure sensor cache settings - adjust cache max age based on polling rates
     uint32_t fastestRate = getFastestPollingRate();
-    // Set cache timeout to 3x the fastest polling rate (or minimum 3 seconds)
-    uint32_t cacheMaxAge = (fastestRate * 3 > 3000) ? fastestRate * 3 : 3000;
-    sensorManager->setMaxCacheAge(cacheMaxAge);
-    errorHandler->logInfo("Sensor cache configured with " + String(cacheMaxAge) + "ms max age");
+    sensorManager->setMaxCacheAge(fastestRate); // Set cache timeout equal to polling rate
+    errorHandler->logInfo("Sensor cache configured with " + String(fastestRate) + "ms max age");
     
     // Feed watchdog after sensor initialization
     feedWatchdog();
@@ -223,22 +227,22 @@ void loop() {
     unsigned long currentTime = millis();
     uint32_t pollingInterval = getFastestPollingRate();
     
-    // Use a longer polling interval than the fastest sensor rate 
+ 
     // to save power - cache system will still update when needed
-    uint32_t backgroundPollingInterval = pollingInterval * 2;
+    uint32_t backgroundPollingInterval = pollingInterval;
     
     // At least 1 second (using ternary operator instead of max)
     backgroundPollingInterval = (backgroundPollingInterval > 1000) ? backgroundPollingInterval : 1000;
     
-    if (currentTime - lastPollingTime >= backgroundPollingInterval) {
-        // Update readings, but don't force - this respects the cache age
-        sensorManager->updateReadings(false);
+    if (currentTime - lastPollingTime >= pollingInterval) {
+        // Force update readings every polling cycle to ensure fresh values
+        sensorManager->updateReadings(true);
         lastPollingTime = currentTime;
         
-        // When idle, allow the CPU to sleep longer
-        vTaskDelay(10);
-    } else {
-        // Small delay to prevent hogging the CPU
+        // Small delay to allow other tasks to run
         vTaskDelay(5);
+    } else {
+        // Minimal delay when not polling
+        vTaskDelay(1);
     }
 }
