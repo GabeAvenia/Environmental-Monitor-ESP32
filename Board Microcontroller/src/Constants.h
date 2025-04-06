@@ -19,18 +19,14 @@ namespace Constants {
         static const char* IDN = "*IDN?";
         
         // Measurement commands
-        static const char* MEASURE_SINGLE = "MEAS:SINGLE";
+        static const char* MEASURE = "MEAS";
+        static const char* MEASURE_QUERY = "MEAS?";
         
         // System commands
         static const char* LIST_SENSORS = "SYST:SENS:LIST?";
         static const char* GET_CONFIG = "SYST:CONF?";
         static const char* SET_BOARD_ID = "SYST:CONF:BOARD:ID";
         static const char* UPDATE_CONFIG = "SYST:CONF:UPDATE";
-        
-        // Streaming commands
-        static const char* STREAM_START = "STREAM:START";
-        static const char* STREAM_STOP = "STREAM:STOP";
-        static const char* STREAM_STATUS = "STREAM:STATUS?";
         
         // Message routing commands
         static const char* MSG_ROUTE_STATUS = "SYST:LOG:ROUTE?";
@@ -39,5 +35,12 @@ namespace Constants {
         static const char* MSG_ROUTE_WARNING = "SYST:LOG:WARN:ROUTE";
         static const char* MSG_ROUTE_ERROR = "SYST:LOG:ERR:ROUTE";
         static const char* MSG_ROUTE_CRITICAL = "SYST:LOG:CRIT:ROUTE";
+        
+        // Test commands
+        static const char* TEST_FILESYSTEM = "TEST:FS";
+        static const char* TEST_UPDATE = "TEST:UPDATE";
+        static const char* TEST = "TEST";
+        static const char* ECHO = "ECHO";
+        static const char* RESET = "RESET";
     }
 }

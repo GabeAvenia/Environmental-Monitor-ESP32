@@ -17,17 +17,14 @@
 #include "../config/ConfigManager.h"
 #include "../error/ErrorHandler.h"
 
-// Structure to track sensor update times
-struct SensorUpdateInfo {
-    String sensorName;          // Name of the sensor
-    uint32_t pollingRateMs;     // How often to update in milliseconds
-    uint64_t lastUpdateTime;    // Last time this sensor was updated
-    
-    SensorUpdateInfo() : 
-        sensorName(""), pollingRateMs(1000), lastUpdateTime(0) {}
-    
-    SensorUpdateInfo(const String& name, uint32_t rate) : 
-        sensorName(name), pollingRateMs(rate), lastUpdateTime(0) {}
+// Struct to cache sensor readings for better performance
+struct SensorCache {
+    float temperature = NAN;
+    float humidity = NAN;
+    unsigned long tempTimestamp = 0;
+    unsigned long humTimestamp = 0;
+    bool tempValid = false;
+    bool humValid = false;
 };
 
 class SensorManager {
@@ -36,9 +33,15 @@ private:
     SensorFactory factory;
     ConfigManager* configManager;
     I2CManager* i2cManager;
-    SPIManager* spiManager;  // Make sure this field exists!
+    SPIManager* spiManager;
     ErrorHandler* errorHandler;
-    std::map<String, SensorUpdateInfo> sensorUpdateInfo;
+    
+    // Cache for sensor readings
+    std::map<String, SensorCache> readingCache;
+    
+    // Maximum age of cached readings (in milliseconds)
+    // Default to 5 seconds, can be adjusted based on requirements
+    unsigned long maxCacheAge = 5000;
     
     /**
      * @brief Compare old and new configurations to identify sensors to add, remove, or reconfigure.
@@ -71,6 +74,15 @@ private:
      * @return true if communication successful, false otherwise.
      */
     bool testSPICommunication(int ssPin);
+    
+    /**
+     * @brief Update cached reading for a specific sensor if needed
+     * 
+     * @param sensorName The name of the sensor
+     * @param forceUpdate Force an update even if the cache is still valid
+     * @return true if cache was updated successfully
+     */
+    bool updateSensorCache(const String& sensorName, bool forceUpdate = false);
 
 public:
     /**
@@ -104,14 +116,16 @@ public:
     bool reconfigureSensors(const String& configJson);
     
     /**
-     * @brief Update readings from all sensors that are due for an update.
+     * @brief Update readings from all sensors.
      * 
+     * @param forceUpdate Force updating all readings even if cache is still valid
      * @return Number of sensors successfully updated.
      */
-    int updateReadings();
+    int updateReadings(bool forceUpdate = false);
     
     /**
      * @brief Get the latest temperature reading from a specific sensor.
+     * Will use cached value if available and not too old.
      * 
      * @param sensorName The name of the sensor to read from.
      * @return The temperature reading.
@@ -120,11 +134,30 @@ public:
     
     /**
      * @brief Get the latest humidity reading from a specific sensor.
+     * Will use cached value if available and not too old.
      * 
      * @param sensorName The name of the sensor to read from.
      * @return The humidity reading.
      */
     HumidityReading getHumidity(const String& sensorName);
+    
+    /**
+     * @brief Set the maximum age for cached readings
+     * 
+     * @param maxAgeMs Maximum age in milliseconds
+     */
+    void setMaxCacheAge(unsigned long maxAgeMs) {
+        maxCacheAge = maxAgeMs;
+    }
+    
+    /**
+     * @brief Get the current maximum cache age
+     * 
+     * @return Maximum cache age in milliseconds
+     */
+    unsigned long getMaxCacheAge() const {
+        return maxCacheAge;
+    }
     
     /**
      * @brief Get the sensor registry.

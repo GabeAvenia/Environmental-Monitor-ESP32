@@ -6,7 +6,11 @@ SensorManager::SensorManager(ConfigManager* configMgr, I2CManager* i2c, ErrorHan
       configManager(configMgr),
       i2cManager(i2c),
       spiManager(spi),
-      errorHandler(err) {
+      errorHandler(err),
+      maxCacheAge(5000) {  // Default 5-second cache age
+    
+    // Initialize cache empty
+    readingCache.clear();
 }
 
 SensorManager::~SensorManager() {
@@ -67,7 +71,6 @@ bool SensorManager::initializeSensors() {
     for (auto sensor : existingSensors) {
         delete sensor;
     }
-    sensorUpdateInfo.clear();
     
     // Create and initialize sensors
     for (const auto& config : sensorConfigs) {
@@ -98,10 +101,6 @@ bool SensorManager::initializeSensors() {
         
         // Register the sensor
         registry.registerSensor(sensor);
-        
-        // Set up polling info
-        SensorUpdateInfo updateInfo(config.name, config.pollingRate);
-        sensorUpdateInfo[config.name] = updateInfo;
         
         errorHandler->logInfo("Sensor added to system: " + config.name + " with polling rate: " + 
                            String(config.pollingRate) + "ms");
@@ -212,20 +211,6 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
         if (sensor) {
             errorHandler->logInfo("Removing sensor: " + sensorName);
             delete sensor;
-            
-            // Remove from update info
-            sensorUpdateInfo.erase(sensorName);
-        }
-    }
-    
-    // Update polling rates for sensors that remain but may have changed
-    for (const auto& config : newConfigs) {
-        auto it = sensorUpdateInfo.find(config.name);
-        if (it != sensorUpdateInfo.end() && it->second.pollingRateMs != config.pollingRate) {
-            errorHandler->logInfo("Updating polling rate for sensor: " + config.name + 
-                               " from " + String(it->second.pollingRateMs) + 
-                               "ms to " + String(config.pollingRate) + "ms");
-            it->second.pollingRateMs = config.pollingRate;
         }
     }
     
@@ -263,10 +248,6 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
         
         // Register the sensor
         registry.registerSensor(sensor);
-        
-        // Set up polling info
-        SensorUpdateInfo updateInfo(config.name, config.pollingRate);
-        sensorUpdateInfo[config.name] = updateInfo;
         
         errorHandler->logInfo("Sensor added to system: " + config.name + " with polling rate: " + 
                            String(config.pollingRate) + "ms");
@@ -365,40 +346,61 @@ bool SensorManager::testSPICommunication(int ssPin) {
     return true; // Return true even if the test is inconclusive, as it might still work with specific device
 }
 
-int SensorManager::updateReadings() {
-    int successCount = 0;
-    unsigned long currentTime = millis();
+bool SensorManager::updateSensorCache(const String& sensorName, bool forceUpdate) {
+    ISensor* sensor = findSensor(sensorName);
+    if (!sensor || !sensor->isConnected()) {
+        return false;
+    }
     
-    // Use traditional loop instead of structured binding (C++17 feature)
-    for (auto it = sensorUpdateInfo.begin(); it != sensorUpdateInfo.end(); ++it) {
-        const String& sensorName = it->first;
-        SensorUpdateInfo& updateInfo = it->second;
-        
-        // Check if it's time to update this sensor
-        if (currentTime - updateInfo.lastUpdateTime >= updateInfo.pollingRateMs) {
-            ISensor* sensor = findSensor(sensorName);
-            if (sensor && sensor->isConnected()) {
-                bool success = false;
-                
-                // Update readings based on sensor type
-                if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-                    ITemperatureSensor* tempSensor = 
-                        static_cast<ITemperatureSensor*>(sensor->getInterface(InterfaceType::TEMPERATURE));
-                    float temp = tempSensor->readTemperature();
-                    success = !isnan(temp);
-                }
-                
-                if (sensor->supportsInterface(InterfaceType::HUMIDITY)) {
-                    IHumiditySensor* humSensor = 
-                        static_cast<IHumiditySensor*>(sensor->getInterface(InterfaceType::HUMIDITY));
-                    float hum = humSensor->readHumidity();
-                    success = success || !isnan(hum);
-                }
-                
-                if (success) {
-                    successCount++;
-                    updateInfo.lastUpdateTime = currentTime;
-                }
+    // Get or create cache entry
+    SensorCache& cache = readingCache[sensorName];
+    
+    unsigned long currentTime = millis();
+    bool updated = false;
+    
+    // Update temperature if supported and needed
+    if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
+        // Check if cache is stale or update is forced
+        if (forceUpdate || (currentTime - cache.tempTimestamp) > maxCacheAge || !cache.tempValid) {
+            ITemperatureSensor* tempSensor = 
+                static_cast<ITemperatureSensor*>(sensor->getInterface(InterfaceType::TEMPERATURE));
+            
+            float temp = tempSensor->readTemperature();
+            cache.temperature = temp;
+            cache.tempTimestamp = currentTime;
+            cache.tempValid = !isnan(temp);
+            
+            updated = true;
+        }
+    }
+    
+    // Update humidity if supported and needed
+    if (sensor->supportsInterface(InterfaceType::HUMIDITY)) {
+        // Check if cache is stale or update is forced
+        if (forceUpdate || (currentTime - cache.humTimestamp) > maxCacheAge || !cache.humValid) {
+            IHumiditySensor* humSensor = 
+                static_cast<IHumiditySensor*>(sensor->getInterface(InterfaceType::HUMIDITY));
+            
+            float hum = humSensor->readHumidity();
+            cache.humidity = hum;
+            cache.humTimestamp = currentTime;
+            cache.humValid = !isnan(hum);
+            
+            updated = true;
+        }
+    }
+    
+    return updated;
+}
+
+int SensorManager::updateReadings(bool forceUpdate) {
+    int successCount = 0;
+    auto sensors = registry.getAllSensors();
+    
+    for (auto sensor : sensors) {
+        if (sensor->isConnected()) {
+            if (updateSensorCache(sensor->getName(), forceUpdate)) {
+                successCount++;
             }
         }
     }
@@ -423,11 +425,17 @@ TemperatureReading SensorManager::getTemperature(const String& sensorName) {
         return TemperatureReading();
     }
     
-    ITemperatureSensor* tempSensor = 
-        static_cast<ITemperatureSensor*>(sensor->getInterface(InterfaceType::TEMPERATURE));
+    // Update cache if needed (will not update if cache is still valid)
+    updateSensorCache(sensorName);
     
-    float value = tempSensor->readTemperature();
-    return TemperatureReading(value, tempSensor->getTemperatureTimestamp());
+    // Get the cached value
+    const SensorCache& cache = readingCache[sensorName];
+    
+    if (!cache.tempValid) {
+        return TemperatureReading(); // Invalid reading
+    }
+    
+    return TemperatureReading(cache.temperature, cache.tempTimestamp);
 }
 
 HumidityReading SensorManager::getHumidity(const String& sensorName) {
@@ -447,11 +455,17 @@ HumidityReading SensorManager::getHumidity(const String& sensorName) {
         return HumidityReading();
     }
     
-    IHumiditySensor* humSensor = 
-        static_cast<IHumiditySensor*>(sensor->getInterface(InterfaceType::HUMIDITY));
+    // Update cache if needed (will not update if cache is still valid)
+    updateSensorCache(sensorName);
     
-    float value = humSensor->readHumidity();
-    return HumidityReading(value, humSensor->getHumidityTimestamp());
+    // Get the cached value
+    const SensorCache& cache = readingCache[sensorName];
+    
+    if (!cache.humValid) {
+        return HumidityReading(); // Invalid reading
+    }
+    
+    return HumidityReading(cache.humidity, cache.humTimestamp);
 }
 
 const SensorRegistry& SensorManager::getRegistry() const {

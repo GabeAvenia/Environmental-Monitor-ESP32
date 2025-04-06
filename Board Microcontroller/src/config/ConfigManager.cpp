@@ -19,7 +19,7 @@ void ConfigManager::disableNotifications(bool disable) {
 void ConfigManager::registerChangeCallback(ConfigChangeCallback callback) {
     if (callback) {
         changeCallbacks.push_back(callback);
-        Serial.println("DEBUG: Registered config change callback, total callbacks: " + String(changeCallbacks.size()));
+        errorHandler->logInfo("Registered config change callback, total callbacks: " + String(changeCallbacks.size()));
     }
 }
 
@@ -33,42 +33,40 @@ void ConfigManager::notifyConfigChanged(const String& newConfig) {
     
     notifyingCallbacks = true;
     
-    Serial.println("DEBUG: Notifying " + String(changeCallbacks.size()) + " callbacks about config change");
+    errorHandler->logInfo("Notifying " + String(changeCallbacks.size()) + " callbacks about config change");
     for (auto callback : changeCallbacks) {
-        Serial.println("DEBUG: Calling a callback...");
+        errorHandler->logInfo("Calling a callback...");
         callback(newConfig);
     }
     
     notifyingCallbacks = false;
-    Serial.println("DEBUG: All callbacks notified");
+    errorHandler->logInfo("All callbacks notified");
 }
 
 // Load configuration from the JSON file
 bool ConfigManager::loadConfigFromFile() {
-    Serial.println("DEBUG: loadConfigFromFile called");
+    errorHandler->logInfo("Loading config file");
     
     // Check if config file exists
     if (!LittleFS.exists(Constants::CONFIG_FILE_PATH)) {
-        Serial.println("DEBUG: Config file not found, creating default");
         errorHandler->logWarning("Config file not found, creating default");
         if (!createDefaultConfig()) {
-            Serial.println("DEBUG: Failed to create default config");
+            errorHandler->logError(ERROR, "Failed to create default config");
             return false;
         }
     }
     
     // Open and read config file
-    Serial.println("DEBUG: Opening config file for reading");
+    errorHandler->logInfo("Opening config file for reading");
     File configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "r");
     if (!configFile) {
-        Serial.println("DEBUG: Failed to open config file");
         errorHandler->logError(ERROR, "Failed to open config file");
         return false;
     }
     
     String fileContent = configFile.readString();
-    Serial.println("DEBUG: Read " + String(fileContent.length()) + " bytes from config file");
-    Serial.println("DEBUG: Content: " + fileContent.substring(0, 50) + "...");
+    errorHandler->logInfo("Read " + String(fileContent.length()) + " bytes from config file");
+    errorHandler->logInfo("Content: " + fileContent.substring(0, 50) + "...");
     
     // Need to reopen the file since we've read it to the end
     configFile.close();
@@ -81,7 +79,6 @@ bool ConfigManager::loadConfigFromFile() {
     configFile.close();
     
     if (error) {
-        Serial.println("DEBUG: Failed to parse config: " + String(error.c_str()));
         errorHandler->logError(ERROR, "Failed to parse config: " + String(error.c_str()));
         return false;
     }
@@ -92,30 +89,30 @@ bool ConfigManager::loadConfigFromFile() {
         return false;
     }
     
-    Serial.println("DEBUG: JSON parsed successfully");
+    errorHandler->logInfo("JSON parsed successfully");
     
     // Extract configuration - look for both old and new key names for backward compatibility
     if (!doc["Environmental Monitor ID"].isNull()) {
         boardId = doc["Environmental Monitor ID"].as<String>();
-        Serial.println("DEBUG: Using Environmental Monitor ID: " + boardId);
+        errorHandler->logInfo("Using Environmental Monitor ID: " + boardId);
     } else if (!doc["Board ID"].isNull()) {
         boardId = doc["Board ID"].as<String>();
-        Serial.println("DEBUG: Using Board ID: " + boardId);
+        errorHandler->logInfo("Using Board ID: " + boardId);
     } else {
         boardId = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
-        Serial.println("DEBUG: No ID found, using default: " + boardId);
+        errorHandler->logInfo("No ID found, using default: " + boardId);
     }
     
     // Clear existing configurations
     sensorConfigs.clear();
-    Serial.println("DEBUG: Cleared existing sensor configs");
+    errorHandler->logInfo("Cleared existing sensor configs");
     
     // Load I2C sensors
     JsonArray i2cSensors = doc["I2C Sensors"].as<JsonArray>();
-    Serial.println("DEBUG: I2C Sensors array exists: " + String(i2cSensors ? "YES" : "NO"));
+    errorHandler->logInfo("I2C Sensors array exists: " + String(i2cSensors ? "YES" : "NO"));
     
     if (i2cSensors) {
-        Serial.println("DEBUG: Found " + String(i2cSensors.size()) + " I2C sensors");
+        errorHandler->logInfo("Found " + String(i2cSensors.size()) + " I2C sensors");
         for (JsonObject sensor : i2cSensors) {
             SensorConfig config;
             config.name = sensor["Sensor Name"].as<String>();
@@ -123,48 +120,48 @@ bool ConfigManager::loadConfigFromFile() {
             config.address = sensor["Address (HEX)"].as<int>();
             config.isSPI = false;
             
-            Serial.println("DEBUG: Found I2C sensor: " + config.name + " of type " + config.type);
+            errorHandler->logInfo("Found I2C sensor: " + config.name + " of type " + config.type);
             
             // Handle I2C port (new field)
             if (!sensor["I2C Port"].isNull()) {
                 String portStr = sensor["I2C Port"].as<String>();
                 config.i2cPort = I2CManager::stringToPort(portStr);
-                Serial.println("DEBUG: Sensor using I2C port " + portStr);
+                errorHandler->logInfo("Sensor using I2C port " + portStr);
             } else {
                 // Default to I2C0 if not specified
                 config.i2cPort = I2CPort::I2C0;
-                Serial.println("DEBUG: Sensor defaulting to I2C0 (no port specified)");
+                errorHandler->logInfo("Sensor defaulting to I2C0 (no port specified)");
             }
             
             // Read polling rate with a default if not present
             config.pollingRate = 1000; // Default 1 second
             if (!sensor["Polling Rate[1000 ms]"].isNull()) {
                 config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-                Serial.println("DEBUG: Sensor polling rate: " + String(config.pollingRate) + "ms");
+                errorHandler->logInfo("Sensor polling rate: " + String(config.pollingRate) + "ms");
             } else {
-                Serial.println("DEBUG: Using default polling rate: 1000ms");
+                errorHandler->logInfo("Using default polling rate: 1000ms");
             }
             
             // Read additional settings
             if (!sensor["Additional"].isNull()) {
                 config.additional = sensor["Additional"].as<String>();
-                Serial.println("DEBUG: Additional settings: " + config.additional);
+                errorHandler->logInfo("Additional settings: " + config.additional);
             } else {
                 config.additional = ""; // Empty string for no additional settings
             }
             
             sensorConfigs.push_back(config);
             
-            Serial.println("DEBUG: Added I2C sensor: " + config.name);
+            errorHandler->logInfo("Added I2C sensor: " + config.name);
         }
     }
     
     // Load SPI sensors
     JsonArray spiSensors = doc["SPI Sensors"].as<JsonArray>();
-    Serial.println("DEBUG: SPI Sensors array exists: " + String(spiSensors ? "YES" : "NO"));
+    errorHandler->logInfo("SPI Sensors array exists: " + String(spiSensors ? "YES" : "NO"));
     
     if (spiSensors) {
-        Serial.println("DEBUG: Found " + String(spiSensors.size()) + " SPI sensors");
+        errorHandler->logInfo("Found " + String(spiSensors.size()) + " SPI sensors");
         for (JsonObject sensor : spiSensors) {
             SensorConfig config;
             config.name = sensor["Sensor Name"].as<String>();
@@ -172,7 +169,7 @@ bool ConfigManager::loadConfigFromFile() {
             config.address = sensor["SS Pin"].as<int>();
             config.isSPI = true;
             
-            Serial.println("DEBUG: Found SPI sensor: " + config.name + " of type " + config.type);
+            errorHandler->logInfo("Found SPI sensor: " + config.name + " of type " + config.type);
             
             // SPI sensors don't use I2C port
             config.i2cPort = I2CPort::I2C0; // Default value, not used
@@ -181,26 +178,26 @@ bool ConfigManager::loadConfigFromFile() {
             config.pollingRate = 1000; // Default 1 second
             if (!sensor["Polling Rate[1000 ms]"].isNull()) {
                 config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-                Serial.println("DEBUG: Sensor polling rate: " + String(config.pollingRate) + "ms");
+                errorHandler->logInfo("Sensor polling rate: " + String(config.pollingRate) + "ms");
             } else {
-                Serial.println("DEBUG: Using default polling rate: 1000ms");
+                errorHandler->logInfo("Using default polling rate: 1000ms");
             }
             
             // Read additional settings
             if (!sensor["Additional"].isNull()) {
                 config.additional = sensor["Additional"].as<String>();
-                Serial.println("DEBUG: Additional settings: " + config.additional);
+                errorHandler->logInfo("Additional settings: " + config.additional);
             } else {
                 config.additional = ""; // Empty string for no additional settings
             }
             
             sensorConfigs.push_back(config);
             
-            Serial.println("DEBUG: Added SPI sensor: " + config.name);
+            errorHandler->logInfo("Added SPI sensor: " + config.name);
         }
     }
     
-    Serial.println("DEBUG: Configuration loaded successfully with " + String(sensorConfigs.size()) + " sensors");
+    errorHandler->logInfo("Configuration loaded successfully with " + String(sensorConfigs.size()) + " sensors");
     return true;
 }
 
@@ -406,7 +403,6 @@ String ConfigManager::getConfigJson() {
 }
 
 // Update configuration from JSON string
-// Refactored updateConfigFromJson method
 bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
     // Log a shorter version of the config to avoid huge logs
     errorHandler->logInfo("Received config update: " + 

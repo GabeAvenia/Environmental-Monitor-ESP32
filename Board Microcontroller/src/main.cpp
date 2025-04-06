@@ -22,6 +22,10 @@
 unsigned long lastWatchdogFeed = 0;
 bool watchdogEnabled = false;
 
+// Poll sensors at this interval (milliseconds)
+#define DEFAULT_POLLING_INTERVAL 1000
+unsigned long lastPollingTime = 0;
+
 // Forward declaration for setting the debug serial in the CommunicationManager
 void setUartDebugSerial(Print* debugSerial);
 
@@ -44,14 +48,8 @@ void enableWatchdog() {
         esp_task_wdt_init(WATCHDOG_TIMEOUT_SECONDS, true); // true = panic on timeout
         esp_task_wdt_add(NULL); // Add current task to WDT
         watchdogEnabled = true;
-        if (errorHandler) {
-            errorHandler->logInfo("Hardware watchdog enabled with timeout: " + String(WATCHDOG_TIMEOUT_SECONDS) + "s");
-        }
     } else {
         watchdogEnabled = false;
-        if (errorHandler) {
-            errorHandler->logInfo("Hardware watchdog disabled");
-        }
     }
 }
 
@@ -77,64 +75,71 @@ void setUartDebugSerial(Print* debugSerial) {
     }
 }
 
+// Find fastest polling rate from sensor configurations
+uint32_t getFastestPollingRate() {
+    uint32_t fastestRate = UINT32_MAX;
+    
+    if (configManager) {
+        auto sensorConfigs = configManager->getSensorConfigs();
+        
+        for (const auto& config : sensorConfigs) {
+            if (config.pollingRate < fastestRate) {
+                fastestRate = config.pollingRate;
+            }
+        }
+    }
+    
+    // Apply a reasonable minimum and default
+    if (fastestRate == UINT32_MAX || fastestRate < 100) {
+        fastestRate = DEFAULT_POLLING_INTERVAL;
+    }
+    
+    return fastestRate;
+}
+
 void setup() {
     // Initialize USB Serial for command interface
     Serial.begin(115200);
-    delay(50); // Give serial time to initialize
-    Serial.setRxBufferSize(2048); // Increase buffer to handle larger commands
+    delay(100); // Give serial time to initialize
     usbSerial = &Serial;
     
     // Initialize UART for debug messages
     debugSerial = &Serial2;
     debugSerial->begin(115200, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
-    delay(50); // Give serial time to initialize
+    delay(100); // Give serial time to initialize
     uartDebugSerial = debugSerial;
+    
+    // Initialize the error handler with debug output to UART only
+    errorHandler = new ErrorHandler(usbSerial, uartDebugSerial);
+    
+    // CRITICAL - Set info messages to go to UART only, not to serial terminal
+    errorHandler->setInfoOutput(uartDebugSerial);
+    errorHandler->enableCustomRouting(true);
     
     // Initialize hardware watchdog
     enableWatchdog();
-    
-    // Feed watchdog to indicate we're alive
     feedWatchdog();
+
+    // Welcome message through logger, will go to UART only
+    errorHandler->logInfo("Starting " + String(Constants::PRODUCT_NAME) + " v" + String(Constants::FIRMWARE_VERSION));
+    errorHandler->logInfo("Error handler initialized with custom routing");
 
     // Initialize LittleFS with the specific configuration
     if (!LittleFS.begin(true, "/litlefs", 10, "ffat")) {
-        Serial.println("LittleFS mount failed! System halted.");
-        if (debugSerial) {
-            debugSerial->println("LittleFS mount failed! System halted.");
-        }
+        // Log to both terminal and UART for critical errors
+        errorHandler->logCritical("LittleFS mount failed! System halted.");
         while (1) { 
             delay(1000);
             feedWatchdog(); // Keep feeding watchdog even in error state
         }
     }
     
-    // Feed watchdog after filesystem initialization
     feedWatchdog();
     
-    // Welcome message on both interfaces
-    if (usbSerial) {
-        usbSerial->println("Starting " + String(Constants::PRODUCT_NAME) + " v" + String(Constants::FIRMWARE_VERSION));
-    }
-    if (uartDebugSerial) {
-        uartDebugSerial->println("Debug UART initialized");
-        uartDebugSerial->println("Starting " + String(Constants::PRODUCT_NAME) + " v" + String(Constants::FIRMWARE_VERSION));
-    }
-    
-    // Initialize error handler with both output streams
-    errorHandler = new ErrorHandler(usbSerial, uartDebugSerial);
-    errorHandler->logInfo("Error handler initialized with custom routing");
-    
-    // Feed watchdog after error handler initialization
-    feedWatchdog();
-    
-    // Initialize components
+    // Initialize remaining components
     configManager = new ConfigManager(errorHandler);
-    i2cManager = new I2CManager(errorHandler);
-    spiManager = new SPIManager(errorHandler);
     
-    // Feed watchdog after manager initialization
-    feedWatchdog();
-    
+    // Initialize configuration manager
     if (!configManager->begin()) {
         errorHandler->logCritical("Failed to initialize configuration. System halted.");
         while (1) {
@@ -143,11 +148,22 @@ void setup() {
         }
     }
     
+    feedWatchdog();
+    
     // Register for configuration changes
     configManager->registerChangeCallback(onConfigChanged);
     
-    // Initialize SPI manager with the default pins from the header file
-    if (spiManager->isInitialized()) {
+    // Initialize I2C manager
+    i2cManager = new I2CManager(errorHandler);
+    if (!i2cManager->begin()) {
+        errorHandler->logWarning("Failed to initialize I2C manager");
+    }
+    
+    // Initialize SPI manager
+    spiManager = new SPIManager(errorHandler);
+    if (!spiManager->begin()) {
+        errorHandler->logWarning("Failed to initialize SPI manager");
+    } else {
         // Register all A0-A3 pins as SS pins (using logical indices 0-3)
         for (int i = 0; i < MAX_SS_PINS; i++) {
             spiManager->registerSSPin(i);
@@ -166,6 +182,13 @@ void setup() {
         errorHandler->logWarning("Some sensors failed to initialize");
     }
     
+    // Configure sensor cache settings - adjust cache max age based on polling rates
+    uint32_t fastestRate = getFastestPollingRate();
+    // Set cache timeout to 3x the fastest polling rate (or minimum 3 seconds)
+    uint32_t cacheMaxAge = (fastestRate * 3 > 3000) ? fastestRate * 3 : 3000;
+    sensorManager->setMaxCacheAge(cacheMaxAge);
+    errorHandler->logInfo("Sensor cache configured with " + String(cacheMaxAge) + "ms max age");
+    
     // Feed watchdog after sensor initialization
     feedWatchdog();
     
@@ -182,13 +205,10 @@ void setup() {
     feedWatchdog();
     
     errorHandler->logInfo("System initialization complete");
+    errorHandler->logInfo("System ready. Environmental Monitor ID: " + configManager->getBoardIdentifier());
     
-    if (usbSerial) {
-        usbSerial->println("System ready. Environmental Monitor ID: " + configManager->getBoardIdentifier());
-    }
-    if (uartDebugSerial) {
-        uartDebugSerial->println("Debug serial ready. Environmental Monitor ID: " + configManager->getBoardIdentifier());
-    }
+    // Print a simple ready message to the main terminal
+    Serial.println(String(Constants::PRODUCT_NAME) + " ready.");
 }
 
 void loop() {
@@ -196,18 +216,29 @@ void loop() {
     feedWatchdog();
     
     // Process commands if available
-    if (Serial && Serial.available() > 0) {
-        commManager->processCommandLine();
+    commManager->processIncomingData();
+    
+    // Update sensor readings based on configured polling rates
+    // This will only update sensors that need updating based on the cache age
+    unsigned long currentTime = millis();
+    uint32_t pollingInterval = getFastestPollingRate();
+    
+    // Use a longer polling interval than the fastest sensor rate 
+    // to save power - cache system will still update when needed
+    uint32_t backgroundPollingInterval = pollingInterval * 2;
+    
+    // At least 1 second (using ternary operator instead of max)
+    backgroundPollingInterval = (backgroundPollingInterval > 1000) ? backgroundPollingInterval : 1000;
+    
+    if (currentTime - lastPollingTime >= backgroundPollingInterval) {
+        // Update readings, but don't force - this respects the cache age
+        sensorManager->updateReadings(false);
+        lastPollingTime = currentTime;
+        
+        // When idle, allow the CPU to sleep longer
+        vTaskDelay(10);
+    } else {
+        // Small delay to prevent hogging the CPU
+        vTaskDelay(5);
     }
-    
-    // Update sensor readings based on individual polling rates
-    sensorManager->updateReadings();
-    
-    // Handle streaming if active
-    if (commManager->isCurrentlyStreaming()) {
-        commManager->handleStreamingOnly();
-    }
-    
-    // Small delay to prevent hogging the CPU
-    delay(5);
 }

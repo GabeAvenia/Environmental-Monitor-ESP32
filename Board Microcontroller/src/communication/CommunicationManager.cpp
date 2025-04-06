@@ -13,12 +13,7 @@ Print* CommunicationManager::uartDebugSerial = nullptr;
 CommunicationManager::CommunicationManager(SensorManager* sensorMgr, ConfigManager* configMgr, ErrorHandler* err) :
     sensorManager(sensorMgr),
     configManager(configMgr),
-    errorHandler(err),
-    isStreaming(false),
-    lastStreamTime(0),
-    streamInterval(1000),
-    streamBufferFullRetries(0),
-    justStoppedStreaming(false) {
+    errorHandler(err) {
     instance = this;
     scpiParser = new SCPI_Parser();
 }
@@ -41,8 +36,11 @@ void CommunicationManager::registerCommandHandlers() {
     commandHandlers[Constants::SCPI::IDN] = 
         [this](const std::vector<String>& params) { return handleIdentify(params); };
     
-    commandHandlers[Constants::SCPI::MEASURE_SINGLE] = 
-        [this](const std::vector<String>& params) { return handleMeasureSingle(params); };
+    commandHandlers[Constants::SCPI::MEASURE] = 
+        [this](const std::vector<String>& params) { return handleMeasure(params); };
+    
+    commandHandlers[Constants::SCPI::MEASURE_QUERY] = 
+        [this](const std::vector<String>& params) { return handleMeasure(params); };
     
     commandHandlers[Constants::SCPI::LIST_SENSORS] = 
         [this](const std::vector<String>& params) { return handleListSensors(params); };
@@ -56,43 +54,26 @@ void CommunicationManager::registerCommandHandlers() {
     commandHandlers[Constants::SCPI::UPDATE_CONFIG] = 
         [this](const std::vector<String>& params) { return handleUpdateConfig(params); };
     
-    commandHandlers[Constants::SCPI::STREAM_START] = 
-        [this](const std::vector<String>& params) { return handleStreamStart(params); };
-    
-    commandHandlers[Constants::SCPI::STREAM_STOP] = 
-        [this](const std::vector<String>& params) { return handleStreamStop(params); };
-    
-    commandHandlers[Constants::SCPI::STREAM_STATUS] = 
-        [this](const std::vector<String>& params) { return handleStreamStatus(params); };
-    
     // Testing commands
-    commandHandlers["TEST:FS"] = 
+    commandHandlers[Constants::SCPI::TEST_FILESYSTEM] = 
         [this](const std::vector<String>& params) { return handleTestFilesystem(params); };
     
-    commandHandlers["TEST:UPDATE"] = 
+    commandHandlers[Constants::SCPI::TEST_UPDATE] = 
         [this](const std::vector<String>& params) { return handleTestUpdateConfig(params); };
     
-    commandHandlers["TEST"] = 
+    commandHandlers[Constants::SCPI::TEST] = 
         [this](const std::vector<String>& params) { 
             Serial.println("Serial communication test successful"); 
             return true; 
         };
         
-    commandHandlers["ECHO"] = 
+    commandHandlers[Constants::SCPI::ECHO] = 
         [this](const std::vector<String>& params) { return handleEcho(params); };
     
-    // Added simple stop command
-    commandHandlers["STOP"] = 
-        [this](const std::vector<String>& params) { 
-            stopStreaming();
-            return true; // Don't send a response
-        };
-    
     // Added reset command
-    commandHandlers["RESET"] = 
+    commandHandlers[Constants::SCPI::RESET] = 
         [this](const std::vector<String>& params) { 
-            stopStreaming();
-            return true; // Don't send a response
+            return handleReset(params); 
         };
         
     // Message routing commands
@@ -128,14 +109,24 @@ void CommunicationManager::setupCommands() {
             CommunicationManager::getInstance()->handleIdentify(params);
         });
         
-    // MEAS:SINGLE command
-    scpiParser->RegisterCommand(F("MEAS:SINGLE"), 
+    // MEAS command
+    scpiParser->RegisterCommand(F("MEAS"), 
         [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
             std::vector<String> params;
             for (size_t i = 0; i < parameters.Size(); i++) {
                 params.push_back(String(parameters[i]));
             }
-            CommunicationManager::getInstance()->handleMeasureSingle(params);
+            CommunicationManager::getInstance()->handleMeasure(params);
+        });
+
+    // MEAS? command
+    scpiParser->RegisterCommand(F("MEAS?"), 
+        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
+            std::vector<String> params;
+            for (size_t i = 0; i < parameters.Size(); i++) {
+                params.push_back(String(parameters[i]));
+            }
+            CommunicationManager::getInstance()->handleMeasure(params);
         });
 
     // SYST:SENS:LIST? command
@@ -178,49 +169,49 @@ void CommunicationManager::setupCommands() {
             CommunicationManager::getInstance()->handleUpdateConfig(params);
         });
         
-    // STREAM:START command
-    scpiParser->RegisterCommand(F("STREAM:START"), 
+    // TEST command
+    scpiParser->RegisterCommand(F("TEST"), 
+        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
+            std::vector<String> params;
+            CommunicationManager::getInstance()->handleEcho(params);
+        });
+        
+    // TEST:FS command
+    scpiParser->RegisterCommand(F("TEST:FS"), 
+        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
+            std::vector<String> params;
+            CommunicationManager::getInstance()->handleTestFilesystem(params);
+        });
+        
+    // TEST:UPDATE command
+    scpiParser->RegisterCommand(F("TEST:UPDATE"), 
+        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
+            std::vector<String> params;
+            CommunicationManager::getInstance()->handleTestUpdateConfig(params);
+        });
+        
+    // ECHO command
+    scpiParser->RegisterCommand(F("ECHO"), 
         [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
             std::vector<String> params;
             for (size_t i = 0; i < parameters.Size(); i++) {
                 params.push_back(String(parameters[i]));
             }
-            CommunicationManager::getInstance()->handleStreamStart(params);
+            CommunicationManager::getInstance()->handleEcho(params);
         });
-        
-    // STREAM:STOP command
-    scpiParser->RegisterCommand(F("STREAM:STOP"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            CommunicationManager::getInstance()->stopStreaming();
-            // No response sent here
-        });
-        
-    // STREAM:STATUS? command
-    scpiParser->RegisterCommand(F("STREAM:STATUS?"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            CommunicationManager::getInstance()->handleStreamStatus(params);
-        });
-        
-    // Simple STOP command
-    scpiParser->RegisterCommand(F("STOP"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            CommunicationManager::getInstance()->stopStreaming();
-            // No response sent here
-        });
-        
+    
     // Emergency reset command
     scpiParser->RegisterCommand(F("*RST"), 
         [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            CommunicationManager::getInstance()->stopStreaming();
-            // No response sent here
+            std::vector<String> params;
+            CommunicationManager::getInstance()->handleReset(params);
         });
     
     // Quick reset command
     scpiParser->RegisterCommand(F("RESET"), 
         [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            CommunicationManager::getInstance()->stopStreaming();
-            // No response sent here
+            std::vector<String> params;
+            CommunicationManager::getInstance()->handleReset(params);
         });
         
     // Message routing commands
@@ -317,37 +308,12 @@ bool CommunicationManager::processCommand(const String& command, const std::vect
 }
 
 void CommunicationManager::processIncomingData() {
-    // Check if Serial is connected - very basic check
-    if (!Serial) {
-        if (isStreaming) {
-            stopStreaming();
-        }
-        return;
-    }
-    
-    // Process commands first
     if (Serial.available()) {
         processCommandLine();
-    }
-    
-    // If we just stopped streaming, don't try to stream in this cycle
-    if (justStoppedStreaming) {
-        justStoppedStreaming = false;
-        return;
-    }
-    
-    // Handle streaming only if still active
-    if (isStreaming) {
-        handleStreamingOnly();
     }
 }
 
 void CommunicationManager::processCommandLine() {
-    // Only process commands, do not handle streaming
-    if (!Serial) {
-        return;
-    }
-    
     // Read the command
     String rawCommand = Serial.readStringUntil('\n');
     rawCommand.trim();
@@ -355,22 +321,7 @@ void CommunicationManager::processCommandLine() {
     // Log the received command
     errorHandler->logInfo("Received command: '" + rawCommand + "'");
     
-    // Check for special stop/reset commands
-    if (rawCommand.equalsIgnoreCase("STREAM:STOP") ||
-        rawCommand.equalsIgnoreCase("STOP")) {
-        stopStreaming();
-        return;
-    }
-    
-    // Check for reset commands
-    if (rawCommand.equalsIgnoreCase("*RST") ||
-        rawCommand.equalsIgnoreCase("RESET")) {
-        // Stop streaming
-        stopStreaming();
-        return;
-    }
-    
-    // Parse and process normal command
+    // Parse and process command
     String command;
     std::vector<String> params;
     parseCommand(rawCommand, command, params);
@@ -382,94 +333,9 @@ void CommunicationManager::processCommandLine() {
         rawCommand.toCharArray(buff, rawCommand.length() + 1);
         scpiParser->ProcessInput(Serial, buff);
     }
-}
-
-void CommunicationManager::handleStreamingOnly() {
-    // Only handle streaming, do not process commands
-    if (!isStreaming || !Serial) {
-        if (isStreaming) {
-            stopStreaming();
-        }
-        return;
-    }
     
-    // Check if there's incoming data - always prioritize commands
-    if (Serial.available() > 0) {
-        return; // Skip streaming this cycle to process commands
-    }
-    
-    // Check if there's enough space in the output buffer
-    int availableSpace = Serial.availableForWrite();
-    if (availableSpace < 100) {  // Need at least 100 bytes for a typical line
-        streamBufferFullRetries++;
-        
-        if (streamBufferFullRetries >= MAX_BUFFER_FULL_RETRIES) {
-            // Too many retries, stop streaming
-            errorHandler->logWarning("Output buffer full, stopping streaming");
-            stopStreaming();
-            return;
-        }
-        
-        // Skip this cycle but don't increase buffer full retries
-        return;
-    }
-    
-    // Reset retry counter
-    streamBufferFullRetries = 0;
-    
-    // Stream at regular intervals
-    unsigned long currentTime = millis();
-    if (currentTime - lastStreamTime >= streamInterval) {
-        lastStreamTime = currentTime;
-        
-        // Collect data
-        std::vector<String> values;
-        
-        for (const auto& config : streamingConfigs) {
-            ISensor* sensor = sensorManager->findSensor(config.sensorName);
-            if (!sensor || !sensor->isConnected()) {
-                continue;
-            }
-            
-            // Add temperature if requested and available
-            if (config.streamTemperature && sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-                TemperatureReading tempReading = sensorManager->getTemperature(config.sensorName);
-                values.push_back(tempReading.valid ? String(tempReading.value) : "NA");
-            }
-            
-            // Add humidity if requested and available
-            if (config.streamHumidity && sensor->supportsInterface(InterfaceType::HUMIDITY)) {
-                HumidityReading humReading = sensorManager->getHumidity(config.sensorName);
-                values.push_back(humReading.valid ? String(humReading.value) : "NA");
-            }
-
-            // Add CO2 if requested and available
-            if (config.streamCO2 && sensor->supportsInterface(InterfaceType::CO2)) {
-                values.push_back("NA"); // Placeholder
-            }
-        }
-        
-        // Check one more time for pending commands before sending
-        if (Serial.available() > 0) {
-            return; // Skip sending data this cycle
-        }
-        
-        // Final check - don't send if streaming was just stopped
-        if (!isStreaming) {
-            return;
-        }
-        
-        // Send the data - simple println to avoid buffer issues
-        if (!values.empty()) {
-            String csvLine = values[0];
-            for (size_t i = 1; i < values.size(); i++) {
-                csvLine += "," + values[i];
-            }
-            
-            // Use println which is more reliable than direct write
-            Serial.println(csvLine);
-        }
-    }
+    // Ensure all responses are sent
+    Serial.flush();
 }
 
 // Command handler implementations
@@ -478,10 +344,11 @@ bool CommunicationManager::handleIdentify(const std::vector<String>& params) {
                       configManager->getBoardIdentifier() + "," +
                       String(Constants::FIRMWARE_VERSION);
     Serial.println(response);
+    Serial.flush(); // Ensure the response is sent immediately
     return true;
 }
 
-bool CommunicationManager::handleMeasureSingle(const std::vector<String>& params) {
+bool CommunicationManager::handleMeasure(const std::vector<String>& params) {
     std::vector<String> values;
     
     if (params.empty()) {
@@ -516,6 +383,7 @@ bool CommunicationManager::handleMeasureSingle(const std::vector<String>& params
             csvLine += "," + values[i];
         }
         Serial.println(csvLine);
+        Serial.flush(); // Ensure the response is sent immediately
     }
     
     return true;
@@ -565,16 +433,26 @@ bool CommunicationManager::handleListSensors(const std::vector<String>& params) 
     auto sensors = registry.getAllSensors();
     
     for (auto sensor : sensors) {
-        String capabilities = "";
-        if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) capabilities += "TEMP";
-        if (sensor->supportsInterface(InterfaceType::HUMIDITY)) capabilities += "HUM";
-        if (sensor->supportsInterface(InterfaceType::CO2)) capabilities += "C02";
+        // Check each interface type and output a separate entry for each
+        if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
+            Serial.println(sensor->getName() + ",TEMP," + 
+                          sensor->getTypeString() + "," +
+                          (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED"));
+        }
         
-        Serial.println(sensor->getName() + "," + 
-                      sensor->getTypeString() + "," +
-                      capabilities + "," +
-                      (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED"));
+        if (sensor->supportsInterface(InterfaceType::HUMIDITY)) {
+            Serial.println(sensor->getName() + ",HUM," + 
+                          sensor->getTypeString() + "," +
+                          (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED"));
+        }
+        
+        if (sensor->supportsInterface(InterfaceType::CO2)) {
+            Serial.println(sensor->getName() + ",CO2," + 
+                          sensor->getTypeString() + "," +
+                          (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED"));
+        }
     }
+    Serial.flush(); // Ensure all responses are sent immediately
     return true;
 }
 
@@ -618,45 +496,11 @@ bool CommunicationManager::handleUpdateConfig(const std::vector<String>& params)
     return success;
 }
 
-bool CommunicationManager::handleStreamStart(const std::vector<String>& params) {
-    std::vector<StreamingConfig> configs;
-    
-    // Process each parameter
-    for (const auto& param : params) {
-        // Check if parameter contains a colon (sensor:measurements format)
-        int colonPos = param.indexOf(':');
-        if (colonPos > 0) {
-            String sensorName = param.substring(0, colonPos);
-            String measurements = param.substring(colonPos + 1);
-            
-            // Handle comma-separated measurement types
-            measurements.replace(',', ' '); // Convert commas to spaces for easier parsing
-            
-            configs.push_back(StreamingConfig(sensorName, measurements));
-            
-            errorHandler->logInfo("Configuring " + sensorName + " to stream: " + measurements);
-        } else {
-            // No measurements specified, default to all
-            configs.push_back(StreamingConfig(param));
-            
-            errorHandler->logInfo("Configuring " + param + " to stream all measurements");
-        }
-    }
-    
-    bool success = startStreaming(configs);
-    if (!success) {
-        Serial.println("ERROR: Failed to start streaming");
-    }
-    return success;
-}
-
-bool CommunicationManager::handleStreamStop(const std::vector<String>& params) {
-    stopStreaming();
-    return true; // No response sent
-}
-
-bool CommunicationManager::handleStreamStatus(const std::vector<String>& params) {
-    Serial.println(isStreaming ? "RUNNING" : "STOPPED");
+bool CommunicationManager::handleReset(const std::vector<String>& params) {
+    errorHandler->logInfo("Reset command received");
+    Serial.println("Resetting device...");
+    delay(100);  // Give time for the message to be sent
+    ESP.restart();
     return true;
 }
 
@@ -782,103 +626,4 @@ ConfigManager* CommunicationManager::getConfigManager() {
 
 ErrorHandler* CommunicationManager::getErrorHandler() {
     return errorHandler;
-}
-
-// Streaming methods implementation
-bool CommunicationManager::startStreaming(const std::vector<StreamingConfig>& configs) {
-    if (configs.empty()) {
-        // If no configs specified, use all available sensors with all measurements
-        auto registry = sensorManager->getRegistry();
-        auto allSensors = registry.getAllSensors();
-        
-        std::vector<StreamingConfig> allConfigs;
-        for (auto sensor : allSensors) {
-            allConfigs.push_back(StreamingConfig(sensor->getName()));
-        }
-        
-        return startStreaming(allConfigs);
-    }
-    
-    // Validate all sensors exist and find the fastest polling rate
-    bool allValid = true;
-    uint32_t fastestRate = UINT32_MAX;
-    
-    auto sensorConfigs = configManager->getSensorConfigs();
-    
-    for (const auto& config : configs) {
-        if (!sensorManager->findSensor(config.sensorName)) {
-            errorHandler->logInfo("Cannot start streaming: sensor not found: " + config.sensorName);
-            allValid = false;
-            continue;
-        }
-        
-        // Find this sensor's config to get its polling rate
-        for (const auto& sensorConfig : sensorConfigs) {
-            if (sensorConfig.name == config.sensorName) {
-                // Update fastest rate if this one is faster
-                if (sensorConfig.pollingRate < fastestRate) {
-                    fastestRate = sensorConfig.pollingRate;
-                }
-                break;
-            }
-        }
-    }
-    
-    if (!allValid) {
-        return false;
-    }
-    
-    // Sanity check for polling rate
-    if (fastestRate == UINT32_MAX || fastestRate < 100) {
-        fastestRate = 1000; // Default to 1 second if couldn't determine or too fast
-    }
-    
-    // Set streaming parameters
-    streamingConfigs = configs;
-    streamInterval = fastestRate;
-    lastStreamTime = 0; // Force immediate update
-    streamBufferFullRetries = 0; // Reset retry counter
-    justStoppedStreaming = false; // Clear any stop flag
-    isStreaming = true;
-    
-    errorHandler->logInfo("Started streaming " + String(streamingConfigs.size()) + 
-                       " sensors at " + String(streamInterval) + "ms interval");
-    return true;
-}
-
-void CommunicationManager::stopStreaming() {
-    if (isStreaming) {
-        isStreaming = false;
-        streamingConfigs.clear();
-        streamBufferFullRetries = 0;
-        justStoppedStreaming = true; // Set flag to prevent sending one more update
-        
-        // Only log to debug, don't send a response
-        errorHandler->logInfo("Stopped streaming");
-        
-        // Flush any pending data
-        if (Serial) {
-            Serial.flush();
-        }
-    }
-}
-
-bool CommunicationManager::isCurrentlyStreaming() const {
-    return isStreaming;
-}
-
-void CommunicationManager::handleStreaming() {
-    // This is a legacy method maintained for compatibility
-    // The actual streaming is now done in handleStreamingOnly
-    
-    // Skip streaming if we just stopped
-    if (justStoppedStreaming) {
-        justStoppedStreaming = false;
-        return;
-    }
-    
-    // Call the new implementation
-    if (isStreaming) {
-        handleStreamingOnly();
-    }
 }

@@ -21,53 +21,6 @@ class Stream;
  */
 typedef std::function<bool(const std::vector<String>&)> CommandHandler;
 
-/**
- * @brief Configuration for streaming a specific sensor's measurements
- */
-struct StreamingConfig {
-    String sensorName;
-    bool streamTemperature;
-    bool streamHumidity;
-    bool streamPressure;
-    bool streamCO2;
-    
-    /**
-     * @brief Constructor with default to stream all measurements
-     * 
-     * @param name Sensor name
-     */
-    StreamingConfig(const String& name) : 
-        sensorName(name), 
-        streamTemperature(true),
-        streamHumidity(true), 
-        streamPressure(true),
-        streamCO2(true) {}
-    
-    /**
-     * @brief Constructor with specific measurements to stream
-     * 
-     * @param name Sensor name
-     * @param measurements String containing measurement codes (TEMP, HUM, PRES, CO2)
-     */
-    StreamingConfig(const String& name, const String& measurements) : 
-        sensorName(name), 
-        streamTemperature(false),
-        streamHumidity(false), 
-        streamPressure(false),
-        streamCO2(false) {
-        
-        // Convert to uppercase for case-insensitive comparison
-        String upperMeasurements = measurements;
-        upperMeasurements.toUpperCase();
-        
-        // Parse measurements string (e.g., "TEMP,HUM" for temperature and humidity)
-        if (upperMeasurements.indexOf("TEMP") >= 0) streamTemperature = true;
-        if (upperMeasurements.indexOf("HUM") >= 0) streamHumidity = true;
-        if (upperMeasurements.indexOf("PRES") >= 0) streamPressure = true;
-        if (upperMeasurements.indexOf("CO2") >= 0) streamCO2 = true;
-    }
-};
-
 class CommunicationManager {
 private:
     SCPI_Parser* scpiParser;
@@ -77,19 +30,6 @@ private:
     
     // Command handling
     std::map<String, CommandHandler> commandHandlers;
-
-    // Streaming functionality
-    bool isStreaming;
-    unsigned long lastStreamTime;
-    unsigned long streamInterval;
-    std::vector<StreamingConfig> streamingConfigs;
-    
-    // Buffer management
-    int streamBufferFullRetries;  // Counter for buffer full conditions
-    const int MAX_BUFFER_FULL_RETRIES = 3;  // Max retries before stopping
-    
-    // Flag to prevent sending data after stopping streaming
-    bool justStoppedStreaming;
     
     // Static reference to UART debug serial
     static Print* uartDebugSerial;
@@ -128,17 +68,15 @@ private:
     
     // Command handler methods
     bool handleIdentify(const std::vector<String>& params);
-    bool handleMeasureSingle(const std::vector<String>& params);
+    bool handleMeasure(const std::vector<String>& params);
     bool handleListSensors(const std::vector<String>& params);
     bool handleGetConfig(const std::vector<String>& params);
     bool handleSetBoardId(const std::vector<String>& params);
     bool handleUpdateConfig(const std::vector<String>& params);
-    bool handleStreamStart(const std::vector<String>& params);
-    bool handleStreamStop(const std::vector<String>& params);
-    bool handleStreamStatus(const std::vector<String>& params);
     bool handleTestFilesystem(const std::vector<String>& params);
     bool handleTestUpdateConfig(const std::vector<String>& params);
     bool handleEcho(const std::vector<String>& params);
+    bool handleReset(const std::vector<String>& params);
     
     // Message routing command handlers
     bool handleMessageRoutingStatus(const std::vector<String>& params);
@@ -161,17 +99,6 @@ public:
      * @brief Process a single incoming command line
      */
     void processCommandLine();
-    
-    /**
-     * @brief Handle only streaming without processing commands
-     */
-    void handleStreamingOnly();
-    
-    // Streaming methods
-    bool startStreaming(const std::vector<StreamingConfig>& configs);
-    void stopStreaming();
-    bool isCurrentlyStreaming() const;
-    void handleStreaming();
     
     // Getter methods for use in callbacks
     static CommunicationManager* getInstance();
