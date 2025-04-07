@@ -95,13 +95,10 @@ bool ConfigManager::loadConfigFromFile() {
     
     errorHandler->logInfo("JSON parsed successfully");
     
-    // Extract board identifier - handle both old and new key names for backward compatibility
+    // Extract Environmental Monitor IDentifier - handle both old and new key names for backward compatibility
     if (!doc["Environmental Monitor ID"].isNull()) {
         boardId = doc["Environmental Monitor ID"].as<String>();
         errorHandler->logInfo("Using Environmental Monitor ID: " + boardId);
-    } else if (!doc["Board ID"].isNull()) {
-        boardId = doc["Board ID"].as<String>();
-        errorHandler->logInfo("Using Board ID: " + boardId);
     } else {
         boardId = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
         errorHandler->logInfo("No ID found, using default: " + boardId);
@@ -238,7 +235,7 @@ bool ConfigManager::createDefaultConfig() {
     JsonDocument doc;
     
     // Create default configuration
-    doc["Board ID"] = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
+    doc["Environmental Monitor ID"] = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
     
     // Add I2C sensors array and first sensor
     JsonArray i2cSensors = doc["I2C Sensors"].to<JsonArray>();
@@ -279,7 +276,7 @@ String ConfigManager::getBoardIdentifier() {
 
 // Set the board identifier
 bool ConfigManager::setBoardIdentifier(String identifier) {
-    // Update board ID in memory
+    // Update Environmental Monitor ID in memory
     boardId = identifier;
     
     // Update config file
@@ -294,18 +291,13 @@ bool ConfigManager::setBoardIdentifier(String identifier) {
     configFile.close();
     
     if (error) {
-        errorHandler->logError(ERROR, "Failed to parse config when updating board ID");
+        errorHandler->logError(ERROR, "Failed to parse config when updating Environmental Monitor ID");
         return false;
     }
     
-    // Check whether to use Environmental Monitor ID or Board ID
-    if (!doc["Environmental Monitor ID"].isNull()) {
-        doc["Environmental Monitor ID"] = boardId;
-    } else {
-        // Update the board ID - use Board ID key
-        doc["Board ID"] = boardId;
-    }
-    
+    // Update the Environmental Monitor ID in the JSON document
+    doc["Environmental Monitor ID"] = boardId;
+        
     // Save the updated configuration
     configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "w");
     if (!configFile) {
@@ -320,7 +312,7 @@ bool ConfigManager::setBoardIdentifier(String identifier) {
     }
     
     configFile.close();
-    errorHandler->logInfo("Updated Board ID to: " + boardId);
+    errorHandler->logInfo("Updated Environmental Monitor ID to: " + boardId);
     
     // Notify about the configuration change
     String configJson;
@@ -459,8 +451,6 @@ bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
         return false;
     }
 
-    // Standardize ID field (convert legacy format if needed)
-    standardizeConfigFields(doc);
     
     // Save to file
     if (!writeConfigToFile(doc)) {
@@ -479,18 +469,6 @@ bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
     return success;
 }
 
-// Helper to standardize config fields (handle older formats)
-void ConfigManager::standardizeConfigFields(JsonDocument& doc) {
-    // Check which ID field is used
-    if (!doc["Environmental Monitor ID"].isNull()) {
-        // Convert to Board ID
-        doc["Board ID"] = doc["Environmental Monitor ID"];
-        doc.remove("Environmental Monitor ID");
-    } else if (doc["Board ID"].isNull()) {
-        // Add default ID if none exists
-        doc["Board ID"] = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
-    }
-}
 
 // Helper to write config to file
 bool ConfigManager::writeConfigToFile(const JsonDocument& doc) {

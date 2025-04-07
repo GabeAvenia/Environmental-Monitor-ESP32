@@ -23,5 +23,6 @@
             "SS Pin": 0,
             "Polling Rate[1000 ms]": 2000
         }
-    ]
+    ],
+    "Additional":""
 }

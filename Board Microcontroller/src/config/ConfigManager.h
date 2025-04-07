@@ -53,7 +53,6 @@ private:
     void notifyConfigChanged(const String& newConfig);
     
     // New helper methods
-    void standardizeConfigFields(JsonDocument& doc);
     bool writeConfigToFile(const JsonDocument& doc);
 
 public:
