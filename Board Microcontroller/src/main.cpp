@@ -8,6 +8,7 @@
 #include "managers/I2CManager.h"
 #include "managers/SPIManager.h"
 #include "managers/SensorManager.h"
+#include "managers/LedManager.h"
 #include "communication/CommunicationManager.h"
 
 // Define UART pins for debug output
@@ -37,6 +38,7 @@ SPIManager* spiManager = nullptr;
 SensorManager* sensorManager = nullptr;
 CommunicationManager* commManager = nullptr;
 HardwareSerial* debugSerial = nullptr;
+LedManager* ledManager = nullptr;
 
 // Global references to serial ports
 Print* usbSerial = nullptr;
@@ -106,13 +108,16 @@ uint32_t getFastestPollingRate() {
 void setup() {
     // Initialize USB Serial for command interface
     Serial.begin(115200);
-    delay(100); // Give serial time to initialize
+    ledManager = new LedManager(errorHandler);
+    ledManager->begin();
+    ledManager->setSetupMode();
+    delay(10); // Give serial time to initialize
     usbSerial = &Serial;
     
     // Initialize UART for debug messages
     debugSerial = &Serial2;
     debugSerial->begin(115200, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
-    delay(100); // Give serial time to initialize
+    delay(10); // Give serial time to initialize
     uartDebugSerial = debugSerial;
     
     // Initialize the error handler with debug output to UART only
@@ -197,7 +202,7 @@ void setup() {
     feedWatchdog();
     
     // Setup communication
-    commManager = new CommunicationManager(sensorManager, configManager, errorHandler);
+    commManager = new CommunicationManager(sensorManager, configManager, errorHandler, ledManager);
     commManager->begin(115200);
     
     // Pass the UART debug serial to the CommManager
@@ -210,15 +215,18 @@ void setup() {
     
     errorHandler->logInfo("System initialization complete");
     errorHandler->logInfo("System ready. Environmental Monitor ID: " + configManager->getBoardIdentifier());
-    
+    ledManager->setNormalMode();    
     // Print a simple ready message to the main terminal
     Serial.println(String(Constants::PRODUCT_NAME) + " ready.");
+
 }
 
 void loop() {
     // Feed watchdog if enabled
     feedWatchdog();
-    
+    if (ledManager) {
+        ledManager->update();
+    }
     // Process commands if available
     commManager->processIncomingData();
     
@@ -238,7 +246,9 @@ void loop() {
         // Force update readings every polling cycle to ensure fresh values
         sensorManager->updateReadings(true);
         lastPollingTime = currentTime;
-        
+        if (ledManager && !ledManager->isIdentifying()) {
+            ledManager->indicateReading();
+        }  // Pulse green when reading sensors
         // Small delay to allow other tasks to run
         vTaskDelay(5);
     } else {

@@ -10,13 +10,15 @@ CommunicationManager* CommunicationManager::instance = nullptr;
 // Initialize the UART debug serial
 Print* CommunicationManager::uartDebugSerial = nullptr;
 
-CommunicationManager::CommunicationManager(SensorManager* sensorMgr, ConfigManager* configMgr, ErrorHandler* err) :
+CommunicationManager::CommunicationManager(SensorManager* sensorMgr, ConfigManager* configMgr, ErrorHandler* err, LedManager* led) :
     sensorManager(sensorMgr),
     configManager(configMgr),
-    errorHandler(err) {
+    errorHandler(err),
+    ledManager(led) {
     instance = this;
     scpiParser = new SCPI_Parser();
 }
+
 
 CommunicationManager::~CommunicationManager() {
     delete scpiParser;
@@ -29,6 +31,9 @@ void CommunicationManager::begin(long baudRate) {
 
 void CommunicationManager::setUartDebugSerialPtr(Print* debugSerial) {
     uartDebugSerial = debugSerial;
+}
+void CommunicationManager::setLedManager(LedManager* led) {
+    ledManager = led;
 }
 
 void CommunicationManager::registerCommandHandlers() {
@@ -94,6 +99,8 @@ void CommunicationManager::registerCommandHandlers() {
 
     commandHandlers[Constants::SCPI::MSG_ROUTE_CRITICAL] = 
         [this](const std::vector<String>& params) { return handleCriticalRoute(params); };
+    commandHandlers[Constants::SCPI::LED_IDENTIFY] = 
+        [this](const std::vector<String>& params) { return handleLedIdentify(params); };
 }
 
 void CommunicationManager::setupCommands() {
@@ -264,6 +271,12 @@ void CommunicationManager::setupCommands() {
                 params.push_back(String(parameters[i]));
             }
             CommunicationManager::getInstance()->handleCriticalRoute(params);
+        });
+
+    scpiParser->RegisterCommand(F("SYST:LED:IDENT"), 
+        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
+            std::vector<String> params;
+            CommunicationManager::getInstance()->handleLedIdentify(params);
         });
     
     errorHandler->logInfo("SCPI commands registered");
@@ -593,6 +606,17 @@ bool CommunicationManager::handleSetMessageRoute(const std::vector<String>& para
     }
     
     errorHandler->logInfo(severity + " messages routed to " + destination);
+    return true;
+}
+
+bool CommunicationManager::handleLedIdentify(const std::vector<String>& params) {
+    if (ledManager) {
+        ledManager->startIdentify();
+        Serial.println("LED identify mode activated");
+    } else {
+        Serial.println("ERROR: LED manager not available");
+        return false;
+    }
     return true;
 }
 

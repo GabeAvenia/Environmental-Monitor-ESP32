@@ -42,5 +42,8 @@ namespace Constants {
         static const char* TEST = "TEST";
         static const char* ECHO = "ECHO";
         static const char* RESET = "RESET";
+        
+        // LED control commands
+        static const char* LED_IDENTIFY = "SYST:LED:IDENT";
     }
 }

@@ -13,6 +13,7 @@ class Stream;
 #include "../managers/SensorManager.h"
 #include "../config/ConfigManager.h"
 #include "../error/ErrorHandler.h"
+#include "../managers/LedManager.h"
 
 /**
  * Command Handler - Function signature for command processing functions
@@ -27,6 +28,7 @@ private:
     SensorManager* sensorManager;
     ConfigManager* configManager;
     ErrorHandler* errorHandler;
+    LedManager* ledManager = nullptr;
     
     // Command handling
     std::map<String, CommandHandler> commandHandlers;
@@ -37,6 +39,11 @@ private:
     // Singleton instance for callback access
     static CommunicationManager* instance;
     
+    /**
+     * @brief Destructor for CommunicationManager.
+     */
+    ~CommunicationManager();
+        
     /**
      * Parse a raw command string into command and parameters
      * @param rawCommand - The full command string
@@ -86,14 +93,16 @@ private:
     bool handleWarningRoute(const std::vector<String>& params);
     bool handleErrorRoute(const std::vector<String>& params);
     bool handleCriticalRoute(const std::vector<String>& params);
-    
+    bool handleLedIdentify(const std::vector<String>& params);
+
 public:
-    CommunicationManager(SensorManager* sensorMgr, ConfigManager* configMgr, ErrorHandler* err);
-    ~CommunicationManager();
+    CommunicationManager(SensorManager* sensorMgr, ConfigManager* configMgr, 
+    ErrorHandler* err, LedManager* led = nullptr);
     
     void begin(long baudRate);
     void setupCommands();
     void processIncomingData();
+    void setLedManager(LedManager* led);
     
     /**
      * @brief Process a single incoming command line
