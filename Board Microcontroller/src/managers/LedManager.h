@@ -28,14 +28,14 @@ private:
     bool identifying = false;
     unsigned long identifyStartTime = 0;
     
-    // LED brightness levels
-    const uint8_t DIM_BRIGHTNESS = 30;    // 30% brightness for idle
-    const uint8_t FULL_BRIGHTNESS = 100;  // 100% brightness for active
-    
-    // Reading pulse effect tracking
-    bool pulseActive = false;
-    unsigned long pulseStartTime = 0;
-    const unsigned long PULSE_DURATION = 50;  // ms
+     // LED brightness levels
+     const uint8_t DIM_BRIGHTNESS = 30;    // 30% brightness for idle
+     const uint8_t FULL_BRIGHTNESS = 100;  // 100% brightness for active
+     
+     // Reading pulse effect tracking
+     bool pulseActive = false;
+     unsigned long pulseStartTime = 0;
+     const unsigned long PULSE_DURATION = 100;
     
     /**
      * @brief Set a solid color on the NeoPixel

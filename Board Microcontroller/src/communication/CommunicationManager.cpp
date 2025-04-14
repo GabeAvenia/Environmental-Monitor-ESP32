@@ -321,8 +321,29 @@ bool CommunicationManager::processCommand(const String& command, const std::vect
 }
 
 void CommunicationManager::processIncomingData() {
-    if (Serial.available()) {
-        processCommandLine();
+    // Only attempt to read if there's data available
+    if (Serial.available() > 0) {
+        // Check if serial has been idle for a certain amount of time
+        static unsigned long lastSerialActivity = 0;
+        static bool commandPending = false;
+        
+        // Update activity timestamp
+        lastSerialActivity = millis();
+        commandPending = true;
+        
+        // If we have data and at least a brief pause after the last byte received
+        // (indicating a likely complete command), process it
+        if (Serial.available() && commandPending) {
+            if (Serial.peek() == '\n' || Serial.peek() == '\r') {
+                // We found a line ending, process the command
+                processCommandLine();
+                commandPending = false;
+            } else if (Serial.available() > 64) {
+                // Buffer is getting full, process anyway to avoid overflow
+                processCommandLine();
+                commandPending = false;
+            }
+        }
     }
 }
 

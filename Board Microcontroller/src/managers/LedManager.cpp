@@ -61,13 +61,16 @@ void LedManager::setNormalMode() {
 void LedManager::indicateReading() {
     if (!initialized || identifying) return;
     
-    if (errorHandler) {
-        errorHandler->logInfo("LED pulse for reading started");
-    }
-    
     pulseActive = true;
     pulseStartTime = millis();
+    
+    // Flash from dim green to bright green and back
     setColor(COLOR_GREEN, FULL_BRIGHTNESS);
+    
+    // More obvious logging
+    if (errorHandler) {
+        errorHandler->logInfo("LED pulse: Reading sensors");
+    }
 }
 
 void LedManager::startIdentify() {

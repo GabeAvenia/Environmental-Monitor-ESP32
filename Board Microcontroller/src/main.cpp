@@ -224,18 +224,24 @@ void setup() {
 void loop() {
     // Feed watchdog if enabled
     feedWatchdog();
+    
     if (ledManager) {
         ledManager->update();
     }
-    // Process commands if available
-    commManager->processIncomingData();
+    
+    // Process commands if available, with timeout protection
+    static unsigned long lastCommandCheck = 0;
+    unsigned long currentTime = millis();
+    
+    if (currentTime - lastCommandCheck >= 10) {  // Check every 10ms
+        lastCommandCheck = currentTime;
+        commManager->processIncomingData();
+    }
     
     // Update sensor readings based on configured polling rates
     // This will only update sensors that need updating based on the cache age
-    unsigned long currentTime = millis();
     uint32_t pollingInterval = getFastestPollingRate();
     
- 
     // to save power - cache system will still update when needed
     uint32_t backgroundPollingInterval = pollingInterval;
     
@@ -246,9 +252,11 @@ void loop() {
         // Force update readings every polling cycle to ensure fresh values
         sensorManager->updateReadings(true);
         lastPollingTime = currentTime;
+        
         if (ledManager && !ledManager->isIdentifying()) {
             ledManager->indicateReading();
         }  // Pulse green when reading sensors
+        
         // Small delay to allow other tasks to run
         vTaskDelay(5);
     } else {
