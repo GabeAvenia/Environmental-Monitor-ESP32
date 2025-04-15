@@ -43,28 +43,12 @@ private:
      * @brief Destructor for CommunicationManager.
      */
     ~CommunicationManager();
-        
-    /**
-     * Parse a raw command string into command and parameters
-     * @param rawCommand - The full command string
-     * @param command - Output parameter that will contain the command
-     * @param params - Output parameter that will contain the parameters
-     */
-    void parseCommand(const String& rawCommand, String& command, std::vector<String>& params);
-    
+
     /**
      * Register all commands with their handlers
      */
     void registerCommandHandlers();
-    
-    /**
-     * Process a command using the registered handler
-     * @param command - The command to process
-     * @param params - The command parameters
-     * @return true if command was found and processed successfully
-     */
-    bool processCommand(const String& command, const std::vector<String>& params);
-    
+
     /**
      * Collect readings from a sensor into a values vector
      * @param sensorName - The name of the sensor to read from
@@ -75,9 +59,6 @@ private:
     
     // Command handler methods
     bool handleIdentify(const std::vector<String>& params);
-    bool handleMeasure(const std::vector<String>& params);
-    bool handleListSensors(const std::vector<String>& params);
-    bool handleGetConfig(const std::vector<String>& params);
     bool handleSetBoardId(const std::vector<String>& params);
     bool handleUpdateConfig(const std::vector<String>& params);
     bool handleTestFilesystem(const std::vector<String>& params);
@@ -101,7 +82,12 @@ public:
     
     void begin(long baudRate);
     void setupCommands();
+    
+    /**
+     * @brief Process incoming serial data and handle complete commands
+     */
     void processIncomingData();
+    
     void setLedManager(LedManager* led);
     
     /**
@@ -114,10 +100,32 @@ public:
     SensorManager* getSensorManager();
     ConfigManager* getConfigManager();
     ErrorHandler* getErrorHandler();
-    
+    SCPI_Parser* getScpiParser() {
+        return scpiParser;
+    }
     /**
      * @brief Set the UART debug serial pointer for message routing
      * @param debugSerial Pointer to the debug serial
      */
     static void setUartDebugSerialPtr(Print* debugSerial);
+
+        /**
+     * Parse a raw command string into command and parameters
+     * @param rawCommand - The full command string
+     * @param command - Output parameter that will contain the command
+     * @param params - Output parameter that will contain the parameters
+     */
+    void parseCommand(const String& rawCommand, String& command, std::vector<String>& params);
+
+    /**
+     * Process a command using the registered handler
+     * @param command - The command to process
+     * @param params - The command parameters
+     * @return true if command was found and processed successfully
+     */
+    bool processCommand(const String& command, const std::vector<String>& params);
+
+    bool handleMeasure(const std::vector<String>& params);
+    bool handleListSensors(const std::vector<String>& params);
+    bool handleGetConfig(const std::vector<String>& params);
 };

@@ -30,7 +30,7 @@ private:
     
      // LED brightness levels
      const uint8_t DIM_BRIGHTNESS = 30;    // 30% brightness for idle
-     const uint8_t FULL_BRIGHTNESS = 100;  // 100% brightness for active
+     const uint8_t FULL_BRIGHTNESS = 40;  // 100% brightness for active
      
      // Reading pulse effect tracking
      bool pulseActive = false;

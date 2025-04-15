@@ -321,29 +321,30 @@ bool CommunicationManager::processCommand(const String& command, const std::vect
 }
 
 void CommunicationManager::processIncomingData() {
-    // Only attempt to read if there's data available
+    // Check if there's data available in the serial buffer
     if (Serial.available() > 0) {
-        // Check if serial has been idle for a certain amount of time
-        static unsigned long lastSerialActivity = 0;
-        static bool commandPending = false;
+        // Read the entire line, which is more reliable in this context
+        String rawCommand = Serial.readStringUntil('\n');
+        rawCommand.trim();
         
-        // Update activity timestamp
-        lastSerialActivity = millis();
-        commandPending = true;
+        // Log receipt for debugging
+        errorHandler->logInfo("Processing command: '" + rawCommand + "'");
         
-        // If we have data and at least a brief pause after the last byte received
-        // (indicating a likely complete command), process it
-        if (Serial.available() && commandPending) {
-            if (Serial.peek() == '\n' || Serial.peek() == '\r') {
-                // We found a line ending, process the command
-                processCommandLine();
-                commandPending = false;
-            } else if (Serial.available() > 64) {
-                // Buffer is getting full, process anyway to avoid overflow
-                processCommandLine();
-                commandPending = false;
-            }
+        // Parse and process command
+        String command;
+        std::vector<String> params;
+        parseCommand(rawCommand, command, params);
+        
+        // Try to handle with our command processors
+        if (!processCommand(command, params)) {
+            // Fall back to SCPI parser for compatibility
+            char buff[rawCommand.length() + 1];
+            rawCommand.toCharArray(buff, rawCommand.length() + 1);
+            scpiParser->ProcessInput(Serial, buff);
         }
+        
+        // Ensure all responses are sent
+        Serial.flush();
     }
 }
 
@@ -445,15 +446,15 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
     bool readPres = useAllMeasurements || upperMeasurements.indexOf("PRES") >= 0;
     bool readCO2 = useAllMeasurements || upperMeasurements.indexOf("CO2") >= 0;
     
-    // Read temperature if supported and requested
+    // Read temperature if supported and requested using thread-safe method
     if (readTemp && sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-        TemperatureReading tempReading = sensorManager->getTemperature(sensorName);
+        TemperatureReading tempReading = sensorManager->getTemperatureSafe(sensorName);
         values.push_back(tempReading.valid ? String(tempReading.value) : "NA");
     }
     
-    // Read humidity if supported and requested
+    // Read humidity if supported and requested using thread-safe method
     if (readHum && sensor->supportsInterface(InterfaceType::HUMIDITY)) {
-        HumidityReading humReading = sensorManager->getHumidity(sensorName);
+        HumidityReading humReading = sensorManager->getHumiditySafe(sensorName);
         values.push_back(humReading.valid ? String(humReading.value) : "NA");
     }
     
