@@ -1,5 +1,4 @@
 #include "Si7021Sensor.h"
-
 Si7021Sensor::Si7021Sensor(const String& sensorName, int address, TwoWire* i2cBus, ErrorHandler* err)
     : BaseSensor(sensorName, SensorType::SI7021, err),
       wire(i2cBus),
@@ -61,28 +60,59 @@ bool Si7021Sensor::updateReadings() const {
         return false;
     }
     
-    // Read temperature
-    float temp = si7021.readTemperature();
-    if (isnan(temp)) {
-        logErrorPublic("Failed to read temperature from Si7021 sensor: " + name);
-        const_cast<Si7021Sensor*>(this)->connected = false;
-        return false;
-    }
-    lastTemperature = temp;
+    // Adding retries for more robustness
+    const int MAX_RETRIES = 3;
+    float temp = NAN;
+    float humidity = NAN;
+    bool success = false;
     
-    // Read humidity
-    float humidity = si7021.readHumidity();
-    if (isnan(humidity)) {
-        logErrorPublic("Failed to read humidity from Si7021 sensor: " + name);
+    for (int attempt = 0; attempt < MAX_RETRIES && !success; attempt++) {
+        if (attempt > 0) {
+            // Add a delay between retries
+            delay(50);
+            logInfoPublic("Retrying Si7021 reading, attempt " + String(attempt+1) + " of " + String(MAX_RETRIES));
+        }
+        
+        // Try reading temperature first
+        try {
+            temp = si7021.readTemperature();
+            
+            // If temperature read was successful, try humidity
+            if (!isnan(temp)) {
+                // Add a brief delay between readings to prevent I2C issues
+                delay(5);
+                humidity = si7021.readHumidity();
+                
+                // If both readings were successful, we're done
+                if (!isnan(humidity)) {
+                    success = true;
+                }
+            }
+        } catch (...) {
+            // Handle any exceptions (Arduino doesn't fully support them,
+            // but this is a safety net for library implementation)
+            logErrorPublic("Exception during Si7021 reading for sensor: " + name);
+            delay(20); // Additional delay on exception
+        }
+    }
+    
+    // Check if readings were successful
+    if (!success) {
+        // Both readings failed even after retries
+        logErrorPublic("Failed to read from Si7021 sensor: " + name + " after " + String(MAX_RETRIES) + " retries");
         const_cast<Si7021Sensor*>(this)->connected = false;
         return false;
     }
+    
+    // Update stored values
+    lastTemperature = temp;
     lastHumidity = humidity;
     
     return true;
 }
 
 float Si7021Sensor::readTemperature() {
+    // Try to update both readings since they're related
     if (!updateReadings()) {
         return NAN;
     }
@@ -90,6 +120,7 @@ float Si7021Sensor::readTemperature() {
 }
 
 float Si7021Sensor::readHumidity() {
+    // Try to update both readings since they're related
     if (!updateReadings()) {
         return NAN;
     }
@@ -97,20 +128,19 @@ float Si7021Sensor::readHumidity() {
 }
 
 bool Si7021Sensor::performSelfTest() {
-    // Attempt to read both temperature and humidity
-    float temp = si7021.readTemperature();
-    float hum = si7021.readHumidity();
+    // Reset the connected state before test
+    connected = false;
     
-    // Check if readings are valid
-    bool success = !isnan(temp) && !isnan(hum);
+    // Try to get both temperature and humidity readings
+    bool success = updateReadings();
     
-    if (!success) {
-        logError("Self-test failed for Si7021 sensor: " + name);
-        connected = false;
-    } else {
+    if (success) {
         connected = true;
         logInfo("Self-test passed for Si7021 sensor: " + name + 
-                " (Temperature: " + String(temp) + "°C, Humidity: " + String(hum) + "%)");
+                " (Temperature: " + String(lastTemperature) + "°C, Humidity: " + 
+                String(lastHumidity) + "%)");
+    } else {
+        logError("Self-test failed for Si7021 sensor: " + name);
     }
     
     return success;
@@ -153,4 +183,44 @@ void* Si7021Sensor::getInterface(InterfaceType type) const {
         default:
             return nullptr;
     }
+}
+
+bool Si7021Sensor::reinitialize() {
+    logInfo("Attempting to reinitialize Si7021 sensor: " + name);
+    
+    // Reset the connection state
+    connected = false;
+    
+    // Add a small delay before reinitialization
+    delay(50);
+    
+    // Try to initialize the sensor again
+    bool success = false;
+    
+    // The Si7021 library doesn't support specifying the Wire instance
+    // We need to do a manual check based on the wire pointer
+    if (wire == &Wire) {
+        // Using default Wire
+        success = si7021.begin();
+    } else if (wire == &Wire1) {
+        // Using Wire1 (STEMMA QT port)
+        Wire = Wire1;  // Temporarily redirect Wire to Wire1
+        success = si7021.begin();
+    }
+    
+    if (success) {
+        connected = true;
+        logInfo("Successfully reinitialized Si7021 sensor: " + name);
+        
+        // Read the serial number again to verify
+        uint32_t serialNumber = si7021.sernum_a;
+        logInfo("Si7021 serial number after reinit: 0x" + String(serialNumber, HEX));
+        
+        // Update readings immediately
+        updateReadings();
+    } else {
+        logError("Failed to reinitialize Si7021 sensor: " + name);
+    }
+    
+    return success;
 }

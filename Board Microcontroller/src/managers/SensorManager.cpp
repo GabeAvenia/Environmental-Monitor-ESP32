@@ -468,10 +468,250 @@ HumidityReading SensorManager::getHumidity(const String& sensorName) {
     return HumidityReading(cache.humidity, cache.humTimestamp);
 }
 
+/**
+ * @brief Thread-safe wrapper for getTemperature with improved mutex timing
+ * 
+ * @param sensorName The name of the sensor to read from
+ * @return The temperature reading
+ */
+TemperatureReading SensorManager::getTemperatureSafe(const String& sensorName) {
+    TemperatureReading reading;
+    
+    // Try to take the mutex with a much longer timeout (500ms)
+    const TickType_t xTicksToWait = pdMS_TO_TICKS(500);
+    
+    // Make sure mutex is valid
+    if (sensorMutex != nullptr) {
+        // First check if we should even try to take the mutex
+        ISensor* sensor = findSensor(sensorName);
+        if (!sensor || !sensor->isConnected()) {
+            // Sensor is unavailable, return invalid reading immediately
+            if (errorHandler) {
+                errorHandler->logWarning("Sensor " + sensorName + " not found or disconnected, skipping mutex acquisition");
+            }
+            return reading;
+        }
+        
+        // Try to take the mutex with timeout
+        unsigned long startTime = millis();
+        if (xSemaphoreTake(sensorMutex, xTicksToWait) == pdTRUE) {
+            // Got the mutex - check if the sensor is still valid and connected
+            sensor = findSensor(sensorName);
+            if (sensor && sensor->isConnected()) {
+                // Read temperature
+                reading = getTemperature(sensorName);
+            }
+            
+            // Release the mutex
+            xSemaphoreGive(sensorMutex);
+            
+            unsigned long elapsedTime = millis() - startTime;
+            if (errorHandler && elapsedTime > 100) {
+                // Log only if it took a significant time to acquire the mutex
+                errorHandler->logInfo("Mutex for " + sensorName + " acquired after " + String(elapsedTime) + "ms");
+            }
+        } else {
+            // Mutex acquisition failed - log and use cached reading
+            if (errorHandler) {
+                errorHandler->logWarning("Failed to acquire mutex for temperature reading: " + sensorName);
+            }
+            
+            // Use cached reading if available
+            auto it = readingCache.find(sensorName);
+            if (it != readingCache.end()) {
+                const SensorCache& cache = it->second;
+                if (cache.tempValid) {
+                    reading = TemperatureReading(cache.temperature, cache.tempTimestamp);
+                    if (errorHandler) {
+                        errorHandler->logInfo("Using cached temperature reading for " + sensorName);
+                    }
+                }
+            }
+        }
+    } else {
+        // No mutex available - try a direct reading as a fallback
+        reading = getTemperature(sensorName);
+    }
+    
+    return reading;
+}
+
+/**
+ * @brief Thread-safe wrapper for getHumidity with improved mutex timing
+ * 
+ * @param sensorName The name of the sensor to read from
+ * @return The humidity reading
+ */
+HumidityReading SensorManager::getHumiditySafe(const String& sensorName) {
+    HumidityReading reading;
+    
+    // Try to take the mutex with a much longer timeout (500ms)
+    const TickType_t xTicksToWait = pdMS_TO_TICKS(500);
+    
+    // Make sure mutex is valid
+    if (sensorMutex != nullptr) {
+        // First check if we should even try to take the mutex
+        ISensor* sensor = findSensor(sensorName);
+        if (!sensor || !sensor->isConnected()) {
+            // Sensor is unavailable, return invalid reading immediately
+            if (errorHandler) {
+                errorHandler->logWarning("Sensor " + sensorName + " not found or disconnected, skipping mutex acquisition");
+            }
+            return reading;
+        }
+        
+        // Try to take the mutex with timeout
+        unsigned long startTime = millis();
+        if (xSemaphoreTake(sensorMutex, xTicksToWait) == pdTRUE) {
+            // Got the mutex - check if the sensor is still valid and connected
+            sensor = findSensor(sensorName);
+            if (sensor && sensor->isConnected()) {
+                // Read humidity
+                reading = getHumidity(sensorName);
+            }
+            
+            // Release the mutex
+            xSemaphoreGive(sensorMutex);
+            
+            unsigned long elapsedTime = millis() - startTime;
+            if (errorHandler && elapsedTime > 100) {
+                // Log only if it took a significant time to acquire the mutex
+                errorHandler->logInfo("Mutex for " + sensorName + " acquired after " + String(elapsedTime) + "ms");
+            }
+        } else {
+            // Mutex acquisition failed - log and use cached reading
+            if (errorHandler) {
+                errorHandler->logWarning("Failed to acquire mutex for humidity reading: " + sensorName);
+            }
+            
+            // Use cached reading if available
+            auto it = readingCache.find(sensorName);
+            if (it != readingCache.end()) {
+                const SensorCache& cache = it->second;
+                if (cache.humValid) {
+                    reading = HumidityReading(cache.humidity, cache.humTimestamp);
+                    if (errorHandler) {
+                        errorHandler->logInfo("Using cached humidity reading for " + sensorName);
+                    }
+                }
+            }
+        }
+    } else {
+        // No mutex available - try a direct reading as a fallback
+        reading = getHumidity(sensorName);
+    }
+    
+    return reading;
+}
+
 const SensorRegistry& SensorManager::getRegistry() const {
     return registry;
 }
 
 ISensor* SensorManager::findSensor(const String& name) {
     return registry.getSensorByName(name);
+}
+
+void SensorManager::setSensorMutex(SemaphoreHandle_t mutex) {
+    sensorMutex = mutex;
+    if (errorHandler) {
+        errorHandler->logInfo("Sensor mutex set directly in SensorManager");
+    }
+}
+
+bool SensorManager::reconnectSensor(const String& sensorName) {
+    ISensor* sensor = findSensor(sensorName);
+    if (!sensor) {
+        if (errorHandler) {
+            errorHandler->logWarning("Cannot reconnect - sensor not found: " + sensorName);
+        }
+        return false;
+    }
+    
+    if (sensor->isConnected()) {
+        // Sensor is already connected
+        return true;
+    }
+    
+    if (errorHandler) {
+        errorHandler->logInfo("Attempting to reconnect sensor: " + sensorName);
+    }
+    
+    // Special handling for Si7021 sensors based on type string rather than dynamic_cast
+    if (sensor->getTypeString().indexOf("Si7021") >= 0) {
+        // For Si7021 sensors, we need a special reconnection approach
+        // Since we can't use dynamic_cast, we'll use a different approach
+        if (errorHandler) {
+            errorHandler->logInfo("Using specialized reconnection for Si7021 sensor");
+        }
+        
+        // First try regular initialize
+        if (sensor->initialize()) {
+            if (errorHandler) {
+                errorHandler->logInfo("Successfully reconnected Si7021 sensor via initialize: " + sensorName);
+            }
+            return true;
+        }
+        
+        // If that didn't work, try a more aggressive approach with self-test
+        if (sensor->performSelfTest()) {
+            if (errorHandler) {
+                errorHandler->logInfo("Successfully reconnected Si7021 sensor via self-test: " + sensorName);
+            }
+            return true;
+        }
+        
+        // Still failed - report and return
+        if (errorHandler) {
+            errorHandler->logError(ERROR, "Failed to reconnect Si7021 sensor: " + sensorName);
+        }
+        return false;
+    }
+    
+    // Generic reconnection attempt for other sensors
+    if (sensor->initialize()) {
+        if (errorHandler) {
+            errorHandler->logInfo("Successfully reconnected sensor: " + sensorName);
+        }
+        return true;
+    }
+    
+    // Try self-test if initialize didn't work
+    if (sensor->performSelfTest()) {
+        if (errorHandler) {
+            errorHandler->logInfo("Sensor reconnected via self-test: " + sensorName);
+        }
+        return true;
+    }
+    
+    if (errorHandler) {
+        errorHandler->logError(ERROR, "Failed to reconnect sensor: " + sensorName);
+    }
+    return false;
+}
+
+/**
+ * @brief Attempt to reconnect all disconnected sensors
+ * 
+ * @return The number of successfully reconnected sensors
+ */
+int SensorManager::reconnectAllSensors() {
+    int reconnectedCount = 0;
+    
+    auto registry = getRegistry();
+    auto sensors = registry.getAllSensors();
+    
+    for (auto sensor : sensors) {
+        if (!sensor->isConnected()) {
+            if (reconnectSensor(sensor->getName())) {
+                reconnectedCount++;
+            }
+        }
+    }
+    
+    if (errorHandler && reconnectedCount > 0) {
+        errorHandler->logInfo("Reconnected " + String(reconnectedCount) + " sensors");
+    }
+    
+    return reconnectedCount;
 }

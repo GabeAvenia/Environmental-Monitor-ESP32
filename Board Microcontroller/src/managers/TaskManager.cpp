@@ -1,24 +1,47 @@
-#include "TaskManager.h"
+#include "managers/TaskManager.h"
 #include "managers/SensorManager.h"
 #include "managers/LedManager.h"
 #include "communication/CommunicationManager.h"
 #include "error/ErrorHandler.h"
-#include "Constants.h"
 
 // Static task functions that call the appropriate object method
 void TaskManager::sensorTaskFunction(void* pvParameters) {
+    // Add a delay before accessing parameters to ensure system is stable
+    vTaskDelay(pdMS_TO_TICKS(50));
+    
     TaskManager* taskManager = static_cast<TaskManager*>(pvParameters);
-    taskManager->sensorTask();
+    if (taskManager) {
+        taskManager->sensorTask();
+    } else {
+        // Safety check - this should never happen
+        vTaskDelete(NULL);
+    }
 }
 
 void TaskManager::commTaskFunction(void* pvParameters) {
+    // Add a delay before accessing parameters to ensure system is stable
+    vTaskDelay(pdMS_TO_TICKS(50));
+    
     TaskManager* taskManager = static_cast<TaskManager*>(pvParameters);
-    taskManager->commTask();
+    if (taskManager) {
+        taskManager->commTask();
+    } else {
+        // Safety check - this should never happen
+        vTaskDelete(NULL);
+    }
 }
 
 void TaskManager::ledTaskFunction(void* pvParameters) {
+    // Add a delay before accessing parameters to ensure system is stable
+    vTaskDelay(pdMS_TO_TICKS(50));
+    
     TaskManager* taskManager = static_cast<TaskManager*>(pvParameters);
-    taskManager->ledTask();
+    if (taskManager) {
+        taskManager->ledTask();
+    } else {
+        // Safety check - this should never happen
+        vTaskDelete(NULL);
+    }
 }
 
 TaskManager::TaskManager(SensorManager* sensorMgr, CommunicationManager* commMgr, 
@@ -27,6 +50,11 @@ TaskManager::TaskManager(SensorManager* sensorMgr, CommunicationManager* commMgr
       commManager(commMgr),
       ledManager(ledMgr),
       errorHandler(errHandler) {
+    // Initialize all task handles and mutex to nullptr
+    sensorTaskHandle = nullptr;
+    commTaskHandle = nullptr;
+    ledTaskHandle = nullptr;
+    sensorMutex = nullptr;
 }
 
 TaskManager::~TaskManager() {
@@ -34,6 +62,12 @@ TaskManager::~TaskManager() {
 }
 
 bool TaskManager::begin() {
+    // Clean up any existing mutex
+    if (sensorMutex != nullptr) {
+        vSemaphoreDelete(sensorMutex);
+        sensorMutex = nullptr;
+    }
+    
     // Create the mutex for sensor access
     sensorMutex = xSemaphoreCreateMutex();
     
@@ -44,12 +78,8 @@ bool TaskManager::begin() {
         return false;
     }
     
-    // Pass the mutex to the sensor manager
-    if (sensorManager) {
-        sensorManager->setSensorMutex(&sensorMutex);
-        if (errorHandler) {
-            errorHandler->logInfo("Sensor mutex initialized and passed to sensor manager");
-        }
+    if (errorHandler) {
+        errorHandler->logInfo("Sensor mutex created successfully");
     }
     
     return true;
@@ -58,14 +88,42 @@ bool TaskManager::begin() {
 bool TaskManager::startAllTasks() {
     bool success = true;
     
-    // Start the LED task
+    // Start the LED task first - it's the simplest
     success &= startLedTask();
     
-    // Start the sensor task
+    // Give time for the LED task to initialize
+    delay(100);
+    
+    // Start the communication task next
+    success &= startCommTask();
+    
+    // Give time for the communication task to initialize
+    delay(100);
+    
+    // Start the sensor task last
     success &= startSensorTask();
     
-    // Start the communication task
-    success &= startCommTask();
+    // Give time for all tasks to stabilize
+    delay(100);
+    
+    // Pass the mutex to the SensorManager after all tasks are running
+    if (success && sensorManager && sensorMutex) {
+        // Wait until we can acquire the mutex to ensure it's working properly
+        if (xSemaphoreTake(sensorMutex, pdMS_TO_TICKS(100)) == pdTRUE) {
+            // Release it immediately
+            xSemaphoreGive(sensorMutex);
+            
+            // Now pass it to the SensorManager
+            sensorManager->setSensorMutex(sensorMutex);
+            
+            if (errorHandler) {
+                errorHandler->logInfo("Sensor mutex verified and passed to sensor manager");
+            }
+        } else {
+            errorHandler->logError(ERROR, "Could not verify mutex before passing to SensorManager");
+            success = false;
+        }
+    }
     
     tasksInitialized = success;
     return success;
@@ -84,7 +142,7 @@ bool TaskManager::startLedTask() {
         return false;
     }
     
-    // Create the LED task on Core 0
+    // Create the LED task on Core 0 with a larger stack
     BaseType_t result = xTaskCreatePinnedToCore(
         ledTaskFunction,          // Task function
         TASK_NAME_LED,            // Task name
@@ -122,7 +180,7 @@ bool TaskManager::startSensorTask() {
         return false;
     }
     
-    // Create the sensor task on Core 1
+    // Create the sensor task on Core 0 with a larger stack
     BaseType_t result = xTaskCreatePinnedToCore(
         sensorTaskFunction,       // Task function
         TASK_NAME_SENSOR,         // Task name
@@ -160,7 +218,7 @@ bool TaskManager::startCommTask() {
         return false;
     }
     
-    // Create the communication task on Core 0
+    // Create the communication task on Core 1 with a larger stack
     BaseType_t result = xTaskCreatePinnedToCore(
         commTaskFunction,         // Task function
         TASK_NAME_COMM,           // Task name
@@ -217,8 +275,8 @@ void TaskManager::cleanupTasks() {
     tasksInitialized = false;
 }
 
-SemaphoreHandle_t* TaskManager::getSensorMutex() {
-    return &sensorMutex;
+SemaphoreHandle_t TaskManager::getSensorMutex() const {
+    return sensorMutex;  // Return the mutex directly, not a pointer to it
 }
 
 String TaskManager::getTaskStateString(TaskHandle_t handle) {
@@ -295,12 +353,17 @@ String TaskManager::getTaskMemoryInfo() const {
     return info;
 }
 
-// Task implementation methods
+// Task implementation methods - carefully written to avoid null pointer issues
 
 void TaskManager::sensorTask() {
-    // Wait for SensorManager to be fully initialized
-    while (sensorManager == nullptr) {
-        vTaskDelay(pdMS_TO_TICKS(100));
+    // Add a safety check to make sure we don't crash with null pointers
+    if (!sensorManager) {
+        if (errorHandler) {
+            errorHandler->logError(ERROR, "Sensor manager is null in sensor task!");
+        }
+        // Delete the task - it can't function
+        vTaskDelete(NULL);
+        return;
     }
     
     if (errorHandler) {
@@ -308,48 +371,119 @@ void TaskManager::sensorTask() {
     }
     
     uint32_t lastPollingTime = 0;
+    uint32_t lastI2CRecoveryTime = 0;
+    const uint32_t I2C_RECOVERY_INTERVAL = 5000; // Try to recover I2C bus every 5 seconds if needed
     
     // Task loop
     while (true) {
+        // Check if manager pointer is still valid (defensive programming)
+        if (!sensorManager) {
+            vTaskDelay(pdMS_TO_TICKS(100));
+            continue;
+        }
+        
         unsigned long currentTime = millis();
         uint32_t pollingInterval = 1000; // Default interval
         
         // Get fastest polling rate from sensor manager
-        if (sensorManager) {
-            pollingInterval = sensorManager->getMaxCacheAge();
-        }
+        pollingInterval = sensorManager->getMaxCacheAge();
+        
+        // Prevent polling too quickly
+        pollingInterval = max(pollingInterval, (uint32_t)50);
         
         // Check if it's time to poll
         if (currentTime - lastPollingTime >= pollingInterval) {
-            // Take the mutex before accessing the sensor manager
-            if (sensorMutex != NULL && xSemaphoreTake(sensorMutex, pdMS_TO_TICKS(100)) == pdTRUE) {
-                // Update all sensor readings
+            // Extra safety check on mutex
+            if (sensorMutex != NULL) {
+                // Try to take the mutex with a timeout
+                if (xSemaphoreTake(sensorMutex, pdMS_TO_TICKS(500)) == pdTRUE) {
+                    // Update all sensor readings - verify sensorManager is still valid
+                    if (sensorManager) {
+                        // Before updating readings, check if any sensor is disconnected and needs recovery
+                        bool needsI2CRecovery = false;
+                        auto registry = sensorManager->getRegistry();
+                        auto sensors = registry.getAllSensors();
+                        
+                        for (auto sensor : sensors) {
+                            if (!sensor->isConnected()) {
+                                if (errorHandler) {
+                                    errorHandler->logWarning("Sensor " + sensor->getName() + " is disconnected, may need recovery");
+                                }
+                                needsI2CRecovery = true;
+                            }
+                        }
+                        
+                        // Attempt I2C recovery if needed and enough time has passed
+                        if (needsI2CRecovery && (currentTime - lastI2CRecoveryTime > I2C_RECOVERY_INTERVAL)) {
+                            if (errorHandler) {
+                                errorHandler->logInfo("Attempting I2C bus recovery");
+                            }
+                            
+                            // Release the mutex during recovery
+                            xSemaphoreGive(sensorMutex);
+                            
+                            // First try rerunning sensor initialization
+                            if (sensorManager) {
+                                // This will try to reconnect sensors
+                                sensorManager->reconnectAllSensors();
+                            }
+                            
+                            // Remember when we tried recovery
+                            lastI2CRecoveryTime = currentTime;
+                            
+                            // Take the mutex again
+                            if (xSemaphoreTake(sensorMutex, pdMS_TO_TICKS(500)) != pdTRUE) {
+                                // Couldn't get the mutex back, just continue
+                                if (errorHandler) {
+                                    errorHandler->logWarning("Couldn't reacquire mutex after I2C recovery");
+                                }
+                                continue;
+                            }
+                        }
+                        
+                        // Now update all readings at once using the public method
+                        sensorManager->updateReadings(true);
+                    }
+                    
+                    // Release the mutex
+                    xSemaphoreGive(sensorMutex);
+                    
+                    // Update timestamp
+                    lastPollingTime = currentTime;
+                    
+                    // Signal the LED - verify ledManager is still valid
+                    if (ledManager && !ledManager->isIdentifying()) {
+                        ledManager->indicateReading();
+                    }
+                } else {
+                    // If we couldn't get the mutex, just skip this update cycle
+                    if (errorHandler) {
+                        errorHandler->logWarning("Sensor task couldn't acquire mutex, skipping update cycle");
+                    }
+                }
+            } else {
+                // Mutex is null - just update readings without protection
                 if (sensorManager) {
                     sensorManager->updateReadings(true);
                 }
-                
-                // Release the mutex
-                xSemaphoreGive(sensorMutex);
-                
-                // Update timestamp
                 lastPollingTime = currentTime;
-                
-                // Signal the LED
-                if (ledManager && !ledManager->isIdentifying()) {
-                    ledManager->indicateReading();
-                }
             }
         }
         
-        // Short delay to prevent task starvation
-        vTaskDelay(pdMS_TO_TICKS(10));
+        // Longer delay to prevent task starvation and reduce CPU usage
+        vTaskDelay(pdMS_TO_TICKS(50));
     }
 }
 
 void TaskManager::commTask() {
-    // Wait for CommunicationManager to be fully initialized
-    while (commManager == nullptr) {
-        vTaskDelay(pdMS_TO_TICKS(100));
+    // Safety check
+    if (!commManager) {
+        if (errorHandler) {
+            errorHandler->logError(ERROR, "Communication manager is null in comm task!");
+        }
+        // Delete the task - it can't function
+        vTaskDelete(NULL);
+        return;
     }
     
     if (errorHandler) {
@@ -358,68 +492,41 @@ void TaskManager::commTask() {
     
     // Task loop
     while (true) {
-        // Check for serial data with a quick timeout
-        if (Serial.available() > 0) {
-            // Read the entire command line
-            String command = Serial.readStringUntil('\n');
-            command.trim();
-            
-            // Log the received command
-            Serial.print("Processing: ");
-            Serial.println(command);
-            
-            // Process basic commands directly for reliability
-            if (command == "*IDN?") {
-                Serial.println(String(Constants::PRODUCT_NAME) + "," + 
-                           "ID-" + String(ESP.getEfuseMac(), HEX) + "," +
-                           String(Constants::FIRMWARE_VERSION));
-            } 
-            else if (command == "SYST:LED:IDENT") {
-                if (ledManager) {
-                    ledManager->startIdentify();
-                    Serial.println("LED identify mode activated");
+        // Check for serial data
+        if (Serial.available() > 0 && commManager) {
+            // Process the command with error handling
+            try {
+                commManager->processCommandLine();
+            } catch (...) {
+                // Handle exceptions (though Arduino doesn't fully support them)
+                if (errorHandler) {
+                    errorHandler->logError(ERROR, "Exception in command processing");
                 }
-            }
-            else if (command == "RESET") {
-                Serial.println("Resetting device...");
-                delay(100);  // Give time for the message to be sent
-                ESP.restart();
-            }
-            else if (command == "TEST") {
-                Serial.println("Serial communication test successful");
-            }
-            else if (command.startsWith("ECHO")) {
-                Serial.println("ECHO: " + command);
-            }
-            else if (command == "TASK:STATUS") {
-                // Custom command to get task status
-                Serial.println(getTaskStatusString());
-            }
-            else if (command == "TASK:MEMORY") {
-                // Custom command to get memory info
-                Serial.println(getTaskMemoryInfo());
-            }
-            else {
-                // For other commands, parse and handle
-                if (commManager) {
-                    // Use the traditional command processing
-                    commManager->processIncomingData();
+                
+                // Consume any remaining input to prevent command buildup
+                while (Serial.available()) {
+                    Serial.read();
                 }
             }
             
-            // Ensure all responses are sent
-            Serial.flush();
+            // Add a delay after command processing to allow I2C bus to stabilize
+            delay(10);
         }
         
-        // Short delay to prevent task starvation
-        vTaskDelay(pdMS_TO_TICKS(1));
+        // Delay to reduce CPU usage
+        vTaskDelay(pdMS_TO_TICKS(20));
     }
 }
 
 void TaskManager::ledTask() {
-    // Wait for LedManager to be fully initialized
-    while (ledManager == nullptr) {
-        vTaskDelay(pdMS_TO_TICKS(100));
+    // Safety check
+    if (!ledManager) {
+        if (errorHandler) {
+            errorHandler->logError(ERROR, "LED manager is null in LED task!");
+        }
+        // Delete the task - it can't function
+        vTaskDelete(NULL);
+        return;
     }
     
     if (errorHandler) {
@@ -428,12 +535,12 @@ void TaskManager::ledTask() {
     
     // Task loop
     while (true) {
-        // Update LED states
+        // Update LED states - check ledManager is still valid
         if (ledManager) {
             ledManager->update();
         }
         
-        // Short delay
-        vTaskDelay(pdMS_TO_TICKS(20));
+        // Use a slightly longer delay to reduce CPU usage
+        vTaskDelay(pdMS_TO_TICKS(50));
     }
 }

@@ -115,4 +115,11 @@ public:
      * @return Pointer to the interface, or nullptr if not supported.
      */
     void* getInterface(InterfaceType type) const override;
+    
+    /**
+     * @brief Re-initialize the sensor after a communication failure
+     * 
+     * @return true if re-initialization was successful
+     */
+    bool reinitialize();
 };

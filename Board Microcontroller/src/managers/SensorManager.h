@@ -46,7 +46,7 @@ private:
     unsigned long maxCacheAge = 5000;
     
     // Mutex for thread safety (reference to the one created in main.cpp)
-    SemaphoreHandle_t* sensorMutex = nullptr;
+    SemaphoreHandle_t sensorMutex = nullptr;
     
     /**
      * @brief Compare old and new configurations to identify sensors to add, remove, or reconfigure.
@@ -182,65 +182,37 @@ public:
     /**
      * @brief Set the mutex for thread safety
      * 
-     * @param mutex Pointer to the mutex
+     * @param mutex The mutex (directly, not a pointer)
      */
-    void setSensorMutex(SemaphoreHandle_t* mutex) {
-        sensorMutex = mutex;
-    }
-    
+    void setSensorMutex(SemaphoreHandle_t mutex);
+
+    /**
+     * @brief Attempt to reconnect a specific disconnected sensor
+     * 
+     * @param sensorName The name of the sensor to reconnect
+     * @return true if reconnection was successful, false otherwise
+     */
+    bool reconnectSensor(const String& sensorName);
+
+    /**
+     * @brief Attempt to reconnect all disconnected sensors
+     * 
+     * @return The number of successfully reconnected sensors
+     */
+    int reconnectAllSensors();
+
     /**
      * @brief Thread-safe wrapper for getTemperature
-     * 
+     *
      * @param sensorName The name of the sensor to read from
      * @return The temperature reading
      */
-    TemperatureReading getTemperatureSafe(const String& sensorName) {
-        TemperatureReading reading;
-        
-        // Try to take the mutex
-        if (sensorMutex && *sensorMutex && xSemaphoreTake(*sensorMutex, pdMS_TO_TICKS(100)) == pdTRUE) {
-            // Get the reading while holding the mutex
-            reading = getTemperature(sensorName);
-            
-            // Release the mutex
-            xSemaphoreGive(*sensorMutex);
-        } else {
-            // Mutex acquisition failed or not initialized
-            if (sensorMutex && *sensorMutex) {
-                errorHandler->logWarning("Failed to acquire mutex for temperature reading: " + sensorName);
-            }
-            // If mutex is null, just get the reading without mutex protection
-            reading = getTemperature(sensorName);
-        }
-        
-        return reading;
-    }
-    
+    TemperatureReading getTemperatureSafe(const String& sensorName);
     /**
      * @brief Thread-safe wrapper for getHumidity
      * 
      * @param sensorName The name of the sensor to read from
      * @return The humidity reading
      */
-    HumidityReading getHumiditySafe(const String& sensorName) {
-        HumidityReading reading;
-        
-        // Try to take the mutex
-        if (sensorMutex && *sensorMutex && xSemaphoreTake(*sensorMutex, pdMS_TO_TICKS(100)) == pdTRUE) {
-            // Get the reading while holding the mutex
-            reading = getHumidity(sensorName);
-            
-            // Release the mutex
-            xSemaphoreGive(*sensorMutex);
-        } else {
-            // Mutex acquisition failed or not initialized
-            if (sensorMutex && *sensorMutex) {
-                errorHandler->logWarning("Failed to acquire mutex for humidity reading: " + sensorName);
-            }
-            // If mutex is null, just get the reading without mutex protection
-            reading = getHumidity(sensorName);
-        }
-        
-        return reading;
-    }
+    HumidityReading getHumiditySafe(const String& sensorName);
 };

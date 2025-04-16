@@ -467,27 +467,39 @@ bool CommunicationManager::handleListSensors(const std::vector<String>& params) 
     auto registry = sensorManager->getRegistry();
     auto sensors = registry.getAllSensors();
     
+    // Build the complete response string first instead of sending it line by line
+    String response = "";
+    
     for (auto sensor : sensors) {
         // Check each interface type and output a separate entry for each
         if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-            Serial.println(sensor->getName() + ",TEMP," + 
-                          sensor->getTypeString() + "," +
-                          (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED"));
+            response += sensor->getName() + ",TEMP," + 
+                      sensor->getTypeString() + "," +
+                      (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED") + "\n";
         }
         
         if (sensor->supportsInterface(InterfaceType::HUMIDITY)) {
-            Serial.println(sensor->getName() + ",HUM," + 
-                          sensor->getTypeString() + "," +
-                          (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED"));
+            response += sensor->getName() + ",HUM," + 
+                      sensor->getTypeString() + "," +
+                      (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED") + "\n";
         }
         
         if (sensor->supportsInterface(InterfaceType::CO2)) {
-            Serial.println(sensor->getName() + ",CO2," + 
-                          sensor->getTypeString() + "," +
-                          (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED"));
+            response += sensor->getName() + ",CO2," + 
+                      sensor->getTypeString() + "," +
+                      (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED") + "\n";
         }
     }
-    Serial.flush(); // Ensure all responses are sent immediately
+    
+    // Send the complete response all at once
+    Serial.print(response);
+    
+    // Add a small delay to ensure all data is sent
+    delay(5);
+    
+    // Flush to ensure all data is transmitted
+    Serial.flush();
+    
     return true;
 }
 

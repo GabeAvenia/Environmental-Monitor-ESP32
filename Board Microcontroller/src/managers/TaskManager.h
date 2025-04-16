@@ -4,8 +4,6 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <freertos/semphr.h>
-#include <vector>
-#include <functional>
 
 // Forward declarations of manager classes
 class SensorManager;
@@ -27,53 +25,21 @@ public:
     static constexpr const char* TASK_NAME_COMM = "CommTask";
     static constexpr const char* TASK_NAME_LED = "LedTask";
     
-    // Task stack sizes (in words)
-    static constexpr uint32_t STACK_SIZE_SENSOR = 4096;
-    static constexpr uint32_t STACK_SIZE_COMM = 4096;
-    static constexpr uint32_t STACK_SIZE_LED = 2048;
+    // Task stack sizes (in words) - increased for stability
+    static constexpr uint32_t STACK_SIZE_SENSOR = 6144;  // Increased from 4096
+    static constexpr uint32_t STACK_SIZE_COMM = 6144;    // Increased from 4096
+    static constexpr uint32_t STACK_SIZE_LED = 3072;     // Increased from 2048
     
-    // Task priorities (higher value = higher priority, max is configMAX_PRIORITIES-1)
-    static constexpr uint8_t PRIORITY_SENSOR = 1;
-    static constexpr uint8_t PRIORITY_COMM = 2;
-    static constexpr uint8_t PRIORITY_LED = 1;
+    // Task priorities - keep lower than critical system tasks
+    static constexpr UBaseType_t PRIORITY_SENSOR = 2;    // Changed from 1
+    static constexpr UBaseType_t PRIORITY_COMM = 3;      // Changed from 2
+    static constexpr UBaseType_t PRIORITY_LED = 1;       // Same
     
-    // Core assignments (ESP32 has 2 cores: 0 and 1)
-    static constexpr BaseType_t CORE_SENSOR = 1;  // Sensor task on Core 1
-    static constexpr BaseType_t CORE_COMM = 0;    // Communication task on Core 0
-    static constexpr BaseType_t CORE_LED = 0;     // LED task on Core 0
+    // Core assignments - change for proper distribution
+    static constexpr BaseType_t CORE_SENSOR = 0;  // Changed from Core 1 to Core 0
+    static constexpr BaseType_t CORE_COMM = 1;    // Changed from Core 0 to Core 1
+    static constexpr BaseType_t CORE_LED = 0;     // Same (Core 0)
 
-private:
-    // Task handles
-    TaskHandle_t sensorTaskHandle = nullptr;
-    TaskHandle_t commTaskHandle = nullptr;
-    TaskHandle_t ledTaskHandle = nullptr;
-    
-    // Synchronization primitives
-    SemaphoreHandle_t sensorMutex = nullptr;
-    
-    // Manager references
-    SensorManager* sensorManager = nullptr;
-    CommunicationManager* commManager = nullptr;
-    LedManager* ledManager = nullptr;
-    ErrorHandler* errorHandler = nullptr;
-    
-    // Task status tracking
-    bool tasksInitialized = false;
-    
-    // Static task function that calls the appropriate object method
-    static void sensorTaskFunction(void* pvParameters);
-    static void commTaskFunction(void* pvParameters);
-    static void ledTaskFunction(void* pvParameters);
-    
-    // Instance task methods (implemented in TaskManager.cpp)
-    void sensorTask();
-    void commTask();
-    void ledTask();
-    
-    // Helper methods
-    void cleanupTasks();
-
-public:
     /**
      * @brief Constructor for TaskManager
      * 
@@ -135,17 +101,9 @@ public:
     /**
      * @brief Get the sensor mutex for thread-safe access
      * 
-     * @return Pointer to the sensor mutex
+     * @return The mutex directly, not a pointer
      */
-    SemaphoreHandle_t* getSensorMutex();
-    
-    /**
-     * @brief Get the FreeRTOS task state as a string
-     * 
-     * @param handle The task handle
-     * @return String representing the task state
-     */
-    static String getTaskStateString(TaskHandle_t handle);
+    SemaphoreHandle_t getSensorMutex() const;
     
     /**
      * @brief Get the status of all tasks
@@ -160,4 +118,43 @@ public:
      * @return String containing memory usage information for all tasks
      */
     String getTaskMemoryInfo() const;
+    
+    /**
+     * @brief Get the FreeRTOS task state as a string
+     * 
+     * @param handle The task handle
+     * @return String representing the task state
+     */
+    static String getTaskStateString(TaskHandle_t handle);
+
+private:
+    // Task handles
+    TaskHandle_t sensorTaskHandle = nullptr;
+    TaskHandle_t commTaskHandle = nullptr;
+    TaskHandle_t ledTaskHandle = nullptr;
+    
+    // Synchronization primitives - direct mutex, not a pointer
+    SemaphoreHandle_t sensorMutex = nullptr;
+    
+    // Manager references
+    SensorManager* sensorManager = nullptr;
+    CommunicationManager* commManager = nullptr;
+    LedManager* ledManager = nullptr;
+    ErrorHandler* errorHandler = nullptr;
+    
+    // Task status tracking
+    bool tasksInitialized = false;
+    
+    // Static task function that calls the appropriate object method
+    static void sensorTaskFunction(void* pvParameters);
+    static void commTaskFunction(void* pvParameters);
+    static void ledTaskFunction(void* pvParameters);
+    
+    // Instance task methods
+    void sensorTask();
+    void commTask();
+    void ledTask();
+    
+    // Helper methods
+    void cleanupTasks();
 };
