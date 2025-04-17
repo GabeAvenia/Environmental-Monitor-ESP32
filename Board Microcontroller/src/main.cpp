@@ -294,42 +294,8 @@ void setup() {
 }
 
 void loop() {
-    // Even if tasks are running, we want to have a fallback mechanism
-    // Check for serial commands in the main loop too (as a safety net)
-    if (Serial.available() > 0) {
-        String command = Serial.readStringUntil('\n');
-        command.trim();
-        
-        // Use the main command handler
-        handleCommand(command);
-    }
-    
-    // Update LED in the main loop if LED task isn't running
-    if (ledManager && (!taskManager || !taskManager->areAllTasksRunning())) {
-        ledManager->update();
-    }
-    
-    // Poll sensors in the main loop if sensor task isn't running
-    static unsigned long lastPollingTime = 0;
-    unsigned long currentTime = millis();
-    
-    if (sensorManager && (!taskManager || !taskManager->areAllTasksRunning())) {
-        uint32_t pollingInterval = sensorManager->getMaxCacheAge();
-        
-        if (currentTime - lastPollingTime >= pollingInterval) {
-            sensorManager->updateReadings(true);
-            lastPollingTime = currentTime;
-            
-            // Signal LED
-            if (ledManager && !ledManager->isIdentifying()) {
-                ledManager->indicateReading();
-            }
-        }
-    }
-    
+ 
     // Always yield to the scheduler
     yield();
-    
-    // Short delay to prevent watchdog timeouts
-    delay(10);
+
 }

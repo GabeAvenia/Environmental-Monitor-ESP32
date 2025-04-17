@@ -508,13 +508,10 @@ void TaskManager::commTask() {
                     Serial.read();
                 }
             }
-            
-            // Add a delay after command processing to allow I2C bus to stabilize
-            delay(10);
         }
         
         // Delay to reduce CPU usage
-        vTaskDelay(pdMS_TO_TICKS(20));
+        vTaskDelay(pdMS_TO_TICKS(5));
     }
 }
 

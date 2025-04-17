@@ -66,11 +66,6 @@ void LedManager::indicateReading() {
     
     // Flash from dim green to bright green and back
     setColor(COLOR_GREEN, FULL_BRIGHTNESS);
-    
-    // More obvious logging
-    if (errorHandler) {
-        errorHandler->logInfo("LED pulse: Reading sensors");
-    }
 }
 
 void LedManager::startIdentify() {
@@ -118,9 +113,6 @@ void LedManager::update() {
             // Pulse complete, return to dim green
             pulseActive = false;
             setColor(COLOR_GREEN, DIM_BRIGHTNESS);
-            if (errorHandler) {
-                errorHandler->logInfo("LED pulse ended, returning to dim green");
-            }
         }
     }
 }
