@@ -1,16 +1,15 @@
 #include "SensorManager.h"
 
 SensorManager::SensorManager(ConfigManager* configMgr, I2CManager* i2c, ErrorHandler* err, SPIManager* spi)
-    : registry(err),
-      factory(err, i2c, spi),
-      configManager(configMgr),
-      i2cManager(i2c),
-      spiManager(spi),
-      errorHandler(err),
-      maxCacheAge(5000) {  // Default 5-second cache age
-    
-    // Initialize cache empty
-    readingCache.clear();
+        : registry(err),
+        factory(err, i2c, spi),
+        configManager(configMgr),
+        i2cManager(i2c),
+        spiManager(spi),
+        errorHandler(err),
+        maxCacheAge(5000) {  // Default 5-second cache age
+        readingCacheA.clear();
+        readingCacheB.clear();
 }
 
 SensorManager::~SensorManager() {
@@ -346,262 +345,94 @@ bool SensorManager::testSPICommunication(int ssPin) {
     return true; // Return true even if the test is inconclusive, as it might still work with specific device
 }
 
-bool SensorManager::updateSensorCache(const String& sensorName, bool forceUpdate) {
+bool SensorManager::updateSensorCache(const String& sensorName) {
     ISensor* sensor = findSensor(sensorName);
     if (!sensor || !sensor->isConnected()) {
         return false;
     }
     
-    // Get or create cache entry
-    SensorCache& cache = readingCache[sensorName];
+    // Get the active write buffer
+    std::map<String, SensorCache>& activeCache = getActiveCache();
+    SensorCache& cache = activeCache[sensorName];
     
     unsigned long currentTime = millis();
     bool updated = false;
     
     // Update temperature if supported
     if (sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-        // Simpler condition: update if forced or cache is expired
-        if (forceUpdate || (currentTime - cache.tempTimestamp) >= maxCacheAge) {
-            ITemperatureSensor* tempSensor = 
-                static_cast<ITemperatureSensor*>(sensor->getInterface(InterfaceType::TEMPERATURE));
-            
-            float temp = tempSensor->readTemperature();
-            cache.temperature = temp;
-            cache.tempTimestamp = currentTime;
-            cache.tempValid = !isnan(temp);
-            
-            updated = true;
-        }
+        ITemperatureSensor* tempSensor = 
+            static_cast<ITemperatureSensor*>(sensor->getInterface(InterfaceType::TEMPERATURE));
+        
+        float temp = tempSensor->readTemperature();
+        cache.temperature = temp;
+        cache.tempTimestamp = currentTime;
+        cache.tempValid = !isnan(temp);
+        
+        updated = true;
     }
     
-    // Update humidity if supported
+    // Update humidity if supported  
     if (sensor->supportsInterface(InterfaceType::HUMIDITY)) {
-        // Simpler condition: update if forced or cache is expired
-        if (forceUpdate || (currentTime - cache.humTimestamp) >= maxCacheAge) {
-            IHumiditySensor* humSensor = 
-                static_cast<IHumiditySensor*>(sensor->getInterface(InterfaceType::HUMIDITY));
-            
-            float hum = humSensor->readHumidity();
-            cache.humidity = hum;
-            cache.humTimestamp = currentTime;
-            cache.humValid = !isnan(hum);
-            
-            updated = true;
-        }
+        IHumiditySensor* humSensor = 
+            static_cast<IHumiditySensor*>(sensor->getInterface(InterfaceType::HUMIDITY));
+        
+        float hum = humSensor->readHumidity();
+        cache.humidity = hum;
+        cache.humTimestamp = currentTime;
+        cache.humValid = !isnan(hum);
+        
+        updated = true;
     }
     
     return updated;
 }
 
-int SensorManager::updateReadings(bool forceUpdate) {
+int SensorManager::updateReadings() {
     int successCount = 0;
     auto sensors = registry.getAllSensors();
     
     for (auto sensor : sensors) {
         if (sensor->isConnected()) {
-            if (updateSensorCache(sensor->getName(), forceUpdate)) {
+            if (updateSensorCache(sensor->getName())) {
                 successCount++;
             }
         }
     }
     
+    // After updating all sensors, swap the buffers atomically
+    currentBufferIndex.store(!currentBufferIndex.load());
+    
     return successCount;
 }
 
-TemperatureReading SensorManager::getTemperature(const String& sensorName) {
-    ISensor* sensor = findSensor(sensorName);
-    if (!sensor) {
-        errorHandler->logWarning("Requested temperature from unknown sensor: " + sensorName);
-        return TemperatureReading();
-    }
-    
-    if (!sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-        errorHandler->logWarning("Sensor does not support temperature: " + sensorName);
-        return TemperatureReading();
-    }
-    
-    if (!sensor->isConnected()) {
-        errorHandler->logWarning("Attempted to read temperature from disconnected sensor: " + sensorName);
-        return TemperatureReading();
-    }
-    
-    // Update cache if needed (will not update if cache is still valid)
-    updateSensorCache(sensorName);
-    
-    // Get the cached value
-    const SensorCache& cache = readingCache[sensorName];
-    
-    if (!cache.tempValid) {
-        return TemperatureReading(); // Invalid reading
-    }
-    
-    return TemperatureReading(cache.temperature, cache.tempTimestamp);
-}
-
-HumidityReading SensorManager::getHumidity(const String& sensorName) {
-    ISensor* sensor = findSensor(sensorName);
-    if (!sensor) {
-        errorHandler->logWarning("Requested humidity from unknown sensor: " + sensorName);
-        return HumidityReading();
-    }
-    
-    if (!sensor->supportsInterface(InterfaceType::HUMIDITY)) {
-        errorHandler->logWarning("Sensor does not support humidity: " + sensorName);
-        return HumidityReading();
-    }
-    
-    if (!sensor->isConnected()) {
-        errorHandler->logWarning("Attempted to read humidity from disconnected sensor: " + sensorName);
-        return HumidityReading();
-    }
-    
-    // Update cache if needed (will not update if cache is still valid)
-    updateSensorCache(sensorName);
-    
-    // Get the cached value
-    const SensorCache& cache = readingCache[sensorName];
-    
-    if (!cache.humValid) {
-        return HumidityReading(); // Invalid reading
-    }
-    
-    return HumidityReading(cache.humidity, cache.humTimestamp);
-}
-
-/**
- * @brief Thread-safe wrapper for getTemperature with improved mutex timing
- * 
- * @param sensorName The name of the sensor to read from
- * @return The temperature reading
- */
 TemperatureReading SensorManager::getTemperatureSafe(const String& sensorName) {
-    TemperatureReading reading;
+    // Get the read buffer (not currently being written to)
+    const std::map<String, SensorCache>& readCache = getReadCache();
     
-    // Try to take the mutex with a much longer timeout (500ms)
-    const TickType_t xTicksToWait = pdMS_TO_TICKS(500);
-    
-    // Make sure mutex is valid
-    if (sensorMutex != nullptr) {
-        // First check if we should even try to take the mutex
-        ISensor* sensor = findSensor(sensorName);
-        if (!sensor || !sensor->isConnected()) {
-            // Sensor is unavailable, return invalid reading immediately
-            if (errorHandler) {
-                errorHandler->logWarning("Sensor " + sensorName + " not found or disconnected, skipping mutex acquisition");
-            }
-            return reading;
-        }
-        
-        // Try to take the mutex with timeout
-        unsigned long startTime = millis();
-        if (xSemaphoreTake(sensorMutex, xTicksToWait) == pdTRUE) {
-            // Got the mutex - check if the sensor is still valid and connected
-            sensor = findSensor(sensorName);
-            if (sensor && sensor->isConnected()) {
-                // Read temperature
-                reading = getTemperature(sensorName);
-            }
-            
-            // Release the mutex
-            xSemaphoreGive(sensorMutex);
-            
-            unsigned long elapsedTime = millis() - startTime;
-            if (errorHandler && elapsedTime > 100) {
-                // Log only if it took a significant time to acquire the mutex
-                errorHandler->logInfo("Mutex for " + sensorName + " acquired after " + String(elapsedTime) + "ms");
-            }
-        } else {
-            // Mutex acquisition failed - log and use cached reading
-            if (errorHandler) {
-                errorHandler->logWarning("Failed to acquire mutex for temperature reading: " + sensorName);
-            }
-            
-            // Use cached reading if available
-            auto it = readingCache.find(sensorName);
-            if (it != readingCache.end()) {
-                const SensorCache& cache = it->second;
-                if (cache.tempValid) {
-                    reading = TemperatureReading(cache.temperature, cache.tempTimestamp);
-                    if (errorHandler) {
-                        errorHandler->logInfo("Using cached temperature reading for " + sensorName);
-                    }
-                }
-            }
-        }
-    } else {
-        // No mutex available - try a direct reading as a fallback
-        reading = getTemperature(sensorName);
+    // Look for the sensor in the read cache
+    auto it = readCache.find(sensorName);
+    if (it != readCache.end() && it->second.tempValid) {
+        // Return the cached reading - no mutex needed!
+        return TemperatureReading(it->second.temperature, it->second.tempTimestamp);
     }
     
-    return reading;
+    // No valid reading available
+    return TemperatureReading();
 }
 
-/**
- * @brief Thread-safe wrapper for getHumidity with improved mutex timing
- * 
- * @param sensorName The name of the sensor to read from
- * @return The humidity reading
- */
 HumidityReading SensorManager::getHumiditySafe(const String& sensorName) {
-    HumidityReading reading;
+    // Get the read buffer (not currently being written to)
+    const std::map<String, SensorCache>& readCache = getReadCache();
     
-    // Try to take the mutex with a much longer timeout (500ms)
-    const TickType_t xTicksToWait = pdMS_TO_TICKS(500);
-    
-    // Make sure mutex is valid
-    if (sensorMutex != nullptr) {
-        // First check if we should even try to take the mutex
-        ISensor* sensor = findSensor(sensorName);
-        if (!sensor || !sensor->isConnected()) {
-            // Sensor is unavailable, return invalid reading immediately
-            if (errorHandler) {
-                errorHandler->logWarning("Sensor " + sensorName + " not found or disconnected, skipping mutex acquisition");
-            }
-            return reading;
-        }
-        
-        // Try to take the mutex with timeout
-        unsigned long startTime = millis();
-        if (xSemaphoreTake(sensorMutex, xTicksToWait) == pdTRUE) {
-            // Got the mutex - check if the sensor is still valid and connected
-            sensor = findSensor(sensorName);
-            if (sensor && sensor->isConnected()) {
-                // Read humidity
-                reading = getHumidity(sensorName);
-            }
-            
-            // Release the mutex
-            xSemaphoreGive(sensorMutex);
-            
-            unsigned long elapsedTime = millis() - startTime;
-            if (errorHandler && elapsedTime > 100) {
-                // Log only if it took a significant time to acquire the mutex
-                errorHandler->logInfo("Mutex for " + sensorName + " acquired after " + String(elapsedTime) + "ms");
-            }
-        } else {
-            // Mutex acquisition failed - log and use cached reading
-            if (errorHandler) {
-                errorHandler->logWarning("Failed to acquire mutex for humidity reading: " + sensorName);
-            }
-            
-            // Use cached reading if available
-            auto it = readingCache.find(sensorName);
-            if (it != readingCache.end()) {
-                const SensorCache& cache = it->second;
-                if (cache.humValid) {
-                    reading = HumidityReading(cache.humidity, cache.humTimestamp);
-                    if (errorHandler) {
-                        errorHandler->logInfo("Using cached humidity reading for " + sensorName);
-                    }
-                }
-            }
-        }
-    } else {
-        // No mutex available - try a direct reading as a fallback
-        reading = getHumidity(sensorName);
+    // Look for the sensor in the read cache
+    auto it = readCache.find(sensorName);
+    if (it != readCache.end() && it->second.humValid) {
+        // Return the cached reading - no mutex needed!
+        return HumidityReading(it->second.humidity, it->second.humTimestamp);
     }
     
-    return reading;
+    // No valid reading available
+    return HumidityReading();
 }
 
 const SensorRegistry& SensorManager::getRegistry() const {

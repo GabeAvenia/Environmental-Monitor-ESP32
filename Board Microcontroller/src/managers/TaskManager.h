@@ -99,13 +99,6 @@ public:
     bool areAllTasksRunning() const;
     
     /**
-     * @brief Get the sensor mutex for thread-safe access
-     * 
-     * @return The mutex directly, not a pointer
-     */
-    SemaphoreHandle_t getSensorMutex() const;
-    
-    /**
      * @brief Get the status of all tasks
      * 
      * @return String containing status information for all tasks
@@ -132,9 +125,6 @@ private:
     TaskHandle_t sensorTaskHandle = nullptr;
     TaskHandle_t commTaskHandle = nullptr;
     TaskHandle_t ledTaskHandle = nullptr;
-    
-    // Synchronization primitives - direct mutex, not a pointer
-    SemaphoreHandle_t sensorMutex = nullptr;
     
     // Manager references
     SensorManager* sensorManager = nullptr;

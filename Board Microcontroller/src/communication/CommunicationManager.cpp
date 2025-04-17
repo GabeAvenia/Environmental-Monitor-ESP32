@@ -349,13 +349,34 @@ void CommunicationManager::processIncomingData() {
 }
 
 void CommunicationManager::processCommandLine() {
-    // Read the command
-    String rawCommand = Serial.readStringUntil('\n');
+    // Use a better approach to read commands
+    String rawCommand = "";
+    
+    // Read with timeout to avoid partial commands
+    unsigned long startTime = millis();
+    while (millis() - startTime < 50) { // 50ms timeout
+        if (Serial.available()) {
+            char c = Serial.read();
+            if (c == '\n' || c == '\r') {
+                if (rawCommand.length() > 0) {
+                    break; // Complete command found
+                }
+                // Else ignore empty lines
+            } else {
+                rawCommand += c;
+            }
+        }
+        yield(); // Allow other tasks to run
+    }
+    
+    if (rawCommand.length() == 0) {
+        return; // No command to process
+    }
+    
+    // Log the command after cleaning
     rawCommand.trim();
-    
-    // Log the received command
-    errorHandler->logInfo("Received command: '" + rawCommand + "'");
-    
+    errorHandler->logInfo("Processing command: '" + rawCommand + "'");
+
     // Parse and process command
     String command;
     std::vector<String> params;

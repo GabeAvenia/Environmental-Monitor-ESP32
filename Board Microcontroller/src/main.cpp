@@ -34,22 +34,8 @@ Print* uartDebugSerial = nullptr;
 void onConfigChanged(const String& newConfig) {
     // When configuration changes, reconfigure sensors
     if (sensorManager && taskManager) {
-        // Get the mutex directly
-        SemaphoreHandle_t mutex = taskManager->getSensorMutex();
-        bool mutexTaken = false;
-        
-        // Try to take the mutex if it's valid
-        if (mutex != nullptr) {
-            mutexTaken = (xSemaphoreTake(mutex, pdMS_TO_TICKS(250)) == pdTRUE);
-        }
-        
         // Reconfigure sensors
         sensorManager->reconfigureSensors(newConfig);
-        
-        // Release the mutex if we took it
-        if (mutexTaken) {
-            xSemaphoreGive(mutex);
-        }
     }
 }
 
@@ -272,10 +258,8 @@ void setup() {
                 
                 if (taskManager->startSensorTask()) {
                     errorHandler->logInfo("Sensor task started successfully");
-                    delay(300); // Give time for task to stabilize
-                    
-                    // Pass the sensor mutex to the sensor manager
-                    sensorManager->setSensorMutex(taskManager->getSensorMutex());
+                    delay(30); // Give time for task to stabilize
+
                 } else {
                     errorHandler->logWarning("Failed to start sensor task");
                 }

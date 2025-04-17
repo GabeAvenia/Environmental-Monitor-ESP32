@@ -18,6 +18,7 @@
 #include "SPIManager.h"
 #include "../config/ConfigManager.h"
 #include "../error/ErrorHandler.h"
+#include <atomic>
 
 // Struct to cache sensor readings for better performance
 struct SensorCache {
@@ -38,9 +39,18 @@ private:
     SPIManager* spiManager;
     ErrorHandler* errorHandler;
     
-    // Cache for sensor readings
-    std::map<String, SensorCache> readingCache;
+    std::atomic<bool> currentBufferIndex{false}; // false = buffer A, true = buffer B
+    std::map<String, SensorCache> readingCacheA;
+    std::map<String, SensorCache> readingCacheB;
     
+    std::map<String, SensorCache>& getActiveCache() {
+        return currentBufferIndex.load() ? readingCacheB : readingCacheA;
+    }
+    
+    const std::map<String, SensorCache>& getReadCache() const {
+        return currentBufferIndex.load() ? readingCacheA : readingCacheB;
+    }
+
     // Maximum age of cached readings (in milliseconds)
     // Default to 5 seconds, can be adjusted based on requirements
     unsigned long maxCacheAge = 5000;
@@ -79,15 +89,10 @@ private:
      * @return true if communication successful, false otherwise.
      */
     bool testSPICommunication(int ssPin);
-    
-    /**
-     * @brief Update cached reading for a specific sensor if needed
-     * 
-     * @param sensorName The name of the sensor
-     * @param forceUpdate Force an update even if the cache is still valid
-     * @return true if cache was updated successfully
-     */
-    bool updateSensorCache(const String& sensorName, bool forceUpdate = false);
+
+    bool updateSensorCache(const String &sensorName);
+
+
 
 public:
     /**
@@ -99,7 +104,7 @@ public:
      * @param spi Optional pointer to the SPI manager.
      */
     SensorManager(ConfigManager* configMgr, I2CManager* i2c, ErrorHandler* err, SPIManager* spi = nullptr);
-    
+    int updateReadings();    
     /**
      * @brief Destructor.
      */
@@ -119,14 +124,6 @@ public:
      * @return true if reconfiguration was successful, false otherwise.
      */
     bool reconfigureSensors(const String& configJson);
-    
-    /**
-     * @brief Update readings from all sensors.
-     * 
-     * @param forceUpdate Force updating all readings even if cache is still valid
-     * @return Number of sensors successfully updated.
-     */
-    int updateReadings(bool forceUpdate = false);
     
     /**
      * @brief Get the latest temperature reading from a specific sensor.
