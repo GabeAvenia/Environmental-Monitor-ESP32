@@ -467,20 +467,20 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
     bool readPres = useAllMeasurements || upperMeasurements.indexOf("PRES") >= 0;
     bool readCO2 = useAllMeasurements || upperMeasurements.indexOf("CO2") >= 0;
     
-    // Read temperature if supported and requested using thread-safe method
+    // Read temperature if supported and requested - use thread-safe method directly
     if (readTemp && sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
         TemperatureReading tempReading = sensorManager->getTemperatureSafe(sensorName);
-        values.push_back(tempReading.valid ? String(tempReading.value) : "NA");
+        values.push_back(tempReading.valid ? String(tempReading.value) : "ERROR");
     }
     
-    // Read humidity if supported and requested using thread-safe method
+    // Read humidity if supported and requested - use thread-safe method directly
     if (readHum && sensor->supportsInterface(InterfaceType::HUMIDITY)) {
         HumidityReading humReading = sensorManager->getHumiditySafe(sensorName);
-        values.push_back(humReading.valid ? String(humReading.value) : "NA");
+        values.push_back(humReading.valid ? String(humReading.value) : "ERROR");
     }
     
     if (readCO2 && sensor->supportsInterface(InterfaceType::CO2)) {
-        values.push_back("NA");
+        values.push_back("ERROR"); // Not implemented yet
     }
 }
 

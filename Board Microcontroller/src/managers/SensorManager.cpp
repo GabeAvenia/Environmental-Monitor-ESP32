@@ -412,7 +412,6 @@ TemperatureReading SensorManager::getTemperatureSafe(const String& sensorName) {
     // Look for the sensor in the read cache
     auto it = readCache.find(sensorName);
     if (it != readCache.end() && it->second.tempValid) {
-        // Return the cached reading - no mutex needed!
         return TemperatureReading(it->second.temperature, it->second.tempTimestamp);
     }
     
@@ -427,7 +426,6 @@ HumidityReading SensorManager::getHumiditySafe(const String& sensorName) {
     // Look for the sensor in the read cache
     auto it = readCache.find(sensorName);
     if (it != readCache.end() && it->second.humValid) {
-        // Return the cached reading - no mutex needed!
         return HumidityReading(it->second.humidity, it->second.humTimestamp);
     }
     
@@ -441,13 +439,6 @@ const SensorRegistry& SensorManager::getRegistry() const {
 
 ISensor* SensorManager::findSensor(const String& name) {
     return registry.getSensorByName(name);
-}
-
-void SensorManager::setSensorMutex(SemaphoreHandle_t mutex) {
-    sensorMutex = mutex;
-    if (errorHandler) {
-        errorHandler->logInfo("Sensor mutex set directly in SensorManager");
-    }
 }
 
 bool SensorManager::reconnectSensor(const String& sensorName) {
