@@ -1,4 +1,3 @@
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include "ConfigManager.h"
 #include <ArduinoJson.h>
 #include "../Constants.h"
@@ -89,7 +88,7 @@ bool ConfigManager::loadConfigFromFile() {
     errorHandler->logInfo("JSON parsed successfully");
     
     // Extract Environmental Monitor IDentifier - handle both old and new key names for backward compatibility
-    if (!doc["Environmental Monitor ID"].isNull()) {
+    if (doc["Environmental Monitor ID"].is<String>()) {
         boardId = doc["Environmental Monitor ID"].as<String>();
         errorHandler->logInfo("Using Environmental Monitor ID: " + boardId);
     } else {
@@ -104,13 +103,13 @@ bool ConfigManager::loadConfigFromFile() {
     
     // Load I2C sensors
     JsonArray i2cSensors = doc["I2C Sensors"].as<JsonArray>();
-    errorHandler->logInfo("I2C Sensors array exists: " + String(i2cSensors ? "YES" : "NO"));
+    errorHandler->logInfo("I2C Sensors array exists: " + String(i2cSensors.size() > 0 ? "YES" : "NO"));
     
-    if (i2cSensors) {
+    if (i2cSensors.size() > 0) {
         errorHandler->logInfo("Found " + String(i2cSensors.size()) + " I2C sensors");
         for (JsonObject sensor : i2cSensors) {
-            if (!sensor.containsKey("Sensor Name") || !sensor.containsKey("Sensor Type") || 
-                !sensor.containsKey("Address (HEX)")) {
+            if (!sensor["Sensor Name"].is<String>() || !sensor["Sensor Type"].is<String>() || 
+                !sensor["Address (HEX)"].is<int>()) {
                 errorHandler->logWarning("Skipping I2C sensor with missing required fields");
                 continue;
             }
@@ -124,7 +123,7 @@ bool ConfigManager::loadConfigFromFile() {
             errorHandler->logInfo("Found I2C sensor: " + config.name + " of type " + config.type);
             
             // Handle I2C port (new field)
-            if (!sensor["I2C Port"].isNull()) {
+            if (sensor["I2C Port"].is<String>()) {
                 String portStr = sensor["I2C Port"].as<String>();
                 config.i2cPort = I2CManager::stringToPort(portStr);
                 errorHandler->logInfo("Sensor using I2C port " + portStr);
@@ -135,7 +134,7 @@ bool ConfigManager::loadConfigFromFile() {
             }
             
             // Read and validate polling rate
-            if (!sensor["Polling Rate[1000 ms]"].isNull()) {
+            if (sensor["Polling Rate[1000 ms]"].is<uint32_t>()) {
                 uint32_t rate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
                 // Apply validation rules
                 if (rate < MIN_POLLING_RATE) {
@@ -158,7 +157,7 @@ bool ConfigManager::loadConfigFromFile() {
             }
             
             // Read additional settings
-            if (!sensor["Additional"].isNull()) {
+            if (sensor["Additional"].is<String>()) {
                 config.additional = sensor["Additional"].as<String>();
                 errorHandler->logInfo("Additional settings: " + config.additional);
             } else {
@@ -172,13 +171,13 @@ bool ConfigManager::loadConfigFromFile() {
     
     // Load SPI sensors
     JsonArray spiSensors = doc["SPI Sensors"].as<JsonArray>();
-    errorHandler->logInfo("SPI Sensors array exists: " + String(spiSensors ? "YES" : "NO"));
+    errorHandler->logInfo("SPI Sensors array exists: " + String(spiSensors.size() > 0 ? "YES" : "NO"));
     
-    if (spiSensors) {
+    if (spiSensors.size() > 0) {
         errorHandler->logInfo("Found " + String(spiSensors.size()) + " SPI sensors");
         for (JsonObject sensor : spiSensors) {
-            if (!sensor.containsKey("Sensor Name") || !sensor.containsKey("Sensor Type") || 
-                !sensor.containsKey("SS Pin")) {
+            if (!sensor["Sensor Name"].is<String>() || !sensor["Sensor Type"].is<String>() || 
+                !sensor["SS Pin"].is<int>()) {
                 errorHandler->logWarning("Skipping SPI sensor with missing required fields");
                 continue;
             }
@@ -195,7 +194,7 @@ bool ConfigManager::loadConfigFromFile() {
             config.i2cPort = I2CPort::I2C0; // Default value, not used
             
             // Read and validate polling rate
-            if (!sensor["Polling Rate[1000 ms]"].isNull()) {
+            if (sensor["Polling Rate[1000 ms]"].is<uint32_t>()) {
                 uint32_t rate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
                 // Apply validation rules
                 if (rate < MIN_POLLING_RATE) {
@@ -218,7 +217,7 @@ bool ConfigManager::loadConfigFromFile() {
             }
             
             // Read additional settings
-            if (!sensor["Additional"].isNull()) {
+            if (sensor["Additional"].is<String>()) {
                 config.additional = sensor["Additional"].as<String>();
                 errorHandler->logInfo("Additional settings: " + config.additional);
             } else {
@@ -231,7 +230,7 @@ bool ConfigManager::loadConfigFromFile() {
     }
     
     // Load Additional configuration if present
-    if (doc.containsKey("Additional")) {
+    if (doc["Additional"].is<JsonObject>()) {
         // Serialize the Additional field to a string
         String additionalJson;
         serializeJson(doc["Additional"], additionalJson);
@@ -445,8 +444,8 @@ String ConfigManager::getConfigJson() {
 bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
     // Log a shorter version of the config to avoid huge logs
     errorHandler->logInfo("Received config update: " + 
-                          jsonConfig.substring(0, std::min(50, (int)jsonConfig.length())) + 
-                          (jsonConfig.length() > 50 ? "..." : ""));
+                         jsonConfig.substring(0, std::min(50, (int)jsonConfig.length())) + 
+                         (jsonConfig.length() > 50 ? "..." : ""));
     
     // Make a backup of the current configuration
     String backupConfig = getConfigJson();
@@ -572,12 +571,12 @@ bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
     std::vector<SensorConfig> newSensorConfigs;
     
     // Extract I2C sensors if present
-    if (doc.containsKey("I2C Sensors") && doc["I2C Sensors"].is<JsonArray>()) {
+    if (doc["I2C Sensors"].is<JsonArray>()) {
         JsonArray i2cSensors = doc["I2C Sensors"].as<JsonArray>();
         
         for (JsonObject sensor : i2cSensors) {
-            if (!sensor.containsKey("Sensor Name") || !sensor.containsKey("Sensor Type") || 
-                !sensor.containsKey("Address (HEX)")) {
+            if (!sensor["Sensor Name"].is<String>() || !sensor["Sensor Type"].is<String>() || 
+                !sensor["Address (HEX)"].is<int>()) {
                 errorHandler->logError(ERROR, "Missing required fields in I2C sensor configuration");
                 continue;
             }
@@ -590,11 +589,11 @@ bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
             
             // Optional fields with defaults
             config.i2cPort = I2CManager::stringToPort(
-                sensor["I2C Port"].isNull() ? "I2C0" : sensor["I2C Port"].as<String>());
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].isNull() ? 
-                1000 : sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-            config.additional = sensor["Additional"].isNull() ? 
-                "" : sensor["Additional"].as<String>();
+                sensor["I2C Port"].is<String>() ? sensor["I2C Port"].as<String>() : "I2C0");
+            config.pollingRate = sensor["Polling Rate[1000 ms]"].is<uint32_t>() ? 
+                sensor["Polling Rate[1000 ms]"].as<uint32_t>() : 1000;
+            config.additional = sensor["Additional"].is<String>() ? 
+                sensor["Additional"].as<String>() : "";
             
             // Apply polling rate limits
             config.pollingRate = constrain(config.pollingRate, 50, 300000);
@@ -604,12 +603,12 @@ bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
     }
     
     // Extract SPI sensors if present
-    if (doc.containsKey("SPI Sensors") && doc["SPI Sensors"].is<JsonArray>()) {
+    if (doc["SPI Sensors"].is<JsonArray>()) {
         JsonArray spiSensors = doc["SPI Sensors"].as<JsonArray>();
         
         for (JsonObject sensor : spiSensors) {
-            if (!sensor.containsKey("Sensor Name") || !sensor.containsKey("Sensor Type") || 
-                !sensor.containsKey("SS Pin")) {
+            if (!sensor["Sensor Name"].is<String>() || !sensor["Sensor Type"].is<String>() || 
+                !sensor["SS Pin"].is<int>()) {
                 errorHandler->logError(ERROR, "Missing required fields in SPI sensor configuration");
                 continue;
             }
@@ -621,10 +620,10 @@ bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
             config.isSPI = true;
             
             // Optional fields with defaults
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].isNull() ? 
-                1000 : sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-            config.additional = sensor["Additional"].isNull() ? 
-                "" : sensor["Additional"].as<String>();
+            config.pollingRate = sensor["Polling Rate[1000 ms]"].is<uint32_t>() ? 
+                sensor["Polling Rate[1000 ms]"].as<uint32_t>() : 1000;
+            config.additional = sensor["Additional"].is<String>() ? 
+                sensor["Additional"].as<String>() : "";
             
             // Apply polling rate limits
             config.pollingRate = constrain(config.pollingRate, 50, 300000);
@@ -635,7 +634,7 @@ bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
     
     // Verify we have at least one valid sensor if we received config
     if (newSensorConfigs.empty() && 
-        (doc.containsKey("I2C Sensors") || doc.containsKey("SPI Sensors"))) {
+        (doc["I2C Sensors"].is<JsonArray>() || doc["SPI Sensors"].is<JsonArray>())) {
         errorHandler->logWarning("No valid sensors found in configuration, keeping existing sensors");
         return false;
     }
@@ -719,7 +718,7 @@ bool ConfigManager::updateAdditionalConfigFromJson(const String& jsonConfig) {
         }
         
         // Remove Additional field if it exists
-        if (doc.containsKey("Additional")) {
+        if (doc["Additional"].is<JsonObject>()) {
             doc.remove("Additional");
         }
         
@@ -745,11 +744,9 @@ bool ConfigManager::updateAdditionalConfigFromJson(const String& jsonConfig) {
     
     // Extract Additional configuration if present
     String newAdditionalConfig = "";
-    if (doc.containsKey("Additional")) {
+    if (doc["Additional"].is<JsonObject>()) {
         // Serialize the Additional field to a string
-        JsonDocument additionalDoc;
-        additionalDoc["Additional"] = doc["Additional"];
-        serializeJson(additionalDoc["Additional"], newAdditionalConfig);
+        serializeJson(doc["Additional"], newAdditionalConfig);
     } else {
         errorHandler->logError(ERROR, "Missing 'Additional' field in configuration");
         return false;

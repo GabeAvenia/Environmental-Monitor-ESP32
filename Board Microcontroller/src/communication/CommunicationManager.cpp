@@ -206,14 +206,16 @@ bool CommunicationManager::processCommand(const String& command, const std::vect
 }
 
 void CommunicationManager::processCommandLine() {
-    constexpr unsigned long COMMAND_TIMEOUT_MS = 50;
+    // Increased timeout and buffer size
+    constexpr unsigned long COMMAND_TIMEOUT_MS = 200;
+    constexpr size_t MAX_BUFFER_SIZE = 4096;          // 4KB 
     
     // Read a complete command with timeout
     String rawCommand = "";
     unsigned long startTime = millis();
     
     // Read until newline, timeout, or buffer full
-    while ((millis() - startTime < COMMAND_TIMEOUT_MS) && (rawCommand.length() < 256)) {
+    while ((millis() - startTime < COMMAND_TIMEOUT_MS) && (rawCommand.length() < MAX_BUFFER_SIZE)) {
         if (Serial.available()) {
             char c = Serial.read();
             if (c == '\n' || c == '\r') {
@@ -228,13 +230,22 @@ void CommunicationManager::processCommandLine() {
         yield(); // Allow other tasks to run
     }
     
+    // Check if we hit the buffer limit
+    if (rawCommand.length() >= MAX_BUFFER_SIZE) {
+        errorHandler->logWarning("Command exceeds buffer size limit of " + String(MAX_BUFFER_SIZE) + " characters");
+    }
+    
     if (rawCommand.length() == 0) {
         return; // No command to process
     }
     
     // Trim whitespace and process command
     rawCommand.trim();
-    errorHandler->logInfo("Processing command: '" + rawCommand + "'");
+    errorHandler->logInfo("Processing command: '" + 
+                         (rawCommand.length() > 50 ? 
+                            rawCommand.substring(0, 50) + "..." : 
+                            rawCommand) + 
+                         "' (" + String(rawCommand.length()) + " bytes)");
 
     // Parse and process command
     String command;

@@ -40,8 +40,12 @@ void setUartDebugSerial(Print* debugSerial) {
 void setup() {
     // Initialize USB Serial for command interface
     Serial.begin(115200);
-    
-    while (!Serial) delay(10);
+    Serial.setRxBufferSize(4096); // Set RX buffer size to 4096 bytes
+    // Wait for USB Serial to be ready up to 500 ms
+    unsigned long startTime = millis();
+    while (!Serial && (millis() - startTime < 500)) {
+        delay(10); // Wait for USB Serial to be ready
+    }
 
     // Initialize USB Serial for debug messages
     usbSerial = &Serial;

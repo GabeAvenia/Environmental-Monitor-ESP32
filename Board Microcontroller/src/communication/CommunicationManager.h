@@ -39,7 +39,7 @@ private:
     
     // Command handling
     std::map<String, CommandHandler> commandHandlers;
-    
+
     // Static reference to UART debug serial
     static Print* uartDebugSerial;
     
