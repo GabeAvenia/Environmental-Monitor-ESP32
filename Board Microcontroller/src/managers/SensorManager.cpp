@@ -117,80 +117,68 @@ bool SensorManager::initializeSensors() {
 bool SensorManager::reconfigureSensors(const String& configJson) {
     // Parse the new configuration
     JsonDocument doc;
-    
     DeserializationError error = deserializeJson(doc, configJson);
     
-    if (error) {
-        errorHandler->logError(ERROR, "Failed to parse sensor configuration JSON: " + String(error.c_str()));
+    if (error || doc.overflowed()) {
+        errorHandler->logError(ERROR, "Failed to parse sensor configuration JSON: " + 
+                             String(error ? error.c_str() : "Memory overflow"));
         return false;
     }
     
-    // Check for memory overflow
-    if (doc.overflowed()) {
-        errorHandler->logError(ERROR, "Sensor configuration too large for available memory");
-        return false;
-    }
-    
-    // Extract the old and new configurations
+    // Extract configurations from JSON
     std::vector<SensorConfig> oldConfigs = configManager->getSensorConfigs();
     std::vector<SensorConfig> newConfigs;
     
-    // Parse I2C sensors
-    JsonArray i2cSensors = doc["I2C Sensors"].as<JsonArray>();
-    for (JsonObject sensor : i2cSensors) {
-        SensorConfig config;
-        config.name = sensor["Sensor Name"].as<String>();
-        config.type = sensor["Sensor Type"].as<String>();
-        config.address = sensor["Address (HEX)"].as<int>();
-        config.isSPI = false;
-        
-        // Read I2C port
-        if (!sensor["I2C Port"].isNull()) {
-            String portStr = sensor["I2C Port"].as<String>();
-            config.i2cPort = I2CManager::stringToPort(portStr);
-        } else {
-            config.i2cPort = I2CPort::I2C0; // Default
+    // Extract I2C sensors
+    if (doc["I2C Sensors"].is<JsonArray>()) {
+        JsonArray i2cSensors = doc["I2C Sensors"].as<JsonArray>();
+        for (JsonObject sensor : i2cSensors) {
+            SensorConfig config;
+            
+            // Required fields
+            config.name = sensor["Sensor Name"].as<String>();
+            config.type = sensor["Sensor Type"].as<String>();
+            config.address = sensor["Address (HEX)"].as<int>();
+            config.isSPI = false;
+            
+            // Optional fields with defaults
+            config.i2cPort = I2CManager::stringToPort(
+                sensor["I2C Port"].isNull() ? "I2C0" : sensor["I2C Port"].as<String>());
+            config.pollingRate = sensor["Polling Rate[1000 ms]"].isNull() ? 
+                1000 : sensor["Polling Rate[1000 ms]"].as<uint32_t>();
+            config.additional = sensor["Additional"].isNull() ? 
+                "" : sensor["Additional"].as<String>();
+            
+            // Apply polling rate limits
+            config.pollingRate = constrain(config.pollingRate, 50, 300000);
+            
+            newConfigs.push_back(config);
         }
-        
-        // Read polling rate with a default if not present
-        config.pollingRate = 1000; // Default 1 second
-        if (!sensor["Polling Rate[1000 ms]"].isNull()) {
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-        }
-        
-        // Read additional settings if present
-        if (!sensor["Additional"].isNull()) {
-            config.additional = sensor["Additional"].as<String>();
-        } else {
-            config.additional = ""; // Default to empty string
-        }
-        
-        newConfigs.push_back(config);
     }
     
-    // Parse SPI sensors
-    JsonArray spiSensors = doc["SPI Sensors"].as<JsonArray>();
-    for (JsonObject sensor : spiSensors) {
-        SensorConfig config;
-        config.name = sensor["Sensor Name"].as<String>();
-        config.type = sensor["Sensor Type"].as<String>();
-        config.address = sensor["SS Pin"].as<int>();
-        config.isSPI = true;
-        
-        // Read polling rate with a default if not present
-        config.pollingRate = 1000; // Default 1 second
-        if (!sensor["Polling Rate[1000 ms]"].isNull()) {
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
+    // Extract SPI sensors
+    if (doc["SPI Sensors"].is<JsonArray>()) {
+        JsonArray spiSensors = doc["SPI Sensors"].as<JsonArray>();
+        for (JsonObject sensor : spiSensors) {
+            SensorConfig config;
+            
+            // Required fields
+            config.name = sensor["Sensor Name"].as<String>();
+            config.type = sensor["Sensor Type"].as<String>();
+            config.address = sensor["SS Pin"].as<int>();
+            config.isSPI = true;
+            
+            // Optional fields with defaults
+            config.pollingRate = sensor["Polling Rate[1000 ms]"].isNull() ? 
+                1000 : sensor["Polling Rate[1000 ms]"].as<uint32_t>();
+            config.additional = sensor["Additional"].isNull() ? 
+                "" : sensor["Additional"].as<String>();
+            
+            // Apply polling rate limits
+            config.pollingRate = constrain(config.pollingRate, 50, 300000);
+            
+            newConfigs.push_back(config);
         }
-        
-        // Read additional settings if present
-        if (!sensor["Additional"].isNull()) {
-            config.additional = sensor["Additional"].as<String>();
-        } else {
-            config.additional = ""; // Default to empty string
-        }
-        
-        newConfigs.push_back(config);
     }
     
     // Determine which sensors to add and remove
@@ -199,12 +187,16 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
     compareConfigurations(oldConfigs, newConfigs, sensorsToAdd, sensorsToRemove);
     
     // Update the configuration in the ConfigManager
-    // IMPORTANT: Disable notifications to prevent recursion
     configManager->disableNotifications(true);
-    configManager->updateSensorConfigs(newConfigs);
+    bool configUpdateSuccess = configManager->updateSensorConfigs(newConfigs);
     configManager->disableNotifications(false);
     
-    // Remove sensors that are no longer in the configuration
+    if (!configUpdateSuccess) {
+        errorHandler->logError(ERROR, "Failed to update sensor configuration");
+        return false;
+    }
+    
+    // Remove and add sensors as determined
     for (const auto& sensorName : sensorsToRemove) {
         ISensor* sensor = registry.unregisterSensor(sensorName);
         if (sensor) {
@@ -213,43 +205,23 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
         }
     }
     
-    // Add new sensors
     bool allSuccess = true;
     for (const auto& config : sensorsToAdd) {
         errorHandler->logInfo("Adding new sensor: " + config.name);
         
-        // Test communication for the appropriate interface
-        if (config.isSPI) {
-            if (!spiManager) {
-                errorHandler->logError(ERROR, "SPI manager not available for sensor: " + config.name);
-                allSuccess = false;
-                continue;
-            }
-            testSPICommunication(config.address);
-        } else {
-            testI2CCommunication(config.i2cPort, config.address);
-        }
-        
         // Create and initialize the sensor
         ISensor* sensor = factory.createSensor(config);
-        if (!sensor) {
-            errorHandler->logError(ERROR, "Failed to create sensor: " + config.name);
+        if (!sensor || !sensor->initialize()) {
+            if (sensor) delete sensor;
+            errorHandler->logError(ERROR, "Failed to create/initialize sensor: " + config.name);
             allSuccess = false;
             continue;
         }
         
-        if (!sensor->initialize()) {
-            errorHandler->logError(ERROR, "Failed to initialize sensor: " + config.name);
-            delete sensor;
-            allSuccess = false;
-            continue;
-        }
-        
-        // Register the sensor
+        // Register the successfully initialized sensor
         registry.registerSensor(sensor);
-        
-        errorHandler->logInfo("Sensor added to system: " + config.name + " with polling rate: " + 
-                           String(config.pollingRate) + "ms");
+        errorHandler->logInfo("Sensor added: " + config.name + 
+                            " with polling rate: " + String(config.pollingRate) + "ms");
     }
     
     return allSuccess;

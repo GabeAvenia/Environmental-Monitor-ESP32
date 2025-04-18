@@ -131,8 +131,7 @@ void setup() {
     Serial.begin(115200);
     
     // Wait a moment for serial to initialize
-    delay(500);
-    
+    delay(50);
     // Print an immediate message to verify serial works
     Serial.println("ESP32 starting up - Initializing components...");
     usbSerial = &Serial;
@@ -140,14 +139,14 @@ void setup() {
     // Initialize UART for debug messages
     debugSerial = &Serial2;
     debugSerial->begin(115200, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
-    delay(100); // Give serial time to initialize
+    delay(50); // Give serial time to initialize
     uartDebugSerial = debugSerial;
     
     // Initialize the error handler with debug output
     errorHandler = new ErrorHandler(usbSerial, uartDebugSerial);
     
     // Give the system time to stabilize
-    delay(200);
+    delay(50);
     
     // Initialize LED manager
     ledManager = new LedManager(errorHandler);

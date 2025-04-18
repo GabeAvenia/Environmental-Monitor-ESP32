@@ -3,21 +3,21 @@
 #include <Arduino.h>
 
 /**
- * @brief Interface for sensors that can measure humidity.
+ * @brief Interface for sensors that can measure humidity
  */
 class IHumiditySensor {
 public:
-    virtual ~IHumiditySensor() {}
+    virtual ~IHumiditySensor() = default;
     
     /**
-     * @brief Read the current humidity value from the sensor.
-     * @return The relative humidity as a percentage (0-100), or NAN if reading failed.
+     * @brief Read current humidity from sensor
+     * @return Relative humidity percentage (0-100) or NAN if reading failed
      */
     virtual float readHumidity() = 0;
     
     /**
-     * @brief Get the timestamp of the last humidity reading.
-     * @return Timestamp in milliseconds (from millis()).
+     * @brief Get timestamp of last humidity reading
+     * @return Timestamp in milliseconds from millis()
      */
     virtual unsigned long getHumidityTimestamp() const = 0;
 };

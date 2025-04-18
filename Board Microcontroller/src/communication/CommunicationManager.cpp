@@ -103,183 +103,69 @@ void CommunicationManager::registerCommandHandlers() {
         [this](const std::vector<String>& params) { return handleLedIdentify(params); };
 }
 
+#define REGISTER_COMMAND(cmd, handler) \
+    scpiParser->RegisterCommand(F(cmd), \
+        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) { \
+            CommunicationManager* instance = CommunicationManager::getInstance(); \
+            if (instance) { \
+                std::vector<String> params; \
+                for (size_t i = 0; i < parameters.Size(); i++) { \
+                    params.push_back(String(parameters[i])); \
+                } \
+                instance->handler(params); \
+            } \
+        });
+
 void CommunicationManager::setupCommands() {
-    // Each command needs its own non-capturing lambda
-    
-    // *IDN? command
-    scpiParser->RegisterCommand(F("*IDN?"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleIdentify(params);
-        });
-        
-    // MEAS command
-    scpiParser->RegisterCommand(F("MEAS"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleMeasure(params);
-        });
+    REGISTER_COMMAND("*IDN?", handleIdentify)
+    REGISTER_COMMAND("MEAS", handleMeasure)
+    REGISTER_COMMAND("MEAS?", handleMeasure)
+    REGISTER_COMMAND("SYST:SENS:LIST?", handleListSensors)
+    REGISTER_COMMAND("SYST:CONF?", handleGetConfig)
+    REGISTER_COMMAND("SYST:CONF:BOARD:ID", handleSetBoardId)
+    REGISTER_COMMAND("SYST:CONF:UPDATE", handleUpdateConfig)
+    REGISTER_COMMAND("TEST", handleEcho)
+    REGISTER_COMMAND("TEST:FS", handleTestFilesystem)
+    REGISTER_COMMAND("TEST:UPDATE", handleTestUpdateConfig)
+    REGISTER_COMMAND("ECHO", handleEcho)
+    REGISTER_COMMAND("SYST:LOG:ROUTE?", handleMessageRoutingStatus)
+    REGISTER_COMMAND("SYST:LOG:ROUTE", handleMessageRoutingSet)
+    REGISTER_COMMAND("SYST:LOG:INFO:ROUTE", handleInfoRoute)
+    REGISTER_COMMAND("SYST:LOG:WARN:ROUTE", handleWarningRoute)
+    REGISTER_COMMAND("SYST:LOG:ERR:ROUTE", handleErrorRoute)
+    REGISTER_COMMAND("SYST:LOG:CRIT:ROUTE", handleCriticalRoute)
+    REGISTER_COMMAND("SYST:LED:IDENT", handleLedIdentify)
 
-    // MEAS? command
-    scpiParser->RegisterCommand(F("MEAS?"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleMeasure(params);
-        });
-
-    // SYST:SENS:LIST? command
-    scpiParser->RegisterCommand(F("SYST:SENS:LIST?"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleListSensors(params);
-        });
-        
-    // SYST:CONF? command
-    scpiParser->RegisterCommand(F("SYST:CONF?"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleGetConfig(params);
-        });
-        
-    // SYST:CONF:BOARD:ID command
-    scpiParser->RegisterCommand(F("SYST:CONF:BOARD:ID"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleSetBoardId(params);
-        });
-        
-    // SYST:CONF:UPDATE command
-    scpiParser->RegisterCommand(F("SYST:CONF:UPDATE"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleUpdateConfig(params);
-        });
-        
-    // TEST command
-    scpiParser->RegisterCommand(F("TEST"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            CommunicationManager::getInstance()->handleEcho(params);
-        });
-        
-    // TEST:FS command
-    scpiParser->RegisterCommand(F("TEST:FS"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            CommunicationManager::getInstance()->handleTestFilesystem(params);
-        });
-        
-    // TEST:UPDATE command
-    scpiParser->RegisterCommand(F("TEST:UPDATE"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            CommunicationManager::getInstance()->handleTestUpdateConfig(params);
-        });
-        
-    // ECHO command
-    scpiParser->RegisterCommand(F("ECHO"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleEcho(params);
-        });
-    
-    // Emergency reset command
-    scpiParser->RegisterCommand(F("*RST"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            CommunicationManager::getInstance()->handleReset(params);
-        });
-    
-    // Quick reset command
-    scpiParser->RegisterCommand(F("RESET"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            CommunicationManager::getInstance()->handleReset(params);
-        });
-        
-    // Message routing commands
-    scpiParser->RegisterCommand(F("SYST:LOG:ROUTE?"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            CommunicationManager::getInstance()->handleMessageRoutingStatus(params);
-        });
-
-    scpiParser->RegisterCommand(F("SYST:LOG:ROUTE"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleMessageRoutingSet(params);
-        });
-
-    scpiParser->RegisterCommand(F("SYST:LOG:INFO:ROUTE"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleInfoRoute(params);
-        });
-
-    scpiParser->RegisterCommand(F("SYST:LOG:WARN:ROUTE"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleWarningRoute(params);
-        });
-
-    scpiParser->RegisterCommand(F("SYST:LOG:ERR:ROUTE"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleErrorRoute(params);
-        });
-
-    scpiParser->RegisterCommand(F("SYST:LOG:CRIT:ROUTE"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            for (size_t i = 0; i < parameters.Size(); i++) {
-                params.push_back(String(parameters[i]));
-            }
-            CommunicationManager::getInstance()->handleCriticalRoute(params);
-        });
-
-    scpiParser->RegisterCommand(F("SYST:LED:IDENT"), 
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) {
-            std::vector<String> params;
-            CommunicationManager::getInstance()->handleLedIdentify(params);
-        });
     
     errorHandler->logInfo("SCPI commands registered");
+}
+
+void CommunicationManager::processIncomingData() {
+    // Check if there's data available in the serial buffer
+    if (Serial.available() > 0) {
+        // Read the entire line
+        String rawCommand = Serial.readStringUntil('\n');
+        rawCommand.trim();
+        
+        // Log receipt for debugging
+        errorHandler->logInfo("Processing command: '" + rawCommand + "'");
+        
+        // Parse and process command
+        String command;
+        std::vector<String> params;
+        parseCommand(rawCommand, command, params);
+        
+        // Try to handle with our command processors
+        if (!processCommand(command, params)) {
+            // Fall back to SCPI parser for compatibility
+            char buff[rawCommand.length() + 1];
+            rawCommand.toCharArray(buff, rawCommand.length() + 1);
+            scpiParser->ProcessInput(Serial, buff);
+        }
+        
+        // Ensure all responses are sent
+        Serial.flush();
+    }
 }
 
 void CommunicationManager::parseCommand(const String& rawCommand, String& command, std::vector<String>& params) {
@@ -320,41 +206,15 @@ bool CommunicationManager::processCommand(const String& command, const std::vect
     return false;
 }
 
-void CommunicationManager::processIncomingData() {
-    // Check if there's data available in the serial buffer
-    if (Serial.available() > 0) {
-        // Read the entire line, which is more reliable in this context
-        String rawCommand = Serial.readStringUntil('\n');
-        rawCommand.trim();
-        
-        // Log receipt for debugging
-        errorHandler->logInfo("Processing command: '" + rawCommand + "'");
-        
-        // Parse and process command
-        String command;
-        std::vector<String> params;
-        parseCommand(rawCommand, command, params);
-        
-        // Try to handle with our command processors
-        if (!processCommand(command, params)) {
-            // Fall back to SCPI parser for compatibility
-            char buff[rawCommand.length() + 1];
-            rawCommand.toCharArray(buff, rawCommand.length() + 1);
-            scpiParser->ProcessInput(Serial, buff);
-        }
-        
-        // Ensure all responses are sent
-        Serial.flush();
-    }
-}
-
 void CommunicationManager::processCommandLine() {
-    // Use a better approach to read commands
-    String rawCommand = "";
+    constexpr unsigned long COMMAND_TIMEOUT_MS = 50;
     
-    // Read with timeout to avoid partial commands
+    // Read a complete command with timeout
+    String rawCommand = "";
     unsigned long startTime = millis();
-    while (millis() - startTime < 50) { // 50ms timeout
+    
+    // Read until newline, timeout, or buffer full
+    while ((millis() - startTime < COMMAND_TIMEOUT_MS) && (rawCommand.length() < 256)) {
         if (Serial.available()) {
             char c = Serial.read();
             if (c == '\n' || c == '\r') {
@@ -373,7 +233,7 @@ void CommunicationManager::processCommandLine() {
         return; // No command to process
     }
     
-    // Log the command after cleaning
+    // Trim whitespace and process command
     rawCommand.trim();
     errorHandler->logInfo("Processing command: '" + rawCommand + "'");
 
@@ -382,9 +242,8 @@ void CommunicationManager::processCommandLine() {
     std::vector<String> params;
     parseCommand(rawCommand, command, params);
     
-    // Try to handle with our command processors
+    // Handle command through our handlers or fall back to SCPI parser
     if (!processCommand(command, params)) {
-        // Fall back to SCPI parser for compatibility
         char buff[rawCommand.length() + 1];
         rawCommand.toCharArray(buff, rawCommand.length() + 1);
         scpiParser->ProcessInput(Serial, buff);
@@ -441,18 +300,13 @@ bool CommunicationManager::handleMeasure(const std::vector<String>& params) {
         Serial.println(csvLine);
         Serial.flush(); // Ensure the response is sent immediately
     }
-    
+    errorHandler->logInfo("MEAS values sent");
     return true;
 }
 
 void CommunicationManager::collectSensorReadings(const String& sensorName, const String& measurements, std::vector<String>& values) {
     ISensor* sensor = sensorManager->findSensor(sensorName);
-    if (!sensor) {
-        values.push_back("ERROR");
-        return;
-    }
-    
-    if (!sensor->isConnected()) {
+    if (!sensor || !sensor->isConnected()) {
         values.push_back("ERROR");
         return;
     }
@@ -514,8 +368,7 @@ bool CommunicationManager::handleListSensors(const std::vector<String>& params) 
     
     // Send the complete response all at once
     Serial.print(response);
-    
-    // Add a small delay to ensure all data is sent
+    // Small delay to ensure all data is sent
     delay(5);
     
     // Flush to ensure all data is transmitted
