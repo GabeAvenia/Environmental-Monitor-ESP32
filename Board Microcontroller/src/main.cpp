@@ -30,15 +30,6 @@ TaskManager* taskManager = nullptr;
 Print* usbSerial = nullptr;
 Print* uartDebugSerial = nullptr;
 
-// Configuration change callback
-void onConfigChanged(const String& newConfig) {
-    // When configuration changes, reconfigure sensors
-    if (sensorManager && taskManager) {
-        // Reconfigure sensors
-        sensorManager->reconfigureSensors(newConfig);
-    }
-}
-
 // Helper function to pass debug serial to communication manager
 void setUartDebugSerial(Print* debugSerial) {
     if (commManager) {
@@ -46,94 +37,13 @@ void setUartDebugSerial(Print* debugSerial) {
     }
 }
 
-// Handle basic commands when taskManager isn't running
-void handleCommand(const String& cmd) {
-    if (cmd == "*IDN?") {
-        Serial.println(String(Constants::PRODUCT_NAME) + "," + 
-                    configManager->getBoardIdentifier() + "," +
-                    String(Constants::FIRMWARE_VERSION));
-    } 
-    else if (cmd == "SYST:LED:IDENT") {
-        if (ledManager) {
-            ledManager->startIdentify();
-            Serial.println("LED identify mode activated");
-        }
-    }
-    else if (cmd == "RESET") {
-        Serial.println("Resetting device...");
-        delay(100);  // Give time for the message to be sent
-        ESP.restart();
-    }
-    else if (cmd == "TEST") {
-        Serial.println("Serial communication test successful");
-    }
-    else if (cmd.startsWith("ECHO")) {
-        Serial.println("ECHO: " + cmd);
-    }
-    else if (cmd == "TASK:STATUS") {
-        // Command to get task status
-        if (taskManager) {
-            Serial.println(taskManager->getTaskStatusString());
-            Serial.println(taskManager->getTaskMemoryInfo());
-        } else {
-            Serial.println("Task manager not initialized or unavailable");
-        }
-    }
-    else if (cmd == "MEMORY") {
-        // Command to get memory info using ESP32-specific functions
-        Serial.println("=== Memory Information ===");
-        Serial.println("ESP32 Total Heap: " + String(ESP.getHeapSize()) + " bytes");
-        Serial.println("ESP32 Free Heap: " + String(ESP.getFreeHeap()) + " bytes");
-        
-        // Get largest block that can be allocated
-        Serial.println("ESP32 Max Alloc Heap: " + String(ESP.getMaxAllocHeap()) + " bytes");
-        
-        // Get minimum free heap ever
-        Serial.println("ESP32 Min Free Heap: " + String(ESP.getMinFreeHeap()) + " bytes");
-        
-        // Calculate fragmentation
-        int fragPercent = 100 - (ESP.getMaxAllocHeap() * 100) / ESP.getFreeHeap();
-        if (fragPercent < 0) fragPercent = 0;  // Protect against negative values
-        Serial.println("Heap Fragmentation: " + String(fragPercent) + "%");
-        
-        // Check if PSRAM is available
-        if (ESP.getPsramSize() > 0) {
-            Serial.println("=== PSRAM Information ===");
-            Serial.println("PSRAM Size: " + String(ESP.getPsramSize()) + " bytes");
-            Serial.println("PSRAM Free: " + String(ESP.getFreePsram()) + " bytes");
-            Serial.println("PSRAM Min Free: " + String(ESP.getMinFreePsram()) + " bytes");
-            Serial.println("PSRAM Max Alloc: " + String(ESP.getMaxAllocPsram()) + " bytes");
-        }
-    }
-    else if (cmd == "HELP") {
-        Serial.println("Available commands:");
-        Serial.println("  *IDN?           - Get device identification");
-        Serial.println("  MEAS?           - Get all sensor measurements");
-        Serial.println("  MEAS? [sensor]  - Get measurements from specific sensor");
-        Serial.println("  SYST:SENS:LIST? - List all available sensors");
-        Serial.println("  SYST:CONF?      - Get current configuration");
-        Serial.println("  SYST:LED:IDENT  - Flash LED for device identification");
-        Serial.println("  TASK:STATUS     - Show task status");
-        Serial.println("  MEMORY          - Show memory usage");
-        Serial.println("  RESET           - Restart the device");
-    }
-    else if (commManager) {
-        // Process through the communication manager
-        String command;
-        std::vector<String> params;
-        commManager->parseCommand(cmd, command, params);
-        commManager->processCommand(command, params);
-    }
-}
-
 void setup() {
     // Initialize USB Serial for command interface
     Serial.begin(115200);
     
-    // Wait a moment for serial to initialize
-    delay(50);
-    // Print an immediate message to verify serial works
-    Serial.println("ESP32 starting up - Initializing components...");
+    while (!Serial) delay(10);
+
+    // Initialize USB Serial for debug messages
     usbSerial = &Serial;
     
     // Initialize UART for debug messages
@@ -180,9 +90,6 @@ void setup() {
         }
     }
     
-    // Register for configuration changes
-    configManager->registerChangeCallback(onConfigChanged);
-    
     // Initialize I2C manager
     i2cManager = new I2CManager(errorHandler);
     if (!i2cManager->begin()) {
@@ -202,7 +109,7 @@ void setup() {
     }
     
     // Give the system time to stabilize
-    delay(200);
+    delay(20);
     
     // Create sensor manager with both I2C and SPI support
     sensorManager = new SensorManager(configManager, i2cManager, errorHandler, spiManager);
@@ -225,7 +132,7 @@ void setup() {
     errorHandler->logInfo("Sensor cache configured with " + String(fastestRate) + "ms max age");
     
     // Give the system time to stabilize
-    delay(200);
+    delay(20);
     
     // Setup communication
     commManager = new CommunicationManager(sensorManager, configManager, errorHandler, ledManager);
@@ -236,7 +143,7 @@ void setup() {
     commManager->setupCommands();
     
     // Give the system time to stabilize
-    delay(300);
+    delay(20);
     
     // Initialize TaskManager - core task management
     taskManager = new TaskManager(sensorManager, commManager, ledManager, errorHandler);
@@ -249,11 +156,11 @@ void setup() {
         // Start tasks one by one with delays in between
         if (taskManager->startLedTask()) {
             errorHandler->logInfo("LED task started successfully");
-            delay(300); // Give time for task to stabilize
+            delay(200); // Give time for task to stabilize
             
             if (taskManager->startCommTask()) {
                 errorHandler->logInfo("Communication task started successfully");
-                delay(300); // Give time for task to stabilize
+                delay(20); // Give time for task to stabilize
                 
                 if (taskManager->startSensorTask()) {
                     errorHandler->logInfo("Sensor task started successfully");

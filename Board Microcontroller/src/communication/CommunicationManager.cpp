@@ -317,8 +317,6 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
     
     bool readTemp = useAllMeasurements || upperMeasurements.indexOf("TEMP") >= 0;
     bool readHum = useAllMeasurements || upperMeasurements.indexOf("HUM") >= 0;
-    bool readPres = useAllMeasurements || upperMeasurements.indexOf("PRES") >= 0;
-    bool readCO2 = useAllMeasurements || upperMeasurements.indexOf("CO2") >= 0;
     
     // Read temperature if supported and requested - use thread-safe method directly
     if (readTemp && sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
@@ -330,10 +328,6 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
     if (readHum && sensor->supportsInterface(InterfaceType::HUMIDITY)) {
         HumidityReading humReading = sensorManager->getHumiditySafe(sensorName);
         values.push_back(humReading.valid ? String(humReading.value) : "ERROR");
-    }
-    
-    if (readCO2 && sensor->supportsInterface(InterfaceType::CO2)) {
-        values.push_back("ERROR"); // Not implemented yet
     }
 }
 
@@ -354,12 +348,6 @@ bool CommunicationManager::handleListSensors(const std::vector<String>& params) 
         
         if (sensor->supportsInterface(InterfaceType::HUMIDITY)) {
             response += sensor->getName() + ",HUM," + 
-                      sensor->getTypeString() + "," +
-                      (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED") + "\n";
-        }
-        
-        if (sensor->supportsInterface(InterfaceType::CO2)) {
-            response += sensor->getName() + ",CO2," + 
                       sensor->getTypeString() + "," +
                       (sensor->isConnected() ? "CONNECTED" : "DISCONNECTED") + "\n";
         }
@@ -384,21 +372,20 @@ bool CommunicationManager::handleGetConfig(const std::vector<String>& params) {
 
 bool CommunicationManager::handleSetBoardId(const std::vector<String>& params) {
     if (params.empty()) {
-        Serial.println("ERROR: No board ID specified");
+        errorHandler->logError(ERROR, "No board ID specified");
         return false;
     }
     
     bool success = configManager->setBoardIdentifier(params[0]);
     if (!success) {
-        Serial.println("ERROR: Failed to set board ID");
+        errorHandler->logError(ERROR, "Failed to update Board ID");
     }
     return success;
 }
 
 bool CommunicationManager::handleUpdateConfig(const std::vector<String>& params) {
     if (params.empty()) {
-        Serial.println("ERROR: No configuration provided");
-        return false;
+        errorHandler->logError(ERROR, "No configuration JSON provided");    
     }
     
     // Join all parameters since the JSON might have spaces
@@ -411,15 +398,14 @@ bool CommunicationManager::handleUpdateConfig(const std::vector<String>& params)
     errorHandler->logInfo("Processing config update: " + jsonConfig.substring(0, 50) + "...");
     bool success = configManager->updateConfigFromJson(jsonConfig);
     if (!success) {
-        Serial.println("ERROR: Failed to update configuration");
+        errorHandler->logError(ERROR, "Failed to update configuration");
     }
     return success;
 }
 
 bool CommunicationManager::handleUpdateSensorConfig(const std::vector<String>& params) {
     if (params.empty()) {
-        Serial.println("ERROR: No sensor configuration provided");
-        return false;
+        errorHandler->logWarning("No sensor configuration provided");
     }
     
     // Join all parameters since the JSON might have spaces
@@ -435,17 +421,14 @@ bool CommunicationManager::handleUpdateSensorConfig(const std::vector<String>& p
     
     bool success = configManager->updateSensorConfigFromJson(jsonConfig);
     if (!success) {
-        Serial.println("ERROR: Failed to update sensor configuration");
-    } else {
-        Serial.println("Sensor configuration updated successfully");
+        errorHandler->logError(ERROR, "Failed to update sensor configuration");
     }
     return success;
 }
 
 bool CommunicationManager::handleUpdateAdditionalConfig(const std::vector<String>& params) {
     if (params.empty()) {
-        Serial.println("ERROR: No additional configuration provided");
-        return false;
+        errorHandler->logWarning("No additional configuration provided");
     }
     
     // Join all parameters since the JSON might have spaces
@@ -461,9 +444,7 @@ bool CommunicationManager::handleUpdateAdditionalConfig(const std::vector<String
     
     bool success = configManager->updateAdditionalConfigFromJson(jsonConfig);
     if (!success) {
-        Serial.println("ERROR: Failed to update additional configuration");
-    } else {
-        Serial.println("Additional configuration updated successfully");
+        errorHandler->logError(ERROR, "Failed to update additional configuration");
     }
     return success;
 }

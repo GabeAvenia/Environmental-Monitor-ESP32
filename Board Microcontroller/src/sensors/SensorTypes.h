@@ -9,12 +9,8 @@
 enum class SensorType {
     UNKNOWN,
     SHT41,
-    BME280,
-    TMP117,
-    SCD40,
-    AHT20,
-    SI7021,       // Added Adafruit Si7021
-    PT100_RTD     // Added Adafruit PT100 RTD
+    SI7021,
+    PT100_RTD
 };
 
 /**
@@ -25,10 +21,6 @@ enum class SensorType {
  */
 inline SensorType sensorTypeFromString(const String& typeStr) {
     if (typeStr.equalsIgnoreCase("SHT41")) return SensorType::SHT41;
-    if (typeStr.equalsIgnoreCase("BME280")) return SensorType::BME280;
-    if (typeStr.equalsIgnoreCase("TMP117")) return SensorType::TMP117;
-    if (typeStr.equalsIgnoreCase("SCD40")) return SensorType::SCD40;
-    if (typeStr.equalsIgnoreCase("AHT20")) return SensorType::AHT20;
     
     // New sensor types
     if (typeStr.equalsIgnoreCase("SI7021") || 
@@ -49,10 +41,6 @@ inline SensorType sensorTypeFromString(const String& typeStr) {
 inline String sensorTypeToString(SensorType type) {
     switch (type) {
         case SensorType::SHT41: return "SHT41";
-        case SensorType::BME280: return "BME280";
-        case SensorType::TMP117: return "TMP117";
-        case SensorType::SCD40: return "SCD40";
-        case SensorType::AHT20: return "AHT20";
         case SensorType::SI7021: return "Adafruit SI7021";
         case SensorType::PT100_RTD: return "Adafruit PT100 RTD";
         default: return "UNKNOWN";

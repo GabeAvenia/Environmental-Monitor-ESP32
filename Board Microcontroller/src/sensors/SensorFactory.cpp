@@ -72,15 +72,7 @@ ISensor* SensorFactory::createSensor(const SensorConfig& config) {
             
         case SensorType::PT100_RTD:
             return createPT100Sensor(config);  // Special case for PT100
-            
-        case SensorType::BME280:
-            errorHandler->logError(ERROR, "BME280 sensor support not implemented yet");
-            return nullptr;
-            
-        case SensorType::TMP117:
-            errorHandler->logError(ERROR, "TMP117 sensor support not implemented yet");
-            return nullptr;
-            
+  
         default:
             errorHandler->logError(ERROR, "Unsupported sensor type: " + config.type);
             return nullptr;
