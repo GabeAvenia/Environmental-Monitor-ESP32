@@ -140,6 +140,8 @@ public:
     bool handleGetConfig(const std::vector<String>& params);
     bool handleSetBoardId(const std::vector<String>& params);
     bool handleUpdateConfig(const std::vector<String>& params);
+    bool handleUpdateSensorConfig(const std::vector<String>& params);
+    bool handleUpdateAdditionalConfig(const std::vector<String>& params);
     bool handleReset(const std::vector<String>& params);
     bool handleTestFilesystem(const std::vector<String>& params);
     bool handleTestUpdateConfig(const std::vector<String>& params);
@@ -151,7 +153,6 @@ public:
     bool handleInfoRoute(const std::vector<String>& params);
     bool handleWarningRoute(const std::vector<String>& params);
     bool handleErrorRoute(const std::vector<String>& params);
-    bool handleCriticalRoute(const std::vector<String>& params);
     bool handleLedIdentify(const std::vector<String>& params);
     
     // Static and accessor methods

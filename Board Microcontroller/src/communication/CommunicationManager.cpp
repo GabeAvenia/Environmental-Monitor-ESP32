@@ -37,7 +37,7 @@ void CommunicationManager::setLedManager(LedManager* led) {
 }
 
 void CommunicationManager::registerCommandHandlers() {
-    // Register all command handlers
+    // Register command handlers
     commandHandlers[Constants::SCPI::IDN] = 
         [this](const std::vector<String>& params) { return handleIdentify(params); };
     
@@ -58,8 +58,13 @@ void CommunicationManager::registerCommandHandlers() {
     
     commandHandlers[Constants::SCPI::UPDATE_CONFIG] = 
         [this](const std::vector<String>& params) { return handleUpdateConfig(params); };
-    
-    // Testing commands
+        commandHandlers[Constants::SCPI::UPDATE_SENSOR_CONFIG] = 
+    [this](const std::vector<String>& params) { return handleUpdateSensorConfig(params); };
+
+    commandHandlers[Constants::SCPI::UPDATE_ADDITIONAL_CONFIG] = 
+    [this](const std::vector<String>& params) { return handleUpdateAdditionalConfig(params); };
+
+
     commandHandlers[Constants::SCPI::TEST_FILESYSTEM] = 
         [this](const std::vector<String>& params) { return handleTestFilesystem(params); };
     
@@ -74,14 +79,10 @@ void CommunicationManager::registerCommandHandlers() {
         
     commandHandlers[Constants::SCPI::ECHO] = 
         [this](const std::vector<String>& params) { return handleEcho(params); };
-    
-    // Added reset command
+
     commandHandlers[Constants::SCPI::RESET] = 
         [this](const std::vector<String>& params) { 
-            return handleReset(params); 
-        };
-        
-    // Message routing commands
+            return handleReset(params); };
     commandHandlers[Constants::SCPI::MSG_ROUTE_STATUS] = 
         [this](const std::vector<String>& params) { return handleMessageRoutingStatus(params); };
 
@@ -97,8 +98,6 @@ void CommunicationManager::registerCommandHandlers() {
     commandHandlers[Constants::SCPI::MSG_ROUTE_ERROR] = 
         [this](const std::vector<String>& params) { return handleErrorRoute(params); };
 
-    commandHandlers[Constants::SCPI::MSG_ROUTE_CRITICAL] = 
-        [this](const std::vector<String>& params) { return handleCriticalRoute(params); };
     commandHandlers[Constants::SCPI::LED_IDENTIFY] = 
         [this](const std::vector<String>& params) { return handleLedIdentify(params); };
 }
@@ -124,6 +123,7 @@ void CommunicationManager::setupCommands() {
     REGISTER_COMMAND("SYST:CONF?", handleGetConfig)
     REGISTER_COMMAND("SYST:CONF:BOARD:ID", handleSetBoardId)
     REGISTER_COMMAND("SYST:CONF:UPDATE", handleUpdateConfig)
+    
     REGISTER_COMMAND("TEST", handleEcho)
     REGISTER_COMMAND("TEST:FS", handleTestFilesystem)
     REGISTER_COMMAND("TEST:UPDATE", handleTestUpdateConfig)
@@ -133,7 +133,6 @@ void CommunicationManager::setupCommands() {
     REGISTER_COMMAND("SYST:LOG:INFO:ROUTE", handleInfoRoute)
     REGISTER_COMMAND("SYST:LOG:WARN:ROUTE", handleWarningRoute)
     REGISTER_COMMAND("SYST:LOG:ERR:ROUTE", handleErrorRoute)
-    REGISTER_COMMAND("SYST:LOG:CRIT:ROUTE", handleCriticalRoute)
     REGISTER_COMMAND("SYST:LED:IDENT", handleLedIdentify)
 
     
@@ -417,6 +416,58 @@ bool CommunicationManager::handleUpdateConfig(const std::vector<String>& params)
     return success;
 }
 
+bool CommunicationManager::handleUpdateSensorConfig(const std::vector<String>& params) {
+    if (params.empty()) {
+        Serial.println("ERROR: No sensor configuration provided");
+        return false;
+    }
+    
+    // Join all parameters since the JSON might have spaces
+    String jsonConfig = "";
+    for (const auto& param : params) {
+        if (jsonConfig.length() > 0) jsonConfig += " ";
+        jsonConfig += param;
+    }
+    
+    errorHandler->logInfo("Processing sensor config update: " + 
+                         jsonConfig.substring(0, std::min(50, (int)jsonConfig.length())) + 
+                         (jsonConfig.length() > 50 ? "..." : ""));
+    
+    bool success = configManager->updateSensorConfigFromJson(jsonConfig);
+    if (!success) {
+        Serial.println("ERROR: Failed to update sensor configuration");
+    } else {
+        Serial.println("Sensor configuration updated successfully");
+    }
+    return success;
+}
+
+bool CommunicationManager::handleUpdateAdditionalConfig(const std::vector<String>& params) {
+    if (params.empty()) {
+        Serial.println("ERROR: No additional configuration provided");
+        return false;
+    }
+    
+    // Join all parameters since the JSON might have spaces
+    String jsonConfig = "";
+    for (const auto& param : params) {
+        if (jsonConfig.length() > 0) jsonConfig += " ";
+        jsonConfig += param;
+    }
+    
+    errorHandler->logInfo("Processing additional config update: " + 
+                         jsonConfig.substring(0, std::min(50, (int)jsonConfig.length())) + 
+                         (jsonConfig.length() > 50 ? "..." : ""));
+    
+    bool success = configManager->updateAdditionalConfigFromJson(jsonConfig);
+    if (!success) {
+        Serial.println("ERROR: Failed to update additional configuration");
+    } else {
+        Serial.println("Additional configuration updated successfully");
+    }
+    return success;
+}
+
 bool CommunicationManager::handleReset(const std::vector<String>& params) {
     errorHandler->logInfo("Reset command received");
     Serial.println("Resetting device...");
@@ -506,8 +557,6 @@ bool CommunicationManager::handleSetMessageRoute(const std::vector<String>& para
         errorHandler->setWarningOutput(targetStream);
     } else if (severity.equalsIgnoreCase("ERROR")) {
         errorHandler->setErrorOutput(targetStream);
-    } else if (severity.equalsIgnoreCase("CRITICAL")) {
-        errorHandler->setCriticalOutput(targetStream);
     } else {
         Serial.println("ERROR: Invalid severity level");
         return false;
@@ -538,10 +587,6 @@ bool CommunicationManager::handleWarningRoute(const std::vector<String>& params)
 
 bool CommunicationManager::handleErrorRoute(const std::vector<String>& params) {
     return handleSetMessageRoute(params, "ERROR");
-}
-
-bool CommunicationManager::handleCriticalRoute(const std::vector<String>& params) {
-    return handleSetMessageRoute(params, "CRITICAL");
 }
 
 CommunicationManager* CommunicationManager::getInstance() {

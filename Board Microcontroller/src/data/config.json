@@ -1,28 +1,29 @@
 {
-    "Environmental Monitor ID": "GPower EM-ec1c97bacc",
     "I2C Sensors": [
         {
             "Sensor Name": "I2C01",
             "Sensor Type": "SHT41",
             "I2C Port": "I2C0",
             "Address (HEX)": 68,
-            "Polling Rate[1000 ms]": 1000
+            "Polling Rate[1000 ms]": 100
         },
         {
             "Sensor Name": "I2C02",
             "Sensor Type": "Adafruit Si7021",
             "I2C Port": "I2C1",
             "Address (HEX)": 64,
-            "Polling Rate[1000 ms]": 1000
+            "Polling Rate[1000 ms]": 100
         }
-    ],
+        ],
     "SPI Sensors": [
         {
             "Sensor Name": "PT100",
             "Sensor Type": "Adafruit PT100 RTD",
             "SS Pin": 0,
-            "Polling Rate[1000 ms]": 2000
+            "Polling Rate[1000 ms]": 200,
+            "Additional": "Wire mode: 2-wire"
         }
-    ],
-    "Additional":""
+        ],
+    "Board ID": "Prototype01",
+    "Additional": "This is a fully configurable field"
 }

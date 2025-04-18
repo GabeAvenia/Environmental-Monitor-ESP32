@@ -3,30 +3,37 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <vector>
+#include <map>
 #include "../error/ErrorHandler.h"
 
-// Define I2C port identifiers
+// Define I2C port identifiers - expandable enum for future buses
 enum class I2CPort {
-    I2C0,   // Default I2C bus (GPIO7-SDA, GPIO6-SCL)
-    I2C1    // Secondary I2C bus (GPIO40-SDA, GPIO41-SCL)
+    I2C0 = 0,   // Default I2C bus (typically Arduino pins)
+    I2C1 = 1,   // Secondary I2C bus (typically STEMMA QT)
+    
+    I2C_MULTIPLEXED_START = 100,  // Range for multiplexed buses
+    // Multiplexed buses would be I2C_MULTIPLEXED_START + multiplexer_channel
+};
+
+// Structure to hold configuration for a TwoWire instance
+struct WireConfig {
+    TwoWire* wire;            // Pointer to the TwoWire instance
+    int sdaPin;               // SDA pin number
+    int sclPin;               // SCL pin number
+    bool initialized;         // Whether this bus has been initialized
+    uint32_t clockFrequency;  // I2C clock frequency in Hz
+    
+    WireConfig() : wire(nullptr), sdaPin(-1), sclPin(-1), 
+                   initialized(false), clockFrequency(100000) {}
+                   
+    WireConfig(TwoWire* w, int sda, int scl, uint32_t freq = 100000) 
+        : wire(w), sdaPin(sda), sclPin(scl), initialized(false), clockFrequency(freq) {}
 };
 
 class I2CManager {
 private:
-    TwoWire* wire0;   // Primary I2C bus (Wire)
-    TwoWire* wire1;   // Secondary I2C bus (Wire1)
+    std::map<I2CPort, WireConfig> wireBuses;
     ErrorHandler* errorHandler;
-    bool initialized0;
-    bool initialized1;
-    
-    // Pin definitions for I2C buses
-    // I2C0
-    int sda0Pin;  // GPIO7 (A3/SDA)
-    int scl0Pin;  // GPIO6 (A2/SCL)
-    
-    // I2C1
-    int sda1Pin;  // GPIO40 (SCL1, marked as MTDO)
-    int scl1Pin;  // GPIO41 (SDA1, marked as MTDI)
     
 public:
     /**
@@ -42,9 +49,21 @@ public:
     ~I2CManager();
     
     /**
-     * @brief Initialize both I2C buses.
+     * @brief Register a TwoWire instance for a specific I2C port
      * 
-     * @return true if at least one bus was initialized, false if both failed.
+     * @param port The I2C port identifier
+     * @param wire Pointer to the TwoWire instance
+     * @param sdaPin The SDA pin number for this bus
+     * @param sclPin The SCL pin number for this bus
+     * @param clockFreq The I2C clock frequency in Hz (default: 100kHz)
+     * @return true if registration succeeded, false otherwise
+     */
+    bool registerWire(I2CPort port, TwoWire* wire, int sdaPin, int sclPin, uint32_t clockFreq = 100000);
+    
+    /**
+     * @brief Initialize default I2C buses.
+     * 
+     * @return true if at least one bus was initialized, false if all failed.
      */
     bool begin();
     
@@ -82,6 +101,14 @@ public:
     TwoWire* getWire(I2CPort port);
     
     /**
+     * @brief Get the configuration for a specific I2C port
+     * 
+     * @param port The I2C port
+     * @return The WireConfig structure, or nullptr if not registered
+     */
+    const WireConfig* getWireConfig(I2CPort port) const;
+    
+    /**
      * @brief Check if a device is present at the specified address on a specific I2C port.
      * 
      * @param port The I2C port to check.
@@ -105,6 +132,4 @@ public:
      * @return The string representation of the port.
      */
     static String portToString(I2CPort port);
-
-    
 };

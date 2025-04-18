@@ -11,7 +11,7 @@ void SensorFactory::setSPIManager(SPIManager* spi) {
     spiManager = spi;
 }
 
-// Template method pattern for I2C sensor creation
+// Template method for I2C sensor creation
 template<typename SensorType>
 ISensor* SensorFactory::createI2CSensor(const SensorConfig& config) {
     if (config.isSPI) {
@@ -38,8 +38,12 @@ ISensor* SensorFactory::createI2CSensor(const SensorConfig& config) {
     }
     
     // Create sensor with the specified configuration
-    return new SensorType(config.name, config.address, wire, errorHandler);
+    return new SensorType(config.name, config.address, wire, i2cManager, config.i2cPort, errorHandler);
 }
+
+// Explicit template instantiations for supported sensor types
+template ISensor* SensorFactory::createI2CSensor<SHT41Sensor>(const SensorConfig& config);
+template ISensor* SensorFactory::createI2CSensor<Si7021Sensor>(const SensorConfig& config);
 
 // Updated createSensor method
 ISensor* SensorFactory::createSensor(const SensorConfig& config) {

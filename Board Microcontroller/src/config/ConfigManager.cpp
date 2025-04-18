@@ -1,3 +1,4 @@
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include "ConfigManager.h"
 #include <ArduinoJson.h>
 #include "../Constants.h"
@@ -44,7 +45,6 @@ void ConfigManager::notifyConfigChanged(const String& newConfig) {
 }
 
 // Load configuration from the JSON file
-// Complete rewrite of loadConfigFromFile function in ConfigManager.cpp
 bool ConfigManager::loadConfigFromFile() {
     errorHandler->logInfo("Loading config file");
     
@@ -69,13 +69,6 @@ bool ConfigManager::loadConfigFromFile() {
         errorHandler->logError(ERROR, "Failed to open config file");
         return false;
     }
-    
-    String fileContent = configFile.readString();
-    errorHandler->logInfo("Read " + String(fileContent.length()) + " bytes from config file");
-    
-    // Need to reopen the file since we've read it to the end
-    configFile.close();
-    configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "r");
     
     // Parse JSON
     JsonDocument doc;
@@ -106,7 +99,8 @@ bool ConfigManager::loadConfigFromFile() {
     
     // Clear existing configurations
     sensorConfigs.clear();
-    errorHandler->logInfo("Cleared existing sensor configs");
+    additionalConfig = "";
+    errorHandler->logInfo("Cleared existing configurations");
     
     // Load I2C sensors
     JsonArray i2cSensors = doc["I2C Sensors"].as<JsonArray>();
@@ -115,6 +109,12 @@ bool ConfigManager::loadConfigFromFile() {
     if (i2cSensors) {
         errorHandler->logInfo("Found " + String(i2cSensors.size()) + " I2C sensors");
         for (JsonObject sensor : i2cSensors) {
+            if (!sensor.containsKey("Sensor Name") || !sensor.containsKey("Sensor Type") || 
+                !sensor.containsKey("Address (HEX)")) {
+                errorHandler->logWarning("Skipping I2C sensor with missing required fields");
+                continue;
+            }
+            
             SensorConfig config;
             config.name = sensor["Sensor Name"].as<String>();
             config.type = sensor["Sensor Type"].as<String>();
@@ -177,6 +177,12 @@ bool ConfigManager::loadConfigFromFile() {
     if (spiSensors) {
         errorHandler->logInfo("Found " + String(spiSensors.size()) + " SPI sensors");
         for (JsonObject sensor : spiSensors) {
+            if (!sensor.containsKey("Sensor Name") || !sensor.containsKey("Sensor Type") || 
+                !sensor.containsKey("SS Pin")) {
+                errorHandler->logWarning("Skipping SPI sensor with missing required fields");
+                continue;
+            }
+            
             SensorConfig config;
             config.name = sensor["Sensor Name"].as<String>();
             config.type = sensor["Sensor Type"].as<String>();
@@ -222,6 +228,15 @@ bool ConfigManager::loadConfigFromFile() {
             sensorConfigs.push_back(config);
             errorHandler->logInfo("Added SPI sensor: " + config.name);
         }
+    }
+    
+    // Load Additional configuration if present
+    if (doc.containsKey("Additional")) {
+        // Serialize the Additional field to a string
+        String additionalJson;
+        serializeJson(doc["Additional"], additionalJson);
+        additionalConfig = additionalJson;
+        errorHandler->logInfo("Loaded additional configuration section");
     }
     
     errorHandler->logInfo("Configuration loaded successfully with " + String(sensorConfigs.size()) + " sensors");
@@ -433,6 +448,9 @@ bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
                           jsonConfig.substring(0, std::min(50, (int)jsonConfig.length())) + 
                           (jsonConfig.length() > 50 ? "..." : ""));
     
+    // Make a backup of the current configuration
+    String backupConfig = getConfigJson();
+    
     // Extract clean JSON data by finding the opening brace
     int jsonStart = jsonConfig.indexOf('{');
     if (jsonStart < 0) {
@@ -451,9 +469,9 @@ bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
         return false;
     }
 
-    
     // Save to file
     if (!writeConfigToFile(doc)) {
+        errorHandler->logError(ERROR, "Failed to write new configuration to file");
         return false;
     }
     
@@ -463,14 +481,24 @@ bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
         errorHandler->logInfo("Config reloaded successfully, notifying listeners");
         notifyConfigChanged(jsonConfig);
     } else {
-        errorHandler->logError(ERROR, "Failed to reload configuration");
+        errorHandler->logError(ERROR, "Failed to reload configuration, rolling back to previous state");
+        
+        // Restore the previous configuration
+        JsonDocument backupDoc;
+        DeserializationError backupError = deserializeJson(backupDoc, backupConfig);
+        
+        if (!backupError && writeConfigToFile(backupDoc)) {
+            errorHandler->logInfo("Successfully rolled back to previous configuration");
+            loadConfigFromFile(); // Reload the backup configuration
+        } else {
+            errorHandler->logError(ERROR, "Failed to roll back to previous configuration");
+        }
     }
     
     return success;
 }
 
-
-// Helper to write config to file
+// Helper to write JSON document to file
 bool ConfigManager::writeConfigToFile(const JsonDocument& doc) {
     File configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "w");
     if (!configFile) {
@@ -485,6 +513,292 @@ bool ConfigManager::writeConfigToFile(const JsonDocument& doc) {
         errorHandler->logError(ERROR, "Failed to write config - 0 bytes written");
         return false;
     }
+    
+    return true;
+}
+
+// Helper to read config from file
+bool ConfigManager::readConfigFromFile(JsonDocument& doc) {
+    if (!LittleFS.exists(Constants::CONFIG_FILE_PATH)) {
+        errorHandler->logError(ERROR, "Config file not found");
+        return false;
+    }
+    
+    File configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "r");
+    if (!configFile) {
+        errorHandler->logError(ERROR, "Failed to open config file for reading");
+        return false;
+    }
+    
+    DeserializationError error = deserializeJson(doc, configFile);
+    configFile.close();
+    
+    if (error) {
+        errorHandler->logError(ERROR, "Failed to parse config file: " + String(error.c_str()));
+        return false;
+    }
+    
+    return true;
+}
+
+// Update only the sensor configuration from JSON
+bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
+    // Handle empty input - erase sensors with warning
+    if (jsonConfig.length() == 0 || jsonConfig == "{}" || jsonConfig == "null") {
+        errorHandler->logWarning("Empty sensor configuration received - clearing all sensors");
+        sensorConfigs.clear();
+        
+        // Update the configuration file
+        return updateSensorConfigs(sensorConfigs);
+    }
+    
+    // Clean the input JSON and parse it
+    String cleanJson = jsonConfig;
+    int jsonStart = cleanJson.indexOf('{');
+    if (jsonStart > 0) {
+        cleanJson = cleanJson.substring(jsonStart);
+    }
+    
+    JsonDocument doc;
+    DeserializationError error = deserializeJson(doc, cleanJson);
+    
+    if (error || doc.overflowed()) {
+        errorHandler->logError(ERROR, "Failed to parse sensor configuration JSON: " + 
+                              (error ? String(error.c_str()) : "Document too large"));
+        return false;
+    }
+    
+    // Temporary storage for new configurations
+    std::vector<SensorConfig> newSensorConfigs;
+    
+    // Extract I2C sensors if present
+    if (doc.containsKey("I2C Sensors") && doc["I2C Sensors"].is<JsonArray>()) {
+        JsonArray i2cSensors = doc["I2C Sensors"].as<JsonArray>();
+        
+        for (JsonObject sensor : i2cSensors) {
+            if (!sensor.containsKey("Sensor Name") || !sensor.containsKey("Sensor Type") || 
+                !sensor.containsKey("Address (HEX)")) {
+                errorHandler->logError(ERROR, "Missing required fields in I2C sensor configuration");
+                continue;
+            }
+            
+            SensorConfig config;
+            config.name = sensor["Sensor Name"].as<String>();
+            config.type = sensor["Sensor Type"].as<String>();
+            config.address = sensor["Address (HEX)"].as<int>();
+            config.isSPI = false;
+            
+            // Optional fields with defaults
+            config.i2cPort = I2CManager::stringToPort(
+                sensor["I2C Port"].isNull() ? "I2C0" : sensor["I2C Port"].as<String>());
+            config.pollingRate = sensor["Polling Rate[1000 ms]"].isNull() ? 
+                1000 : sensor["Polling Rate[1000 ms]"].as<uint32_t>();
+            config.additional = sensor["Additional"].isNull() ? 
+                "" : sensor["Additional"].as<String>();
+            
+            // Apply polling rate limits
+            config.pollingRate = constrain(config.pollingRate, 50, 300000);
+            
+            newSensorConfigs.push_back(config);
+        }
+    }
+    
+    // Extract SPI sensors if present
+    if (doc.containsKey("SPI Sensors") && doc["SPI Sensors"].is<JsonArray>()) {
+        JsonArray spiSensors = doc["SPI Sensors"].as<JsonArray>();
+        
+        for (JsonObject sensor : spiSensors) {
+            if (!sensor.containsKey("Sensor Name") || !sensor.containsKey("Sensor Type") || 
+                !sensor.containsKey("SS Pin")) {
+                errorHandler->logError(ERROR, "Missing required fields in SPI sensor configuration");
+                continue;
+            }
+            
+            SensorConfig config;
+            config.name = sensor["Sensor Name"].as<String>();
+            config.type = sensor["Sensor Type"].as<String>();
+            config.address = sensor["SS Pin"].as<int>();
+            config.isSPI = true;
+            
+            // Optional fields with defaults
+            config.pollingRate = sensor["Polling Rate[1000 ms]"].isNull() ? 
+                1000 : sensor["Polling Rate[1000 ms]"].as<uint32_t>();
+            config.additional = sensor["Additional"].isNull() ? 
+                "" : sensor["Additional"].as<String>();
+            
+            // Apply polling rate limits
+            config.pollingRate = constrain(config.pollingRate, 50, 300000);
+            
+            newSensorConfigs.push_back(config);
+        }
+    }
+    
+    // Verify we have at least one valid sensor if we received config
+    if (newSensorConfigs.empty() && 
+        (doc.containsKey("I2C Sensors") || doc.containsKey("SPI Sensors"))) {
+        errorHandler->logWarning("No valid sensors found in configuration, keeping existing sensors");
+        return false;
+    }
+    
+    // Backup existing config before updating
+    std::vector<SensorConfig> oldSensorConfigs = sensorConfigs;
+    
+    // Update sensor configs
+    sensorConfigs = newSensorConfigs;
+    
+    // Read current configuration file to get non-sensor parts
+    JsonDocument fullDoc;
+    if (!readConfigFromFile(fullDoc)) {
+        // Failed to read existing config, revert to old sensors
+        sensorConfigs = oldSensorConfigs;
+        return false;
+    }
+    
+    // Clear existing sensor arrays
+    fullDoc["I2C Sensors"] = JsonArray();
+    fullDoc["SPI Sensors"] = JsonArray();
+    
+    // Add updated sensors
+    JsonArray i2cSensors = fullDoc["I2C Sensors"].to<JsonArray>();
+    JsonArray spiSensors = fullDoc["SPI Sensors"].to<JsonArray>();
+    
+    for (const auto& config : sensorConfigs) {
+        if (config.isSPI) {
+            JsonObject sensor = spiSensors.add<JsonObject>();
+            sensor["Sensor Name"] = config.name;
+            sensor["Sensor Type"] = config.type;
+            sensor["SS Pin"] = config.address;
+            sensor["Polling Rate[1000 ms]"] = config.pollingRate;
+            if (config.additional.length() > 0) {
+                sensor["Additional"] = config.additional;
+            }
+        } else {
+            JsonObject sensor = i2cSensors.add<JsonObject>();
+            sensor["Sensor Name"] = config.name;
+            sensor["Sensor Type"] = config.type;
+            sensor["I2C Port"] = I2CManager::portToString(config.i2cPort);
+            sensor["Address (HEX)"] = config.address;
+            sensor["Polling Rate[1000 ms]"] = config.pollingRate;
+            if (config.additional.length() > 0) {
+                sensor["Additional"] = config.additional;
+            }
+        }
+    }
+    
+    // Write updated configuration to file
+    if (!writeConfigToFile(fullDoc)) {
+        // If writing fails, revert to old configuration
+        sensorConfigs = oldSensorConfigs;
+        errorHandler->logError(ERROR, "Failed to write updated sensor configuration");
+        return false;
+    }
+    
+    errorHandler->logInfo("Sensor configuration updated successfully with " + 
+                       String(sensorConfigs.size()) + " sensors");
+    
+    // Notify about the configuration change
+    String configJson;
+    serializeJson(fullDoc, configJson);
+    notifyConfigChanged(configJson);
+    
+    return true;
+}
+
+// Update only the additional configuration
+bool ConfigManager::updateAdditionalConfigFromJson(const String& jsonConfig) {
+    // Handle empty input - erase additional config with warning
+    if (jsonConfig.length() == 0 || jsonConfig == "{}" || jsonConfig == "null") {
+        errorHandler->logWarning("Empty additional configuration received - clearing additional section");
+        additionalConfig = "";
+        
+        // Update the configuration file
+        JsonDocument doc;
+        if (!readConfigFromFile(doc)) {
+            errorHandler->logError(ERROR, "Failed to read existing configuration");
+            return false;
+        }
+        
+        // Remove Additional field if it exists
+        if (doc.containsKey("Additional")) {
+            doc.remove("Additional");
+        }
+        
+        // Write updated configuration to file
+        return writeConfigToFile(doc);
+    }
+    
+    // Clean the input JSON and parse it
+    String cleanJson = jsonConfig;
+    int jsonStart = cleanJson.indexOf('{');
+    if (jsonStart > 0) {
+        cleanJson = cleanJson.substring(jsonStart);
+    }
+    
+    JsonDocument doc;
+    DeserializationError error = deserializeJson(doc, cleanJson);
+    
+    if (error || doc.overflowed()) {
+        errorHandler->logError(ERROR, "Failed to parse additional configuration JSON: " + 
+                              (error ? String(error.c_str()) : "Document too large"));
+        return false;
+    }
+    
+    // Extract Additional configuration if present
+    String newAdditionalConfig = "";
+    if (doc.containsKey("Additional")) {
+        // Serialize the Additional field to a string
+        JsonDocument additionalDoc;
+        additionalDoc["Additional"] = doc["Additional"];
+        serializeJson(additionalDoc["Additional"], newAdditionalConfig);
+    } else {
+        errorHandler->logError(ERROR, "Missing 'Additional' field in configuration");
+        return false;
+    }
+    
+    // Backup existing additional config
+    String oldAdditionalConfig = additionalConfig;
+    
+    // Update additional config
+    additionalConfig = newAdditionalConfig;
+    
+    // Read current configuration file to get other parts
+    JsonDocument fullDoc;
+    if (!readConfigFromFile(fullDoc)) {
+        // Failed to read existing config, revert to old additional config
+        additionalConfig = oldAdditionalConfig;
+        return false;
+    }
+    
+    // Update the Additional field
+    if (additionalConfig.length() > 0) {
+        // Parse the additionalConfig to a JSON object
+        JsonDocument additionalDoc;
+        DeserializationError additionalError = deserializeJson(additionalDoc, additionalConfig);
+        
+        if (!additionalError) {
+            fullDoc["Additional"] = additionalDoc;
+        } else {
+            // If parsing fails, store as raw value
+            fullDoc["Additional"] = additionalConfig;
+        }
+    } else {
+        fullDoc.remove("Additional");
+    }
+    
+    // Write updated configuration to file
+    if (!writeConfigToFile(fullDoc)) {
+        // If writing fails, revert to old configuration
+        additionalConfig = oldAdditionalConfig;
+        errorHandler->logError(ERROR, "Failed to write updated additional configuration");
+        return false;
+    }
+    
+    errorHandler->logInfo("Additional configuration updated successfully");
+    
+    // Notify about the configuration change
+    String configJson;
+    serializeJson(fullDoc, configJson);
+    notifyConfigChanged(configJson);
     
     return true;
 }

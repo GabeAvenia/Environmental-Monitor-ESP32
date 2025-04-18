@@ -163,8 +163,8 @@ void setup() {
 
     // Initialize LittleFS with the specific configuration
     if (!LittleFS.begin(true, "/litlefs", 10, "ffat")) {
-        // Log to both terminal and UART for critical errors
-        errorHandler->logCritical("LittleFS mount failed! System halted.");
+        // Log to both terminal and UART for errors
+        errorHandler->logError(ERROR, "Failed to mount LittleFS file system");
         while (1) { 
             delay(1000);
         }
@@ -174,7 +174,7 @@ void setup() {
     configManager = new ConfigManager(errorHandler);
     
     if (!configManager->begin()) {
-        errorHandler->logCritical("Failed to initialize configuration. System halted.");
+        errorHandler->logError(ERROR, "Failed to initialize configuration manager");
         while (1) {
             delay(1000);
         }

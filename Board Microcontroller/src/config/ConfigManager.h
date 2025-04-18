@@ -42,6 +42,7 @@ private:
     ErrorHandler* errorHandler;
     String boardId;
     std::vector<SensorConfig> sensorConfigs;
+    String additionalConfig;
     std::vector<ConfigChangeCallback> changeCallbacks;
     
     // Flag to prevent recursive notification
@@ -52,15 +53,18 @@ private:
     bool createDefaultConfig();
     void notifyConfigChanged(const String& newConfig);
     
-    // New helper methods
+    // Helper methods for file operations
     bool writeConfigToFile(const JsonDocument& doc);
+    bool readConfigFromFile(JsonDocument& doc);
 
 public:
     // Constructor
     ConfigManager(ErrorHandler* err);
     
-    // Public methods
+    // Initialization 
     bool begin();
+    
+    // Board identification methods
     String getBoardIdentifier();
     bool setBoardIdentifier(String identifier);
     
@@ -68,9 +72,13 @@ public:
     std::vector<SensorConfig> getSensorConfigs();
     bool updateSensorConfigs(const std::vector<SensorConfig>& configs);
     
-    // Configuration JSON methods
+    // Complete configuration methods
     String getConfigJson();
     bool updateConfigFromJson(const String& jsonConfig);
+    
+    // Granular configuration methods
+    bool updateSensorConfigFromJson(const String& jsonConfig);
+    bool updateAdditionalConfigFromJson(const String& jsonConfig);
     
     // Change notification
     void registerChangeCallback(ConfigChangeCallback callback);

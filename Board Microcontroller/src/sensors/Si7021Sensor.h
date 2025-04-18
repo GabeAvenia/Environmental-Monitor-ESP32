@@ -3,6 +3,7 @@
 #include <Adafruit_Si7021.h>
 #include <Wire.h>
 #include "BaseSensor.h"
+#include "../managers/I2CManager.h"
 #include "interfaces/ITemperatureSensor.h"
 #include "interfaces/IHumiditySensor.h"
 #include "readings/TemperatureReading.h"
@@ -18,11 +19,15 @@ class Si7021Sensor : public BaseSensor,
                      public ITemperatureSensor,
                      public IHumiditySensor {
 private:
-    mutable Adafruit_Si7021 si7021;           ///< Underlying Adafruit driver (mutable for const methods)
-    TwoWire* wire;                            ///< I2C bus for communication
-    int i2cAddress;                           ///< I2C address of the sensor
-    mutable float lastTemperature;            ///< Last temperature reading
-    mutable float lastHumidity;               ///< Last humidity reading
+    mutable Adafruit_Si7021 si7021;      ///< Underlying Adafruit driver (mutable for const methods)
+    TwoWire* wire;                        ///< I2C bus for communication
+    I2CPort i2cPort;                      ///< I2C port identifier
+    I2CManager* i2cManager;               ///< Reference to I2C manager
+    int i2cAddress;                       ///< I2C address of the sensor
+    mutable float lastTemperature;        ///< Last temperature reading
+    mutable float lastHumidity;           ///< Last humidity reading
+    mutable unsigned long tempTimestamp;  ///< Timestamp of last temperature reading
+    mutable unsigned long humTimestamp;   ///< Timestamp of last humidity reading
     
     /**
      * @brief Update both temperature and humidity readings from the sensor.
@@ -38,9 +43,12 @@ public:
      * @param sensorName Name/identifier for this sensor instance.
      * @param address I2C address of the sensor.
      * @param i2cBus The I2C bus to use.
+     * @param i2cMgr Reference to the I2C manager.
+     * @param port The I2C port identifier.
      * @param err Pointer to the error handler for logging.
      */
-    Si7021Sensor(const String& sensorName, int address, TwoWire* i2cBus, ErrorHandler* err);
+    Si7021Sensor(const String& sensorName, int address, TwoWire* i2cBus, 
+                I2CManager* i2cMgr, I2CPort port, ErrorHandler* err);
     
     /**
      * @brief Destructor.
@@ -73,18 +81,14 @@ public:
      * 
      * @return Timestamp in milliseconds (from millis()).
      */
-    unsigned long getTemperatureTimestamp() const override {
-        return 0; // Not tracking timestamps
-    }
+    unsigned long getTemperatureTimestamp() const override;
     
     /**
      * @brief Get the timestamp of the last humidity reading.
      * 
      * @return Timestamp in milliseconds (from millis()).
      */
-    unsigned long getHumidityTimestamp() const override {
-        return 0; // Not tracking timestamps
-    }
+    unsigned long getHumidityTimestamp() const override;
     
     /**
      * @brief Perform a self-test to verify the sensor is functioning properly.

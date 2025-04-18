@@ -8,7 +8,6 @@ enum ErrorSeverity {
   INFO,
   WARNING,
   ERROR,
-  CRITICAL
 };
 
 // Structure to hold error information
@@ -34,7 +33,6 @@ private:
   Print* infoStream;        // Stream for INFO messages
   Print* warningStream;     // Stream for WARNING messages
   Print* errorStream;       // Stream for ERROR messages
-  Print* criticalStream;    // Stream for CRITICAL messages
   Print* uartDebugSerial;   // Reference to UART debug serial
   
   // Flag to indicate if we're using per-severity routing
@@ -66,13 +64,7 @@ public:
    * @param output The stream to use
    */
   void setErrorOutput(Print* output);
-  
-  /**
-   * @brief Configure output stream for CRITICAL messages
-   * @param output The stream to use
-   */
-  void setCriticalOutput(Print* output);
-  
+
   /**
    * @brief Enable or disable custom routing
    * 
@@ -86,7 +78,7 @@ public:
   /**
    * @brief Log an error message with specified severity
    * 
-   * @param severity The severity level (INFO, WARNING, ERROR, CRITICAL)
+   * @param severity The severity level (INFO, WARNING, ERROR)
    * @param message The message to log
    */
   void logError(ErrorSeverity severity, String message);
@@ -102,13 +94,7 @@ public:
    * @param message The message to log
    */
   void logWarning(String message);
-  
-  /**
-   * @brief Log a CRITICAL level message
-   * @param message The message to log
-   */
-  void logCritical(String message);
-  
+
   /**
    * @brief Get all logged error entries
    * @return Vector of error entries

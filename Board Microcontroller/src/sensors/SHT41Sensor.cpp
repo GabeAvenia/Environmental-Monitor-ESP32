@@ -1,8 +1,11 @@
 #include "SHT41Sensor.h"
 
-SHT41Sensor::SHT41Sensor(const String& sensorName, int address, TwoWire* i2cBus, ErrorHandler* err)
+SHT41Sensor::SHT41Sensor(const String& sensorName, int address, TwoWire* i2cBus, 
+                        I2CManager* i2cMgr, I2CPort port, ErrorHandler* err)
     : BaseSensor(sensorName, SensorType::SHT41, err),
       wire(i2cBus),
+      i2cPort(port),
+      i2cManager(i2cMgr),
       i2cAddress(address),
       lastTemperature(NAN),
       lastHumidity(NAN),
@@ -17,6 +20,7 @@ SHT41Sensor::~SHT41Sensor() {
 bool SHT41Sensor::initialize() {
     logInfo("Initializing SHT41 sensor: " + name);
     
+    // The Adafruit SHT4x library supports passing a specific TwoWire instance
     if (!sht4.begin(wire)) {
         logError("Failed to initialize SHT41 sensor: " + name);
         connected = false;
@@ -103,6 +107,7 @@ String SHT41Sensor::getSensorInfo() const {
     String info = "Sensor Name: " + name + "\n";
     info += "Type: SHT41\n";
     info += "I2C Address: 0x" + String(i2cAddress, HEX) + "\n";
+    info += "I2C Port: " + I2CManager::portToString(i2cPort) + "\n";
     info += "Connected: " + String(connected ? "Yes" : "No") + "\n";
     
     if (connected) {

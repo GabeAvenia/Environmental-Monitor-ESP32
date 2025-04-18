@@ -5,7 +5,6 @@ ErrorHandler::ErrorHandler(Print* output, Print* debugOutput)
     infoStream(debugOutput ? debugOutput : output), 
     warningStream(output), 
     errorStream(output), 
-    criticalStream(output),
     uartDebugSerial(debugOutput),
     useCustomRouting(debugOutput != nullptr) {
 }
@@ -20,10 +19,6 @@ void ErrorHandler::setWarningOutput(Print* output) {
 
 void ErrorHandler::setErrorOutput(Print* output) {
   errorStream = output;
-}
-
-void ErrorHandler::setCriticalOutput(Print* output) {
-  criticalStream = output;
 }
 
 void ErrorHandler::enableCustomRouting(bool enable) {
@@ -59,9 +54,6 @@ void ErrorHandler::logError(ErrorSeverity severity, String message) {
       case ERROR:
         targetStream = errorStream;
         break;
-      case CRITICAL:
-        targetStream = criticalStream;
-        break;
     }
   }
   
@@ -72,7 +64,6 @@ void ErrorHandler::logError(ErrorSeverity severity, String message) {
       case INFO: severityStr = "INFO"; break;
       case WARNING: severityStr = "WARNING"; break;
       case ERROR: severityStr = "ERROR"; break;
-      case CRITICAL: severityStr = "CRITICAL"; break;
     }
     
     // Add timestamp (seconds since boot)
@@ -92,12 +83,6 @@ void ErrorHandler::logError(ErrorSeverity severity, String message) {
       if (targetStream == infoStream) infoStream = nullptr;
       if (targetStream == warningStream) warningStream = nullptr;
       if (targetStream == errorStream) errorStream = nullptr;
-      if (targetStream == criticalStream) criticalStream = nullptr;
-      
-      // Try to log to the default stream if it's different
-      if (targetStream != outputStream && outputStream != nullptr) {
-        outputStream->println("[CRITICAL] Failed to write to log output stream");
-      }
     }
   }
 }
@@ -108,10 +93,6 @@ void ErrorHandler::logInfo(String message) {
 
 void ErrorHandler::logWarning(String message) {
   logError(WARNING, message);
-}
-
-void ErrorHandler::logCritical(String message) {
-  logError(CRITICAL, message);
 }
 
 std::vector<ErrorEntry> ErrorHandler::getErrorLog() {
@@ -138,7 +119,6 @@ String ErrorHandler::getRoutingStatus() const {
   status += "INFO output: " + getStreamDesc(infoStream) + "\n";
   status += "WARNING output: " + getStreamDesc(warningStream) + "\n";
   status += "ERROR output: " + getStreamDesc(errorStream) + "\n";
-  status += "CRITICAL output: " + getStreamDesc(criticalStream) + "\n";
   
   // Add statistics
   status += "Log entries: " + String(errorLog.size()) + "\n";
