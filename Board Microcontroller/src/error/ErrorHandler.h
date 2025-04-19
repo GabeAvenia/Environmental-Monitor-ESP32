@@ -3,11 +3,15 @@
 #include <Arduino.h>
 #include <vector>
 
+// Forward declaration to avoid circular dependency
+class LedManager;
+
 // Error severity levels
 enum ErrorSeverity {
   INFO,
   WARNING,
   ERROR,
+  FATAL,
 };
 
 // Structure to hold error information
@@ -33,12 +37,21 @@ private:
   Print* infoStream;        // Stream for INFO messages
   Print* warningStream;     // Stream for WARNING messages
   Print* errorStream;       // Stream for ERROR messages
+  Print* fatalStream;       // Stream for FATAL messages
   Print* uartDebugSerial;   // Reference to UART debug serial
+  
+  // Reference to LED manager for visual indication
+  LedManager* ledManager = nullptr;
   
   // Flag to indicate if we're using per-severity routing
   bool useCustomRouting;
   
 public:
+  /**
+   * @brief Get the LED manager pointer for debugging
+   * @return The LED manager or nullptr if not set
+   */
+  LedManager* getLedManager() const { return ledManager; }
   /**
    * @brief Constructor for ErrorHandler with output stream routing
    * 
@@ -64,6 +77,18 @@ public:
    * @param output The stream to use
    */
   void setErrorOutput(Print* output);
+  
+  /**
+   * @brief Configure output stream for FATAL messages
+   * @param output The stream to use
+   */
+  void setFatalOutput(Print* output);
+  
+  /**
+   * @brief Set the LED manager for visual indication of errors
+   * @param led Pointer to the LED manager
+   */
+  void setLedManager(LedManager* led);
 
   /**
    * @brief Enable or disable custom routing
@@ -76,24 +101,13 @@ public:
   void enableCustomRouting(bool enable = true);
   
   /**
-   * @brief Log an error message with specified severity
+   * @brief Log a message with specified severity
    * 
-   * @param severity The severity level (INFO, WARNING, ERROR)
+   * @param severity The severity level (INFO, WARNING, ERROR, FATAL)
    * @param message The message to log
+   * @return true if a FATAL error was logged (for caller to take action)
    */
-  void logError(ErrorSeverity severity, String message);
-  
-  /**
-   * @brief Log an INFO level message
-   * @param message The message to log
-   */
-  void logInfo(String message);
-  
-  /**
-   * @brief Log a WARNING level message
-   * @param message The message to log
-   */
-  void logWarning(String message);
+  bool logError(ErrorSeverity severity, String message);
 
   /**
    * @brief Get all logged error entries

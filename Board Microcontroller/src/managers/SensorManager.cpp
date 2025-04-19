@@ -26,7 +26,7 @@ bool SensorManager::initializeSensors() {
         if (!i2cManager->beginPort(I2CPort::I2C0)) {
             errorHandler->logError(ERROR, "Failed to initialize I2C0");
         } else {
-            errorHandler->logInfo("Initialized I2C0 bus");
+            errorHandler->logError(INFO, "Initialized I2C0 bus");
         }
     }
     
@@ -34,7 +34,7 @@ bool SensorManager::initializeSensors() {
         if (!i2cManager->beginPort(I2CPort::I2C1)) {
             errorHandler->logError(ERROR, "Failed to initialize I2C1");
         } else {
-            errorHandler->logInfo("Initialized I2C1 bus");
+            errorHandler->logError(INFO, "Initialized I2C1 bus");
         }
     }
     
@@ -43,7 +43,7 @@ bool SensorManager::initializeSensors() {
         if (!spiManager->begin()) {
             errorHandler->logError(ERROR, "Failed to initialize SPI");
         } else {
-            errorHandler->logInfo("Initialized SPI bus");
+            errorHandler->logError(INFO, "Initialized SPI bus");
         }
     }
     
@@ -51,14 +51,14 @@ bool SensorManager::initializeSensors() {
     std::vector<int> foundAddressesI2C0;
     std::vector<int> foundAddressesI2C1;
     
-    errorHandler->logInfo("Scanning I2C0 bus for devices...");
+    errorHandler->logError(INFO, "Scanning I2C0 bus for devices...");
     bool i2c0HasDevices = i2cManager->scanBus(I2CPort::I2C0, foundAddressesI2C0);
     
-    errorHandler->logInfo("Scanning I2C1 bus for devices...");
+    errorHandler->logError(INFO, "Scanning I2C1 bus for devices...");
     bool i2c1HasDevices = i2cManager->scanBus(I2CPort::I2C1, foundAddressesI2C1);
 
     if (!i2c0HasDevices && !i2c1HasDevices) {
-        errorHandler->logWarning("No I2C devices found on any bus - check wiring if using I2C sensors!");
+        errorHandler->logError(WARNING, "No I2C devices found on any bus - check wiring if using I2C sensors!");
     }
     
     // Get sensor configurations
@@ -101,7 +101,7 @@ bool SensorManager::initializeSensors() {
         // Register the sensor
         registry.registerSensor(sensor);
         
-        errorHandler->logInfo("Sensor added to system: " + config.name + " with polling rate: " + 
+        errorHandler->logError(INFO, "Sensor added to system: " + config.name + " with polling rate: " + 
                            String(config.pollingRate) + "ms");
         atLeastOneInitialized = true;
     }
@@ -200,14 +200,14 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
     for (const auto& sensorName : sensorsToRemove) {
         ISensor* sensor = registry.unregisterSensor(sensorName);
         if (sensor) {
-            errorHandler->logInfo("Removing sensor: " + sensorName);
+            errorHandler->logError(INFO, "Removing sensor: " + sensorName);
             delete sensor;
         }
     }
     
     bool allSuccess = true;
     for (const auto& config : sensorsToAdd) {
-        errorHandler->logInfo("Adding new sensor: " + config.name);
+        errorHandler->logError(INFO, "Adding new sensor: " + config.name);
         
         // Create and initialize the sensor
         ISensor* sensor = factory.createSensor(config);
@@ -220,7 +220,7 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
         
         // Register the successfully initialized sensor
         registry.registerSensor(sensor);
-        errorHandler->logInfo("Sensor added: " + config.name + 
+        errorHandler->logError(INFO, "Sensor added: " + config.name + 
                             " with polling rate: " + String(config.pollingRate) + "ms");
     }
     
@@ -288,7 +288,7 @@ bool SensorManager::testI2CCommunication(I2CPort port, int address) {
     byte error = wire->endTransmission();
     
     if (error == 0) {
-        errorHandler->logInfo("Direct I2C communication with address 0x" + String(address, HEX) + 
+        errorHandler->logError(INFO, "Direct I2C communication with address 0x" + String(address, HEX) + 
                           " on port " + I2CManager::portToString(port) + " successful");
         return true;
     } else {
@@ -308,9 +308,9 @@ bool SensorManager::testSPICommunication(int ssPin) {
     bool success = spiManager->testDevice(ssPin);
     
     if (success) {
-        errorHandler->logInfo("SPI communication test successful on SS pin: " + String(ssPin));
+        errorHandler->logError(INFO, "SPI communication test successful on SS pin: " + String(ssPin));
     } else {
-        errorHandler->logWarning("SPI communication test inconclusive on SS pin: " + String(ssPin) + 
+        errorHandler->logError(WARNING, "SPI communication test inconclusive on SS pin: " + String(ssPin) + 
                               " (may still work with specific device protocol)");
     }
     
@@ -417,7 +417,7 @@ bool SensorManager::reconnectSensor(const String& sensorName) {
     ISensor* sensor = findSensor(sensorName);
     if (!sensor) {
         if (errorHandler) {
-            errorHandler->logWarning("Cannot reconnect - sensor not found: " + sensorName);
+            errorHandler->logError(WARNING, "Cannot reconnect - sensor not found: " + sensorName);
         }
         return false;
     }
@@ -428,7 +428,7 @@ bool SensorManager::reconnectSensor(const String& sensorName) {
     }
     
     if (errorHandler) {
-        errorHandler->logInfo("Attempting to reconnect sensor: " + sensorName);
+        errorHandler->logError(INFO, "Attempting to reconnect sensor: " + sensorName);
     }
     
     // Special handling for Si7021 sensors based on type string rather than dynamic_cast
@@ -436,13 +436,13 @@ bool SensorManager::reconnectSensor(const String& sensorName) {
         // For Si7021 sensors, we need a special reconnection approach
         // Since we can't use dynamic_cast, we'll use a different approach
         if (errorHandler) {
-            errorHandler->logInfo("Using specialized reconnection for Si7021 sensor");
+            errorHandler->logError(INFO, "Using specialized reconnection for Si7021 sensor");
         }
         
         // First try regular initialize
         if (sensor->initialize()) {
             if (errorHandler) {
-                errorHandler->logInfo("Successfully reconnected Si7021 sensor via initialize: " + sensorName);
+                errorHandler->logError(INFO, "Successfully reconnected Si7021 sensor via initialize: " + sensorName);
             }
             return true;
         }
@@ -450,7 +450,7 @@ bool SensorManager::reconnectSensor(const String& sensorName) {
         // If that didn't work, try a more aggressive approach with self-test
         if (sensor->performSelfTest()) {
             if (errorHandler) {
-                errorHandler->logInfo("Successfully reconnected Si7021 sensor via self-test: " + sensorName);
+                errorHandler->logError(INFO, "Successfully reconnected Si7021 sensor via self-test: " + sensorName);
             }
             return true;
         }
@@ -465,7 +465,7 @@ bool SensorManager::reconnectSensor(const String& sensorName) {
     // Generic reconnection attempt for other sensors
     if (sensor->initialize()) {
         if (errorHandler) {
-            errorHandler->logInfo("Successfully reconnected sensor: " + sensorName);
+            errorHandler->logError(INFO, "Successfully reconnected sensor: " + sensorName);
         }
         return true;
     }
@@ -473,7 +473,7 @@ bool SensorManager::reconnectSensor(const String& sensorName) {
     // Try self-test if initialize didn't work
     if (sensor->performSelfTest()) {
         if (errorHandler) {
-            errorHandler->logInfo("Sensor reconnected via self-test: " + sensorName);
+            errorHandler->logError(INFO, "Sensor reconnected via self-test: " + sensorName);
         }
         return true;
     }
@@ -504,7 +504,7 @@ int SensorManager::reconnectAllSensors() {
     }
     
     if (errorHandler && reconnectedCount > 0) {
-        errorHandler->logInfo("Reconnected " + String(reconnectedCount) + " sensors");
+        errorHandler->logError(INFO, "Reconnected " + String(reconnectedCount) + " sensors");
     }
     
     return reconnectedCount;

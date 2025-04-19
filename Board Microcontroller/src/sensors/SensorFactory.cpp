@@ -50,7 +50,7 @@ ISensor* SensorFactory::createSensor(const SensorConfig& config) {
     SensorType type = sensorTypeFromString(config.type);
     
     // Log sensor creation
-    errorHandler->logInfo("Creating sensor: " + config.name + " of type " + config.type + 
+    errorHandler->logError(INFO, "Creating sensor: " + config.name + " of type " + config.type + 
                      (config.isSPI ? 
                       " (SPI, SS Pin: " + String(config.address) + ")" : 
                       " (I2C, Port: " + I2CManager::portToString(config.i2cPort) + 
@@ -106,7 +106,7 @@ ISensor* SensorFactory::createPT100Sensor(const SensorConfig& config) {
     }
     
     // Create the sensor with hardware SPI
-    errorHandler->logInfo("Creating PT100 sensor with physical SS pin: " + String(physicalSsPin) + 
+    errorHandler->logError(INFO, "Creating PT100 sensor with physical SS pin: " + String(physicalSsPin) + 
                          ", Ref: " + String(referenceResistor) + 
                          ", Wire mode: " + String(wireMode));
     

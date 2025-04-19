@@ -20,7 +20,7 @@ bool I2CManager::registerWire(I2CPort port, TwoWire* wire, int sdaPin, int sclPi
     }
     
     wireBuses[port] = WireConfig(wire, sdaPin, sclPin, clockFreq);
-    errorHandler->logInfo("Registered Wire instance for port " + portToString(port) + 
+    errorHandler->logError(INFO, "Registered Wire instance for port " + portToString(port) + 
                          " with pins SDA:" + String(sdaPin) + " SCL:" + String(sclPin));
     return true;
 }
@@ -61,7 +61,7 @@ bool I2CManager::beginPort(I2CPort port) {
     }
     
     config.initialized = true;
-    errorHandler->logInfo("I2C port " + portToString(port) + " initialized with pins SDA:" + 
+    errorHandler->logError(INFO, "I2C port " + portToString(port) + " initialized with pins SDA:" + 
                          String(config.sdaPin) + " SCL:" + String(config.sclPin));
     return true;
 }
@@ -103,21 +103,21 @@ bool I2CManager::scanBus(I2CPort port, std::vector<int>& addresses) {
     
     addresses.clear();
     
-    errorHandler->logInfo("Scanning I2C port " + portToString(port) + "...");
+    errorHandler->logError(INFO, "Scanning I2C port " + portToString(port) + "...");
     for (int address = 1; address < 127; address++) {
         if (devicePresent(port, address)) {
             addresses.push_back(address);
-            errorHandler->logInfo("Found I2C device at address 0x" + String(address, HEX) + 
+            errorHandler->logError(INFO, "Found I2C device at address 0x" + String(address, HEX) + 
                               " on port " + portToString(port));
         }
     }
     
     if (addresses.empty()) {
-        errorHandler->logWarning("No I2C devices found on port " + portToString(port));
+        errorHandler->logError(WARNING, "No I2C devices found on port " + portToString(port));
         return false;
     }
     
-    errorHandler->logInfo("Found " + String(addresses.size()) + " I2C devices on port " + 
+    errorHandler->logError(INFO, "Found " + String(addresses.size()) + " I2C devices on port " + 
                       portToString(port));
     return true;
 }

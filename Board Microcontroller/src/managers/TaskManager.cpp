@@ -66,13 +66,13 @@ bool TaskManager::begin() {
     // We're keeping this method for future initialization if needed
     
     if (errorHandler) {
-        errorHandler->logInfo("Task manager initialization started");
+        errorHandler->logError(INFO, "Task manager initialization started");
     }
     
     // Initialize any resources needed for tasks (but not the mutex)
     
     if (errorHandler) {
-        errorHandler->logInfo("Task manager initialized successfully");
+        errorHandler->logError(INFO, "Task manager initialized successfully");
     }
     
     return true;
@@ -103,7 +103,7 @@ bool TaskManager::startAllTasks() {
     // Just log success or failure
     if (success) {
         if (errorHandler) {
-            errorHandler->logInfo("All tasks started successfully");
+            errorHandler->logError(INFO, "All tasks started successfully");
         }
     } else {
         if (errorHandler) {
@@ -146,7 +146,7 @@ bool TaskManager::startLedTask() {
     }
     
     if (errorHandler) {
-        errorHandler->logInfo("LED task created successfully on Core " + String(CORE_LED));
+        errorHandler->logError(INFO, "LED task created successfully on Core " + String(CORE_LED));
     }
     
     return true;
@@ -184,7 +184,7 @@ bool TaskManager::startSensorTask() {
     }
     
     if (errorHandler) {
-        errorHandler->logInfo("Sensor task created successfully on Core " + String(CORE_SENSOR));
+        errorHandler->logError(INFO, "Sensor task created successfully on Core " + String(CORE_SENSOR));
     }
     
     return true;
@@ -222,7 +222,7 @@ bool TaskManager::startCommTask() {
     }
     
     if (errorHandler) {
-        errorHandler->logInfo("Communication task created successfully on Core " + String(CORE_COMM));
+        errorHandler->logError(INFO, "Communication task created successfully on Core " + String(CORE_COMM));
     }
     
     return true;
@@ -340,7 +340,7 @@ void TaskManager::sensorTask() {
     }
     
     if (errorHandler) {
-        errorHandler->logInfo("Sensor polling task started on Core " + String(xPortGetCoreID()));
+        errorHandler->logError(INFO, "Sensor polling task started on Core " + String(xPortGetCoreID()));
     }
     
     uint32_t lastPollingTime = 0;
@@ -376,7 +376,7 @@ void TaskManager::sensorTask() {
                 
                 if (needsRecovery) {
                     if (errorHandler) {
-                        errorHandler->logInfo("Attempting sensor recovery");
+                        errorHandler->logError(INFO, "Attempting sensor recovery");
                     }
                     
                     // Try to reconnect sensors
@@ -414,7 +414,7 @@ void TaskManager::commTask() {
     }
     
     if (errorHandler) {
-        errorHandler->logInfo("Communication task started on Core " + String(xPortGetCoreID()));
+        errorHandler->logError(INFO, "Communication task started on Core " + String(xPortGetCoreID()));
     }
     
     // Task loop
@@ -454,7 +454,7 @@ void TaskManager::ledTask() {
     }
     
     if (errorHandler) {
-        errorHandler->logInfo("LED update task started on Core " + String(xPortGetCoreID()));
+        errorHandler->logError(INFO, "LED update task started on Core " + String(xPortGetCoreID()));
     }
     
     // Task loop

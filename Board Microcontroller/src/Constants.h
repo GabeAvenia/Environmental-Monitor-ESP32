@@ -43,6 +43,10 @@ namespace Constants {
         static const char* TEST = "TEST";
         static const char* ECHO = "ECHO";
         static const char* RESET = "RESET";
+        static const char* TEST_INFO = "TEST:INFO";
+        static const char* TEST_WARNING = "TEST:WARNING";
+        static const char* TEST_ERROR = "TEST:ERROR";
+        static const char* TEST_FATAL = "TEST:FATAL";
         
         // LED control commands
         static const char* LED_IDENTIFY = "SYST:LED:IDENT";

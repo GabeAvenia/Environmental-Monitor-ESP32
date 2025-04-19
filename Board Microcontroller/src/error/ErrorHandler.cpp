@@ -1,10 +1,12 @@
 #include "ErrorHandler.h"
+#include "managers/LedManager.h"
 
 ErrorHandler::ErrorHandler(Print* output, Print* debugOutput) 
   : outputStream(output), 
     infoStream(debugOutput ? debugOutput : output), 
     warningStream(output), 
     errorStream(output), 
+    fatalStream(output),
     uartDebugSerial(debugOutput),
     useCustomRouting(debugOutput != nullptr) {
 }
@@ -21,11 +23,19 @@ void ErrorHandler::setErrorOutput(Print* output) {
   errorStream = output;
 }
 
+void ErrorHandler::setFatalOutput(Print* output) {
+  fatalStream = output;
+}
+
+void ErrorHandler::setLedManager(LedManager* led) {
+  ledManager = led;
+}
+
 void ErrorHandler::enableCustomRouting(bool enable) {
   useCustomRouting = enable;
 }
 
-void ErrorHandler::logError(ErrorSeverity severity, String message) {
+bool ErrorHandler::logError(ErrorSeverity severity, String message) {
   // Create new error entry
   ErrorEntry entry;
   entry.severity = severity;
@@ -39,6 +49,24 @@ void ErrorHandler::logError(ErrorSeverity severity, String message) {
   
   // Add to log
   errorLog.push_back(entry);
+  
+  // Trigger LED indication if LED manager is available
+  if (ledManager) {
+    switch (severity) {
+      case WARNING:
+        ledManager->indicateWarning();
+        break;
+      case ERROR:
+        ledManager->indicateError();
+        break;
+      case FATAL:
+        ledManager->indicateFatalError();
+        break;
+      default:
+        // No LED change for INFO
+        break;
+    }
+  }
   
   // Determine which output stream to use
   Print* targetStream = outputStream;  // Default to old behavior
@@ -54,6 +82,9 @@ void ErrorHandler::logError(ErrorSeverity severity, String message) {
       case ERROR:
         targetStream = errorStream;
         break;
+      case FATAL:
+        targetStream = fatalStream;
+        break;
     }
   }
   
@@ -64,6 +95,7 @@ void ErrorHandler::logError(ErrorSeverity severity, String message) {
       case INFO: severityStr = "INFO"; break;
       case WARNING: severityStr = "WARNING"; break;
       case ERROR: severityStr = "ERROR"; break;
+      case FATAL: severityStr = "FATAL"; break;
     }
     
     // Add timestamp (seconds since boot)
@@ -83,16 +115,12 @@ void ErrorHandler::logError(ErrorSeverity severity, String message) {
       if (targetStream == infoStream) infoStream = nullptr;
       if (targetStream == warningStream) warningStream = nullptr;
       if (targetStream == errorStream) errorStream = nullptr;
+      if (targetStream == fatalStream) fatalStream = nullptr;
     }
   }
-}
-
-void ErrorHandler::logInfo(String message) {
-  logError(INFO, message);
-}
-
-void ErrorHandler::logWarning(String message) {
-  logError(WARNING, message);
+  
+  // Return true if this was a FATAL error, allowing the caller to take action
+  return (severity == FATAL);
 }
 
 std::vector<ErrorEntry> ErrorHandler::getErrorLog() {
@@ -119,6 +147,7 @@ String ErrorHandler::getRoutingStatus() const {
   status += "INFO output: " + getStreamDesc(infoStream) + "\n";
   status += "WARNING output: " + getStreamDesc(warningStream) + "\n";
   status += "ERROR output: " + getStreamDesc(errorStream) + "\n";
+  status += "FATAL output: " + getStreamDesc(fatalStream) + "\n";
   
   // Add statistics
   status += "Log entries: " + String(errorLog.size()) + "\n";

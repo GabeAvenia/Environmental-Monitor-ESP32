@@ -18,11 +18,11 @@ SHT41Sensor::~SHT41Sensor() {
 }
 
 bool SHT41Sensor::initialize() {
-    logInfo("Initializing SHT41 sensor: " + name);
+    errorHandler->logError(INFO, "Initializing SHT41 sensor: " + name);
     
     // The Adafruit SHT4x library supports passing a specific TwoWire instance
     if (!sht4.begin(wire)) {
-        logError("Failed to initialize SHT41 sensor: " + name);
+        errorHandler->logError(ERROR, "Failed to initialize SHT41 sensor: " + name);
         connected = false;
         return false;
     }
@@ -32,7 +32,7 @@ bool SHT41Sensor::initialize() {
     sht4.setHeater(SHT4X_NO_HEATER);
     
     connected = true;
-    logInfo("SHT41 sensor initialized successfully: " + name);
+    errorHandler->logError(INFO, "SHT41 sensor initialized successfully: " + name);
     
     // Get initial readings
     updateReadings();
@@ -42,7 +42,7 @@ bool SHT41Sensor::initialize() {
 
 bool SHT41Sensor::updateReadings() const {
     if (!connected) {
-        logErrorPublic("Attempted to read from disconnected sensor: " + name);
+        errorHandler->logError(ERROR, "Attempted to read from disconnected sensor: " + name);
         return false;
     }
     
@@ -50,7 +50,7 @@ bool SHT41Sensor::updateReadings() const {
     
     // Non-const Adafruit API, we use mutable member and const_cast for internal state
     if (!sht4.getEvent(&humidity, &temp)) {
-        logErrorPublic("Failed to read from SHT41 sensor: " + name);
+        errorHandler->logError(ERROR, "Failed to read from SHT41 sensor: " + name);
         const_cast<SHT41Sensor*>(this)->connected = false;
         return false;
     }
@@ -93,11 +93,11 @@ bool SHT41Sensor::performSelfTest() {
     bool success = sht4.getEvent(&humidity, &temp);
     
     if (!success) {
-        logError("Self-test failed for SHT41 sensor: " + name);
+        errorHandler->logError(ERROR, "Self-test failed for SHT41 sensor: " + name);
         connected = false;
     } else {
         connected = true;
-        logInfo("Self-test passed for SHT41 sensor: " + name);
+        errorHandler->logError(INFO, "Self-test passed for SHT41 sensor: " + name);
     }
     
     return success;

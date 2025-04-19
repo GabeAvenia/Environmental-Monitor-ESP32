@@ -16,14 +16,14 @@ void SensorRegistry::registerSensor(ISensor* sensor) {
     
     // Check if sensor already exists
     if (hasSensor(sensor->getName())) {
-        errorHandler->logWarning("Sensor with name " + sensor->getName() + " already exists in registry");
+        errorHandler->logError(WARNING, "Sensor with name " + sensor->getName() + " already exists in registry");
         return;
     }
     
     // Add to the general sensor list
     allSensors.push_back(sensor);
     
-    errorHandler->logInfo("Registered sensor: " + sensor->getName());
+    errorHandler->logError(INFO, "Registered sensor: " + sensor->getName());
 }
 
 ISensor* SensorRegistry::unregisterSensor(const String& sensorName) {
@@ -39,11 +39,11 @@ ISensor* SensorRegistry::unregisterSensor(const String& sensorName) {
     }
     
     if (!sensorToRemove) {
-        errorHandler->logWarning("Attempted to unregister non-existent sensor: " + sensorName);
+        errorHandler->logError(WARNING, "Attempted to unregister non-existent sensor: " + sensorName);
         return nullptr;
     }
     
-    errorHandler->logInfo("Unregistered sensor: " + sensorName);
+    errorHandler->logError(INFO, "Unregistered sensor: " + sensorName);
     return sensorToRemove;
 }
 
@@ -51,7 +51,7 @@ std::vector<ISensor*> SensorRegistry::clear() {
     std::vector<ISensor*> sensors = allSensors;
     allSensors.clear();
     
-    errorHandler->logInfo("Cleared all sensors from registry");
+    errorHandler->logError(INFO, "Cleared all sensors from registry");
     return sensors;
 }
 

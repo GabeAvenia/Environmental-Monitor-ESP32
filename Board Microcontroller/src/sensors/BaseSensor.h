@@ -18,29 +18,6 @@ protected:
     SensorType type;               ///< Type of sensor
     bool connected;                ///< Connection status
     ErrorHandler* errorHandler;    ///< Error reporting mechanism
-    
-    /**
-     * @brief Log an error message through the error handler.
-     * 
-     * @param message The error message.
-     * @param severity The severity level of the error.
-     */
-    void logError(const String& message, ErrorSeverity severity = ERROR) {
-        if (errorHandler) {
-            errorHandler->logError(severity, message);
-        }
-    }
-
-    /**
-     * @brief Log an informational message through the error handler.
-     * 
-     * @param message The information message.
-     */
-    void logInfo(const String& message) {
-        if (errorHandler) {
-            errorHandler->logInfo(message);
-        }
-    }
 
 public:
     /**
@@ -116,28 +93,5 @@ public:
      */
     void* getInterface(InterfaceType type) const override {
         return nullptr;
-    }
-    
-    /**
-     * @brief Public method to log an error message - const-safe version
-     * 
-     * @param message The error message.
-     * @param severity The severity level of the error.
-     */
-    void logErrorPublic(const String& message, ErrorSeverity severity = ERROR) const {
-        if (errorHandler) {
-            errorHandler->logError(severity, message);
-        }
-    }
-
-    /**
-     * @brief Public method to log an info message - const-safe version
-     * 
-     * @param message The information message.
-     */
-    void logInfoPublic(const String& message) const {
-        if (errorHandler) {
-            errorHandler->logInfo(message);
-        }
     }
 };

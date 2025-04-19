@@ -18,7 +18,7 @@ Si7021Sensor::~Si7021Sensor() {
 }
 
 bool Si7021Sensor::initialize() {
-    logInfo("Initializing Si7021 sensor: " + name);
+    errorHandler->logError(INFO, "Initializing Si7021 sensor: " + name);
     
     // The Si7021 library doesn't support specifying the Wire instance directly
     bool success = false;
@@ -34,7 +34,7 @@ bool Si7021Sensor::initialize() {
         // Get the Wire configuration for our port
         const WireConfig* config = i2cManager->getWireConfig(i2cPort);
         if (!config) {
-            logError("Failed to get Wire configuration for port " + I2CManager::portToString(i2cPort));
+            errorHandler->logError(ERROR, "Failed to get Wire configuration for port " + I2CManager::portToString(i2cPort));
             connected = false;
             return false;
         }
@@ -51,17 +51,17 @@ bool Si7021Sensor::initialize() {
     }
     
     if (!success) {
-        logError("Failed to initialize Si7021 sensor: " + name);
+        errorHandler->logError(ERROR, "Failed to initialize Si7021 sensor: " + name);
         connected = false;
         return false;
     }
     
     connected = true;
-    logInfo("Si7021 sensor initialized successfully: " + name);
+    errorHandler->logError(INFO, "Si7021 sensor initialized successfully: " + name);
     
     // Read and log the sensor's serial number for identification
     uint32_t serialNumber = si7021.sernum_a;
-    logInfo("Si7021 serial number: 0x" + String(serialNumber, HEX));
+    errorHandler->logError(INFO, "Si7021 serial number: 0x" + String(serialNumber, HEX));
     
     // Get initial readings
     updateReadings();
@@ -71,7 +71,7 @@ bool Si7021Sensor::initialize() {
 
 bool Si7021Sensor::updateReadings() const {
     if (!connected) {
-        logErrorPublic("Attempted to read from disconnected sensor: " + name);
+        errorHandler->logError(ERROR, "Attempted to read from disconnected sensor: " + name);
         return false;
     }
     
@@ -95,7 +95,7 @@ bool Si7021Sensor::updateReadings() const {
                 Wire.setClock(config->clockFrequency);
             }
         } else {
-            logErrorPublic("Failed to get Wire configuration for reading");
+            errorHandler->logError(ERROR, "Failed to get Wire configuration for reading");
             return false;
         }
     }
@@ -104,7 +104,7 @@ bool Si7021Sensor::updateReadings() const {
         if (attempt > 0) {
             // Add a delay between retries
             delay(50);
-            logInfoPublic("Retrying Si7021 reading, attempt " + String(attempt+1) + " of " + String(MAX_RETRIES));
+            errorHandler->logError(INFO, "Retrying Si7021 reading, attempt " + String(attempt+1) + " of " + String(MAX_RETRIES));
         }
         
         // Try reading temperature first
@@ -124,7 +124,7 @@ bool Si7021Sensor::updateReadings() const {
             }
         } catch (...) {
             // Handle any exceptions
-            logErrorPublic("Exception during Si7021 reading for sensor: " + name);
+            errorHandler->logError(ERROR, "Exception during Si7021 reading for sensor: " + name);
             delay(20); // Additional delay on exception
         }
     }
@@ -132,7 +132,7 @@ bool Si7021Sensor::updateReadings() const {
     // Check if readings were successful
     if (!success) {
         // Both readings failed even after retries
-        logErrorPublic("Failed to read from Si7021 sensor: " + name + " after " + String(MAX_RETRIES) + " retries");
+        errorHandler->logError(ERROR, "Failed to read from Si7021 sensor: " + name + " after " + String(MAX_RETRIES) + " retries");
         const_cast<Si7021Sensor*>(this)->connected = false;
         return false;
     }
@@ -189,7 +189,7 @@ bool Si7021Sensor::performSelfTest() {
                 Wire.setClock(config->clockFrequency);
             }
         } else {
-            logError("Failed to get Wire configuration for self-test");
+            errorHandler->logError(ERROR, "Failed to get Wire configuration for self-test");
             return false;
         }
     }
@@ -199,11 +199,11 @@ bool Si7021Sensor::performSelfTest() {
     
     if (success) {
         connected = true;
-        logInfo("Self-test passed for Si7021 sensor: " + name + 
+        errorHandler->logError(INFO, "Self-test passed for Si7021 sensor: " + name + 
                 " (Temperature: " + String(lastTemperature) + "°C, Humidity: " + 
                 String(lastHumidity) + "%)");
     } else {
-        logError("Self-test failed for Si7021 sensor: " + name);
+        errorHandler->logError(ERROR, "Self-test failed for Si7021 sensor: " + name);
     }
     
     return success;
@@ -275,7 +275,7 @@ void* Si7021Sensor::getInterface(InterfaceType type) const {
 }
 
 bool Si7021Sensor::reinitialize() {
-    logInfo("Attempting to reinitialize Si7021 sensor: " + name);
+    errorHandler->logError(INFO, "Attempting to reinitialize Si7021 sensor: " + name);
     
     // Reset the connection state
     connected = false;
@@ -300,7 +300,7 @@ bool Si7021Sensor::reinitialize() {
                 Wire.setClock(config->clockFrequency);
             }
         } else {
-            logError("Failed to get Wire configuration for reinitializing");
+            errorHandler->logError(ERROR, "Failed to get Wire configuration for reinitializing");
             return false;
         }
     }
@@ -310,16 +310,16 @@ bool Si7021Sensor::reinitialize() {
     
     if (success) {
         connected = true;
-        logInfo("Successfully reinitialized Si7021 sensor: " + name);
+        errorHandler->logError(INFO, "Successfully reinitialized Si7021 sensor: " + name);
         
         // Read the serial number again to verify
         uint32_t serialNumber = si7021.sernum_a;
-        logInfo("Si7021 serial number after reinit: 0x" + String(serialNumber, HEX));
+        errorHandler->logError(INFO, "Si7021 serial number after reinit: 0x" + String(serialNumber, HEX));
         
         // Update readings immediately
         updateReadings();
     } else {
-        logError("Failed to reinitialize Si7021 sensor: " + name);
+        errorHandler->logError(ERROR, "Failed to reinitialize Si7021 sensor: " + name);
     }
     
     return success;

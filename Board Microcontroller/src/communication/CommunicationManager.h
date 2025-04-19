@@ -154,6 +154,12 @@ public:
     bool handleWarningRoute(const std::vector<String>& params);
     bool handleErrorRoute(const std::vector<String>& params);
     bool handleLedIdentify(const std::vector<String>& params);
+
+    bool handleTestErrorLevel(const std::vector<String>& params, ErrorSeverity severity);
+    bool handleTestInfoLevel(const std::vector<String>& params) { return handleTestErrorLevel(params, INFO); }
+    bool handleTestWarningLevel(const std::vector<String>& params) { return handleTestErrorLevel(params, WARNING); }
+    bool handleTestErrorLevel(const std::vector<String>& params) { return handleTestErrorLevel(params, ERROR); }
+    bool handleTestFatalLevel(const std::vector<String>& params) { return handleTestErrorLevel(params, FATAL); }
     
     // Static and accessor methods
     static CommunicationManager* getInstance();

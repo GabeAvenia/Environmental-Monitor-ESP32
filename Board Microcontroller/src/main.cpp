@@ -61,7 +61,7 @@ void setup() {
     
     // Give the system time to stabilize
     delay(50);
-    
+
     // Initialize LED manager
     ledManager = new LedManager(errorHandler);
     ledManager->begin();
@@ -70,15 +70,15 @@ void setup() {
     // Set info messages to go to UART only, not to serial terminal
     errorHandler->setInfoOutput(uartDebugSerial);
     errorHandler->enableCustomRouting(true);
-
+    errorHandler->setLedManager(ledManager);
     // Welcome message through logger
-    errorHandler->logInfo("Starting " + String(Constants::PRODUCT_NAME) + " v" + String(Constants::FIRMWARE_VERSION));
-    errorHandler->logInfo("Error handler initialized with custom routing");
+    errorHandler->logError(INFO, "Starting " + String(Constants::PRODUCT_NAME) + " v" + String(Constants::FIRMWARE_VERSION));
+    errorHandler->logError(INFO, "Error handler initialized with custom routing");
 
     // Initialize LittleFS with the specific configuration
     if (!LittleFS.begin(true, "/litlefs", 10, "ffat")) {
         // Log to both terminal and UART for errors
-        errorHandler->logError(ERROR, "Failed to mount LittleFS file system");
+        errorHandler->logError(FATAL, "Failed to mount LittleFS file system");
         while (1) { 
             delay(1000);
         }
@@ -88,7 +88,7 @@ void setup() {
     configManager = new ConfigManager(errorHandler);
     
     if (!configManager->begin()) {
-        errorHandler->logError(ERROR, "Failed to initialize configuration manager");
+        errorHandler->logError(FATAL, "Failed to initialize configuration manager");
         while (1) {
             delay(1000);
         }
@@ -97,19 +97,19 @@ void setup() {
     // Initialize I2C manager
     i2cManager = new I2CManager(errorHandler);
     if (!i2cManager->begin()) {
-        errorHandler->logWarning("Failed to initialize I2C manager");
+        errorHandler->logError(WARNING, "Failed to initialize I2C manager");
     }
     
     // Initialize SPI manager
     spiManager = new SPIManager(errorHandler);
     if (!spiManager->begin()) {
-        errorHandler->logWarning("Failed to initialize SPI manager");
+        errorHandler->logError(WARNING, "Failed to initialize SPI manager");
     } else {
         // Register SS pins
         for (int i = 0; i < MAX_SS_PINS; i++) {
             spiManager->registerSSPin(i);
         }
-        errorHandler->logInfo("Registered logical SS pins 0-3");
+        errorHandler->logError(INFO, "Registered logical SS pins 0-3");
     }
     
     // Give the system time to stabilize
@@ -120,7 +120,7 @@ void setup() {
     
     // Initialize sensors
     if (!sensorManager->initializeSensors()) {
-        errorHandler->logWarning("Some sensors failed to initialize");
+        errorHandler->logError(WARNING, "Some sensors failed to initialize");
     }
     
     // Configure sensor cache settings based on fastest polling rate from config
@@ -133,7 +133,7 @@ void setup() {
     }
     
     sensorManager->setMaxCacheAge(fastestRate);
-    errorHandler->logInfo("Sensor cache configured with " + String(fastestRate) + "ms max age");
+    errorHandler->logError(INFO, "Sensor cache configured with " + String(fastestRate) + "ms max age");
     
     // Give the system time to stabilize
     delay(20);
@@ -153,36 +153,36 @@ void setup() {
     taskManager = new TaskManager(sensorManager, commManager, ledManager, errorHandler);
     
     if (!taskManager->begin()) {
-        errorHandler->logError(ERROR, "Failed to initialize task manager");
+        errorHandler->logError(FATAL, "Failed to initialize task manager");
     } else {
-        errorHandler->logInfo("Task manager initialized successfully");
+        errorHandler->logError(INFO, "Task manager initialized successfully");
         
         // Start tasks one by one with delays in between
         if (taskManager->startLedTask()) {
-            errorHandler->logInfo("LED task started successfully");
+            errorHandler->logError(INFO, "LED task started successfully");
             delay(200); // Give time for task to stabilize
             
             if (taskManager->startCommTask()) {
-                errorHandler->logInfo("Communication task started successfully");
+                errorHandler->logError(INFO, "Communication task started successfully");
                 delay(20); // Give time for task to stabilize
                 
                 if (taskManager->startSensorTask()) {
-                    errorHandler->logInfo("Sensor task started successfully");
+                    errorHandler->logError(INFO, "Sensor task started successfully");
                     delay(30); // Give time for task to stabilize
 
                 } else {
-                    errorHandler->logWarning("Failed to start sensor task");
+                    errorHandler->logError(WARNING, "Failed to start sensor task");
                 }
             } else {
-                errorHandler->logWarning("Failed to start communication task");
+                errorHandler->logError(WARNING, "Failed to start communication task");
             }
         } else {
-            errorHandler->logWarning("Failed to start LED task");
+            errorHandler->logError(WARNING, "Failed to start LED task");
         }
     }
     
-    errorHandler->logInfo("System initialization complete");
-    errorHandler->logInfo("System ready. Environmental Monitor ID: " + configManager->getBoardIdentifier());
+    errorHandler->logError(INFO, "System initialization complete");
+    errorHandler->logError(INFO, "System ready. Environmental Monitor ID: " + configManager->getBoardIdentifier());
     ledManager->setNormalMode();
 
 }

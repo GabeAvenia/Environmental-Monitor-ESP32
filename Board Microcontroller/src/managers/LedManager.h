@@ -22,20 +22,29 @@ private:
     const uint32_t COLOR_GREEN = 0x00FF00;
     const uint32_t COLOR_YELLOW = 0xFFFF00;
     const uint32_t COLOR_BLUE = 0x0000FF;
+    const uint32_t COLOR_RED = 0xFF0000;       // For error indication
+    const uint32_t COLOR_ORANGE = 0xFF8000;    // For warning indication
+    
+    // LED brightness levels
+    const uint8_t DIM_BRIGHTNESS = 30;    // 30% brightness for idle
+    const uint8_t FULL_BRIGHTNESS = 40;   // 100% brightness for active
     
     // State tracking
     bool initialized = false;
     bool identifying = false;
     unsigned long identifyStartTime = 0;
     
-     // LED brightness levels
-     const uint8_t DIM_BRIGHTNESS = 30;    // 30% brightness for idle
-     const uint8_t FULL_BRIGHTNESS = 40;  // 100% brightness for active
-     
-     // Reading pulse effect tracking
-     bool pulseActive = false;
-     unsigned long pulseStartTime = 0;
-     const unsigned long PULSE_DURATION = 100;
+    // Reading pulse effect tracking
+    bool pulseActive = false;
+    unsigned long pulseStartTime = 0;
+    const unsigned long PULSE_DURATION = 100;
+    
+    // Error indication tracking
+    bool errorIndicationActive = false;
+    bool fatalErrorActive = false;           // Track if we're in fatal error mode
+    unsigned long errorIndicationStartTime = 0;
+    const unsigned long WARNING_ERROR_DURATION = 2000;  // 2 seconds for temporary warnings/errors
+    uint32_t errorIndicationColor = COLOR_OFF;
     
     /**
      * @brief Set a solid color on the NeoPixel
@@ -89,6 +98,21 @@ public:
     void startIdentify();
     
     /**
+     * @brief Indicate a warning (orange LED for 2 seconds)
+     */
+    void indicateWarning();
+    
+    /**
+     * @brief Indicate an error (red LED for 2 seconds)
+     */
+    void indicateError();
+    
+    /**
+     * @brief Indicate a fatal error (permanent red LED)
+     */
+    void indicateFatalError();
+    
+    /**
      * @brief Main update function, must be called regularly from loop()
      */
     void update();
@@ -99,4 +123,11 @@ public:
      * @return true if identify mode is active, false otherwise
      */
     bool isIdentifying() const;
+    
+    /**
+     * @brief Check if a fatal error is currently being indicated
+     * 
+     * @return true if in fatal error state
+     */
+    bool isFatalError() const;
 };

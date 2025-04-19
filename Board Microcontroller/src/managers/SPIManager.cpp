@@ -34,7 +34,7 @@ bool SPIManager::begin(int mosi, int miso, int sck) {
     SPI.begin(sckPin, misoPin, mosiPin);
     
     initialized = true;
-    errorHandler->logInfo("SPI initialized with pins MOSI:" + String(mosiPin) + 
+    errorHandler->logError(INFO, "SPI initialized with pins MOSI:" + String(mosiPin) + 
                           " MISO:" + String(misoPin) + 
                           " SCK:" + String(sckPin));
     
@@ -51,14 +51,14 @@ bool SPIManager::registerSSPin(int ssPin) {
     int physicalPin = ssPin;
     if (ssPin >= 0 && ssPin < MAX_SS_PINS) {
         physicalPin = ssPinMapping[ssPin];
-        errorHandler->logInfo("Mapping logical SS index " + String(ssPin) + 
+        errorHandler->logError(INFO, "Mapping logical SS index " + String(ssPin) + 
                              " to physical pin " + String(physicalPin));
     }
     
     // Check if pin is already registered
     for (int pin : ssPins) {
         if (pin == physicalPin) {
-            errorHandler->logInfo("SS pin " + String(physicalPin) + " already registered");
+            errorHandler->logError(INFO, "SS pin " + String(physicalPin) + " already registered");
             return true; // Already registered, so technically successful
         }
     }
@@ -70,7 +70,7 @@ bool SPIManager::registerSSPin(int ssPin) {
     // Add to the list
     ssPins.push_back(physicalPin);
     
-    errorHandler->logInfo("Registered SS pin " + String(physicalPin));
+    errorHandler->logError(INFO, "Registered SS pin " + String(physicalPin));
     return true;
 }
 
@@ -147,7 +147,7 @@ bool SPIManager::testDevice(int ssPin) {
     
     endTransaction(ssPin);
     
-    errorHandler->logInfo("SPI test on SS pin " + String(ssPin) + 
+    errorHandler->logError(INFO, "SPI test on SS pin " + String(ssPin) + 
                           " returned response: 0x" + String(response, HEX));
     
     // For a real test, we would need device-specific logic here

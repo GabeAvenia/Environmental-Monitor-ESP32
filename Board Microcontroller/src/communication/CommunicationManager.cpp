@@ -25,7 +25,7 @@ CommunicationManager::~CommunicationManager() {
 }
 
 void CommunicationManager::begin(long baudRate) {
-    errorHandler->logInfo("Communication manager initialized");
+    errorHandler->logError(INFO, "Communication manager initialized");
     registerCommandHandlers();
 }
 
@@ -76,7 +76,14 @@ void CommunicationManager::registerCommandHandlers() {
             Serial.println("Serial communication test successful"); 
             return true; 
         };
-        
+    commandHandlers[Constants::SCPI::TEST_INFO] = 
+        [this](const std::vector<String>& params) { return handleTestErrorLevel(params, INFO); };
+    commandHandlers[Constants::SCPI::TEST_WARNING] = 
+        [this](const std::vector<String>& params) { return handleTestErrorLevel(params, WARNING); };
+    commandHandlers[Constants::SCPI::TEST_ERROR] = 
+        [this](const std::vector<String>& params) { return handleTestErrorLevel(params, ERROR); };
+    commandHandlers[Constants::SCPI::TEST_FATAL] = 
+        [this](const std::vector<String>& params) { return handleTestErrorLevel(params, FATAL); };
     commandHandlers[Constants::SCPI::ECHO] = 
         [this](const std::vector<String>& params) { return handleEcho(params); };
 
@@ -135,9 +142,13 @@ void CommunicationManager::setupCommands() {
     REGISTER_COMMAND("SYST:LOG:WARN:ROUTE", handleWarningRoute)
     REGISTER_COMMAND("SYST:LOG:ERR:ROUTE", handleErrorRoute)
     REGISTER_COMMAND("SYST:LED:IDENT", handleLedIdentify)
+    REGISTER_COMMAND("TEST:INFO", handleTestInfoLevel)
+    REGISTER_COMMAND("TEST:WARNING", handleTestWarningLevel)
+    REGISTER_COMMAND("TEST:ERROR", handleTestErrorLevel)
+    REGISTER_COMMAND("TEST:FATAL", handleTestFatalLevel)
 
     
-    errorHandler->logInfo("SCPI commands registered");
+    errorHandler->logError(INFO, "SCPI commands registered");
 }
 
 void CommunicationManager::processIncomingData() {
@@ -148,7 +159,7 @@ void CommunicationManager::processIncomingData() {
         rawCommand.trim();
         
         // Log receipt for debugging
-        errorHandler->logInfo("Processing command: '" + rawCommand + "'");
+        errorHandler->logError(INFO, "Processing command: '" + rawCommand + "'");
         
         // Parse and process command
         String command;
@@ -233,7 +244,7 @@ void CommunicationManager::processCommandLine() {
     
     // Check if we hit the buffer limit
     if (rawCommand.length() >= MAX_BUFFER_SIZE) {
-        errorHandler->logWarning("Command exceeds buffer size limit of " + String(MAX_BUFFER_SIZE) + " characters");
+        errorHandler->logError(WARNING, "Command exceeds buffer size limit of " + String(MAX_BUFFER_SIZE) + " characters");
     }
     
     if (rawCommand.length() == 0) {
@@ -242,7 +253,7 @@ void CommunicationManager::processCommandLine() {
     
     // Trim whitespace and process command
     rawCommand.trim();
-    errorHandler->logInfo("Processing command: '" + 
+    errorHandler->logError(INFO, "Processing command: '" + 
                          (rawCommand.length() > 50 ? 
                             rawCommand.substring(0, 50) + "..." : 
                             rawCommand) + 
@@ -311,7 +322,7 @@ bool CommunicationManager::handleMeasure(const std::vector<String>& params) {
         Serial.println(csvLine);
         Serial.flush(); // Ensure the response is sent immediately
     }
-    errorHandler->logInfo("MEAS values sent");
+    errorHandler->logError(INFO, "MEAS values sent");
     return true;
 }
 
@@ -407,7 +418,7 @@ bool CommunicationManager::handleUpdateConfig(const std::vector<String>& params)
         jsonConfig += param;
     }
     
-    errorHandler->logInfo("Processing config update: " + jsonConfig.substring(0, 50) + "...");
+    errorHandler->logError(INFO, "Processing config update: " + jsonConfig.substring(0, 50) + "...");
     bool success = configManager->updateConfigFromJson(jsonConfig);
     if (!success) {
         errorHandler->logError(ERROR, "Failed to update configuration");
@@ -417,7 +428,7 @@ bool CommunicationManager::handleUpdateConfig(const std::vector<String>& params)
 
 bool CommunicationManager::handleUpdateSensorConfig(const std::vector<String>& params) {
     if (params.empty()) {
-        errorHandler->logWarning("No sensor configuration provided");
+        errorHandler->logError(WARNING, "No sensor configuration provided");
     }
     
     // Join all parameters since the JSON might have spaces
@@ -427,7 +438,7 @@ bool CommunicationManager::handleUpdateSensorConfig(const std::vector<String>& p
         jsonConfig += param;
     }
     
-    errorHandler->logInfo("Processing sensor config update: " + 
+    errorHandler->logError(INFO, "Processing sensor config update: " + 
                          jsonConfig.substring(0, std::min(50, (int)jsonConfig.length())) + 
                          (jsonConfig.length() > 50 ? "..." : ""));
     
@@ -438,9 +449,9 @@ bool CommunicationManager::handleUpdateSensorConfig(const std::vector<String>& p
     }
     
     // Add this block to explicitly reinitialize the sensors
-    errorHandler->logInfo("Reinitializing sensors with new configuration");
+    errorHandler->logError(INFO, "Reinitializing sensors with new configuration");
     if (sensorManager->initializeSensors()) {
-        errorHandler->logInfo("Successfully reinitialized sensors with new configuration");
+        errorHandler->logError(INFO, "Successfully reinitialized sensors with new configuration");
     } else {
         errorHandler->logError(ERROR, "Failed to reinitialize some sensors after configuration update");
     }
@@ -450,7 +461,7 @@ bool CommunicationManager::handleUpdateSensorConfig(const std::vector<String>& p
 
 bool CommunicationManager::handleUpdateAdditionalConfig(const std::vector<String>& params) {
     if (params.empty()) {
-        errorHandler->logWarning("No additional configuration provided");
+        errorHandler->logError(WARNING, "No additional configuration provided");
     }
     
     // Join all parameters since the JSON might have spaces
@@ -460,7 +471,7 @@ bool CommunicationManager::handleUpdateAdditionalConfig(const std::vector<String
         jsonConfig += param;
     }
     
-    errorHandler->logInfo("Processing additional config update: " + 
+    errorHandler->logError(INFO, "Processing additional config update: " + 
                          jsonConfig.substring(0, std::min(50, (int)jsonConfig.length())) + 
                          (jsonConfig.length() > 50 ? "..." : ""));
     
@@ -472,7 +483,7 @@ bool CommunicationManager::handleUpdateAdditionalConfig(const std::vector<String
 }
 
 bool CommunicationManager::handleReset(const std::vector<String>& params) {
-    errorHandler->logInfo("Reset command received");
+    errorHandler->logError(INFO, "Reset command received");
     Serial.println("Resetting device...");
     delay(100);  // Give time for the message to be sent
     ESP.restart();
@@ -515,10 +526,10 @@ bool CommunicationManager::handleMessageRoutingSet(const std::vector<String>& pa
     
     if (option == "ON" || option == "ENABLE" || option == "1") {
         errorHandler->enableCustomRouting(true);
-        errorHandler->logInfo("Custom message routing enabled");
+        errorHandler->logError(INFO, "Custom message routing enabled");
     } else if (option == "OFF" || option == "DISABLE" || option == "0") {
         errorHandler->enableCustomRouting(false);
-        errorHandler->logInfo("Custom message routing disabled");
+        errorHandler->logError(INFO, "Custom message routing disabled");
     } else {
         Serial.println("ERROR: Invalid option. Use ON/OFF, ENABLE/DISABLE, or 1/0");
         return false;
@@ -565,7 +576,7 @@ bool CommunicationManager::handleSetMessageRoute(const std::vector<String>& para
         return false;
     }
     
-    errorHandler->logInfo(severity + " messages routed to " + destination);
+    errorHandler->logError(INFO, severity + " messages routed to " + destination);
     return true;
 }
 
@@ -577,6 +588,68 @@ bool CommunicationManager::handleLedIdentify(const std::vector<String>& params) 
         Serial.println("ERROR: LED manager not available");
         return false;
     }
+    return true;
+}
+
+bool CommunicationManager::handleTestErrorLevel(const std::vector<String>& params, ErrorSeverity severity) {
+    String severityStr;
+    switch (severity) {
+        case INFO: severityStr = "INFO"; break;
+        case WARNING: severityStr = "WARNING"; break;
+        case ERROR: severityStr = "ERROR"; break;
+        case FATAL: severityStr = "FATAL"; break;
+        default: severityStr = "UNKNOWN"; break;
+    }
+    
+    String message = "Test " + severityStr + " message";
+    if (params.size() > 0) {
+        message = params[0];
+    }
+    
+    // Inform the user what's happening
+    Serial.println("Logging " + severityStr + " message: \"" + message + "\"");
+    Serial.flush();
+    
+    // Debug output for LED connections
+    Serial.println("ErrorHandler has LED manager: " + String(errorHandler->getLedManager() != nullptr ? "YES" : "NO"));
+    
+    // Log the message
+    bool isFatal = errorHandler->logError(severity, message);
+    
+    // Extra direct LED control for debugging
+    if (ledManager && severity >= WARNING) {
+        if (severity == WARNING) ledManager->indicateWarning();
+        if (severity == ERROR) ledManager->indicateError();
+        if (severity == FATAL) ledManager->indicateFatalError();
+    }
+    
+    // For FATAL errors, handle specially
+    if (isFatal) {
+        // For FATAL, we might want to reset after some delay
+        int resetDelay = -1;
+        if (params.size() > 1) {
+            resetDelay = params[1].toInt();
+        }
+        
+        if (resetDelay > 0) {
+            Serial.println("Device will reset after " + String(resetDelay) + "ms");
+            Serial.flush();
+            delay(resetDelay);
+            ESP.restart();
+        } else {
+            Serial.println("Fatal error - device halted");
+            Serial.flush();
+            // Enter infinite loop, but keep LED updated
+            while (true) {
+                if (ledManager) {
+                    ledManager->update();
+                }
+                delay(100);
+                yield();
+            }
+        }
+    }
+    
     return true;
 }
 

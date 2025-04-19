@@ -32,7 +32,7 @@ bool LedManager::begin() {
     
     // Log initialization
     if (errorHandler) {
-        errorHandler->logInfo("NeoPixel initialized on pin " + String(neopixelPin));
+        errorHandler->logError(INFO, "NeoPixel initialized on pin " + String(neopixelPin));
     }
     
     // Set the setup color (yellow)
@@ -55,11 +55,15 @@ void LedManager::setSetupMode() {
 }
 
 void LedManager::setNormalMode() {
+    // Only set normal mode if not in fatal error state
+    if (fatalErrorActive) return;
+    
     setColor(COLOR_GREEN, DIM_BRIGHTNESS);
 }
 
 void LedManager::indicateReading() {
-    if (!initialized || identifying) return;
+    // Don't override fatal errors or temporary error/warning indications
+    if (!initialized || fatalErrorActive || errorIndicationActive) return;
     
     pulseActive = true;
     pulseStartTime = millis();
@@ -69,7 +73,8 @@ void LedManager::indicateReading() {
 }
 
 void LedManager::startIdentify() {
-    if (!initialized) return;
+    // Don't override fatal errors
+    if (!initialized || fatalErrorActive) return;
     
     identifying = true;
     identifyStartTime = millis();
@@ -78,10 +83,66 @@ void LedManager::startIdentify() {
     setColor(COLOR_BLUE, FULL_BRIGHTNESS);
 }
 
+void LedManager::indicateWarning() {
+    if (!initialized || fatalErrorActive) return;  // Don't override fatal errors
+    
+    // Cancel any identification or pulse in progress
+    identifying = false;
+    pulseActive = false;
+    
+    // Set warning indication (orange)
+    errorIndicationActive = true;
+    errorIndicationStartTime = millis();
+    errorIndicationColor = COLOR_ORANGE;
+    setColor(COLOR_ORANGE, FULL_BRIGHTNESS);
+}
+
+void LedManager::indicateError() {
+    if (!initialized || fatalErrorActive) return;  // Don't override fatal errors
+    
+    // Cancel any identification or pulse in progress
+    identifying = false;
+    pulseActive = false;
+    
+    // Set error indication (red)
+    errorIndicationActive = true;
+    errorIndicationStartTime = millis();
+    errorIndicationColor = COLOR_RED;
+    setColor(COLOR_RED, FULL_BRIGHTNESS);
+}
+
+void LedManager::indicateFatalError() {
+    if (!initialized) return;
+    
+    // Cancel any other indications in progress
+    identifying = false;
+    pulseActive = false;
+    errorIndicationActive = false;
+    
+    // Set fatal error indication (permanent red)
+    fatalErrorActive = true;
+    setColor(COLOR_RED, FULL_BRIGHTNESS);
+    
+    if (errorHandler) {
+        errorHandler->logError(ERROR, "LED set to fatal error mode (permanently red)");
+    }
+}
+
+bool LedManager::isFatalError() const {
+    return fatalErrorActive;
+}
+
 void LedManager::update() {
     if (!initialized) return;
     
     unsigned long currentTime = millis();
+    
+    // Don't do any other updates if we're in fatal error mode
+    if (fatalErrorActive) {
+        // Just ensure the LED stays red
+        setColor(COLOR_RED, FULL_BRIGHTNESS);
+        return;
+    }
     
     // Handle identification mode
     if (identifying) {
@@ -102,7 +163,23 @@ void LedManager::update() {
             }
         }
         
-        return;  // Exit early - identification takes precedence
+        return;  // Exit early - identification takes precedence (except for fatal errors)
+    }
+    
+    // Handle error/warning indication timeout
+    if (errorIndicationActive) {
+        unsigned long errorElapsed = currentTime - errorIndicationStartTime;
+        
+        if (errorElapsed >= WARNING_ERROR_DURATION) {
+            // Error indication complete, return to normal mode
+            errorIndicationActive = false;
+            setNormalMode();
+        } else {
+            // Ensure the error color is still showing
+            setColor(errorIndicationColor, FULL_BRIGHTNESS);
+        }
+        
+        return; // Exit early - error indication takes precedence over reading pulse
     }
     
     // Handle reading pulse

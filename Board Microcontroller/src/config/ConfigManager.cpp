@@ -19,7 +19,7 @@ void ConfigManager::disableNotifications(bool disable) {
 void ConfigManager::registerChangeCallback(ConfigChangeCallback callback) {
     if (callback) {
         changeCallbacks.push_back(callback);
-        errorHandler->logInfo("Registered config change callback, total callbacks: " + String(changeCallbacks.size()));
+        errorHandler->logError(INFO, "Registered config change callback, total callbacks: " + String(changeCallbacks.size()));
     }
 }
 
@@ -27,25 +27,25 @@ void ConfigManager::registerChangeCallback(ConfigChangeCallback callback) {
 void ConfigManager::notifyConfigChanged(const String& newConfig) {
     // Prevent recursive notifications
     if (notifyingCallbacks) {
-        errorHandler->logWarning("Preventing recursive notification of config changes");
+        errorHandler->logError(WARNING, "Preventing recursive notification of config changes");
         return;
     }
     
     notifyingCallbacks = true;
     
-    errorHandler->logInfo("Notifying " + String(changeCallbacks.size()) + " callbacks about config change");
+    errorHandler->logError(INFO, "Notifying " + String(changeCallbacks.size()) + " callbacks about config change");
     for (auto callback : changeCallbacks) {
-        errorHandler->logInfo("Calling a callback...");
+        errorHandler->logError(INFO, "Calling a callback...");
         callback(newConfig);
     }
     
     notifyingCallbacks = false;
-    errorHandler->logInfo("All callbacks notified");
+    errorHandler->logError(INFO, "All callbacks notified");
 }
 
 // Load configuration from the JSON file
 bool ConfigManager::loadConfigFromFile() {
-    errorHandler->logInfo("Loading config file");
+    errorHandler->logError(INFO, "Loading config file");
     
     // Define polling rate constraints
     const uint32_t DEFAULT_POLLING_RATE = 1000;   // Default: 1 second
@@ -54,7 +54,7 @@ bool ConfigManager::loadConfigFromFile() {
     
     // Check if config file exists
     if (!LittleFS.exists(Constants::CONFIG_FILE_PATH)) {
-        errorHandler->logWarning("Config file not found, creating default");
+        errorHandler->logError(WARNING, "Config file not found, creating default");
         if (!createDefaultConfig()) {
             errorHandler->logError(ERROR, "Failed to create default config");
             return false;
@@ -62,7 +62,7 @@ bool ConfigManager::loadConfigFromFile() {
     }
     
     // Open and read config file
-    errorHandler->logInfo("Opening config file for reading");
+    errorHandler->logError(INFO, "Opening config file for reading");
     File configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "r");
     if (!configFile) {
         errorHandler->logError(ERROR, "Failed to open config file");
@@ -85,32 +85,32 @@ bool ConfigManager::loadConfigFromFile() {
         return false;
     }
     
-    errorHandler->logInfo("JSON parsed successfully");
+    errorHandler->logError(INFO, "JSON parsed successfully");
     
     // Extract Environmental Monitor IDentifier - handle both old and new key names for backward compatibility
     if (doc["Environmental Monitor ID"].is<String>()) {
         boardId = doc["Environmental Monitor ID"].as<String>();
-        errorHandler->logInfo("Using Environmental Monitor ID: " + boardId);
+        errorHandler->logError(INFO, "Using Environmental Monitor ID: " + boardId);
     } else {
         boardId = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
-        errorHandler->logInfo("No ID found, using default: " + boardId);
+        errorHandler->logError(INFO, "No ID found, using default: " + boardId);
     }
     
     // Clear existing configurations
     sensorConfigs.clear();
     additionalConfig = "";
-    errorHandler->logInfo("Cleared existing configurations");
+    errorHandler->logError(INFO, "Cleared existing configurations");
     
     // Load I2C sensors
     JsonArray i2cSensors = doc["I2C Sensors"].as<JsonArray>();
-    errorHandler->logInfo("I2C Sensors array exists: " + String(i2cSensors.size() > 0 ? "YES" : "NO"));
+    errorHandler->logError(INFO, "I2C Sensors array exists: " + String(i2cSensors.size() > 0 ? "YES" : "NO"));
     
     if (i2cSensors.size() > 0) {
-        errorHandler->logInfo("Found " + String(i2cSensors.size()) + " I2C sensors");
+        errorHandler->logError(INFO, "Found " + String(i2cSensors.size()) + " I2C sensors");
         for (JsonObject sensor : i2cSensors) {
             if (!sensor["Sensor Name"].is<String>() || !sensor["Sensor Type"].is<String>() || 
                 !sensor["Address (HEX)"].is<int>()) {
-                errorHandler->logWarning("Skipping I2C sensor with missing required fields");
+                errorHandler->logError(WARNING, "Skipping I2C sensor with missing required fields");
                 continue;
             }
             
@@ -120,17 +120,17 @@ bool ConfigManager::loadConfigFromFile() {
             config.address = sensor["Address (HEX)"].as<int>();
             config.isSPI = false;
             
-            errorHandler->logInfo("Found I2C sensor: " + config.name + " of type " + config.type);
+            errorHandler->logError(INFO, "Found I2C sensor: " + config.name + " of type " + config.type);
             
             // Handle I2C port (new field)
             if (sensor["I2C Port"].is<String>()) {
                 String portStr = sensor["I2C Port"].as<String>();
                 config.i2cPort = I2CManager::stringToPort(portStr);
-                errorHandler->logInfo("Sensor using I2C port " + portStr);
+                errorHandler->logError(INFO, "Sensor using I2C port " + portStr);
             } else {
                 // Default to I2C0 if not specified
                 config.i2cPort = I2CPort::I2C0;
-                errorHandler->logInfo("Sensor defaulting to I2C0 (no port specified)");
+                errorHandler->logError(INFO, "Sensor defaulting to I2C0 (no port specified)");
             }
             
             // Read and validate polling rate
@@ -138,47 +138,47 @@ bool ConfigManager::loadConfigFromFile() {
                 uint32_t rate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
                 // Apply validation rules
                 if (rate < MIN_POLLING_RATE) {
-                    errorHandler->logWarning("Polling rate too low for sensor " + config.name + 
+                    errorHandler->logError(WARNING, "Polling rate too low for sensor " + config.name + 
                                              " (" + String(rate) + "ms), using " + 
                                              String(MIN_POLLING_RATE) + "ms minimum");
                     config.pollingRate = MIN_POLLING_RATE;
                 } else if (rate > MAX_POLLING_RATE) {
-                    errorHandler->logWarning("Polling rate too high for sensor " + config.name + 
+                    errorHandler->logError(WARNING, "Polling rate too high for sensor " + config.name + 
                                              " (" + String(rate) + "ms), using " + 
                                              String(MAX_POLLING_RATE) + "ms maximum");
                     config.pollingRate = MAX_POLLING_RATE;
                 } else {
                     config.pollingRate = rate;
                 }
-                errorHandler->logInfo("Sensor polling rate: " + String(config.pollingRate) + "ms");
+                errorHandler->logError(INFO, "Sensor polling rate: " + String(config.pollingRate) + "ms");
             } else {
                 config.pollingRate = DEFAULT_POLLING_RATE;
-                errorHandler->logInfo("Using default polling rate: " + String(DEFAULT_POLLING_RATE) + "ms");
+                errorHandler->logError(INFO, "Using default polling rate: " + String(DEFAULT_POLLING_RATE) + "ms");
             }
             
             // Read additional settings
             if (sensor["Additional"].is<String>()) {
                 config.additional = sensor["Additional"].as<String>();
-                errorHandler->logInfo("Additional settings: " + config.additional);
+                errorHandler->logError(INFO, "Additional settings: " + config.additional);
             } else {
                 config.additional = ""; // Empty string for no additional settings
             }
             
             sensorConfigs.push_back(config);
-            errorHandler->logInfo("Added I2C sensor: " + config.name);
+            errorHandler->logError(INFO, "Added I2C sensor: " + config.name);
         }
     }
     
     // Load SPI sensors
     JsonArray spiSensors = doc["SPI Sensors"].as<JsonArray>();
-    errorHandler->logInfo("SPI Sensors array exists: " + String(spiSensors.size() > 0 ? "YES" : "NO"));
+    errorHandler->logError(INFO, "SPI Sensors array exists: " + String(spiSensors.size() > 0 ? "YES" : "NO"));
     
     if (spiSensors.size() > 0) {
-        errorHandler->logInfo("Found " + String(spiSensors.size()) + " SPI sensors");
+        errorHandler->logError(INFO, "Found " + String(spiSensors.size()) + " SPI sensors");
         for (JsonObject sensor : spiSensors) {
             if (!sensor["Sensor Name"].is<String>() || !sensor["Sensor Type"].is<String>() || 
                 !sensor["SS Pin"].is<int>()) {
-                errorHandler->logWarning("Skipping SPI sensor with missing required fields");
+                errorHandler->logError(WARNING, "Skipping SPI sensor with missing required fields");
                 continue;
             }
             
@@ -188,7 +188,7 @@ bool ConfigManager::loadConfigFromFile() {
             config.address = sensor["SS Pin"].as<int>();
             config.isSPI = true;
             
-            errorHandler->logInfo("Found SPI sensor: " + config.name + " of type " + config.type);
+            errorHandler->logError(INFO, "Found SPI sensor: " + config.name + " of type " + config.type);
             
             // SPI sensors don't use I2C port
             config.i2cPort = I2CPort::I2C0; // Default value, not used
@@ -198,34 +198,34 @@ bool ConfigManager::loadConfigFromFile() {
                 uint32_t rate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
                 // Apply validation rules
                 if (rate < MIN_POLLING_RATE) {
-                    errorHandler->logWarning("Polling rate too low for sensor " + config.name + 
+                    errorHandler->logError(WARNING, "Polling rate too low for sensor " + config.name + 
                                              " (" + String(rate) + "ms), using " + 
                                              String(MIN_POLLING_RATE) + "ms minimum");
                     config.pollingRate = MIN_POLLING_RATE;
                 } else if (rate > MAX_POLLING_RATE) {
-                    errorHandler->logWarning("Polling rate too high for sensor " + config.name + 
+                    errorHandler->logError(WARNING, "Polling rate too high for sensor " + config.name + 
                                              " (" + String(rate) + "ms), using " + 
                                              String(MAX_POLLING_RATE) + "ms maximum");
                     config.pollingRate = MAX_POLLING_RATE;
                 } else {
                     config.pollingRate = rate;
                 }
-                errorHandler->logInfo("Sensor polling rate: " + String(config.pollingRate) + "ms");
+                errorHandler->logError(INFO, "Sensor polling rate: " + String(config.pollingRate) + "ms");
             } else {
                 config.pollingRate = DEFAULT_POLLING_RATE;
-                errorHandler->logInfo("Using default polling rate: " + String(DEFAULT_POLLING_RATE) + "ms");
+                errorHandler->logError(INFO, "Using default polling rate: " + String(DEFAULT_POLLING_RATE) + "ms");
             }
             
             // Read additional settings
             if (sensor["Additional"].is<String>()) {
                 config.additional = sensor["Additional"].as<String>();
-                errorHandler->logInfo("Additional settings: " + config.additional);
+                errorHandler->logError(INFO, "Additional settings: " + config.additional);
             } else {
                 config.additional = ""; // Empty string for no additional settings
             }
             
             sensorConfigs.push_back(config);
-            errorHandler->logInfo("Added SPI sensor: " + config.name);
+            errorHandler->logError(INFO, "Added SPI sensor: " + config.name);
         }
     }
     
@@ -235,10 +235,10 @@ bool ConfigManager::loadConfigFromFile() {
         String additionalJson;
         serializeJson(doc["Additional"], additionalJson);
         additionalConfig = additionalJson;
-        errorHandler->logInfo("Loaded additional configuration section");
+        errorHandler->logError(INFO, "Loaded additional configuration section");
     }
     
-    errorHandler->logInfo("Configuration loaded successfully with " + String(sensorConfigs.size()) + " sensors");
+    errorHandler->logError(INFO, "Configuration loaded successfully with " + String(sensorConfigs.size()) + " sensors");
     return true;
 }
 
@@ -326,7 +326,7 @@ bool ConfigManager::setBoardIdentifier(String identifier) {
     }
     
     configFile.close();
-    errorHandler->logInfo("Updated Environmental Monitor ID to: " + boardId);
+    errorHandler->logError(INFO, "Updated Environmental Monitor ID to: " + boardId);
     
     // Notify about the configuration change
     String configJson;
@@ -409,7 +409,7 @@ bool ConfigManager::updateSensorConfigs(const std::vector<SensorConfig>& configs
     }
     
     configFile.close();
-    errorHandler->logInfo("Updated sensor configurations");
+    errorHandler->logError(INFO, "Updated sensor configurations");
     
     // Notify about the configuration change, but only if we're not already in a notification
     if (!notifyingCallbacks) {
@@ -424,7 +424,7 @@ bool ConfigManager::updateSensorConfigs(const std::vector<SensorConfig>& configs
 // Get the complete configuration as a JSON string
 String ConfigManager::getConfigJson() {
     if (!LittleFS.exists(Constants::CONFIG_FILE_PATH)) {
-        errorHandler->logWarning("Config file not found for retrieval");
+        errorHandler->logError(WARNING, "Config file not found for retrieval");
         return "{}";
     }
     
@@ -443,7 +443,7 @@ String ConfigManager::getConfigJson() {
 // Update configuration from JSON string
 bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
     // Log a shorter version of the config to avoid huge logs
-    errorHandler->logInfo("Received config update: " + 
+    errorHandler->logError(INFO, "Received config update: " + 
                          jsonConfig.substring(0, std::min(50, (int)jsonConfig.length())) + 
                          (jsonConfig.length() > 50 ? "..." : ""));
     
@@ -477,7 +477,7 @@ bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
     // Reload and notify
     bool success = loadConfigFromFile();
     if (success) {
-        errorHandler->logInfo("Config reloaded successfully, notifying listeners");
+        errorHandler->logError(INFO, "Config reloaded successfully, notifying listeners");
         notifyConfigChanged(jsonConfig);
     } else {
         errorHandler->logError(ERROR, "Failed to reload configuration, rolling back to previous state");
@@ -487,7 +487,7 @@ bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
         DeserializationError backupError = deserializeJson(backupDoc, backupConfig);
         
         if (!backupError && writeConfigToFile(backupDoc)) {
-            errorHandler->logInfo("Successfully rolled back to previous configuration");
+            errorHandler->logError(INFO, "Successfully rolled back to previous configuration");
             loadConfigFromFile(); // Reload the backup configuration
         } else {
             errorHandler->logError(ERROR, "Failed to roll back to previous configuration");
@@ -544,7 +544,7 @@ bool ConfigManager::readConfigFromFile(JsonDocument& doc) {
 bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
     // Handle empty input - erase sensors with warning
     if (jsonConfig.length() == 0 || jsonConfig == "{}" || jsonConfig == "null") {
-        errorHandler->logWarning("Empty sensor configuration received - clearing all sensors");
+        errorHandler->logError(WARNING, "Empty sensor configuration received - clearing all sensors");
         sensorConfigs.clear();
         
         // Update the configuration file
@@ -635,7 +635,7 @@ bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
     // Verify we have at least one valid sensor if we received config
     if (newSensorConfigs.empty() && 
         (doc["I2C Sensors"].is<JsonArray>() || doc["SPI Sensors"].is<JsonArray>())) {
-        errorHandler->logWarning("No valid sensors found in configuration, keeping existing sensors");
+        errorHandler->logError(WARNING, "No valid sensors found in configuration, keeping existing sensors");
         return false;
     }
     
@@ -692,7 +692,7 @@ bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
         return false;
     }
     
-    errorHandler->logInfo("Sensor configuration updated successfully with " + 
+    errorHandler->logError(INFO, "Sensor configuration updated successfully with " + 
                        String(sensorConfigs.size()) + " sensors");
     
     // Notify about the configuration change
@@ -707,7 +707,7 @@ bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
 bool ConfigManager::updateAdditionalConfigFromJson(const String& jsonConfig) {
     // Handle empty input - erase additional config with warning
     if (jsonConfig.length() == 0 || jsonConfig == "{}" || jsonConfig == "null") {
-        errorHandler->logWarning("Empty additional configuration received - clearing additional section");
+        errorHandler->logError(WARNING, "Empty additional configuration received - clearing additional section");
         additionalConfig = "";
         
         // Update the configuration file
@@ -790,7 +790,7 @@ bool ConfigManager::updateAdditionalConfigFromJson(const String& jsonConfig) {
         return false;
     }
     
-    errorHandler->logInfo("Additional configuration updated successfully");
+    errorHandler->logError(INFO, "Additional configuration updated successfully");
     
     // Notify about the configuration change
     String configJson;

@@ -12,7 +12,7 @@ PT100Sensor::PT100Sensor(const String& sensorName, int ssPinNum, SPIManager* spi
     tempTimestamp(0) {
 
     // Log the physical pin being used
-    logInfo("PT100 sensor using physical SS pin: " + String(ssPin));
+    errorHandler->logError(INFO, "PT100 sensor using physical SS pin: " + String(ssPin));
 }
 
 PT100Sensor::~PT100Sensor() {
@@ -20,11 +20,11 @@ PT100Sensor::~PT100Sensor() {
 }
 
 bool PT100Sensor::initialize() {
-    logInfo("Initializing PT100 RTD sensor: " + name + " on SS pin " + String(ssPin));
+    errorHandler->logError(INFO, "Initializing PT100 RTD sensor: " + name + " on SS pin " + String(ssPin));
     
     // Make sure SPI is initialized
     if (!spiManager || !spiManager->isInitialized()) {
-        logError("SPI not initialized for PT100 sensor: " + name);
+        errorHandler->logError(ERROR, "SPI not initialized for PT100 sensor: " + name);
         connected = false;
         return false;
     }
@@ -53,14 +53,14 @@ bool PT100Sensor::initialize() {
     // Check for any faults
     uint8_t fault = max31865.readFault();
     if (fault) {
-        logError("MAX31865 fault detected during initialization: " + getFaultStatus());
+        errorHandler->logError(ERROR, "MAX31865 fault detected during initialization: " + getFaultStatus());
         max31865.clearFault();
         // Only fail initialization for critical faults
         if (fault & (MAX31865_FAULT_OVUV | MAX31865_FAULT_REFINHIGH | MAX31865_FAULT_REFINLOW)) {
             connected = false;
             return false;
         }
-        logError("Non-critical fault detected, attempting to continue");
+        errorHandler->logError(ERROR, "Non-critical fault detected, attempting to continue");
     }
     
     // Read the RTD value directly for diagnostics
@@ -68,18 +68,18 @@ bool PT100Sensor::initialize() {
     float ratio = rtd / 32768.0;
     float resistance = ratio * rRef;
     
-    logInfo("Initial PT100 RTD value: " + String(rtd));
-    logInfo("Initial PT100 resistance: " + String(resistance) + " ohms (ratio: " + String(ratio, 8) + ")");
+    errorHandler->logError(INFO, "Initial PT100 RTD value: " + String(rtd));
+    errorHandler->logError(INFO, "Initial PT100 resistance: " + String(resistance) + " ohms (ratio: " + String(ratio, 8) + ")");
     
     // Check if RTD value is zero, which indicates a likely connection issue
     if (rtd == 0) {
-        logError("RTD value is 0, suggesting a connection problem. Check wiring and SPI communication.");
+        errorHandler->logError(ERROR, "RTD value is 0, suggesting a connection problem. Check wiring and SPI communication.");
         // Let's not mark it as disconnected yet, to allow for diagnostics
     }
     
     // Get initial temperature reading
     float temp = max31865.temperature(PT100_RTD_VALUE, rRef);
-    logInfo("Initial PT100 temperature: " + String(temp) + "°C");
+    errorHandler->logError(INFO, "Initial PT100 temperature: " + String(temp) + "°C");
     
     // Still mark as connected even with suspicious values for diagnostic purposes
     connected = true;
@@ -93,7 +93,7 @@ bool PT100Sensor::initialize() {
 
 bool PT100Sensor::updateReading() const {
     if (!connected) {
-        logErrorPublic("Attempted to read from disconnected PT100 sensor: " + name);
+        errorHandler->logError(ERROR, "Attempted to read from disconnected PT100 sensor: " + name);
         return false;
     }
     
@@ -104,7 +104,7 @@ bool PT100Sensor::updateReading() const {
     
     // Only warn if RTD is zero, but don't disconnect
     if (rtd == 0) {
-        logErrorPublic("WARNING: PT100 RTD value is 0, suggesting a connection problem");
+        errorHandler->logError(ERROR, "WARNING: PT100 RTD value is 0, suggesting a connection problem");
     }
     
     // Read the temperature
@@ -116,13 +116,13 @@ bool PT100Sensor::updateReading() const {
         // Check for any faults
         uint8_t fault = max31865.readFault();
         if (fault) {
-            logErrorPublic("MAX31865 fault detected during reading: " + getFaultStatus());
+            errorHandler->logError(ERROR, "MAX31865 fault detected during reading: " + getFaultStatus());
             max31865.clearFault();
             // Don't immediately disconnect for non-critical faults
         }
     } catch (...) {
         // Catch any exceptions that might occur during reading
-        logErrorPublic("Exception occurred while reading PT100 sensor: " + name);
+        errorHandler->logError(ERROR, "Exception occurred while reading PT100 sensor: " + name);
         return false;
     }
     
@@ -145,38 +145,38 @@ unsigned long PT100Sensor::getTemperatureTimestamp() const {
 }
 
 bool PT100Sensor::performSelfTest() {
-    logInfo("Performing self-test on PT100 sensor: " + name);
+    errorHandler->logError(INFO, "Performing self-test on PT100 sensor: " + name);
     
     // Read the RTD value directly to check if the sensor is connected
     uint16_t rtd = max31865.readRTD();
     float ratio = rtd / 32768.0;
     float resistance = ratio * rRef;
     
-    logInfo("PT100 RTD value: " + String(rtd) + 
+    errorHandler->logError(INFO, "PT100 RTD value: " + String(rtd) + 
            ", Ratio: " + String(ratio, 8) + 
            ", Resistance: " + String(resistance, 3) + " ohms");
     
     // Check for any faults
     uint8_t fault = max31865.readFault();
     if (fault) {
-        logError("MAX31865 fault detected during self-test: " + getFaultStatus());
+        errorHandler->logError(ERROR, "MAX31865 fault detected during self-test: " + getFaultStatus());
         max31865.clearFault();
     }
     
     // Only consider it a failure if RTD is 0, suggesting no connection
     if (rtd == 0) {
-        logError("Self-test failed: RTD value is 0, suggesting no connection");
+        errorHandler->logError(ERROR, "Self-test failed: RTD value is 0, suggesting no connection");
         connected = false;
         return false;
     }
     
     // Try to read temperature to complete the test
     float temp = max31865.temperature(PT100_RTD_VALUE, rRef);
-    logInfo("PT100 temperature reading: " + String(temp) + "°C");
+    errorHandler->logError(INFO, "PT100 temperature reading: " + String(temp) + "°C");
     
     // Keep connected true for diagnostics
     connected = true;
-    logInfo("Self-test passed for PT100 sensor: " + name);
+    errorHandler->logError(INFO, "Self-test passed for PT100 sensor: " + name);
     
     return true;
 }
