@@ -123,7 +123,8 @@ void CommunicationManager::setupCommands() {
     REGISTER_COMMAND("SYST:CONF?", handleGetConfig)
     REGISTER_COMMAND("SYST:CONF:BOARD:ID", handleSetBoardId)
     REGISTER_COMMAND("SYST:CONF:UPDATE", handleUpdateConfig)
-    
+    REGISTER_COMMAND("SYST:CONF:SENS:UPDATE", handleUpdateSensorConfig)
+    REGISTER_COMMAND("SYST:CONF:ADD:UPDATE", handleUpdateAdditionalConfig)
     REGISTER_COMMAND("TEST", handleEcho)
     REGISTER_COMMAND("TEST:FS", handleTestFilesystem)
     REGISTER_COMMAND("TEST:UPDATE", handleTestUpdateConfig)
@@ -433,8 +434,18 @@ bool CommunicationManager::handleUpdateSensorConfig(const std::vector<String>& p
     bool success = configManager->updateSensorConfigFromJson(jsonConfig);
     if (!success) {
         errorHandler->logError(ERROR, "Failed to update sensor configuration");
+        return false;
     }
-    return success;
+    
+    // Add this block to explicitly reinitialize the sensors
+    errorHandler->logInfo("Reinitializing sensors with new configuration");
+    if (sensorManager->initializeSensors()) {
+        errorHandler->logInfo("Successfully reinitialized sensors with new configuration");
+    } else {
+        errorHandler->logError(ERROR, "Failed to reinitialize some sensors after configuration update");
+    }
+    
+    return true;
 }
 
 bool CommunicationManager::handleUpdateAdditionalConfig(const std::vector<String>& params) {
