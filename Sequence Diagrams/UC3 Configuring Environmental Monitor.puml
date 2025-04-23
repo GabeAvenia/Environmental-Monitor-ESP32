@@ -1,29 +1,50 @@
 @startuml
+hide footbox
+mainframe **cd** UC3: Configuring Environmental Monitor
 skinparam sequenceMessageAlign center
-title UC3: Configuring Environmental Monitor
 
-actor Engineer
-participant LabVIEW
-participant Board
-participant Storage
+actor "Test Engineer" as Engineer
+participant "LabVIEW" as LabVIEW
+participant "Environmental Monitor" as Board
+participant "Non-Volatile\nMemory" as Storage
+participant "Peripherals" as Peripherals
 
-Engineer -> LabVIEW: Create Board ID String
-Engineer -> LabVIEW: Create sensor config (ID, port..)
+Engineer -> LabVIEW: Set Board ID.vi
+LabVIEW -> Board: ~SYST:CONF:BOARD:ID <id>
+Board -> Storage: Save Board ID
+Board -> LabVIEW: Confirmation
 
-LabVIEW -> LabVIEW:Connect.vi
-LabVIEW -> Board: Open connection
+Engineer -> LabVIEW: Set Peripherals Configuration.vi
+note right
+  Configure peripherals with:
+  - Name/identifier
+  - Type (SHT41, Si7021, PT100)
+  - Address or pin
+  - Interface (I2C or SPI)
+  - Polling rate
+end note
+LabVIEW -> Board: ~SYST:CONF:SENS:UPDATE <json>
+Board -> Board: Validate Config
+Board -> Peripherals: Initialize with new config
+Peripherals -> Board: Connection status
+alt Valid Configuration
+  Board -> Storage: Save Sensor Config
+  Board -> LabVIEW: Success
+else Invalid Configuration
+  Board -> LabVIEW: Validation Error
+  LabVIEW -> Engineer: Show Error
+end
 
-LabVIEW -> LabVIEW: Configure Board ID.vi
-LabVIEW -> Board: Send ID command
-Board -> Storage: Save ID
-Board -> LabVIEW: Return status
+Engineer -> LabVIEW: Set Additional Configuration.vi
+LabVIEW -> Board: ~SYST:CONF:ADD:UPDATE <json>
+Board -> Storage: Save Additional Config
+Board -> LabVIEW: Confirmation
 
-LabVIEW -> LabVIEW: Configure Peripherals.vi
-LabVIEW -> Board: Send sensor config
-Board -> Board: Validate config
-Board -> Storage: Save config
-Board -> LabVIEW: Return status
+Engineer -> LabVIEW: Get Configuration.vi
+LabVIEW -> Board: ~SYST:CONF?
+Board -> Storage: Read Configuration
+Storage -> Board: Current Config
+Board -> LabVIEW: Configuration (JSON)
+LabVIEW -> Engineer: Display Configuration
 
-LabVIEW -> LabVIEW: Disconnect.vi
-LabVIEW -> Board: Close connection
 @enduml

@@ -1,28 +1,25 @@
 @startuml
-title UC1: Hardware Setup
+hide footbox
+mainframe **cd** UC1: Hardware Setup
 
-actor Engineer
-participant Board
-participant Sensors
-participant Computer
+actor "Test Engineer" as Engineer
+participant "ESP32" as Board
+participant "Peripherals\n(Sensors)" as Peripherals
+participant "Test Computer" as Computer
 
-Engineer -> Board: Mount in fixture
-Engineer -> Sensors: Connect to Qwiic ports
+Engineer -> Board: Mount in test fixture
+Engineer -> Peripherals: Connect to I2C and SPI ports
+Engineer -> Computer: Connect USB cable
+Board -> Board: Power on
+Board --> Engineer: Status LED Orange
 
-alt Multiple same-address sensors
-    Engineer -> Board: Connect via multiplexer
+Board -> Board: Setup()
+alt Successful initialization
+    Board --> Engineer: Status LED Green
+else Hardware error
+    Board --> Engineer: Status LED Red
+    Engineer -> Board: Check connections
+    Engineer -> Peripherals: Verify compatibility
 end
 
-Engineer -> Computer: Connect USB
-Engineer -> Board: Power on
-
-Board -> Board: Initialize
-Board -> Board: LED on
-Board -> Sensors: Detect
-
-alt Detection successful
-    Board -> Engineer: Status LED ready
-else Detection failed
-    Board -> Engineer: Error LED on
-end
 @enduml

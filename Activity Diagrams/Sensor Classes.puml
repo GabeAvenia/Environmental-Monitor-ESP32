@@ -1,0 +1,127 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface ISensor {
+  +getName() : String
+  +isConnected() : bool
+  +initialize() : bool
+  +performSelfTest() : bool
+  +getSensorInfo() : String
+  +getTypeString() : String
+  +supportsInterface(type: InterfaceType) : bool
+  +getInterface(type: InterfaceType) : void*
+}
+
+enum InterfaceType {
+  TEMPERATURE
+  HUMIDITY
+  CO2
+}
+
+interface ITemperatureSensor {
+  +readTemperature() : float
+  +getTemperatureTimestamp() : unsigned long
+}
+
+interface IHumiditySensor {
+  +readHumidity() : float
+  +getHumidityTimestamp() : unsigned long
+}
+
+abstract class BaseSensor {
+  #name : String
+  #type : SensorType
+  #connected : bool
+  #errorHandler : ErrorHandler*
+  +getName() : String
+  +isConnected() : bool
+  +getType() : SensorType
+  +getTypeString() : String
+  +supportsInterface(type: InterfaceType) : bool
+  +getInterface(type: InterfaceType) : void*
+}
+
+enum SensorType {
+  UNKNOWN
+  SHT41
+  SI7021
+  PT100_RTD
+}
+
+class SHT41Sensor {
+  -sht4 : Adafruit_SHT4x
+  -wire : TwoWire*
+  -i2cPort : I2CPort
+  -i2cManager : I2CManager*
+  -i2cAddress : int
+  -lastTemperature : float
+  -lastHumidity : float
+  -tempTimestamp : unsigned long
+  -humidityTimestamp : unsigned long
+  -updateReadings() : bool
+  +initialize() : bool
+  +readTemperature() : float
+  +readHumidity() : float
+  +getTemperatureTimestamp() : unsigned long
+  +getHumidityTimestamp() : unsigned long
+  +performSelfTest() : bool
+  +getSensorInfo() : String
+  +supportsInterface(type: InterfaceType) : bool
+  +getInterface(type: InterfaceType) : void*
+}
+
+class Si7021Sensor {
+  -si7021 : Adafruit_Si7021
+  -wire : TwoWire*
+  -i2cPort : I2CPort
+  -i2cManager : I2CManager*
+  -i2cAddress : int
+  -lastTemperature : float
+  -lastHumidity : float
+  -tempTimestamp : unsigned long
+  -humTimestamp : unsigned long
+  -updateReadings() : bool
+  +initialize() : bool
+  +readTemperature() : float
+  +readHumidity() : float
+  +getTemperatureTimestamp() : unsigned long
+  +getHumidityTimestamp() : unsigned long
+  +performSelfTest() : bool
+  +getSensorInfo() : String
+  +supportsInterface(type: InterfaceType) : bool
+  +getInterface(type: InterfaceType) : void*
+  +reinitialize() : bool
+}
+
+class PT100Sensor {
+  -max31865 : Adafruit_MAX31865
+  -spiManager : SPIManager*
+  -ssPin : int
+  -rRef : float
+  -numWires : int
+  -lastTemperature : float
+  -tempTimestamp : unsigned long
+  -updateReading() : bool
+  +initialize() : bool
+  +readTemperature() : float
+  +getTemperatureTimestamp() : unsigned long
+  +performSelfTest() : bool
+  +getSensorInfo() : String
+  +supportsInterface(type: InterfaceType) : bool
+  +getInterface(type: InterfaceType) : void*
+  +getFaultStatus() : String
+}
+
+ISensor <|.. BaseSensor
+BaseSensor <|-- SHT41Sensor
+BaseSensor <|-- Si7021Sensor
+BaseSensor <|-- PT100Sensor
+
+ITemperatureSensor <|.. SHT41Sensor
+IHumiditySensor <|.. SHT41Sensor
+
+ITemperatureSensor <|.. Si7021Sensor
+IHumiditySensor <|.. Si7021Sensor
+
+ITemperatureSensor <|.. PT100Sensor
+@enduml

@@ -745,11 +745,14 @@ bool ConfigManager::updateAdditionalConfigFromJson(const String& jsonConfig) {
     // Extract Additional configuration if present
     String newAdditionalConfig = "";
     if (doc["Additional"].is<JsonObject>()) {
-        // Serialize the Additional field to a string
+        // Serialize the Additional field to a string if it's an object
         serializeJson(doc["Additional"], newAdditionalConfig);
+    } else if (doc["Additional"].is<String>()) {
+        // Use the string directly if it's a string
+        newAdditionalConfig = doc["Additional"].as<String>();
     } else {
-        errorHandler->logError(ERROR, "Missing 'Additional' field in configuration");
-        return false;
+        // Convert to string if it's another type
+        newAdditionalConfig = doc["Additional"].as<String>();
     }
     
     // Backup existing additional config
@@ -772,16 +775,14 @@ bool ConfigManager::updateAdditionalConfigFromJson(const String& jsonConfig) {
         JsonDocument additionalDoc;
         DeserializationError additionalError = deserializeJson(additionalDoc, additionalConfig);
         
-        if (!additionalError) {
-            fullDoc["Additional"] = additionalDoc;
-        } else {
-            // If parsing fails, store as raw value
-            fullDoc["Additional"] = additionalConfig;
-        }
+    if (!additionalError && !additionalConfig.startsWith("\"")) {
+        // If it's a valid JSON object and not a JSON string, store as object
+        fullDoc["Additional"] = additionalDoc;
     } else {
-        fullDoc.remove("Additional");
+        // If not a valid JSON object or it's a JSON string, store as raw string
+        fullDoc["Additional"] = additionalConfig;
     }
-    
+    }
     // Write updated configuration to file
     if (!writeConfigToFile(fullDoc)) {
         // If writing fails, revert to old configuration

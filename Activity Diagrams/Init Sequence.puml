@@ -1,0 +1,56 @@
+@startuml
+start
+:Initialize Serial Communications;
+:Initialize Debug UART;
+:Initialize ErrorHandler;
+:Initialize LED Manager;
+:Mount LittleFS Filesystem;
+
+if (Filesystem Mounted?) then (yes)
+  :Initialize ConfigManager;
+  if (Config Initialized?) then (yes)
+    :Initialize I2C Manager;
+    :Initialize SPI Manager;
+    :Initialize SensorManager;
+    
+    if (All Sensors Initialized?) then (yes)
+      :Continue Initialization;
+    else (some failed)
+      :Log Warning;
+      :Continue with Available Sensors;
+    endif
+    
+    :Initialize CommunicationManager;
+    :Initialize TaskManager;
+    
+    if (TaskManager Initialized?) then (yes)
+      :Start LED Task;
+      if (LED Task Started?) then (yes)
+        :Start Communication Task;
+      else (no)
+        :Log Warning;
+      endif
+      
+      if (Communication Task Started?) then (yes)
+        :Start Sensor Task;
+      else (no)
+        :Log Warning;
+      endif
+      
+      :System Ready;
+      :Set LED to Normal Mode;
+    else (no)
+      :Log Fatal Error;
+      stop
+    endif
+  else (no)
+    :Log Fatal Error;
+    stop
+  endif
+else (no)
+  :Log Fatal Error;
+  stop
+endif
+
+stop
+@enduml

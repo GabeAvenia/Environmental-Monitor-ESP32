@@ -1,0 +1,90 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+
+package "Sensor Management System" {
+  class SensorManager {
+    -registry : SensorRegistry
+    -factory : SensorFactory
+    -configManager : ConfigManager*
+    -i2cManager : I2CManager*
+    -spiManager : SPIManager*
+    -errorHandler : ErrorHandler*
+    -currentBufferIndex : atomic<bool>
+    -readingCacheA : map<String, SensorCache>
+    -readingCacheB : map<String, SensorCache>
+    -maxCacheAge : unsigned long
+    +initializeSensors() : bool
+    +reconfigureSensors(configJson: String) : bool
+    +updateReadings() : int
+    +getTemperatureSafe(sensorName: String) : TemperatureReading
+    +getHumiditySafe(sensorName: String) : HumidityReading
+    +findSensor(name: String) : ISensor*
+    +reconnectSensor(sensorName: String) : bool
+    +reconnectAllSensors() : int
+  }
+
+  class SensorRegistry {
+    -allSensors : vector<ISensor*>
+    -errorHandler : ErrorHandler*
+    +registerSensor(sensor: ISensor*) : void
+    +unregisterSensor(sensorName: String) : ISensor*
+    +clear() : vector<ISensor*>
+    +getAllSensors() : vector<ISensor*>
+    +getTemperatureSensors() : vector<ITemperatureSensor*>
+    +getHumiditySensors() : vector<IHumiditySensor*>
+    +getSensorByName(name: String) : ISensor*
+    +hasSensor(name: String) : bool
+    +count() : size_t
+  }
+
+  class SensorFactory {
+    -errorHandler : ErrorHandler*
+    -i2cManager : I2CManager*
+    -spiManager : SPIManager*
+    +createSensor(config: SensorConfig) : ISensor*
+    +setSPIManager(spi: SPIManager*) : void
+  }
+
+  class SensorCache {
+    +temperature : float
+    +humidity : float
+    +tempTimestamp : unsigned long
+    +humTimestamp : unsigned long
+    +tempValid : bool
+    +humValid : bool
+  }
+
+  class TemperatureReading {
+    +value : float
+    +timestamp : unsigned long
+    +valid : bool
+    +toString() : String
+  }
+
+  class HumidityReading {
+    +value : float
+    +timestamp : unsigned long
+    +valid : bool
+    +toString() : String
+  }
+
+  class ISensor
+  class ConfigManager
+  class I2CManager
+  class SPIManager
+  class ErrorHandler
+
+  SensorManager o-- SensorRegistry : manages sensors through
+  SensorManager o-- SensorFactory : creates sensors with
+  SensorManager o-- "0..*" SensorCache : stores readings in
+  SensorManager --> ConfigManager : gets sensor config from
+  SensorManager --> I2CManager : uses for I2C sensors
+  SensorManager --> SPIManager : uses for SPI sensors
+  SensorManager --> ErrorHandler : reports errors to
+  
+  SensorRegistry o-- "0..*" ISensor : contains
+  SensorFactory ..> ISensor : creates
+}
+
+@enduml

@@ -1,27 +1,19 @@
 @startuml
-title UC2: Establishing Connection
+hide footbox
+mainframe **cd** UC2: Establishing Connection
 skinparam sequenceMessageAlign center
-actor Engineer
-participant LabVIEW
-participant Board
-participant Sensors
+
+actor "Test Engineer" as Engineer
+participant "LabVIEW" as LabVIEW
+participant "ESP32" as Board
 
 Engineer -> LabVIEW: Launch with drivers
-Engineer -> LabVIEW: Run Identify Environmental Monitor.vi
+Engineer -> LabVIEW: Identify Environmental Monitor.vi
+LabVIEW -> Board: ~*IDN?
+Board -> LabVIEW: ID
+LabVIEW -> Engineer: ID and COM port
 
-LabVIEW -> Board: Scan COM ports
+Engineer -> LabVIEW: Select COM port
+LabVIEW -> Board: Connect.vi
 
-alt Found
-    Board -> LabVIEW: Return board IDs
-    LabVIEW -> Engineer: Display boards
-else Not found
-    LabVIEW -> Engineer: "No devices found"
-end
-
-Engineer -> LabVIEW: Run Scan Sensors.vi
-LabVIEW -> Board: Request scan
-Board -> Sensors: Scan I2C bus
-Sensors -> Board: Return addresses
-Board -> LabVIEW: Return sensor list
-LabVIEW -> Engineer: Display sensors
 @enduml

@@ -1,0 +1,47 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "**cd** Configuration Management" {
+  class SensorConfig {
+    +name : String
+    +type : String
+    +address : int
+    +isSPI : bool
+    +i2cPort : I2CPort
+    +pollingRate : uint32_t
+    +additional : String
+    +operator==(other: SensorConfig) : bool
+    +operator!=(other: SensorConfig) : bool
+  }
+
+  class ConfigManager {
+    -errorHandler : ErrorHandler*
+    -boardId : String
+    -sensorConfigs : vector<SensorConfig>
+    -additionalConfig : String
+    -changeCallbacks : vector<function>
+    -notifyingCallbacks : bool
+    +begin() : bool
+    +loadConfigFromFile() : bool
+    +createDefaultConfig() : bool
+    +getBoardIdentifier() : String
+    +setBoardIdentifier(identifier: String) : bool
+    +getSensorConfigs() : vector<SensorConfig>
+    +updateSensorConfigs(configs: vector<SensorConfig>) : bool
+    +getConfigJson() : String
+    +updateConfigFromJson(jsonConfig: String) : bool
+    +updateSensorConfigFromJson(jsonConfig: String) : bool
+    +updateAdditionalConfigFromJson(jsonConfig: String) : bool
+    +registerChangeCallback(callback: function) : void
+    +disableNotifications(disable: bool) : void
+  }
+
+  class ErrorHandler
+  class LittleFS
+
+  ConfigManager o-- "0..*" SensorConfig : contains
+  ConfigManager --> ErrorHandler : reports errors
+  ConfigManager --> LittleFS : reads/writes
+}
+
+@enduml

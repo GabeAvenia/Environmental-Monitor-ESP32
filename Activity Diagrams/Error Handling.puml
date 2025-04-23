@@ -1,0 +1,48 @@
+@startuml
+start
+
+partition "Error Detection and Classification" {
+  :Call ErrorHandler::logError;
+  
+  switch (Error Severity)
+    case (INFO)
+      if (Custom Routing Enabled?) then (yes)
+        :Route to infoStream;
+      else (no)
+        :Route to default outputStream;
+      endif
+    case (WARNING/ERROR/FATAL)
+      if (Custom Routing Enabled?) then (yes)
+        :Route to "configuredStream";
+      else (no)
+        :Route to default outputStream;
+      endif
+      if (LED Manager Available?) then (yes)
+        :Signal Warning/Error/Fatal LED;
+      endif
+  endswitch
+}
+
+partition "Error Recording and Reporting" {
+  :Format Message with Timestamp;
+  :Add to Error Log;
+  :Output Message to Configured Stream;
+}
+
+partition "Error Response" {
+  if (Is Fatal Error?) then (yes)
+    :Return true to caller;
+    
+    fork
+      :Option: Reset Device;
+    fork again
+      :Option: Enter Infinite Loop;
+      :Monitor LED in Loop;
+    endfork
+  else (no)
+    :Return false to caller;
+  endif
+}
+
+stop
+@enduml

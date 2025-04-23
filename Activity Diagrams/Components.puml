@@ -1,0 +1,49 @@
+@startuml
+skinparam componentStyle uml2
+
+package "Hardware" {
+  [Sensors] as Sensors
+  [NeoPixel LED] as LED
+  [Flash Memory] as Flash
+  [Serial/UART] as Serial
+}
+
+package "Managers" {
+  [SensorManager] as SM
+  [CommunicationManager] as CM
+  [ConfigManager] as CFM
+  [I2CManager] as I2CM
+  [SPIManager] as SPIM
+  [LedManager] as LM
+  [ErrorHandler] as EH
+  [TaskManager] as TM
+}
+
+package "Tasks" {
+  [SensorTask] as ST
+  [CommTask] as CT
+  [LedTask] as LT
+}
+
+SM ---> Sensors : manages
+CM ---> Serial : processes commands
+CFM ---> Flash : reads/writes
+I2CM ---> Sensors : configures I2C
+SPIM ---> Sensors : configures SPI
+LM ---> LED : controls
+
+TM ---> ST : creates & manages
+TM ---> CT : creates & manages
+TM ---> LT : creates & manages
+
+ST --> SM : uses
+CT --> CM : uses
+LT --> LM : uses
+
+SM --> CFM : retrieves config
+CM --> CFM : updates config
+SM --> EH : reports errors
+CM --> EH : reports errors
+EH --> LM : indicates errors
+
+@enduml

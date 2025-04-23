@@ -1,0 +1,63 @@
+@startuml
+state "TaskManager" as TaskManager
+
+[*] --> TaskManager : System Initialization
+
+state "Core 0" as Core0 {
+  state "LEDTask" as LEDTask {
+    state "UpdateLED" as UpdateLED
+    state "HandleIdentify" as HandleIdentify
+    state "HandleWarning" as HandleWarning
+    state "HandleReading" as HandleReading
+    state "LEDDelay" as LEDDelay
+    
+    [*] --> UpdateLED
+    UpdateLED --> HandleIdentify : If identifying
+    HandleIdentify --> UpdateLED
+    UpdateLED --> HandleWarning : If error occurred
+    HandleWarning --> UpdateLED
+    UpdateLED --> HandleReading : If sensor reading
+    HandleReading --> UpdateLED
+    UpdateLED --> LEDDelay : Complete cycle
+    LEDDelay --> [*] : 50ms delay
+  }
+  
+  state "SensorTask" as SensorTask {
+    state "CheckReconnect" as CheckReconnect
+    state "UpdateReadings" as UpdateReadings
+    state "SignalLED" as SignalLED
+    state "SensorDelay" as SensorDelay
+    
+    [*] --> CheckReconnect
+    CheckReconnect --> UpdateReadings : Every 5 seconds for disconnected
+    UpdateReadings --> SignalLED : Readings completed
+    SignalLED --> SensorDelay : Complete cycle
+    SensorDelay --> [*] : Polling interval delay
+  }
+}
+
+state "Core 1" as Core1 {
+  state "CommTask" as CommTask {
+    state "CheckSerial" as CheckSerial
+    state "ParseCommand" as ParseCommand
+    state "ProcessCommand" as ProcessCommand
+    state "SendResponse" as SendResponse
+    state "CommDelay" as CommDelay
+    
+    [*] --> CheckSerial
+    CheckSerial --> ParseCommand : If data available
+    ParseCommand --> ProcessCommand : Valid command
+    ProcessCommand --> SendResponse : Command handled
+    SendResponse --> CommDelay : Complete cycle
+    CheckSerial --> CommDelay : No data
+    CommDelay --> [*] : 5ms delay
+  }
+}
+
+state "Thread-Safe Data Exchange" as DataExchange
+
+SensorTask --> DataExchange : Write to active buffer
+DataExchange --> SensorTask : Swap buffers
+DataExchange --> CommTask : Read from inactive buffer
+
+@enduml

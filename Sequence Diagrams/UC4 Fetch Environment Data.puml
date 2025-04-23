@@ -1,36 +1,39 @@
 @startuml
+hide footbox
+mainframe **cd** UC4: Fetch Environment Data
 skinparam sequenceMessageAlign center
-title UC4: Fetch Environment Data
 
-actor Engineer
-participant LabVIEW
-participant Board
-participant Sensors
-participant Display
+actor "Test Engineer" as Engineer
+participant "LabVIEW" as LabVIEW
+participant "ESP32" as Board
+participant "Peripherals" as Peripherals
 
-Engineer -> LabVIEW: Place Fetch Data.vi
-Engineer -> LabVIEW: Select sensors to read
-Engineer -> LabVIEW: Run
+alt Single Measurement
+  Engineer -> LabVIEW: Select peripherals to read
+  Engineer -> LabVIEW: Read Measurements.vi
+  
+  LabVIEW -> Board: MEAS? [peripheral list]
+  Board -> Peripherals: Poll sensors
+  Peripherals -> Board: Return readings
+  Board -> LabVIEW: Measurement data
+  LabVIEW -> Engineer: Show readings
 
-alt Single acquisition
-    Engineer -> LabVIEW: Execute once
-else Continuous polling
-    Engineer -> LabVIEW: Place in While loop
-    Engineer -> LabVIEW: Set loop delay
+else Continuous Monitoring
+  Engineer -> LabVIEW: While loop with Read Measurements.vi
+  Engineer -> LabVIEW: Configure polling rate and stop condition
+  Engineer -> LabVIEW: Run VI
+  
+  loop Until stopped
+    LabVIEW -> Board: MEAS? [peripheral list]
+    Board -> Peripherals: Poll sensors
+    Peripherals -> Board: Return readings
+    Board -> LabVIEW: Measurement data
+    LabVIEW -> LabVIEW: Update display
+    LabVIEW -> LabVIEW: Optional: log data
+    LabVIEW -> LabVIEW: Wait (delay)
+  end
+  
+  Engineer -> LabVIEW: Stop monitoring
 end
 
-loop Each poll
-    LabVIEW -> Board: Send MEAS commands
-    Board -> Sensors: Read values
-    Sensors -> Board: Return readings
-    Board -> LabVIEW: Return data
-    
-    LabVIEW -> Display: Update indicators
-    LabVIEW -> LabVIEW: Display data (optional)
-    LabVIEW -> LabVIEW: Log data (optional)
-end
-
-alt Continuous mode
-    Engineer -> LabVIEW: Stop loop when done
-end
 @enduml

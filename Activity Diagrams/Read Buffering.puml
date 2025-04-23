@@ -1,0 +1,45 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "Thread-Safe Memory" {
+  class SensorManager {
+    -readingCacheA : map<String, SensorCache>
+    -readingCacheB : map<String, SensorCache>
+    -currentBufferIndex : atomic<bool>
+    +getActiveCache() : map<String, SensorCache>&
+    +getReadCache() const : map<String, SensorCache>&
+    +updateReadings() : int
+    +getTemperatureSafe(sensorName: String) : TemperatureReading
+    +getHumiditySafe(sensorName: String) : HumidityReading
+  }
+  
+  class SensorCache {
+    +temperature : float
+    +humidity : float
+    +tempTimestamp : unsigned long
+    +humTimestamp : unsigned long
+    +tempValid : bool
+    +humValid : bool
+  }
+  
+  SensorManager *-- "0..*" SensorCache
+}
+
+package "Core 0 - Sensor Task" {
+  class SensorTask {
+    -run()
+    +updateReadings()
+  }
+}
+
+package "Core 1 - Comm Task" {
+  class CommTask {
+    -run()
+    +processCommand()
+  }
+}
+
+SensorTask --> SensorManager : 1. Gets active buffer\n2. Updates readings\n3. Swaps buffers
+CommTask --> SensorManager : 1. Gets read buffer\n2. Retrieves values
+
+@enduml

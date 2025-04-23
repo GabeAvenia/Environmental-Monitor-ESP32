@@ -605,14 +605,6 @@ bool CommunicationManager::handleTestErrorLevel(const std::vector<String>& param
     if (params.size() > 0) {
         message = params[0];
     }
-    
-    // Inform the user what's happening
-    Serial.println("Logging " + severityStr + " message: \"" + message + "\"");
-    Serial.flush();
-    
-    // Debug output for LED connections
-    Serial.println("ErrorHandler has LED manager: " + String(errorHandler->getLedManager() != nullptr ? "YES" : "NO"));
-    
     // Log the message
     bool isFatal = errorHandler->logError(severity, message);
     
