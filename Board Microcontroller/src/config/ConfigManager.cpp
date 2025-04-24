@@ -27,7 +27,7 @@ void ConfigManager::registerChangeCallback(ConfigChangeCallback callback) {
 void ConfigManager::notifyConfigChanged(const String& newConfig) {
     // Prevent recursive notifications
     if (notifyingCallbacks) {
-        errorHandler->logError(WARNING, "Preventing recursive notification of config changes");
+        errorHandler->logError(INFO, "Preventing recursive notification of config changes");
         return;
     }
     
