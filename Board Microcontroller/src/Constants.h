@@ -30,12 +30,9 @@ namespace Constants {
         static const char* UPDATE_SENSOR_CONFIG = "SYST:CONF:SENS:UPDATE";
         static const char* UPDATE_ADDITIONAL_CONFIG = "SYST:CONF:ADD:UPDATE";
         
-        // Message routing commands
-        static const char* MSG_ROUTE_STATUS = "SYST:LOG:ROUTE?";
-        static const char* MSG_ROUTE_SET = "SYST:LOG:ROUTE";
-        static const char* MSG_ROUTE_INFO = "SYST:LOG:INFO:ROUTE";
-        static const char* MSG_ROUTE_WARNING = "SYST:LOG:WARN:ROUTE";
-        static const char* MSG_ROUTE_ERROR = "SYST:LOG:ERR:ROUTE";
+        // Message routing commands - simplified
+        static const char* LOG_ROUTE = "SYST:LOG";        // Format: SYST:LOG <destination>,<severity>
+        static const char* LOG_STATUS = "SYST:LOG?";      // Get current log routing settings
         
         // Test commands
         static const char* TEST_FILESYSTEM = "TEST:FS";

@@ -64,15 +64,6 @@ private:
      * @param values Vector to collect the values into
      */
     void collectSensorReadings(const String& sensorName, const String& measurements, std::vector<String>& values);
-    
-    /**
-     * @brief Handle routing messages to specified output streams based on severity
-     * 
-     * @param params Parameters containing the destination
-     * @param severity The message severity level to configure
-     * @return true if routing was successfully configured
-     */
-    bool handleSetMessageRoute(const std::vector<String>& params, const String& severity);
 
 public:
     /**
@@ -147,14 +138,11 @@ public:
     bool handleTestUpdateConfig(const std::vector<String>& params);
     bool handleEcho(const std::vector<String>& params);
     
-    // Message routing command handlers
-    bool handleMessageRoutingStatus(const std::vector<String>& params);
-    bool handleMessageRoutingSet(const std::vector<String>& params);
-    bool handleInfoRoute(const std::vector<String>& params);
-    bool handleWarningRoute(const std::vector<String>& params);
-    bool handleErrorRoute(const std::vector<String>& params);
+    // Simplified message routing handlers
+    bool handleLogRouting(const std::vector<String>& params);
+    bool handleLogStatus(const std::vector<String>& params);
+    
     bool handleLedIdentify(const std::vector<String>& params);
-
     bool handleTestErrorLevel(const std::vector<String>& params, ErrorSeverity severity);
     bool handleTestInfoLevel(const std::vector<String>& params) { return handleTestErrorLevel(params, INFO); }
     bool handleTestWarningLevel(const std::vector<String>& params) { return handleTestErrorLevel(params, WARNING); }

@@ -58,12 +58,12 @@ void CommunicationManager::registerCommandHandlers() {
     
     commandHandlers[Constants::SCPI::UPDATE_CONFIG] = 
         [this](const std::vector<String>& params) { return handleUpdateConfig(params); };
-        commandHandlers[Constants::SCPI::UPDATE_SENSOR_CONFIG] = 
-    [this](const std::vector<String>& params) { return handleUpdateSensorConfig(params); };
+    
+    commandHandlers[Constants::SCPI::UPDATE_SENSOR_CONFIG] = 
+        [this](const std::vector<String>& params) { return handleUpdateSensorConfig(params); };
 
     commandHandlers[Constants::SCPI::UPDATE_ADDITIONAL_CONFIG] = 
-    [this](const std::vector<String>& params) { return handleUpdateAdditionalConfig(params); };
-
+        [this](const std::vector<String>& params) { return handleUpdateAdditionalConfig(params); };
 
     commandHandlers[Constants::SCPI::TEST_FILESYSTEM] = 
         [this](const std::vector<String>& params) { return handleTestFilesystem(params); };
@@ -76,34 +76,31 @@ void CommunicationManager::registerCommandHandlers() {
             Serial.println("Serial communication test successful"); 
             return true; 
         };
+    
     commandHandlers[Constants::SCPI::TEST_INFO] = 
         [this](const std::vector<String>& params) { return handleTestErrorLevel(params, INFO); };
+    
     commandHandlers[Constants::SCPI::TEST_WARNING] = 
         [this](const std::vector<String>& params) { return handleTestErrorLevel(params, WARNING); };
+    
     commandHandlers[Constants::SCPI::TEST_ERROR] = 
         [this](const std::vector<String>& params) { return handleTestErrorLevel(params, ERROR); };
+    
     commandHandlers[Constants::SCPI::TEST_FATAL] = 
         [this](const std::vector<String>& params) { return handleTestErrorLevel(params, FATAL); };
+    
     commandHandlers[Constants::SCPI::ECHO] = 
         [this](const std::vector<String>& params) { return handleEcho(params); };
 
     commandHandlers[Constants::SCPI::RESET] = 
-        [this](const std::vector<String>& params) { 
-            return handleReset(params); };
-    commandHandlers[Constants::SCPI::MSG_ROUTE_STATUS] = 
-        [this](const std::vector<String>& params) { return handleMessageRoutingStatus(params); };
+        [this](const std::vector<String>& params) { return handleReset(params); };
+    
+    // New simplified message routing commands
+    commandHandlers[Constants::SCPI::LOG_STATUS] = 
+        [this](const std::vector<String>& params) { return handleLogStatus(params); };
 
-    commandHandlers[Constants::SCPI::MSG_ROUTE_SET] = 
-        [this](const std::vector<String>& params) { return handleMessageRoutingSet(params); };
-
-    commandHandlers[Constants::SCPI::MSG_ROUTE_INFO] = 
-        [this](const std::vector<String>& params) { return handleInfoRoute(params); };
-
-    commandHandlers[Constants::SCPI::MSG_ROUTE_WARNING] = 
-        [this](const std::vector<String>& params) { return handleWarningRoute(params); };
-
-    commandHandlers[Constants::SCPI::MSG_ROUTE_ERROR] = 
-        [this](const std::vector<String>& params) { return handleErrorRoute(params); };
+    commandHandlers[Constants::SCPI::LOG_ROUTE] = 
+        [this](const std::vector<String>& params) { return handleLogRouting(params); };
 
     commandHandlers[Constants::SCPI::LED_IDENTIFY] = 
         [this](const std::vector<String>& params) { return handleLedIdentify(params); };
@@ -136,17 +133,16 @@ void CommunicationManager::setupCommands() {
     REGISTER_COMMAND("TEST:FS", handleTestFilesystem)
     REGISTER_COMMAND("TEST:UPDATE", handleTestUpdateConfig)
     REGISTER_COMMAND("ECHO", handleEcho)
-    REGISTER_COMMAND("SYST:LOG:ROUTE?", handleMessageRoutingStatus)
-    REGISTER_COMMAND("SYST:LOG:ROUTE", handleMessageRoutingSet)
-    REGISTER_COMMAND("SYST:LOG:INFO:ROUTE", handleInfoRoute)
-    REGISTER_COMMAND("SYST:LOG:WARN:ROUTE", handleWarningRoute)
-    REGISTER_COMMAND("SYST:LOG:ERR:ROUTE", handleErrorRoute)
+    
+    // New simplified message routing commands
+    REGISTER_COMMAND("SYST:LOG?", handleLogStatus)
+    REGISTER_COMMAND("SYST:LOG", handleLogRouting)
+    
     REGISTER_COMMAND("SYST:LED:IDENT", handleLedIdentify)
     REGISTER_COMMAND("TEST:INFO", handleTestInfoLevel)
     REGISTER_COMMAND("TEST:WARNING", handleTestWarningLevel)
     REGISTER_COMMAND("TEST:ERROR", handleTestErrorLevel)
     REGISTER_COMMAND("TEST:FATAL", handleTestFatalLevel)
-
     
     errorHandler->logError(INFO, "SCPI commands registered");
 }
@@ -508,98 +504,80 @@ bool CommunicationManager::handleEcho(const std::vector<String>& params) {
     return true;
 }
 
-// Message routing command handlers
-bool CommunicationManager::handleMessageRoutingStatus(const std::vector<String>& params) {
+// New simplified message routing handlers
+bool CommunicationManager::handleLogStatus(const std::vector<String>& params) {
     String status = errorHandler->getRoutingStatus();
     Serial.println(status);
     return true;
 }
 
-bool CommunicationManager::handleMessageRoutingSet(const std::vector<String>& params) {
+bool CommunicationManager::handleLogRouting(const std::vector<String>& params) {
     if (params.empty()) {
-        Serial.println("ERROR: No routing option specified");
+        errorHandler->logError(ERROR, "Format is SYST:LOG <destination>,<severity>");
         return false;
     }
     
-    String option = params[0];
-    option.toUpperCase();
+    // Check if the parameters are in a single comma-separated string or in two separate parameters
+    String destination, severityStr;
     
-    if (option == "ON" || option == "ENABLE" || option == "1") {
-        errorHandler->enableCustomRouting(true);
-        errorHandler->logError(INFO, "Custom message routing enabled");
-    } else if (option == "OFF" || option == "DISABLE" || option == "0") {
-        errorHandler->enableCustomRouting(false);
-        errorHandler->logError(INFO, "Custom message routing disabled");
+    if (params.size() == 1 && params[0].indexOf(',') > 0) {
+        // Format: "USB,INFO" (comma-separated in a single parameter)
+        int commaPos = params[0].indexOf(',');
+        destination = params[0].substring(0, commaPos);
+        severityStr = params[0].substring(commaPos + 1);
+    } else if (params.size() >= 2) {
+        // Format: "USB" "INFO" (two separate parameters)
+        destination = params[0];
+        severityStr = params[1];
     } else {
-        Serial.println("ERROR: Invalid option. Use ON/OFF, ENABLE/DISABLE, or 1/0");
+        errorHandler->logError(ERROR, "Format is SYST:LOG <destination>,<severity>");
         return false;
     }
     
-    return true;
-}
-
-bool CommunicationManager::handleSetMessageRoute(const std::vector<String>& params, const String& severity) {
-    if (params.empty()) {
-        Serial.println("ERROR: No routing destination specified");
-        return false;
-    }
-    
-    String destination = params[0];
     destination.toUpperCase();
+    severityStr.toUpperCase();
     
+    // Determine the target stream based on destination
     Print* targetStream = nullptr;
-    
-    // Determine the target stream based on the destination
     if (destination == "USB" || destination == "SERIAL") {
         targetStream = &Serial;
     } else if (destination == "UART" || destination == "DEBUG") {
         targetStream = uartDebugSerial;
     } else if (destination == "NONE" || destination == "OFF") {
         targetStream = nullptr;
-    } else if (destination == "BOTH") {
-        Serial.println("ERROR: 'BOTH' option not supported yet");
-        return false;
     } else {
-        Serial.println("ERROR: Invalid destination. Use USB, UART, NONE, or BOTH");
+        errorHandler->logError(ERROR, "Invalid destination. Use USB, UART, or NONE");
         return false;
     }
     
-    // Set the routing based on severity
-    if (severity.equalsIgnoreCase("INFO")) {
-        errorHandler->setInfoOutput(targetStream);
-    } else if (severity.equalsIgnoreCase("WARNING")) {
-        errorHandler->setWarningOutput(targetStream);
-    } else if (severity.equalsIgnoreCase("ERROR")) {
-        errorHandler->setErrorOutput(targetStream);
-    } else {
-        Serial.println("ERROR: Invalid severity level");
-        return false;
-    }
+    // Determine severity
+    ErrorSeverity minSeverity = ErrorHandler::stringToSeverity(severityStr);
     
-    errorHandler->logError(INFO, severity + " messages routed to " + destination);
+    // Enable custom routing if it's not already enabled
+    errorHandler->enableCustomRouting(true);
+    
+    // Set the routing configuration
+    errorHandler->setOutputSeverity(targetStream, minSeverity);
+    
+    errorHandler->logError(INFO, "Log routing updated: " + destination + " will show " + 
+                 ErrorHandler::severityToString(minSeverity) + " and higher");
+    
     return true;
 }
 
 bool CommunicationManager::handleLedIdentify(const std::vector<String>& params) {
     if (ledManager) {
         ledManager->startIdentify();
-        Serial.println("LED identify mode activated");
+        errorHandler->logError(INFO, "identify mode activated");
     } else {
-        Serial.println("ERROR: LED manager not available");
+        errorHandler->logError(ERROR, "LED manager not available");
         return false;
     }
     return true;
 }
 
 bool CommunicationManager::handleTestErrorLevel(const std::vector<String>& params, ErrorSeverity severity) {
-    String severityStr;
-    switch (severity) {
-        case INFO: severityStr = "INFO"; break;
-        case WARNING: severityStr = "WARNING"; break;
-        case ERROR: severityStr = "ERROR"; break;
-        case FATAL: severityStr = "FATAL"; break;
-        default: severityStr = "UNKNOWN"; break;
-    }
+    String severityStr = ErrorHandler::severityToString(severity);
     
     String message = "Test " + severityStr + " message";
     if (params.size() > 0) {
@@ -624,12 +602,12 @@ bool CommunicationManager::handleTestErrorLevel(const std::vector<String>& param
         }
         
         if (resetDelay > 0) {
-            Serial.println("Device will reset after " + String(resetDelay) + "ms");
+            errorHandler->logError(FATAL, "Device will reset after " + String(resetDelay) + "ms");
             Serial.flush();
             delay(resetDelay);
             ESP.restart();
         } else {
-            Serial.println("Fatal error - device halted");
+            errorHandler->logError(FATAL, "Fatal error - device halted");
             Serial.flush();
             // Enter infinite loop, but keep LED updated
             while (true) {
@@ -643,18 +621,6 @@ bool CommunicationManager::handleTestErrorLevel(const std::vector<String>& param
     }
     
     return true;
-}
-
-bool CommunicationManager::handleInfoRoute(const std::vector<String>& params) {
-    return handleSetMessageRoute(params, "INFO");
-}
-
-bool CommunicationManager::handleWarningRoute(const std::vector<String>& params) {
-    return handleSetMessageRoute(params, "WARNING");
-}
-
-bool CommunicationManager::handleErrorRoute(const std::vector<String>& params) {
-    return handleSetMessageRoute(params, "ERROR");
 }
 
 CommunicationManager* CommunicationManager::getInstance() {

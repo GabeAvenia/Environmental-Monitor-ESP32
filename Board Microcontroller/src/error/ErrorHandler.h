@@ -21,6 +21,12 @@ struct ErrorEntry {
   unsigned long timestamp;
 };
 
+// Structure to hold output configuration
+struct OutputConfig {
+  Print* stream;
+  ErrorSeverity minSeverity;
+};
+
 /**
  * @brief Handles error logging and reporting with configurable output streams
  *
@@ -32,18 +38,20 @@ private:
   std::vector<ErrorEntry> errorLog;
   const int MAX_LOG_SIZE = 20;
   
-  // Output streams for different severity levels
-  Print* outputStream;      // Default stream for backward compatibility
-  Print* infoStream;        // Stream for INFO messages
-  Print* warningStream;     // Stream for WARNING messages
-  Print* errorStream;       // Stream for ERROR messages
-  Print* fatalStream;       // Stream for FATAL messages
-  Print* uartDebugSerial;   // Reference to UART debug serial
+  // Default output stream (backward compatibility)
+  Print* defaultOutput;
+  
+  // Output stream configurations
+  OutputConfig usbOutput;
+  OutputConfig uartOutput;
+  
+  // Reference to UART debug serial
+  Print* uartDebugSerial;
   
   // Reference to LED manager for visual indication
   LedManager* ledManager = nullptr;
   
-  // Flag to indicate if we're using per-severity routing
+  // Flag to indicate if we're using custom routing
   bool useCustomRouting;
   
 public:
@@ -52,6 +60,7 @@ public:
    * @return The LED manager or nullptr if not set
    */
   LedManager* getLedManager() const { return ledManager; }
+  
   /**
    * @brief Constructor for ErrorHandler with output stream routing
    * 
@@ -61,28 +70,12 @@ public:
   ErrorHandler(Print* output = nullptr, Print* debugOutput = nullptr);
   
   /**
-   * @brief Configure output stream for INFO messages
-   * @param output The stream to use
+   * @brief Set the minimum severity level for a specific output stream
+   * 
+   * @param output The output stream to configure
+   * @param minSeverity The minimum severity level to route to this output
    */
-  void setInfoOutput(Print* output);
-  
-  /**
-   * @brief Configure output stream for WARNING messages
-   * @param output The stream to use
-   */
-  void setWarningOutput(Print* output);
-  
-  /**
-   * @brief Configure output stream for ERROR messages
-   * @param output The stream to use
-   */
-  void setErrorOutput(Print* output);
-  
-  /**
-   * @brief Configure output stream for FATAL messages
-   * @param output The stream to use
-   */
-  void setFatalOutput(Print* output);
+  void setOutputSeverity(Print* output, ErrorSeverity minSeverity);
   
   /**
    * @brief Set the LED manager for visual indication of errors
@@ -125,4 +118,18 @@ public:
    * @return String containing routing status information
    */
   String getRoutingStatus() const;
+  
+  /**
+   * @brief Convert severity level to string
+   * @param severity The severity level
+   * @return String representation of the severity
+   */
+  static String severityToString(ErrorSeverity severity);
+  
+  /**
+   * @brief Convert string to severity level
+   * @param severityStr The severity string
+   * @return ErrorSeverity value (defaults to INFO if not recognized)
+   */
+  static ErrorSeverity stringToSeverity(const String& severityStr);
 };

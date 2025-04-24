@@ -67,10 +67,14 @@ void setup() {
     ledManager->begin();
     ledManager->setSetupMode();
     
-    // Set info messages to go to UART only, not to serial terminal
-    errorHandler->setInfoOutput(uartDebugSerial);
+    // Configure error routing:
+    // - INFO and higher go to UART
+    // - WARNING and higher go to USB
+    errorHandler->setOutputSeverity(uartDebugSerial, INFO);     // UART gets INFO and higher
+    errorHandler->setOutputSeverity(usbSerial, WARNING);        // USB gets WARNING and higher
     errorHandler->enableCustomRouting(true);
     errorHandler->setLedManager(ledManager);
+    
     // Welcome message through logger
     errorHandler->logError(INFO, "Starting " + String(Constants::PRODUCT_NAME) + " v" + String(Constants::FIRMWARE_VERSION));
     errorHandler->logError(INFO, "Error handler initialized with custom routing");
@@ -184,12 +188,9 @@ void setup() {
     errorHandler->logError(INFO, "System initialization complete");
     errorHandler->logError(INFO, "System ready. Environmental Monitor ID: " + configManager->getBoardIdentifier());
     ledManager->setNormalMode();
-
 }
 
 void loop() {
- 
     // Always yield to the scheduler
     yield();
-
 }
