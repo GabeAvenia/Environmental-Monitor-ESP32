@@ -6,8 +6,8 @@
 #include "../error/ErrorHandler.h"
 
 // Define default SPI pins matching your working setup
-#define DEFAULT_SPI_MOSI_PIN 37
-#define DEFAULT_SPI_MISO_PIN 35
+#define DEFAULT_SPI_MOSI_PIN 35
+#define DEFAULT_SPI_MISO_PIN 37
 #define DEFAULT_SPI_SCK_PIN 36
 #define DEFAULT_SPI_SS_PIN -1 //avoid auto-registration
 

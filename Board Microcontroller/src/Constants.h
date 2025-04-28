@@ -19,7 +19,6 @@ namespace Constants {
         static const char* IDN = "*IDN?";
         
         // Measurement commands
-        static const char* MEASURE = "MEAS";
         static const char* MEASURE_QUERY = "MEAS?";
         
         // System commands

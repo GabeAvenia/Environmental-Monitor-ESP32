@@ -41,9 +41,6 @@ void CommunicationManager::registerCommandHandlers() {
     commandHandlers[Constants::SCPI::IDN] = 
         [this](const std::vector<String>& params) { return handleIdentify(params); };
     
-    commandHandlers[Constants::SCPI::MEASURE] = 
-        [this](const std::vector<String>& params) { return handleMeasure(params); };
-    
     commandHandlers[Constants::SCPI::MEASURE_QUERY] = 
         [this](const std::vector<String>& params) { return handleMeasure(params); };
     
@@ -121,7 +118,6 @@ void CommunicationManager::registerCommandHandlers() {
 
 void CommunicationManager::setupCommands() {
     REGISTER_COMMAND("*IDN?", handleIdentify)
-    REGISTER_COMMAND("MEAS", handleMeasure)
     REGISTER_COMMAND("MEAS?", handleMeasure)
     REGISTER_COMMAND("SYST:SENS:LIST?", handleListSensors)
     REGISTER_COMMAND("SYST:CONF?", handleGetConfig)
@@ -240,7 +236,7 @@ void CommunicationManager::processCommandLine() {
     
     // Check if we hit the buffer limit
     if (rawCommand.length() >= MAX_BUFFER_SIZE) {
-        errorHandler->logError(WARNING, "Command exceeds buffer size limit of " + String(MAX_BUFFER_SIZE) + " characters");
+        errorHandler->logError(ERROR, "Command exceeds buffer size limit of " + String(MAX_BUFFER_SIZE) + " characters");
     }
     
     if (rawCommand.length() == 0) {
@@ -260,11 +256,49 @@ void CommunicationManager::processCommandLine() {
     std::vector<String> params;
     parseCommand(rawCommand, command, params);
     
-    // Handle command through our handlers or fall back to SCPI parser
-    if (!processCommand(command, params)) {
-        char buff[rawCommand.length() + 1];
-        rawCommand.toCharArray(buff, rawCommand.length() + 1);
-        scpiParser->ProcessInput(Serial, buff);
+    // Track if the command was recognized by either system
+    bool commandRecognized = false;
+    
+    // Try to handle with our command processors
+    if (processCommand(command, params)) {
+        commandRecognized = true;
+    } else {
+        // Before falling back to SCPI parser, check if it's a HELP request
+        if (command.equalsIgnoreCase("HELP") || command.equalsIgnoreCase("?")) {
+            // Provide basic help information
+            Serial.println("Available commands:");
+            Serial.println("*IDN? - Get device identification");
+            Serial.println("MEAS? - Get measurements from all peripherals");
+            Serial.println("MEAS? <sensor>[:measurement] - Get specific measurements");
+            Serial.println("SYST:SENS:LIST? - List all available peripherals");
+            Serial.println("SYST:CONF? - Get device configuration");
+            Serial.println("RESET - Reset the device");
+            Serial.println();
+            commandRecognized = true;
+        } else {
+            // Try SCPI parser as a fallback
+            // Since we cannot easily detect if the SCPI parser recognized the command,
+            // we'll capture the original Serial buffer position to see if anything was output
+            size_t beforeSerialPos = Serial.availableForWrite();
+            
+            char buff[rawCommand.length() + 1];
+            rawCommand.toCharArray(buff, rawCommand.length() + 1);
+            scpiParser->ProcessInput(Serial, buff);
+            
+            // Check if SCPI parser generated any output
+            size_t afterSerialPos = Serial.availableForWrite();
+            if (afterSerialPos != beforeSerialPos) {
+                commandRecognized = true;
+            }
+        }
+    }
+    
+    // If the command wasn't recognized by either system, log a warning and send an error response
+    if (!commandRecognized) {
+        errorHandler->logError(ERROR, "Unrecognized command: '" + 
+                            (command.length() > 50 ? 
+                               command.substring(0, 50) + "..." : 
+                               command) + "'");
     }
     
     // Ensure all responses are sent
@@ -290,7 +324,7 @@ bool CommunicationManager::handleMeasure(const std::vector<String>& params) {
             auto registry = sensorManager->getRegistry();
             auto allSensors = registry.getAllSensors();
             
-            errorHandler->logError(INFO, "MEAS: Collecting data from all " + String(allSensors.size()) + " available sensors");
+            errorHandler->logError(INFO, "MEAS: Collecting data from all " + String(allSensors.size()) + " available peripherals");
             
             for (auto sensor : allSensors) {
                 collectSensorReadings(sensor->getName(), "", values);
@@ -361,8 +395,8 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
     bool readTemp = useAllMeasurements || upperMeasurements.indexOf("TEMP") >= 0;
     bool readHum = useAllMeasurements || upperMeasurements.indexOf("HUM") >= 0;
     
-    // Read temperature if requested
-    if (readTemp) {
+    // Read temperature if requested and supported
+    if (readTemp && sensorOk && sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
         bool success = false;
         String tempValue = "ERROR";
         
@@ -374,26 +408,18 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
             }
             
             try {
-                if (sensorOk && sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-                    TemperatureReading tempReading = sensorManager->getTemperatureSafe(sensorName);
+                TemperatureReading tempReading = sensorManager->getTemperatureSafe(sensorName);
+                
+                if (tempReading.valid) {
+                    tempValue = String(tempReading.value);
+                    success = true;
                     
-                    if (tempReading.valid) {
-                        tempValue = String(tempReading.value);
-                        success = true;
-                        
-                        if (attempt > 0) {
-                            errorHandler->logError(INFO, "Successfully read temperature from " + sensorName + " after " + String(attempt+1) + " attempts");
-                        }
-                    } else if (attempt == MAX_RETRIES - 1) {
-                        // Only log warning on the last attempt
-                        errorHandler->logError(WARNING, "Invalid temperature reading from " + sensorName + " after " + String(MAX_RETRIES) + " attempts");
+                    if (attempt > 0) {
+                        errorHandler->logError(INFO, "Successfully read temperature from " + sensorName + " after " + String(attempt+1) + " attempts");
                     }
-                } else {
-                    // No need to retry if sensor doesn't support interface
-                    if (sensorOk) {
-                        errorHandler->logError(INFO, "Sensor " + sensorName + " doesn't support temperature");
-                    }
-                    break;
+                } else if (attempt == MAX_RETRIES - 1) {
+                    // Only log warning on the last attempt
+                    errorHandler->logError(WARNING, "Invalid temperature reading from " + sensorName + " after " + String(MAX_RETRIES) + " attempts");
                 }
             } catch (...) {
                 if (attempt == MAX_RETRIES - 1) {
@@ -406,8 +432,8 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
         values.push_back(tempValue);
     }
     
-    // Read humidity if requested
-    if (readHum) {
+    // Read humidity if requested and supported
+    if (readHum && sensorOk && sensor->supportsInterface(InterfaceType::HUMIDITY)) {
         bool success = false;
         String humValue = "ERROR";
         
@@ -419,26 +445,18 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
             }
             
             try {
-                if (sensorOk && sensor->supportsInterface(InterfaceType::HUMIDITY)) {
-                    HumidityReading humReading = sensorManager->getHumiditySafe(sensorName);
+                HumidityReading humReading = sensorManager->getHumiditySafe(sensorName);
+                
+                if (humReading.valid) {
+                    humValue = String(humReading.value);
+                    success = true;
                     
-                    if (humReading.valid) {
-                        humValue = String(humReading.value);
-                        success = true;
-                        
-                        if (attempt > 0) {
-                            errorHandler->logError(INFO, "Successfully read humidity from " + sensorName + " after " + String(attempt+1) + " attempts");
-                        }
-                    } else if (attempt == MAX_RETRIES - 1) {
-                        // Only log warning on the last attempt
-                        errorHandler->logError(WARNING, "Invalid humidity reading from " + sensorName + " after " + String(MAX_RETRIES) + " attempts");
+                    if (attempt > 0) {
+                        errorHandler->logError(INFO, "Successfully read humidity from " + sensorName + " after " + String(attempt+1) + " attempts");
                     }
-                } else {
-                    // No need to retry if sensor doesn't support interface
-                    if (sensorOk) {
-                        errorHandler->logError(INFO, "Sensor " + sensorName + " doesn't support humidity");
-                    }
-                    break;
+                } else if (attempt == MAX_RETRIES - 1) {
+                    // Only log warning on the last attempt
+                    errorHandler->logError(WARNING, "Invalid humidity reading from " + sensorName + " after " + String(MAX_RETRIES) + " attempts");
                 }
             } catch (...) {
                 if (attempt == MAX_RETRIES - 1) {
@@ -547,11 +565,11 @@ bool CommunicationManager::handleUpdateSensorConfig(const std::vector<String>& p
     }
     
     // Add this block to explicitly reinitialize the sensors
-    errorHandler->logError(INFO, "Reinitializing sensors with new configuration");
+    errorHandler->logError(INFO, "Reinitializing peripherals with new configuration");
     if (sensorManager->initializeSensors()) {
-        errorHandler->logError(INFO, "Successfully reinitialized sensors with new configuration");
+        errorHandler->logError(INFO, "Successfully reinitialized peripherals with new configuration");
     } else {
-        errorHandler->logError(ERROR, "Failed to reinitialize some sensors after configuration update");
+        errorHandler->logError(ERROR, "Failed to reinitialize some peripherals after configuration update");
     }
     
     return true;

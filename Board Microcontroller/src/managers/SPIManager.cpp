@@ -3,9 +3,9 @@
 SPIManager::SPIManager(ErrorHandler* err) 
     : errorHandler(err),
       initialized(false),
-      mosiPin(37),  // GPIO37 (MOSI)
-      misoPin(35),  // GPIO35 (MISO)
-      sckPin(36),   // GPIO36 (SCK)
+      mosiPin(DEFAULT_SPI_MOSI_PIN),  // GPIO37 (MOSI)
+      misoPin(DEFAULT_SPI_MISO_PIN),  // GPIO35 (MISO)
+      sckPin(DEFAULT_SPI_SCK_PIN),   // GPIO36 (SCK)
       defaultSettings(1000000, MSBFIRST, SPI_MODE0) {
 }
 
