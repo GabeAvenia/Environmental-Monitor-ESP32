@@ -1,15 +1,15 @@
 {
     "I2C Sensors": [
         {
-            "Sensor Name": "I2C01",
-            "Sensor Type": "SHT41",
+            "Peripheral Name": "I2C01",
+            "Peripheral Type": "SHT41",
             "I2C Port": "I2C0",
             "Address (HEX)": 68,
             "Polling Rate[1000 ms]": 100
         },
         {
-            "Sensor Name": "I2C02",
-            "Sensor Type": "Adafruit Si7021",
+            "Peripheral Name": "I2C02",
+            "Peripheral Type": "Adafruit Si7021",
             "I2C Port": "I2C1",
             "Address (HEX)": 64,
             "Polling Rate[1000 ms]": 100
@@ -17,8 +17,8 @@
         ],
     "SPI Sensors": [
         {
-            "Sensor Name": "PT100",
-            "Sensor Type": "Adafruit PT100 RTD",
+            "Peripheral Name": "PT100",
+            "Peripheral Type": "Adafruit PT100 RTD",
             "SS Pin": 0,
             "Polling Rate[1000 ms]": 200,
             "Additional": "Wire mode: 2-wire"

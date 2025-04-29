@@ -101,30 +101,30 @@ bool ConfigManager::loadConfigFromFile() {
     additionalConfig = "";
     errorHandler->logError(INFO, "Cleared existing configurations");
     
-    // Load I2C peripherals
-    JsonArray i2cSensors = doc["I2C Peripherals"].as<JsonArray>();
-    errorHandler->logError(INFO, "I2C Peripherals array exists: " + String(i2cSensors.size() > 0 ? "YES" : "NO"));
+    // Load I2C peripherals - using the "Peripheral" naming in JSON but "sensor" internally
+    JsonArray i2cPeripherals = doc["I2C Peripherals"].as<JsonArray>();
+    errorHandler->logError(INFO, "I2C Peripherals array exists: " + String(i2cPeripherals.size() > 0 ? "YES" : "NO"));
     
-    if (i2cSensors.size() > 0) {
-        errorHandler->logError(INFO, "Found " + String(i2cSensors.size()) + " I2C peripherals");
-        for (JsonObject sensor : i2cSensors) {
-            if (!sensor["Peripheral Name"].is<String>() || !sensor["Peripheral Type"].is<String>() || 
-                !sensor["Address (HEX)"].is<int>()) {
-                errorHandler->logError(WARNING, "Skipping I2C sensor with missing required fields");
+    if (i2cPeripherals.size() > 0) {
+        errorHandler->logError(INFO, "Found " + String(i2cPeripherals.size()) + " I2C peripherals");
+        for (JsonObject peripheral : i2cPeripherals) {
+            if (!peripheral["Peripheral Name"].is<String>() || !peripheral["Peripheral Type"].is<String>() || 
+                !peripheral["Address (HEX)"].is<int>()) {
+                errorHandler->logError(WARNING, "Skipping I2C peripheral with missing required fields");
                 continue;
             }
             
             SensorConfig config;
-            config.name = sensor["Peripheral Name"].as<String>();
-            config.type = sensor["Peripheral Type"].as<String>();
-            config.address = sensor["Address (HEX)"].as<int>();
+            config.name = peripheral["Peripheral Name"].as<String>();
+            config.type = peripheral["Peripheral Type"].as<String>();
+            config.address = peripheral["Address (HEX)"].as<int>();
             config.isSPI = false;
             
-            errorHandler->logError(INFO, "Found I2C sensor: " + config.name + " of type " + config.type);
+            errorHandler->logError(INFO, "Found I2C peripheral: " + config.name + " of type " + config.type);
             
             // Handle I2C port (new field)
-            if (sensor["I2C Port"].is<String>()) {
-                String portStr = sensor["I2C Port"].as<String>();
+            if (peripheral["I2C Port"].is<String>()) {
+                String portStr = peripheral["I2C Port"].as<String>();
                 config.i2cPort = I2CManager::stringToPort(portStr);
                 errorHandler->logError(INFO, "Peripheral using I2C port " + portStr);
             } else {
@@ -134,68 +134,8 @@ bool ConfigManager::loadConfigFromFile() {
             }
             
             // Read and validate polling rate
-            if (sensor["Polling Rate[1000 ms]"].is<uint32_t>()) {
-                uint32_t rate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-                // Apply validation rules
-                if (rate < MIN_POLLING_RATE) {
-                    errorHandler->logError(WARNING, "Polling rate too low for sensor " + config.name + 
-                                             " (" + String(rate) + "ms), using " + 
-                                             String(MIN_POLLING_RATE) + "ms minimum");
-                    config.pollingRate = MIN_POLLING_RATE;
-                } else if (rate > MAX_POLLING_RATE) {
-                    errorHandler->logError(WARNING, "Polling rate too high for sensor " + config.name + 
-                                             " (" + String(rate) + "ms), using " + 
-                                             String(MAX_POLLING_RATE) + "ms maximum");
-                    config.pollingRate = MAX_POLLING_RATE;
-                } else {
-                    config.pollingRate = rate;
-                }
-                errorHandler->logError(INFO, "Peripheral polling rate: " + String(config.pollingRate) + "ms");
-            } else {
-                config.pollingRate = DEFAULT_POLLING_RATE;
-                errorHandler->logError(INFO, "Using default polling rate: " + String(DEFAULT_POLLING_RATE) + "ms");
-            }
-            
-            // Read additional settings
-            if (sensor["Additional"].is<String>()) {
-                config.additional = sensor["Additional"].as<String>();
-                errorHandler->logError(INFO, "Additional settings: " + config.additional);
-            } else {
-                config.additional = ""; // Empty string for no additional settings
-            }
-            
-            sensorConfigs.push_back(config);
-            errorHandler->logError(INFO, "Added I2C sensor: " + config.name);
-        }
-    }
-    
-    // Load SPI peripherals
-    JsonArray spiSensors = doc["SPI Peripherals"].as<JsonArray>();
-    errorHandler->logError(INFO, "SPI Peripherals array exists: " + String(spiSensors.size() > 0 ? "YES" : "NO"));
-    
-    if (spiSensors.size() > 0) {
-        errorHandler->logError(INFO, "Found " + String(spiSensors.size()) + " SPI peripherals");
-        for (JsonObject sensor : spiSensors) {
-            if (!sensor["Peripheral Name"].is<String>() || !sensor["Peripheral Type"].is<String>() || 
-                !sensor["SS Pin"].is<int>()) {
-                errorHandler->logError(WARNING, "Skipping SPI sensor with missing required fields");
-                continue;
-            }
-            
-            SensorConfig config;
-            config.name = sensor["Peripheral Name"].as<String>();
-            config.type = sensor["Peripheral Type"].as<String>();
-            config.address = sensor["SS Pin"].as<int>();
-            config.isSPI = true;
-            
-            errorHandler->logError(INFO, "Found SPI sensor: " + config.name + " of type " + config.type);
-            
-            // SPI peripherals don't use I2C port
-            config.i2cPort = I2CPort::I2C0; // Default value, not used
-            
-            // Read and validate polling rate
-            if (sensor["Polling Rate[1000 ms]"].is<uint32_t>()) {
-                uint32_t rate = sensor["Polling Rate[1000 ms]"].as<uint32_t>();
+            if (peripheral["Polling Rate[1000 ms]"].is<uint32_t>()) {
+                uint32_t rate = peripheral["Polling Rate[1000 ms]"].as<uint32_t>();
                 // Apply validation rules
                 if (rate < MIN_POLLING_RATE) {
                     errorHandler->logError(WARNING, "Polling rate too low for peripheral " + config.name + 
@@ -217,8 +157,68 @@ bool ConfigManager::loadConfigFromFile() {
             }
             
             // Read additional settings
-            if (sensor["Additional"].is<String>()) {
-                config.additional = sensor["Additional"].as<String>();
+            if (peripheral["Additional"].is<String>()) {
+                config.additional = peripheral["Additional"].as<String>();
+                errorHandler->logError(INFO, "Additional settings: " + config.additional);
+            } else {
+                config.additional = ""; // Empty string for no additional settings
+            }
+            
+            sensorConfigs.push_back(config);
+            errorHandler->logError(INFO, "Added I2C peripheral: " + config.name);
+        }
+    }
+    
+    // Load SPI peripherals - using the "Peripheral" naming in JSON but "sensor" internally
+    JsonArray spiPeripherals = doc["SPI Peripherals"].as<JsonArray>();
+    errorHandler->logError(INFO, "SPI Peripherals array exists: " + String(spiPeripherals.size() > 0 ? "YES" : "NO"));
+    
+    if (spiPeripherals.size() > 0) {
+        errorHandler->logError(INFO, "Found " + String(spiPeripherals.size()) + " SPI peripherals");
+        for (JsonObject peripheral : spiPeripherals) {
+            if (!peripheral["Peripheral Name"].is<String>() || !peripheral["Peripheral Type"].is<String>() || 
+                !peripheral["SS Pin"].is<int>()) {
+                errorHandler->logError(WARNING, "Skipping SPI peripheral with missing required fields");
+                continue;
+            }
+            
+            SensorConfig config;
+            config.name = peripheral["Peripheral Name"].as<String>();
+            config.type = peripheral["Peripheral Type"].as<String>();
+            config.address = peripheral["SS Pin"].as<int>();
+            config.isSPI = true;
+            
+            errorHandler->logError(INFO, "Found SPI peripheral: " + config.name + " of type " + config.type);
+            
+            // SPI peripherals don't use I2C port
+            config.i2cPort = I2CPort::I2C0; // Default value, not used
+            
+            // Read and validate polling rate
+            if (peripheral["Polling Rate[1000 ms]"].is<uint32_t>()) {
+                uint32_t rate = peripheral["Polling Rate[1000 ms]"].as<uint32_t>();
+                // Apply validation rules
+                if (rate < MIN_POLLING_RATE) {
+                    errorHandler->logError(WARNING, "Polling rate too low for peripheral " + config.name + 
+                                             " (" + String(rate) + "ms), using " + 
+                                             String(MIN_POLLING_RATE) + "ms minimum");
+                    config.pollingRate = MIN_POLLING_RATE;
+                } else if (rate > MAX_POLLING_RATE) {
+                    errorHandler->logError(WARNING, "Polling rate too high for peripheral " + config.name + 
+                                             " (" + String(rate) + "ms), using " + 
+                                             String(MAX_POLLING_RATE) + "ms maximum");
+                    config.pollingRate = MAX_POLLING_RATE;
+                } else {
+                    config.pollingRate = rate;
+                }
+                errorHandler->logError(INFO, "Peripheral polling rate: " + String(config.pollingRate) + "ms");
+            } else {
+                config.pollingRate = DEFAULT_POLLING_RATE;
+                errorHandler->logError(INFO, "Using default polling rate: " + String(DEFAULT_POLLING_RATE) + "ms");
+            }
+            
+            // Read additional settings
+            if (peripheral["Additional"].is<String>()) {
+                config.additional = peripheral["Additional"].as<String>();
                 errorHandler->logError(INFO, "Additional settings: " + config.additional);
             } else {
                 config.additional = ""; // Empty string for no additional settings
@@ -252,14 +252,14 @@ bool ConfigManager::createDefaultConfig() {
     doc["Environmental Monitor ID"] = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
     
     // Add I2C peripherals array and first peripheral
-    JsonArray i2cSensors = doc["I2C Peripherals"].to<JsonArray>();
-    JsonObject i2cSensor = i2cSensors.add<JsonObject>();
-    i2cSensor["Peripheral Name"] = "I2C01";
-    i2cSensor["Peripheral Type"] = "SHT41";
-    i2cSensor["I2C Port"] = "I2C0";
-    i2cSensor["Address (HEX)"] = 0x44;  // SHT41 default address
-    i2cSensor["Polling Rate[1000 ms]"] = DEFAULT_POLLING_RATE;
-    i2cSensor["Additional"] = "";  // No additional settings by default
+    JsonArray i2cPeripherals = doc["I2C Peripherals"].to<JsonArray>();
+    JsonObject i2cPeripheral = i2cPeripherals.add<JsonObject>();
+    i2cPeripheral["Peripheral Name"] = "I2C01";
+    i2cPeripheral["Peripheral Type"] = "SHT41";
+    i2cPeripheral["I2C Port"] = "I2C0";
+    i2cPeripheral["Address (HEX)"] = 0x44;  // SHT41 default address
+    i2cPeripheral["Polling Rate[1000 ms]"] = DEFAULT_POLLING_RATE;
+    i2cPeripheral["Additional"] = "";  // No additional settings by default
     
     // Add empty SPI peripherals array
     doc["SPI Peripherals"] = JsonArray();
@@ -336,12 +336,12 @@ bool ConfigManager::setBoardIdentifier(String identifier) {
     return true;
 }
 
-// Get all peripheral configurations
+// Get all sensor configurations
 std::vector<SensorConfig> ConfigManager::getSensorConfigs() {
     return sensorConfigs;
 }
 
-// Update peripheral configurations
+// Update sensor configurations - but persist them as "Peripheral" in JSON
 bool ConfigManager::updateSensorConfigs(const std::vector<SensorConfig>& configs) {
     // Update memory copy
     sensorConfigs = configs;
@@ -367,30 +367,30 @@ bool ConfigManager::updateSensorConfigs(const std::vector<SensorConfig>& configs
     doc["SPI Peripherals"] = JsonArray();
     
     // Add updated peripherals
-    JsonArray i2cSensors = doc["I2C Peripherals"].to<JsonArray>();
-    JsonArray spiSensors = doc["SPI Peripherals"].to<JsonArray>();
+    JsonArray i2cPeripherals = doc["I2C Peripherals"].to<JsonArray>();
+    JsonArray spiPeripherals = doc["SPI Peripherals"].to<JsonArray>();
     
     for (const auto& config : configs) {
         if (config.isSPI) {
-            JsonObject sensor = spiSensors.add<JsonObject>();
-            sensor["Peripheral Name"] = config.name;
-            sensor["Peripheral Type"] = config.type;
-            sensor["SS Pin"] = config.address;
-            sensor["Polling Rate[1000 ms]"] = config.pollingRate;
+            JsonObject peripheral = spiPeripherals.add<JsonObject>();
+            peripheral["Peripheral Name"] = config.name;
+            peripheral["Peripheral Type"] = config.type;
+            peripheral["SS Pin"] = config.address;
+            peripheral["Polling Rate[1000 ms]"] = config.pollingRate;
             // Add the additional field
             if (config.additional.length() > 0) {
-                sensor["Additional"] = config.additional;
+                peripheral["Additional"] = config.additional;
             }
         } else {
-            JsonObject sensor = i2cSensors.add<JsonObject>();
-            sensor["Peripheral Name"] = config.name;
-            sensor["Peripheral Type"] = config.type;
-            sensor["I2C Port"] = I2CManager::portToString(config.i2cPort);
-            sensor["Address (HEX)"] = config.address;
-            sensor["Polling Rate[1000 ms]"] = config.pollingRate;
+            JsonObject peripheral = i2cPeripherals.add<JsonObject>();
+            peripheral["Peripheral Name"] = config.name;
+            peripheral["Peripheral Type"] = config.type;
+            peripheral["I2C Port"] = I2CManager::portToString(config.i2cPort);
+            peripheral["Address (HEX)"] = config.address;
+            peripheral["Polling Rate[1000 ms]"] = config.pollingRate;
             // Add the additional field
             if (config.additional.length() > 0) {
-                sensor["Additional"] = config.additional;
+                peripheral["Additional"] = config.additional;
             }
         }
     }
@@ -540,7 +540,7 @@ bool ConfigManager::readConfigFromFile(JsonDocument& doc) {
     return true;
 }
 
-// Update only the peripheral configuration from JSON
+// Update only the sensor configuration from JSON
 bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
     // Handle empty input - erase peripherals with warning
     if (jsonConfig.length() == 0 || jsonConfig == "{}" || jsonConfig == "null") {
@@ -572,28 +572,28 @@ bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
     
     // Extract I2C peripherals if present
     if (doc["I2C Peripherals"].is<JsonArray>()) {
-        JsonArray i2cSensors = doc["I2C Peripherals"].as<JsonArray>();
+        JsonArray i2cPeripherals = doc["I2C Peripherals"].as<JsonArray>();
         
-        for (JsonObject sensor : i2cSensors) {
-            if (!sensor["Peripheral Name"].is<String>() || !sensor["Peripheral Type"].is<String>() || 
-                !sensor["Address (HEX)"].is<int>()) {
+        for (JsonObject peripheral : i2cPeripherals) {
+            if (!peripheral["Peripheral Name"].is<String>() || !peripheral["Peripheral Type"].is<String>() || 
+                !peripheral["Address (HEX)"].is<int>()) {
                 errorHandler->logError(ERROR, "Missing required fields in I2C peripheral configuration");
                 continue;
             }
             
             SensorConfig config;
-            config.name = sensor["Peripheral Name"].as<String>();
-            config.type = sensor["Peripheral Type"].as<String>();
-            config.address = sensor["Address (HEX)"].as<int>();
+            config.name = peripheral["Peripheral Name"].as<String>();
+            config.type = peripheral["Peripheral Type"].as<String>();
+            config.address = peripheral["Address (HEX)"].as<int>();
             config.isSPI = false;
             
             // Optional fields with defaults
             config.i2cPort = I2CManager::stringToPort(
-                sensor["I2C Port"].is<String>() ? sensor["I2C Port"].as<String>() : "I2C0");
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].is<uint32_t>() ? 
-                sensor["Polling Rate[1000 ms]"].as<uint32_t>() : 1000;
-            config.additional = sensor["Additional"].is<String>() ? 
-                sensor["Additional"].as<String>() : "";
+                peripheral["I2C Port"].is<String>() ? peripheral["I2C Port"].as<String>() : "I2C0");
+            config.pollingRate = peripheral["Polling Rate[1000 ms]"].is<uint32_t>() ? 
+                peripheral["Polling Rate[1000 ms]"].as<uint32_t>() : 1000;
+            config.additional = peripheral["Additional"].is<String>() ? 
+                peripheral["Additional"].as<String>() : "";
             
             // Apply polling rate limits
             config.pollingRate = constrain(config.pollingRate, 50, 300000);
@@ -604,26 +604,26 @@ bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
     
     // Extract SPI peripherals if present
     if (doc["SPI Peripherals"].is<JsonArray>()) {
-        JsonArray spiSensors = doc["SPI Peripherals"].as<JsonArray>();
+        JsonArray spiPeripherals = doc["SPI Peripherals"].as<JsonArray>();
         
-        for (JsonObject sensor : spiSensors) {
-            if (!sensor["Peripheral Name"].is<String>() || !sensor["Peripheral Type"].is<String>() || 
-                !sensor["SS Pin"].is<int>()) {
+        for (JsonObject peripheral : spiPeripherals) {
+            if (!peripheral["Peripheral Name"].is<String>() || !peripheral["Peripheral Type"].is<String>() || 
+                !peripheral["SS Pin"].is<int>()) {
                 errorHandler->logError(ERROR, "Missing required fields in SPI peripheral configuration");
                 continue;
             }
             
             SensorConfig config;
-            config.name = sensor["Peripheral Name"].as<String>();
-            config.type = sensor["Peripheral Type"].as<String>();
-            config.address = sensor["SS Pin"].as<int>();
+            config.name = peripheral["Peripheral Name"].as<String>();
+            config.type = peripheral["Peripheral Type"].as<String>();
+            config.address = peripheral["SS Pin"].as<int>();
             config.isSPI = true;
             
             // Optional fields with defaults
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].is<uint32_t>() ? 
-                sensor["Polling Rate[1000 ms]"].as<uint32_t>() : 1000;
-            config.additional = sensor["Additional"].is<String>() ? 
-                sensor["Additional"].as<String>() : "";
+            config.pollingRate = peripheral["Polling Rate[1000 ms]"].is<uint32_t>() ? 
+                peripheral["Polling Rate[1000 ms]"].as<uint32_t>() : 1000;
+            config.additional = peripheral["Additional"].is<String>() ? 
+                peripheral["Additional"].as<String>() : "";
             
             // Apply polling rate limits
             config.pollingRate = constrain(config.pollingRate, 50, 300000);
@@ -658,28 +658,28 @@ bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
     fullDoc["SPI Peripherals"] = JsonArray();
     
     // Add updated peripherals
-    JsonArray i2cSensors = fullDoc["I2C Peripherals"].to<JsonArray>();
-    JsonArray spiSensors = fullDoc["SPI Peripherals"].to<JsonArray>();
+    JsonArray i2cPeripherals = fullDoc["I2C Peripherals"].to<JsonArray>();
+    JsonArray spiPeripherals = fullDoc["SPI Peripherals"].to<JsonArray>();
     
     for (const auto& config : sensorConfigs) {
         if (config.isSPI) {
-            JsonObject sensor = spiSensors.add<JsonObject>();
-            sensor["Peripheral Name"] = config.name;
-            sensor["Peripheral Type"] = config.type;
-            sensor["SS Pin"] = config.address;
-            sensor["Polling Rate[1000 ms]"] = config.pollingRate;
+            JsonObject peripheral = spiPeripherals.add<JsonObject>();
+            peripheral["Peripheral Name"] = config.name;
+            peripheral["Peripheral Type"] = config.type;
+            peripheral["SS Pin"] = config.address;
+            peripheral["Polling Rate[1000 ms]"] = config.pollingRate;
             if (config.additional.length() > 0) {
-                sensor["Additional"] = config.additional;
+                peripheral["Additional"] = config.additional;
             }
         } else {
-            JsonObject sensor = i2cSensors.add<JsonObject>();
-            sensor["Peripheral Name"] = config.name;
-            sensor["Peripheral Type"] = config.type;
-            sensor["I2C Port"] = I2CManager::portToString(config.i2cPort);
-            sensor["Address (HEX)"] = config.address;
-            sensor["Polling Rate[1000 ms]"] = config.pollingRate;
+            JsonObject peripheral = i2cPeripherals.add<JsonObject>();
+            peripheral["Peripheral Name"] = config.name;
+            peripheral["Peripheral Type"] = config.type;
+            peripheral["I2C Port"] = I2CManager::portToString(config.i2cPort);
+            peripheral["Address (HEX)"] = config.address;
+            peripheral["Polling Rate[1000 ms]"] = config.pollingRate;
             if (config.additional.length() > 0) {
-                sensor["Additional"] = config.additional;
+                peripheral["Additional"] = config.additional;
             }
         }
     }

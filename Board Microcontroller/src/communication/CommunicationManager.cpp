@@ -384,7 +384,7 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
     bool sensorOk = (sensor != nullptr && sensor->isConnected());
     
     if (!sensorOk) {
-        errorHandler->logError(WARNING, "Sensor " + sensorName + " not found or not connected");
+        errorHandler->logError(WARNING, "Peripheral " + sensorName + " not found or not connected");
     }
     
     // Determine which measurements to take

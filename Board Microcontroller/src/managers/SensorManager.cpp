@@ -129,25 +129,25 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
     std::vector<SensorConfig> oldConfigs = configManager->getSensorConfigs();
     std::vector<SensorConfig> newConfigs;
     
-    // Extract I2C sensors
-    if (doc["I2C Sensors"].is<JsonArray>()) {
-        JsonArray i2cSensors = doc["I2C Sensors"].as<JsonArray>();
-        for (JsonObject sensor : i2cSensors) {
+    // Extract I2C peripherals - UPDATED to use new naming scheme "Peripheral" in JSON
+    if (doc["I2C Peripherals"].is<JsonArray>()) {
+        JsonArray i2cPeripherals = doc["I2C Peripherals"].as<JsonArray>();
+        for (JsonObject peripheral : i2cPeripherals) {
             SensorConfig config;
             
-            // Required fields
-            config.name = sensor["Sensor Name"].as<String>();
-            config.type = sensor["Sensor Type"].as<String>();
-            config.address = sensor["Address (HEX)"].as<int>();
+            // Required fields - UPDATED field names to match "Peripheral" naming in JSON
+            config.name = peripheral["Peripheral Name"].as<String>();
+            config.type = peripheral["Peripheral Type"].as<String>();
+            config.address = peripheral["Address (HEX)"].as<int>();
             config.isSPI = false;
             
             // Optional fields with defaults
             config.i2cPort = I2CManager::stringToPort(
-                sensor["I2C Port"].isNull() ? "I2C0" : sensor["I2C Port"].as<String>());
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].isNull() ? 
-                1000 : sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-            config.additional = sensor["Additional"].isNull() ? 
-                "" : sensor["Additional"].as<String>();
+                peripheral["I2C Port"].isNull() ? "I2C0" : peripheral["I2C Port"].as<String>());
+            config.pollingRate = peripheral["Polling Rate[1000 ms]"].isNull() ? 
+                1000 : peripheral["Polling Rate[1000 ms]"].as<uint32_t>();
+            config.additional = peripheral["Additional"].isNull() ? 
+                "" : peripheral["Additional"].as<String>();
             
             // Apply polling rate limits
             config.pollingRate = constrain(config.pollingRate, 50, 300000);
@@ -156,23 +156,23 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
         }
     }
     
-    // Extract SPI sensors
-    if (doc["SPI Sensors"].is<JsonArray>()) {
-        JsonArray spiSensors = doc["SPI Sensors"].as<JsonArray>();
-        for (JsonObject sensor : spiSensors) {
+    // Extract SPI peripherals - UPDATED to use new naming scheme "Peripheral" in JSON
+    if (doc["SPI Peripherals"].is<JsonArray>()) {
+        JsonArray spiPeripherals = doc["SPI Peripherals"].as<JsonArray>();
+        for (JsonObject peripheral : spiPeripherals) {
             SensorConfig config;
             
-            // Required fields
-            config.name = sensor["Sensor Name"].as<String>();
-            config.type = sensor["Sensor Type"].as<String>();
-            config.address = sensor["SS Pin"].as<int>();
+            // Required fields - UPDATED field names to match "Peripheral" naming in JSON
+            config.name = peripheral["Peripheral Name"].as<String>();
+            config.type = peripheral["Peripheral Type"].as<String>();
+            config.address = peripheral["SS Pin"].as<int>();
             config.isSPI = true;
             
             // Optional fields with defaults
-            config.pollingRate = sensor["Polling Rate[1000 ms]"].isNull() ? 
-                1000 : sensor["Polling Rate[1000 ms]"].as<uint32_t>();
-            config.additional = sensor["Additional"].isNull() ? 
-                "" : sensor["Additional"].as<String>();
+            config.pollingRate = peripheral["Polling Rate[1000 ms]"].isNull() ? 
+                1000 : peripheral["Polling Rate[1000 ms]"].as<uint32_t>();
+            config.additional = peripheral["Additional"].isNull() ? 
+                "" : peripheral["Additional"].as<String>();
             
             // Apply polling rate limits
             config.pollingRate = constrain(config.pollingRate, 50, 300000);
