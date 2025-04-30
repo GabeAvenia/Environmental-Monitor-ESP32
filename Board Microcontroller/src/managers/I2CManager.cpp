@@ -56,7 +56,7 @@ bool I2CManager::beginPort(I2CPort port) {
     config.wire->begin(config.sdaPin, config.sclPin);
     
     // Set clock frequency if specified and different from default
-    if (config.clockFrequency != 100000) {
+    if (config.clockFrequency != 50000) {
         config.wire->setClock(config.clockFrequency);
     }
     

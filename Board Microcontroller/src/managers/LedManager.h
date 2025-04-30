@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
 #include "error/ErrorHandler.h"
+#include "Constants.h"
 
 /**
  * @brief Simple manager for controlling the onboard NeoPixel LED
@@ -18,16 +19,16 @@ private:
     const int numPixels;
     
     // Color constants
-    const uint32_t COLOR_OFF = 0x000000;
-    const uint32_t COLOR_GREEN = 0x00FF00;
-    const uint32_t COLOR_YELLOW = 0xFFFF00;
-    const uint32_t COLOR_BLUE = 0x0000FF;
-    const uint32_t COLOR_RED = 0xFF0000;       // For error indication
-    const uint32_t COLOR_ORANGE = 0xFF8000;    // For warning indication
+    const uint32_t COLOR_OFF = Constants::LED::COLOR_OFF;
+    const uint32_t COLOR_GREEN = Constants::LED::COLOR_GREEN;
+    const uint32_t COLOR_YELLOW = Constants::LED::COLOR_YELLOW;
+    const uint32_t COLOR_BLUE = Constants::LED::COLOR_BLUE;
+    const uint32_t COLOR_RED = Constants::LED::COLOR_RED;       // For error indication
+    const uint32_t COLOR_ORANGE = Constants::LED::COLOR_ORANGE;    // For warning indication
     
     // LED brightness levels
-    const uint8_t DIM_BRIGHTNESS = 30;    // 30% brightness for idle
-    const uint8_t FULL_BRIGHTNESS = 40;   // 100% brightness for active
+    const uint8_t DIM_BRIGHTNESS = Constants::LED::DIM_BRIGHTNESS;    // 30% brightness for idle
+    const uint8_t FULL_BRIGHTNESS = Constants::LED::FULL_BRIGHTNESS;   // 100% brightness for active
     
     // State tracking
     bool initialized = false;
@@ -37,13 +38,13 @@ private:
     // Reading pulse effect tracking
     bool pulseActive = false;
     unsigned long pulseStartTime = 0;
-    const unsigned long PULSE_DURATION = 100;
+    const unsigned long PULSE_DURATION = Constants::LED::PULSE_DURATION_MS;  // 100ms pulse duration
     
     // Error indication tracking
     bool errorIndicationActive = false;
     bool fatalErrorActive = false;           // Track if we're in fatal error mode
     unsigned long errorIndicationStartTime = 0;
-    const unsigned long WARNING_ERROR_DURATION = 2000;  // 2 seconds for temporary warnings/errors
+    const unsigned long WARNING_ERROR_DURATION = Constants::LED::WARNING_ERROR_DURATION_MS;
     uint32_t errorIndicationColor = COLOR_OFF;
     
     /**
@@ -63,7 +64,7 @@ public:
      * @param powerPin NeoPixel power pin (default: 38 for Adafruit QT Py ESP32-S3)
      * @param numLeds Number of NeoPixels (default: 1)
      */
-    LedManager(ErrorHandler* err, int pin = 39, int powerPin = 38, int numLeds = 1);
+    LedManager(ErrorHandler* err, int pin = Constants::Pins::NEOPIXEL_DATA, int powerPin = NEOPIXEL_POWER, int numLeds = 1);
     
     /**
      * @brief Destructor

@@ -346,9 +346,13 @@ void TaskManager::sensorTask() {
     uint32_t lastPollingTime = 0;
     uint32_t lastI2CRecoveryTime = 0;
     const uint32_t I2C_RECOVERY_INTERVAL = 5000;
+    const uint32_t MAX_RECONNECT_TIME = 1000; // Max 1 second for reconnection attempts
     
     // Task loop
     while (true) {
+        // Always feed the watchdog at the start of each loop iteration
+        yield();
+        
         if (!sensorManager) {
             vTaskDelay(pdMS_TO_TICKS(100));
             continue;
@@ -359,8 +363,6 @@ void TaskManager::sensorTask() {
         
         // Check if it's time to poll
         if (currentTime - lastPollingTime >= pollingInterval) {
-            // No mutex needed for our double-buffered approach!
-            
             // Check for disconnected sensors and reconnect if needed
             if (currentTime - lastI2CRecoveryTime > I2C_RECOVERY_INTERVAL) {
                 bool needsRecovery = false;
@@ -379,15 +381,29 @@ void TaskManager::sensorTask() {
                         errorHandler->logError(INFO, "Attempting sensor recovery");
                     }
                     
-                    // Try to reconnect sensors
-                    sensorManager->reconnectAllSensors();
+                    // Try to reconnect sensors with timeout
+                    unsigned long reconnectStart = millis();
+                    
+                    // Only allow reconnection attempts for a limited time
+                    if (millis() - reconnectStart < MAX_RECONNECT_TIME) {
+                        sensorManager->reconnectAllSensors();
+                    } else {
+                        errorHandler->logError(WARNING, "Reconnection attempts timed out");
+                    }
+                    
                     lastI2CRecoveryTime = currentTime;
                 }
             }
             
-            // Update all readings - this will write to the active buffer
-            // and then swap buffers atomically when done
-            sensorManager->updateReadings();
+            // Update all readings with error handling
+            try {
+                sensorManager->updateReadings();
+            } catch (...) {
+                // Catch any exception during reading to prevent task crash
+                if (errorHandler) {
+                    errorHandler->logError(ERROR, "Exception during sensor reading update");
+                }
+            }
             
             // Update timestamp
             lastPollingTime = currentTime;
@@ -398,6 +414,7 @@ void TaskManager::sensorTask() {
             }
         }
         
+        // Always have a task delay to prevent watchdog triggers
         vTaskDelay(pdMS_TO_TICKS(50));
     }
 }

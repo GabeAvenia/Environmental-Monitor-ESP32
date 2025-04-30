@@ -3,6 +3,7 @@
 Si7021Sensor::Si7021Sensor(const String& sensorName, int address, TwoWire* i2cBus,
                           I2CManager* i2cMgr, I2CPort port, ErrorHandler* err)
     : BaseSensor(sensorName, SensorType::SI7021, err),
+      si7021(i2cBus), // Pass wire directly to the constructor
       wire(i2cBus),
       i2cPort(port),
       i2cManager(i2cMgr),
@@ -20,37 +21,7 @@ Si7021Sensor::~Si7021Sensor() {
 bool Si7021Sensor::initialize() {
     errorHandler->logError(INFO, "Initializing Si7021 sensor: " + name);
     
-    // The Si7021 library doesn't support specifying the Wire instance directly
-    bool success = false;
-    
-    // Store the original Wire reference
-    TwoWire* originalWire = &Wire;
-    
-    // Initialize the sensor based on which Wire instance we're using
-    if (wire == &Wire) {
-        // Using default Wire - no redirection needed
-        success = si7021.begin();
-    } else {
-        // Get the Wire configuration for our port
-        const WireConfig* config = i2cManager->getWireConfig(i2cPort);
-        if (!config) {
-            errorHandler->logError(ERROR, "Failed to get Wire configuration for port " + I2CManager::portToString(i2cPort));
-            connected = false;
-            return false;
-        }
-        
-        // Temporarily redirect Wire to our configuration
-        Wire.end(); // End current Wire setup
-        Wire.begin(config->sdaPin, config->sclPin);
-        if (config->clockFrequency != 100000) {
-            Wire.setClock(config->clockFrequency);
-        }
-        
-        // Initialize with the configured Wire
-        success = si7021.begin();
-    }
-    
-    if (!success) {
+    if (!si7021.begin()) {
         errorHandler->logError(ERROR, "Failed to initialize Si7021 sensor: " + name);
         connected = false;
         return false;
@@ -59,7 +30,7 @@ bool Si7021Sensor::initialize() {
     connected = true;
     errorHandler->logError(INFO, "Si7021 sensor initialized successfully: " + name);
     
-    // Read and log the sensor's serial number for identification
+    // Read and log serial number for identification
     uint32_t serialNumber = si7021.sernum_a;
     errorHandler->logError(INFO, "Si7021 serial number: 0x" + String(serialNumber, HEX));
     
@@ -81,63 +52,35 @@ bool Si7021Sensor::updateReadings() const {
     float humidity = NAN;
     bool success = false;
     
-    // Store original Wire configuration
-    TwoWire* originalWire = &Wire;
-    bool needsWireReset = (wire != &Wire);
-    
-    if (needsWireReset) {
-        // Configure Wire for our sensor
-        const WireConfig* config = i2cManager->getWireConfig(i2cPort);
-        if (config) {
-            Wire.end();
-            Wire.begin(config->sdaPin, config->sclPin);
-            if (config->clockFrequency != 100000) {
-                Wire.setClock(config->clockFrequency);
-            }
-        } else {
-            errorHandler->logError(ERROR, "Failed to get Wire configuration for reading");
-            return false;
-        }
-    }
-    
     for (int attempt = 0; attempt < MAX_RETRIES && !success; attempt++) {
         if (attempt > 0) {
-            // Add a delay between retries
             delay(50);
             errorHandler->logError(INFO, "Retrying Si7021 reading, attempt " + String(attempt+1) + " of " + String(MAX_RETRIES));
         }
         
-        // Try reading temperature first
         try {
             temp = si7021.readTemperature();
             
-            // If temperature read was successful, try humidity
             if (!isnan(temp)) {
-                // Add a brief delay between readings to prevent I2C issues
                 delay(5);
                 humidity = si7021.readHumidity();
                 
-                // If both readings were successful, we're done
                 if (!isnan(humidity)) {
                     success = true;
                 }
             }
         } catch (...) {
-            // Handle any exceptions
             errorHandler->logError(ERROR, "Exception during Si7021 reading for sensor: " + name);
-            delay(20); // Additional delay on exception
+            delay(20);
         }
     }
     
-    // Check if readings were successful
     if (!success) {
-        // Both readings failed even after retries
         errorHandler->logError(ERROR, "Failed to read from Si7021 sensor: " + name + " after " + String(MAX_RETRIES) + " retries");
         const_cast<Si7021Sensor*>(this)->connected = false;
         return false;
     }
     
-    // Update stored values
     lastTemperature = temp;
     lastHumidity = humidity;
     unsigned long now = millis();
@@ -148,7 +91,6 @@ bool Si7021Sensor::updateReadings() const {
 }
 
 float Si7021Sensor::readTemperature() {
-    // Try to update both readings since they're related
     if (!updateReadings()) {
         return NAN;
     }
@@ -156,7 +98,6 @@ float Si7021Sensor::readTemperature() {
 }
 
 float Si7021Sensor::readHumidity() {
-    // Try to update both readings since they're related
     if (!updateReadings()) {
         return NAN;
     }
@@ -174,25 +115,6 @@ unsigned long Si7021Sensor::getHumidityTimestamp() const {
 bool Si7021Sensor::performSelfTest() {
     // Reset the connected state before test
     connected = false;
-    
-    // Store original Wire configuration
-    TwoWire* originalWire = &Wire;
-    bool needsWireReset = (wire != &Wire);
-    
-    if (needsWireReset) {
-        // Configure Wire for our sensor
-        const WireConfig* config = i2cManager->getWireConfig(i2cPort);
-        if (config) {
-            Wire.end();
-            Wire.begin(config->sdaPin, config->sclPin);
-            if (config->clockFrequency != 100000) {
-                Wire.setClock(config->clockFrequency);
-            }
-        } else {
-            errorHandler->logError(ERROR, "Failed to get Wire configuration for self-test");
-            return false;
-        }
-    }
     
     // Try to get both temperature and humidity readings
     bool success = updateReadings();
@@ -217,22 +139,6 @@ String Si7021Sensor::getSensorInfo() const {
     info += "Connected: " + String(connected ? "Yes" : "No") + "\n";
     
     if (connected) {
-        // Store original Wire configuration
-        TwoWire* originalWire = &Wire;
-        bool needsWireReset = (wire != &Wire);
-        
-        if (needsWireReset) {
-            // Configure Wire for our sensor
-            const WireConfig* config = i2cManager->getWireConfig(i2cPort);
-            if (config) {
-                Wire.end();
-                Wire.begin(config->sdaPin, config->sclPin);
-                if (config->clockFrequency != 100000) {
-                    Wire.setClock(config->clockFrequency);
-                }
-            }
-        }
-        
         info += "Temperature: " + String(lastTemperature) + " °C\n";
         info += "Humidity: " + String(lastHumidity) + " %\n";
         
@@ -283,40 +189,12 @@ bool Si7021Sensor::reinitialize() {
     // Add a small delay before reinitialization
     delay(50);
     
-    // Store original Wire configuration
-    TwoWire* originalWire = &Wire;
-    bool needsWireReset = (wire != &Wire);
-    
     // Try to initialize the sensor again
-    bool success = false;
-    
-    if (needsWireReset) {
-        // Configure Wire for our sensor
-        const WireConfig* config = i2cManager->getWireConfig(i2cPort);
-        if (config) {
-            Wire.end();
-            Wire.begin(config->sdaPin, config->sclPin);
-            if (config->clockFrequency != 100000) {
-                Wire.setClock(config->clockFrequency);
-            }
-        } else {
-            errorHandler->logError(ERROR, "Failed to get Wire configuration for reinitializing");
-            return false;
-        }
-    }
-    
-    // The Si7021 library doesn't support specifying the Wire instance
-    success = si7021.begin();
+    bool success = si7021.begin();
     
     if (success) {
         connected = true;
         errorHandler->logError(INFO, "Successfully reinitialized Si7021 sensor: " + name);
-        
-        // Read the serial number again to verify
-        uint32_t serialNumber = si7021.sernum_a;
-        errorHandler->logError(INFO, "Si7021 serial number after reinit: 0x" + String(serialNumber, HEX));
-        
-        // Update readings immediately
         updateReadings();
     } else {
         errorHandler->logError(ERROR, "Failed to reinitialize Si7021 sensor: " + name);

@@ -12,8 +12,8 @@
 #include "communication/CommunicationManager.h"
 
 // Define UART pins for debug output
-#define UART_TX_PIN 5   // GPIO 5
-#define UART_RX_PIN 16  // GPIO 16
+const int UART_TX_PIN = Constants::Pins::UART::TX;
+const int UART_RX_PIN = Constants::Pins::UART::RX;
 
 // Global components
 ErrorHandler* errorHandler = nullptr;

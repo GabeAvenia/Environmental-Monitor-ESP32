@@ -4,18 +4,17 @@
 #include <SPI.h>
 #include <vector>
 #include "../error/ErrorHandler.h"
+#include "Constants.h"
 
-// Define default SPI pins matching your working setup
-#define DEFAULT_SPI_MOSI_PIN 35
-#define DEFAULT_SPI_MISO_PIN 37
-#define DEFAULT_SPI_SCK_PIN 36
-#define DEFAULT_SPI_SS_PIN -1 //avoid auto-registration
+constexpr int DEFAULT_SPI_MOSI_PIN = Constants::Pins::SPI::MOSI;
+constexpr int DEFAULT_SPI_MISO_PIN = Constants::Pins::SPI::MISO;
+constexpr int DEFAULT_SPI_SCK_PIN = Constants::Pins::SPI::SCK;
+constexpr int DEFAULT_SPI_SS_PIN = -1;
 
-// Define the GPIO pins corresponding to A0-A3
-#define SS_PIN_A0 18  // GPIO18
-#define SS_PIN_A1 17  // GPIO17
-#define SS_PIN_A2 9   // GPIO9
-#define SS_PIN_A3 8   // GPIO8
+constexpr int SS_PIN_A0 = Constants::Pins::SPI::SS_A0;
+constexpr int SS_PIN_A1 = Constants::Pins::SPI::SS_A1;
+constexpr int SS_PIN_A2 = Constants::Pins::SPI::SS_A2;
+constexpr int SS_PIN_A3 = Constants::Pins::SPI::SS_A3;
 
 // Number of supported SS pins
 #define MAX_SS_PINS 4

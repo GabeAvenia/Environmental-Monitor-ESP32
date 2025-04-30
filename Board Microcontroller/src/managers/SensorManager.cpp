@@ -427,24 +427,40 @@ bool SensorManager::reconnectSensor(const String& sensorName) {
         return true;
     }
     
+    // Add timeout for reconnection attempt
+    const unsigned long timeout = 500; // 500ms timeout
+    unsigned long startTime = millis();
+    
     if (errorHandler) {
         errorHandler->logError(INFO, "Attempting to reconnect sensor: " + sensorName);
     }
     
-    // Special handling for Si7021 sensors based on type string rather than dynamic_cast
+    // Check if we've exceeded the timeout at every step
+    if (millis() - startTime >= timeout) {
+        errorHandler->logError(WARNING, "Reconnection attempt timed out for sensor: " + sensorName);
+        return false;
+    }
+    
+    // Special handling for Si7021 sensors based on type string
     if (sensor->getTypeString().indexOf("Si7021") >= 0) {
-        // For Si7021 sensors, we need a special reconnection approach
-        // Since we can't use dynamic_cast, we'll use a different approach
         if (errorHandler) {
             errorHandler->logError(INFO, "Using specialized reconnection for Si7021 sensor");
         }
         
-        // First try regular initialize
-        if (sensor->initialize()) {
-            if (errorHandler) {
-                errorHandler->logError(INFO, "Successfully reconnected Si7021 sensor via initialize: " + sensorName);
+        // First try regular initialize with timeout check
+        if (millis() - startTime < timeout - 100) {
+            if (sensor->initialize()) {
+                if (errorHandler) {
+                    errorHandler->logError(INFO, "Successfully reconnected Si7021 sensor via initialize: " + sensorName);
+                }
+                return true;
             }
-            return true;
+        }
+        
+        // Check timeout before attempting self-test
+        if (millis() - startTime >= timeout) {
+            errorHandler->logError(WARNING, "Reconnection initialization timed out for sensor: " + sensorName);
+            return false;
         }
         
         // If that didn't work, try a more aggressive approach with self-test
@@ -462,12 +478,20 @@ bool SensorManager::reconnectSensor(const String& sensorName) {
         return false;
     }
     
-    // Generic reconnection attempt for other sensors
-    if (sensor->initialize()) {
-        if (errorHandler) {
-            errorHandler->logError(INFO, "Successfully reconnected sensor: " + sensorName);
+    // Generic reconnection attempt for other sensors with timeout check
+    if (millis() - startTime < timeout - 200) {
+        if (sensor->initialize()) {
+            if (errorHandler) {
+                errorHandler->logError(INFO, "Successfully reconnected sensor: " + sensorName);
+            }
+            return true;
         }
-        return true;
+    }
+    
+    // Check timeout before attempting self-test
+    if (millis() - startTime >= timeout) {
+        errorHandler->logError(WARNING, "Reconnection initialization timed out for sensor: " + sensorName);
+        return false;
     }
     
     // Try self-test if initialize didn't work

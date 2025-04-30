@@ -4,6 +4,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <freertos/semphr.h>
+#include "Constants.h"
 
 // Forward declarations of manager classes
 class SensorManager;
@@ -26,19 +27,19 @@ public:
     static constexpr const char* TASK_NAME_LED = "LedTask";
     
     // Task stack sizes (in words) - increased for stability
-    static constexpr uint32_t STACK_SIZE_SENSOR = 6144;  // Increased from 4096
-    static constexpr uint32_t STACK_SIZE_COMM = 6144;    // Increased from 4096
-    static constexpr uint32_t STACK_SIZE_LED = 3072;     // Increased from 2048
+    static constexpr uint32_t STACK_SIZE_SENSOR = Constants::Tasks::STACK_SIZE_SENSOR;
+    static constexpr uint32_t STACK_SIZE_COMM = Constants::Tasks::STACK_SIZE_COMM;
+    static constexpr uint32_t STACK_SIZE_LED = Constants::Tasks::STACK_SIZE_LED;
     
     // Task priorities - keep lower than critical system tasks
-    static constexpr UBaseType_t PRIORITY_SENSOR = 2;    // Changed from 1
-    static constexpr UBaseType_t PRIORITY_COMM = 3;      // Changed from 2
-    static constexpr UBaseType_t PRIORITY_LED = 1;       // Same
+    static constexpr UBaseType_t PRIORITY_SENSOR = Constants::Tasks::PRIORITY_SENSOR;    // Changed from 1
+    static constexpr UBaseType_t PRIORITY_COMM = Constants::Tasks::PRIORITY_COMM;      // Changed from 2
+    static constexpr UBaseType_t PRIORITY_LED = Constants::Tasks::PRIORITY_LED;       // Same
     
     // Core assignments - change for proper distribution
-    static constexpr BaseType_t CORE_SENSOR = 0;  // Changed from Core 1 to Core 0
-    static constexpr BaseType_t CORE_COMM = 1;    // Changed from Core 0 to Core 1
-    static constexpr BaseType_t CORE_LED = 0;     // Same (Core 0)
+    static constexpr BaseType_t CORE_SENSOR = Constants::Tasks::CORE_SENSOR;  // Changed from Core 1 to Core 0
+    static constexpr BaseType_t CORE_COMM = Constants::Tasks::CORE_COMM;    // Changed from Core 0 to Core 1
+    static constexpr BaseType_t CORE_LED = Constants::Tasks::CORE_LED;     // Same (Core 0)
 
     /**
      * @brief Constructor for TaskManager

@@ -20,9 +20,27 @@ SHT41Sensor::~SHT41Sensor() {
 bool SHT41Sensor::initialize() {
     errorHandler->logError(INFO, "Initializing SHT41 sensor: " + name);
     
+    // Add timeout for sensor initialization
+    const unsigned long timeout = 1000; // 1 second timeout
+    unsigned long startTime = millis();
+    
     // The Adafruit SHT4x library supports passing a specific TwoWire instance
-    if (!sht4.begin(wire)) {
-        errorHandler->logError(ERROR, "Failed to initialize SHT41 sensor: " + name);
+    bool initResult = false;
+    
+    // Try to initialize with timeout
+    while (millis() - startTime < timeout) {
+        initResult = sht4.begin(wire);
+        if (initResult) {
+            break;
+        }
+        // Short delay before retry
+        delay(10);
+        // Feed the watchdog
+        yield();
+    }
+    
+    if (!initResult) {
+        errorHandler->logError(ERROR, "Failed to initialize SHT41 sensor: " + name + " (timed out)");
         connected = false;
         return false;
     }
@@ -34,8 +52,10 @@ bool SHT41Sensor::initialize() {
     connected = true;
     errorHandler->logError(INFO, "SHT41 sensor initialized successfully: " + name);
     
-    // Get initial readings
-    updateReadings();
+    // Only try to get initial readings if we have time left
+    if (millis() - startTime < timeout - 200) {
+        updateReadings();
+    }
     
     return true;
 }
@@ -48,9 +68,27 @@ bool SHT41Sensor::updateReadings() const {
     
     sensors_event_t humidity, temp;
     
-    // Non-const Adafruit API, we use mutable member and const_cast for internal state
-    if (!sht4.getEvent(&humidity, &temp)) {
-        errorHandler->logError(ERROR, "Failed to read from SHT41 sensor: " + name);
+    // Add timeout for sensor reading
+    const unsigned long timeout = 500; // 500ms timeout
+    unsigned long startTime = millis();
+    
+    bool readResult = false;
+    
+    // Try to read with timeout
+    while (millis() - startTime < timeout) {
+        // Non-const Adafruit API, we use mutable member and const_cast for internal state
+        readResult = sht4.getEvent(&humidity, &temp);
+        if (readResult) {
+            break;
+        }
+        // Short delay before retry
+        delay(5);
+        // Feed the watchdog
+        yield();
+    }
+    
+    if (!readResult) {
+        errorHandler->logError(ERROR, "Failed to read from SHT41 sensor: " + name + " (timed out)");
         const_cast<SHT41Sensor*>(this)->connected = false;
         return false;
     }

@@ -211,8 +211,8 @@ bool CommunicationManager::processCommand(const String& command, const std::vect
 
 void CommunicationManager::processCommandLine() {
     // Increased timeout and buffer size
-    constexpr unsigned long COMMAND_TIMEOUT_MS = 200;
-    constexpr size_t MAX_BUFFER_SIZE = 4096;          // 4KB 
+    constexpr unsigned long COMMAND_TIMEOUT_MS = Constants::Communication::COMMAND_TIMEOUT_MS;
+    constexpr size_t MAX_BUFFER_SIZE = Constants::Communication::MAX_BUFFER_SIZE;
     
     // Read a complete command with timeout
     String rawCommand = "";
@@ -376,8 +376,8 @@ bool CommunicationManager::handleMeasure(const std::vector<String>& params) {
 
 void CommunicationManager::collectSensorReadings(const String& sensorName, const String& measurements, std::vector<String>& values) {
     // Constants for retry logic
-    const int MAX_RETRIES = 4;
-    const int RETRY_DELAY_MS = 5;
+    const int MAX_RETRIES = Constants::Communication::MAX_READING_RETRIES;
+    const int RETRY_DELAY_MS = Constants::Communication::READING_RETRY_DELAY_MS;
     
     // Find the sensor
     ISensor* sensor = sensorManager->findSensor(sensorName);

@@ -4,6 +4,7 @@
 #include <map>
 #include <functional>
 #include <vector>
+#include "Constants.h"
 
 class SCPI_Parser;
 class SCPI_Commands;

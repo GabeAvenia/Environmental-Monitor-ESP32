@@ -48,9 +48,9 @@ bool ConfigManager::loadConfigFromFile() {
     errorHandler->logError(INFO, "Loading config file");
     
     // Define polling rate constraints
-    const uint32_t DEFAULT_POLLING_RATE = 1000;   // Default: 1 second
-    const uint32_t MIN_POLLING_RATE = 50;         // Minimum: 50ms
-    const uint32_t MAX_POLLING_RATE = 300000;     // Maximum: 5 minutes (300 seconds)
+    const uint32_t DEFAULT_POLLING_RATE = Constants::System::DEFAULT_POLLING_RATE_MS;
+    const uint32_t MIN_POLLING_RATE = Constants::System::MIN_POLLING_RATE_MS;
+    const uint32_t MAX_POLLING_RATE = Constants::System::MAX_POLLING_RATE_MS;
     
     // Check if config file exists
     if (!LittleFS.exists(Constants::CONFIG_FILE_PATH)) {
@@ -244,7 +244,7 @@ bool ConfigManager::loadConfigFromFile() {
 
 // Create a default configuration file
 bool ConfigManager::createDefaultConfig() {
-    const uint32_t DEFAULT_POLLING_RATE = 1000;  // Default: 1 second
+    const uint32_t DEFAULT_POLLING_RATE = Constants::System::DEFAULT_POLLING_RATE_MS;  // Default: 1 second
     
     JsonDocument doc;
     
