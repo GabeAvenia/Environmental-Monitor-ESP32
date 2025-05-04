@@ -3,18 +3,11 @@
 SPIManager::SPIManager(ErrorHandler* err) 
     : errorHandler(err),
       initialized(false),
-      mosiPin(DEFAULT_SPI_MOSI_PIN),  // GPIO37 (MOSI)
-      misoPin(DEFAULT_SPI_MISO_PIN),  // GPIO35 (MISO)
-      sckPin(DEFAULT_SPI_SCK_PIN),   // GPIO36 (SCK)
+      mosiPin(DEFAULT_SPI_MOSI_PIN),
+      misoPin(DEFAULT_SPI_MISO_PIN),
+      sckPin(DEFAULT_SPI_SCK_PIN),
       defaultSettings(1000000, MSBFIRST, SPI_MODE0) {
 }
-
-int SPIManager::ssPinMapping[MAX_SS_PINS] = {
-    SS_PIN_A0,  // Index 0 -> GPIO18 (A0)
-    SS_PIN_A1,  // Index 1 -> GPIO17 (A1)
-    SS_PIN_A2,  // Index 2 -> GPIO9  (A2)
-    SS_PIN_A3   // Index 3 -> GPIO8  (A3)
-};
 
 SPIManager::~SPIManager() {
     // Nothing to clean up
@@ -38,7 +31,6 @@ bool SPIManager::begin(int mosi, int miso, int sck) {
                           " MISO:" + String(misoPin) + 
                           " SCK:" + String(sckPin));
     
-    // Don't auto-register any SS pin
     return true;
 }
 
@@ -48,12 +40,7 @@ bool SPIManager::isInitialized() const {
 
 bool SPIManager::registerSSPin(int ssPin) {
     // Map logical index to physical pin if needed
-    int physicalPin = ssPin;
-    if (ssPin >= 0 && ssPin < MAX_SS_PINS) {
-        physicalPin = ssPinMapping[ssPin];
-        errorHandler->logError(INFO, "Mapping logical SS index " + String(ssPin) + 
-                             " to physical pin " + String(physicalPin));
-    }
+    int physicalPin = mapLogicalToPhysicalPin(ssPin);
     
     // Check if pin is already registered
     for (int pin : ssPins) {
@@ -81,10 +68,7 @@ bool SPIManager::beginTransaction(int ssPin, SPISettings settings) {
     }
     
     // Map logical index to physical pin if needed
-    int physicalPin = ssPin;
-    if (ssPin >= 0 && ssPin < MAX_SS_PINS) {
-        physicalPin = ssPinMapping[ssPin];
-    }
+    int physicalPin = mapLogicalToPhysicalPin(ssPin);
     
     // Make sure the SS pin is registered
     bool pinFound = false;
@@ -97,8 +81,8 @@ bool SPIManager::beginTransaction(int ssPin, SPISettings settings) {
     
     if (!pinFound) {
         // Auto-register the pin if not found
-        registerSSPin(ssPin); // This will handle the mapping
-        physicalPin = (ssPin >= 0 && ssPin < MAX_SS_PINS) ? ssPinMapping[ssPin] : ssPin;
+        registerSSPin(ssPin);
+        physicalPin = mapLogicalToPhysicalPin(ssPin);
     }
     
     // Begin transaction
@@ -110,10 +94,7 @@ bool SPIManager::beginTransaction(int ssPin, SPISettings settings) {
 
 void SPIManager::endTransaction(int ssPin) {
     // Map logical index to physical pin if needed
-    int physicalPin = ssPin;
-    if (ssPin >= 0 && ssPin < MAX_SS_PINS) {
-        physicalPin = ssPinMapping[ssPin];
-    }
+    int physicalPin = mapLogicalToPhysicalPin(ssPin);
     
     digitalWrite(physicalPin, HIGH); // Inactive state
     SPI.endTransaction();

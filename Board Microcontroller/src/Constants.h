@@ -127,7 +127,7 @@ namespace Constants {
     namespace Pins {
         // LED pins
         constexpr int NEOPIXEL_DATA = 39;      // Data pin for NeoPixel
-        #define NEOPIXEL_POWER 38      // Power pin for NeoPixel
+        constexpr int NEOPIXEL_PWR = 38;     // Power pin for NeoPixel
         // I2C buses
         namespace I2C {
             // Default I2C bus (I2C0)
@@ -145,11 +145,13 @@ namespace Constants {
             static const int MISO = 37;           // GPIO37
             static const int SCK = 36;            // GPIO36
             
-            // Logical to physical SS pin mapping
-            static const int SS_A0 = 18;          // GPIO18
-            static const int SS_A1 = 17;          // GPIO17
-            static const int SS_A2 = 9;           // GPIO9
-            static const int SS_A3 = 8;           // GPIO8
+            // SS pin mapping array - index is logical pin, value is physical GPIO pin
+            static constexpr int SS_PINS[] = {
+                18,  // Index 0 -> GPIO18
+                17,  // Index 1 -> GPIO17
+                9,   // Index 2 -> GPIO9
+                8    // Index 3 -> GPIO8
+            };
         }
         
         // Debug UART

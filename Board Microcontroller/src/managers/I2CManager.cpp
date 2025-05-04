@@ -113,7 +113,7 @@ bool I2CManager::scanBus(I2CPort port, std::vector<int>& addresses) {
     }
     
     if (addresses.empty()) {
-        errorHandler->logError(WARNING, "No I2C devices found on port " + portToString(port));
+        errorHandler->logError(INFO, "No I2C devices found on port " + portToString(port));
         return false;
     }
     

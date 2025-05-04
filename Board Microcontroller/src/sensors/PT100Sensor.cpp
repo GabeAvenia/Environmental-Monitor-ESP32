@@ -3,21 +3,22 @@
 PT100Sensor::PT100Sensor(const String& sensorName, int ssPinNum, SPIManager* spiMgr, ErrorHandler* err,
                         float referenceResistor, int wireCount)
     : BaseSensor(sensorName, SensorType::PT100_RTD, err),
-    max31865(ssPinNum), // Use the physical pin directly for MAX31865
+    max31865(spiMgr->mapLogicalToPhysicalPin(ssPinNum)), // Use the mapping function
     spiManager(spiMgr),
-    ssPin(ssPinNum),    // Store the physical pin
+    ssPin(ssPinNum),    // Store the logical pin
     rRef(referenceResistor),
     numWires(wireCount),
     lastTemperature(NAN),
     tempTimestamp(0) {
 
     // Log the physical pin being used
-    errorHandler->logError(INFO, "PT100 sensor using physical SS pin: " + String(ssPin));
-}
-
-PT100Sensor::~PT100Sensor() {
-    // Nothing to clean up
-}
+    int physicalPin = spiMgr->mapLogicalToPhysicalPin(ssPinNum);
+    errorHandler->logError(INFO, "PT100 sensor using physical SS pin: " + String(physicalPin) + 
+        " (logical pin: " + String(ssPinNum) + ")");
+    }
+    PT100Sensor::~PT100Sensor() {
+        // Nothing to clean up
+    }
 
 bool PT100Sensor::initialize() {
     errorHandler->logError(INFO, "Initializing PT100 RTD sensor: " + name + " on SS pin " + String(ssPin));

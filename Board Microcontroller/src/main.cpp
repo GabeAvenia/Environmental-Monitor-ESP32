@@ -109,13 +109,13 @@ void setup() {
     if (!spiManager->begin()) {
         errorHandler->logError(WARNING, "Failed to initialize SPI manager");
     } else {
-        // Register SS pins
-        for (int i = 0; i < MAX_SS_PINS; i++) {
+        // Register SS pins - using array size to determine how many pins to register
+        size_t numSsPins = sizeof(Constants::Pins::SPI::SS_PINS) / sizeof(int);
+        for (size_t i = 0; i < numSsPins; i++) {
             spiManager->registerSSPin(i);
         }
-        errorHandler->logError(INFO, "Registered logical SS pins 0-3");
+        errorHandler->logError(INFO, "Registered " + String(numSsPins) + " logical SS pins");
     }
-    
     // Give the system time to stabilize
     delay(20);
     

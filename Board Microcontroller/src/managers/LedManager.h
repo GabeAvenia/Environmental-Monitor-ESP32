@@ -64,7 +64,7 @@ public:
      * @param powerPin NeoPixel power pin (default: 38 for Adafruit QT Py ESP32-S3)
      * @param numLeds Number of NeoPixels (default: 1)
      */
-    LedManager(ErrorHandler* err, int pin = Constants::Pins::NEOPIXEL_DATA, int powerPin = NEOPIXEL_POWER, int numLeds = 1);
+    LedManager(ErrorHandler* err, int pin = Constants::Pins::NEOPIXEL_DATA, int powerPin = Constants::Pins::NEOPIXEL_PWR, int numLeds = 1);
     
     /**
      * @brief Destructor

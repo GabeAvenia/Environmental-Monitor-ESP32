@@ -79,7 +79,7 @@ ISensor* SensorFactory::createSensor(const SensorConfig& config) {
     }
 }
 
-// PT100 still needs special handling due to additional parameters
+// PT100 needs special handling due to additional parameters
 ISensor* SensorFactory::createPT100Sensor(const SensorConfig& config) {
     if (!config.isSPI) {
         errorHandler->logError(ERROR, "PT100 RTD requires SPI interface");
@@ -101,7 +101,10 @@ ISensor* SensorFactory::createPT100Sensor(const SensorConfig& config) {
     
     // Map the logical pin to physical pin
     int physicalSsPin = config.address;
-    if (config.address >= 0 && config.address < MAX_SS_PINS) {
+    
+    // Calculate the size of the SS_PINS array instead of using MAX_SS_PINS
+    size_t numSsPins = sizeof(Constants::Pins::SPI::SS_PINS) / sizeof(int);
+    if (config.address >= 0 && config.address < numSsPins) {
         physicalSsPin = spiManager->mapLogicalToPhysicalPin(config.address);
     }
     
