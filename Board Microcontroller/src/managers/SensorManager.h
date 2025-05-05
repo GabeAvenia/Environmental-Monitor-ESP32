@@ -3,7 +3,6 @@
  * @brief Central management system for sensor operations
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup sensor_management Sensor Management
  * @brief Components for managing sensors and their readings
  * @{
@@ -31,7 +30,6 @@
  
  /**
   * @brief Structure for caching sensor readings
-  * 
   * Used to store the most recent readings from sensors to avoid
   * frequent hardware reads and provide thread-safe access.
   */
@@ -46,7 +44,6 @@
  
  /**
   * @brief Manages sensor configuration, initialization, and readings
-  * 
   * This class serves as the central management system for all sensor operations:
   * - Initializes sensors based on configuration
   * - Provides thread-safe access to sensor readings
@@ -75,14 +72,12 @@
      
      /** 
       * @brief Maximum age of cached readings in milliseconds
-      * 
       * Readings older than this value will trigger a sensor refresh
       */
      unsigned long maxCacheAge = 5000;
      
      /**
       * @brief Get the active buffer being written to
-      * 
       * @return Reference to the active cache buffer
       */
      std::map<String, SensorCache>& getActiveCache() {
@@ -91,7 +86,6 @@
      
      /**
       * @brief Get the buffer for safe reading by other threads
-      * 
       * @return Const reference to the read cache buffer
       */
      const std::map<String, SensorCache>& getReadCache() const {
@@ -100,10 +94,8 @@
      
      /**
       * @brief Compare old and new sensor configurations
-      * 
       * Determines which sensors need to be added or removed when
       * reconfiguring the system.
-      * 
       * @param oldConfigs Previous sensor configurations
       * @param newConfigs New sensor configurations
       * @param toAdd [out] Output vector of sensors to add
@@ -117,7 +109,6 @@
      
      /**
       * @brief Test communication with an I2C device
-      * 
       * @param port I2C port to use
       * @param address I2C address to test
       * @return true if communication successful
@@ -126,7 +117,6 @@
      
      /**
       * @brief Test communication with an SPI device
-      * 
       * @param ssPin SPI slave select pin
       * @return true if communication successful
       */
@@ -134,7 +124,6 @@
      
      /**
       * @brief Update readings for a single sensor
-      * 
       * @param sensorName Name of the sensor to update
       * @return true if update successful
       */
@@ -143,7 +132,6 @@
  public:
      /**
       * @brief Constructor for SensorManager
-      * 
       * @param configMgr Configuration manager
       * @param i2c I2C manager
       * @param err Error handler
@@ -158,20 +146,16 @@
      
      /**
       * @brief Initialize all sensors from configuration
-      * 
       * Scans I2C and SPI buses for devices, then initializes sensors
       * based on the current configuration.
-      * 
       * @return true if at least one sensor initialized successfully
       */
      bool initializeSensors();
      
      /**
       * @brief Reconfigure sensors based on new configuration
-      * 
       * Updates the sensor configuration based on new JSON settings,
       * adding, removing, or reconfiguring sensors as needed.
-      * 
       * @param configJson New configuration in JSON format
       * @return true if reconfiguration successful
       */
@@ -179,20 +163,16 @@
      
      /**
       * @brief Update readings from all sensors
-      * 
       * Iterates through all sensors and updates their readings
       * in the active cache buffer, then atomically swaps buffers.
-      * 
       * @return Number of sensors successfully updated
       */
      int updateReadings();
      
      /**
       * @brief Get temperature reading in a thread-safe manner
-      * 
       * @param sensorName Name of the sensor
       * @return Temperature reading with validity information
-      * 
       * @code
       * // Example usage:
       * TemperatureReading temp = sensorManager.getTemperatureSafe("SHT41_1");
@@ -205,7 +185,6 @@
      
      /**
       * @brief Get humidity reading in a thread-safe manner
-      * 
       * @param sensorName Name of the sensor
       * @return Humidity reading with validity information
       */
@@ -213,28 +192,24 @@
      
      /**
       * @brief Set maximum age for cached readings
-      * 
       * @param maxAgeMs Maximum age in milliseconds
       */
      void setMaxCacheAge(unsigned long maxAgeMs) { maxCacheAge = maxAgeMs; }
      
      /**
       * @brief Get current maximum cache age
-      * 
       * @return Maximum age in milliseconds
       */
      unsigned long getMaxCacheAge() const { return maxCacheAge; }
      
      /**
       * @brief Get the sensor registry
-      * 
       * @return Reference to the sensor registry
       */
      const SensorRegistry& getRegistry() const;
      
      /**
       * @brief Find a sensor by name
-      * 
       * @param name Sensor name
       * @return Pointer to the sensor or nullptr if not found
       */
@@ -242,10 +217,8 @@
      
      /**
       * @brief Attempt to reconnect a disconnected sensor
-      * 
       * Tries to re-establish communication with a sensor that has
       * been marked as disconnected.
-      * 
       * @param sensorName Name of the sensor
       * @return true if reconnection successful
       */
@@ -253,7 +226,6 @@
      
      /**
       * @brief Attempt to reconnect all disconnected sensors
-      * 
       * @return Number of sensors successfully reconnected
       */
      int reconnectAllSensors();

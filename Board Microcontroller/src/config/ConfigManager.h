@@ -3,7 +3,6 @@
  * @brief Configuration management system
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup configuration Configuration Management
  * @brief Components for system configuration and persistence
  * @{
@@ -20,7 +19,6 @@
  
  /**
   * @brief Structure for sensor configurations
-  * 
   * Holds all configuration parameters for a specific sensor,
   * including communication settings and operational parameters.
   */
@@ -35,7 +33,6 @@
      
      /**
       * @brief Equality operator for comparing configurations
-      * 
       * @param other The configuration to compare with
       * @return true if configurations are identical
       */
@@ -51,7 +48,6 @@
      
      /**
       * @brief Inequality operator
-      * 
       * @param other The configuration to compare with
       * @return true if configurations differ in any way
       */
@@ -62,14 +58,12 @@
  
  /**
   * @brief Callback function type for configuration changes
-  * 
   * Used to notify interested parties when configuration changes.
   */
  typedef void (*ConfigChangeCallback)(const String& newConfig);
  
  /**
   * @brief Manages system configuration and persistence
-  * 
   * This class handles loading, saving, and modifying the system configuration,
   * including sensors, identification, and general settings. It provides a 
   * JSON-based interface for configuration updates.
@@ -108,21 +102,18 @@
      
      /**
       * @brief Load configuration from file
-      * 
       * @return true if loading succeeded
       */
      bool loadConfigFromFile();
      
      /**
       * @brief Create default configuration
-      * 
       * @return true if creation succeeded
       */
      bool createDefaultConfig();
      
      /**
       * @brief Notify all registered callbacks about configuration changes
-      * 
       * @param newConfig The new configuration JSON
       */
      void notifyConfigChanged(const String& newConfig);
@@ -138,27 +129,22 @@
  public:
      /**
       * @brief Constructor
-      * 
       * @param err Pointer to error handler
       */
      ConfigManager(ErrorHandler* err);
      
      /**
       * @brief Initialize the configuration manager
-      * 
       * Loads the configuration from file or creates a default one
       * if none exists.
-      * 
       * @return true if initialization succeeded
       */
      bool begin();
      
      /**
       * @brief Enable or disable notifications
-      * 
       * Used to prevent recursive notifications during complex
       * configuration updates.
-      * 
       * @param disable Whether to disable notifications
       */
      void disableNotifications(bool disable);
@@ -170,14 +156,12 @@
      
      /**
       * @brief Get the board identifier
-      * 
       * @return The board's unique identifier
       */
      String getBoardIdentifier();
      
      /**
       * @brief Set the board identifier
-      * 
       * @param identifier The new identifier
       * @return true if update succeeded
       */
@@ -191,14 +175,12 @@
      
      /**
       * @brief Get all sensor configurations
-      * 
       * @return Vector of sensor configurations
       */
      std::vector<SensorConfig> getSensorConfigs();
      
      /**
       * @brief Update sensor configurations
-      * 
       * @param configs Vector of new sensor configurations
       * @return true if update succeeded
       */
@@ -212,14 +194,12 @@
      
      /**
       * @brief Get complete configuration as JSON
-      * 
       * @return Configuration JSON string
       */
      String getConfigJson();
      
      /**
       * @brief Update configuration from JSON
-      * 
       * @param jsonConfig Complete configuration JSON
       * @return true if update succeeded
       */
@@ -233,7 +213,6 @@
      
      /**
       * @brief Update only sensor configuration from JSON
-      * 
       * @param jsonConfig Sensor configuration JSON
       * @return true if update succeeded
       */
@@ -241,7 +220,6 @@
      
      /**
       * @brief Update only additional configuration
-      * 
       * @param jsonConfig Additional configuration JSON
       * @return true if update succeeded
       */
@@ -255,7 +233,6 @@
      
      /**
       * @brief Register callback for configuration changes
-      * 
       * @param callback Function to call when configuration changes
       */
      void registerChangeCallback(ConfigChangeCallback callback);

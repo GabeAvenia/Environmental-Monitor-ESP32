@@ -3,7 +3,6 @@
  * @brief Manager for SPI bus communications
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup spi_management SPI Management
  * @ingroup communication
  * @brief Components for managing SPI bus and device communications
@@ -30,7 +29,6 @@
  
  /**
   * @brief Class for managing SPI communications with sensors
-  * 
   * This class provides a centralized management system for SPI communications,
   * handling bus initialization, device selection, and transaction management.
   */
@@ -64,10 +62,8 @@
  public:
      /**
       * @brief Map a logical SS pin index to a physical pin number
-      * 
       * Converts a logical pin index (0, 1, 2, etc.) to the corresponding
       * physical GPIO pin number from the Constants::Pins::SPI::SS_PINS array.
-      * 
       * @param logicalPin The logical SS pin index
       * @return The physical pin number
       */
@@ -81,7 +77,6 @@
  
      /**
       * @brief Constructor for SPIManager
-      * 
       * @param err Pointer to the error handler for logging
       */
      SPIManager(ErrorHandler* err);
@@ -93,9 +88,7 @@
      
      /**
       * @brief Initialize the SPI bus
-      * 
       * Initializes the SPI bus with the specified pin assignments.
-      * 
       * @param mosi The MOSI pin number (default: Constants::Pins::SPI::MOSI)
       * @param miso The MISO pin number (default: Constants::Pins::SPI::MISO)
       * @param sck The SCK pin number (default: Constants::Pins::SPI::SCK)
@@ -106,16 +99,13 @@
      
      /**
       * @brief Check if SPI bus is initialized
-      * 
       * @return true if SPI is initialized, false otherwise
       */
      bool isInitialized() const;
      
      /**
       * @brief Register an SS pin for use with SPI
-      * 
       * Configures the specified pin as an output for use as an SPI slave select.
-      * 
       * @param ssPin The SS pin to register (logical index or physical pin)
       * @return true if registration succeeded, false otherwise
       */
@@ -123,9 +113,7 @@
      
      /**
       * @brief Begin an SPI transaction
-      * 
       * Begins an SPI transaction with the specified SS pin and settings.
-      * 
       * @param ssPin The SS pin to use (logical index or physical pin)
       * @param settings The SPI settings to use (default: SPISettings())
       * @return true if transaction initialization succeeded, false otherwise
@@ -134,16 +122,13 @@
      
      /**
       * @brief End an SPI transaction
-      * 
       * Ends the current SPI transaction and deselects the specified SS pin.
-      * 
       * @param ssPin The SS pin to deselect (logical index or physical pin)
       */
      void endTransaction(int ssPin);
      
      /**
       * @brief Transfer a single byte over SPI
-      * 
       * @param data The byte to send
       * @return The byte received during the transfer
       */
@@ -151,7 +136,6 @@
      
      /**
       * @brief Transfer multiple bytes over SPI
-      * 
       * @param buffer Pointer to the data buffer (in-place transfer)
       * @param size Number of bytes to transfer
       */
@@ -159,9 +143,7 @@
      
      /**
       * @brief Test if an SPI device is present
-      * 
       * Performs a simple test to check if a device is responding on the specified SS pin.
-      * 
       * @param ssPin The SS pin to test (logical index or physical pin)
       * @return true if device appears to be present, false otherwise
       * @note This test may not be reliable for all devices
@@ -170,21 +152,18 @@
      
      /**
       * @brief Get the SPI class instance
-      * 
       * @return Reference to the SPI instance
       */
      SPIClass& getSPI();
      
      /**
       * @brief Get the MOSI pin
-      * 
 * @return The MISO pin number
      */
     int getMisoPin() const { return misoPin; }
     
     /**
      * @brief Get the SCK pin
-     * 
      * @return The SCK pin number
      */
     int getSckPin() const { return sckPin; }

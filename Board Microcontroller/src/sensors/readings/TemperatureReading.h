@@ -3,7 +3,6 @@
  * @brief Structure for temperature reading data
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup sensor_readings Sensor Readings
  * @ingroup sensors
  * @brief Data structures for sensor measurements
@@ -16,7 +15,6 @@
  
  /**
   * @brief Structure to hold temperature reading data
-  * 
   * Contains the temperature value, timestamp, and validity information.
   * Used to safely pass temperature readings between components.
   */
@@ -33,7 +31,6 @@
      
      /**
       * @brief Create a new temperature reading
-      * 
       * @param temp Temperature value in degrees Celsius
       * @param time Timestamp when reading was taken (default: current time)
       */
@@ -42,7 +39,6 @@
          
      /**
       * @brief Convert the reading to a string representation
-      * 
       * @return A string representation of the temperature reading
       */
      String toString() const {

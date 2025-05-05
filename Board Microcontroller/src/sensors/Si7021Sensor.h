@@ -11,7 +11,6 @@
 
 /**
  * @brief Implementation of the Si7021 temperature and humidity sensor.
- * 
  * This class provides access to the Si7021 sensor, which can measure
  * both temperature and humidity.
  */
@@ -31,7 +30,6 @@ private:
     
     /**
      * @brief Update both temperature and humidity readings from the sensor.
-     * 
      * @return True if the readings were successfully updated, false otherwise.
      */
     bool updateReadings() const;
@@ -39,7 +37,6 @@ private:
 public:
     /**
      * @brief Constructor for Si7021Sensor.
-     * 
      * @param sensorName Name/identifier for this sensor instance.
      * @param address I2C address of the sensor.
      * @param i2cBus The I2C bus to use.
@@ -57,56 +54,48 @@ public:
     
     /**
      * @brief Initialize the sensor hardware.
-     * 
      * @return true if initialization succeeded, false otherwise.
      */
     bool initialize() override;
     
     /**
      * @brief Read the current temperature value from the sensor.
-     * 
      * @return The temperature in degrees Celsius, or NAN if reading failed.
      */
     float readTemperature() override;
     
     /**
      * @brief Read the current humidity value from the sensor.
-     * 
      * @return The relative humidity as a percentage (0-100), or NAN if reading failed.
      */
     float readHumidity() override;
     
     /**
      * @brief Get the timestamp of the last temperature reading.
-     * 
      * @return Timestamp in milliseconds (from millis()).
      */
     unsigned long getTemperatureTimestamp() const override;
     
     /**
      * @brief Get the timestamp of the last humidity reading.
-     * 
      * @return Timestamp in milliseconds (from millis()).
      */
     unsigned long getHumidityTimestamp() const override;
     
     /**
      * @brief Perform a self-test to verify the sensor is functioning properly.
-     * 
      * @return true if the self-test passed, false otherwise.
      */
     bool performSelfTest() override;
     
     /**
      * @brief Get detailed information about the sensor.
-     * 
      * @return A string containing sensor information.
      */
     String getSensorInfo() const override;
     
     /**
      * @brief Check if this sensor supports a specific interface.
-     * 
      * @param type The interface type to check for.
      * @return true if the sensor supports the interface, false otherwise.
      */
@@ -114,7 +103,6 @@ public:
     
     /**
      * @brief Get the interface implementation for a specific type.
-     * 
      * @param type The interface type to get.
      * @return Pointer to the interface, or nullptr if not supported.
      */
@@ -122,7 +110,6 @@ public:
     
     /**
      * @brief Re-initialize the sensor after a communication failure
-     * 
      * @return true if re-initialization was successful
      */
     bool reinitialize();

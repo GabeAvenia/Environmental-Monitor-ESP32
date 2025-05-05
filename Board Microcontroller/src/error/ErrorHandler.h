@@ -3,7 +3,6 @@
  * @brief Error logging and reporting system with configurable output streams
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup error_handling Error Handling
  * @brief Components for error logging, reporting, and recovery
  * @{
@@ -19,7 +18,6 @@
  
  /**
   * @brief Error severity levels
-  * 
   * Defines the different severity levels for error messages,
   * in order of increasing severity.
   */
@@ -32,7 +30,6 @@
  
  /**
   * @brief Structure to hold error information
-  * 
   * Contains all relevant information about an error event
   * including severity, message, and timestamp.
   */
@@ -44,7 +41,6 @@
  
  /**
   * @brief Structure to hold output configuration
-  * 
   * Configures an output stream with the minimum severity level
   * to be routed to that output.
   */
@@ -55,7 +51,6 @@
  
  /**
   * @brief Handles error logging and reporting with configurable output streams
-  * 
   * This class manages error reporting and logging throughout the system,
   * providing a centralized mechanism for error handling. It supports:
   * - Multiple configurable output streams with severity filtering
@@ -112,7 +107,6 @@
    
    /**
     * @brief Constructor for ErrorHandler with output stream routing
-    * 
     * @param output Main output stream for errors (typically USB Serial)
     * @param debugOutput Secondary output stream for debug messages (typically UART)
     */
@@ -120,7 +114,6 @@
    
    /**
     * @brief Set the minimum severity level for a specific output stream
-    * 
     * @param output The output stream to configure
     * @param minSeverity The minimum severity level to route to this output
     */
@@ -134,21 +127,17 @@
  
    /**
     * @brief Enable or disable custom routing
-    * 
     * When enabled, messages are routed to their configured streams.
     * When disabled, all messages go to the default output stream.
-    * 
     * @param enable True to enable custom routing, false to disable
     */
    void enableCustomRouting(bool enable = true);
    
    /**
     * @brief Log a message with specified severity
-    * 
     * Logs a message to the appropriate output streams based on severity
     * and routing configuration. Also triggers visual indication via LED
     * if available and if severity warrants it.
-    * 
     * @param severity The severity level (INFO, WARNING, ERROR, FATAL)
     * @param message The message to log
     * @return true if a FATAL error was logged (for caller to take action)

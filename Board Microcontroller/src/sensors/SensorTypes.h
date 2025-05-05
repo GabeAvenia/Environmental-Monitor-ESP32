@@ -3,7 +3,6 @@
  * @brief Enumeration of supported sensor types
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup sensor_types Sensor Types
  * @ingroup sensors
  * @brief Supported sensor type definitions
@@ -14,7 +13,6 @@
 
  /**
   * @brief Enumeration of supported sensor types
-  * 
   * This enum defines the sensor models that the system can work with.
   * When adding support for a new sensor model, add it here.
   */
@@ -27,7 +25,6 @@
  
  /**
   * @brief Convert a string sensor type to the enum representation
-  * 
   * @param typeStr The string representation of the sensor type
   * @return The corresponding SensorType enum value, or UNKNOWN if not recognized
   */
@@ -46,7 +43,6 @@
  
  /**
   * @brief Convert a SensorType enum to its string representation
-  * 
   * @param type The SensorType enum value
   * @return The string representation of the sensor type
   */

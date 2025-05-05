@@ -3,7 +3,6 @@
  * @brief Enumeration of sensor interface types
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup sensor_interfaces Sensor Interfaces
  * @ingroup sensors
  * @brief Interface definitions for sensor capabilities
@@ -14,7 +13,6 @@
 
  /**
   * @brief Enumeration of interface types that sensors can implement
-  * 
   * Defines the different measurement capabilities that sensors
   * may support. Used for runtime interface discovery.
   */

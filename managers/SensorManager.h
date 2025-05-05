@@ -26,7 +26,6 @@ private:
     
     /**
      * @brief Compare old and new configurations to identify sensors to add, remove, or reconfigure.
-     * 
      * @param oldConfigs Vector of previous sensor configurations.
      * @param newConfigs Vector of new sensor configurations.
      * @param toAdd Output vector that will be filled with configurations to add.
@@ -41,7 +40,6 @@ private:
     
     /**
      * @brief Test I2C communication with a sensor at the specified address.
-     * 
      * @param address The I2C address to test.
      * @return true if communication successful, false otherwise.
      */
@@ -50,7 +48,6 @@ private:
 public:
     /**
      * @brief Constructor for SensorManager.
-     * 
      * @param configMgr Pointer to the configuration manager.
      * @param i2c Pointer to the I2C manager.
      * @param err Pointer to the error handler.
@@ -64,14 +61,12 @@ public:
     
     /**
      * @brief Initialize all sensors based on current configuration.
-     * 
      * @return true if at least some sensors were initialized, false if all failed.
      */
     bool initializeSensors();
     
     /**
      * @brief Reconfigure sensors based on a new JSON configuration.
-     * 
      * @param configJson The new sensor configuration as a JSON string.
      * @return true if reconfiguration was successful, false otherwise.
      */
@@ -79,14 +74,12 @@ public:
     
     /**
      * @brief Update readings from all sensors.
-     * 
      * @return Number of sensors successfully updated.
      */
     int updateReadings();
     
     /**
      * @brief Get the latest temperature reading from a specific sensor.
-     * 
      * @param sensorName The name of the sensor to read from.
      * @return The temperature reading.
      */
@@ -94,7 +87,6 @@ public:
     
     /**
      * @brief Get the latest humidity reading from a specific sensor.
-     * 
      * @param sensorName The name of the sensor to read from.
      * @return The humidity reading.
      */
@@ -102,14 +94,12 @@ public:
     
     /**
      * @brief Get the sensor registry.
-     * 
      * @return Reference to the sensor registry.
      */
     const SensorRegistry& getRegistry() const;
     
     /**
      * @brief Find a sensor by name.
-     * 
      * @param name The name of the sensor to find.
      * @return Pointer to the sensor, or nullptr if not found.
      */

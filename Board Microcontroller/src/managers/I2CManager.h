@@ -3,7 +3,6 @@
  * @brief Manager for I2C bus communication and device access
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup i2c_management I2C Management
  * @ingroup communication
  * @brief Components for managing I2C buses and communications
@@ -20,7 +19,6 @@
  
  /**
   * @brief I2C port identifiers for different buses
-  * 
   * Defines the available I2C buses in the system, including
   * both physical buses and multiplexed channels.
   */
@@ -34,7 +32,6 @@
  
  /**
   * @brief Configuration parameters for a TwoWire instance
-  * 
   * Holds configuration data for an I2C bus, including pin assignments,
   * initialization state, and clock frequency.
   */
@@ -53,7 +50,6 @@
      
      /**
       * @brief Constructor with parameters
-      * 
       * @param w Pointer to TwoWire instance
       * @param sda SDA pin number
       * @param scl SCL pin number
@@ -65,7 +61,6 @@
  
  /**
   * @brief Manages I2C bus configurations and communication
-  * 
   * This class provides a central management system for I2C buses,
   * handling bus initialization, device detection, and providing
   * a unified interface for working with multiple I2C buses.
@@ -85,9 +80,7 @@
  public:
      /**
       * @brief Constructor for I2CManager
-      * 
       * Initializes the manager and registers default I2C buses.
-      * 
       * @param err Pointer to the error handler for logging
       */
      I2CManager(ErrorHandler* err);
@@ -99,10 +92,8 @@
      
      /**
       * @brief Register a TwoWire instance for a specific I2C port
-      * 
       * Associates a TwoWire instance with a specific I2C port identifier
       * and configures its pins and clock frequency.
-      * 
       * @param port The I2C port identifier
       * @param wire Pointer to the TwoWire instance
       * @param sdaPin The SDA pin number for this bus
@@ -114,19 +105,15 @@
      
      /**
       * @brief Initialize default I2C buses
-      * 
       * Initializes all registered I2C buses with their configured
       * pin assignments and settings.
-      * 
       * @return true if at least one bus was initialized, false if all failed
       */
      bool begin();
      
      /**
       * @brief Initialize a specific I2C bus
-      * 
       * Initializes only the specified I2C bus with its configured settings.
-      * 
       * @param port The I2C port to initialize
       * @return true if initialization succeeded, false otherwise
       */
@@ -134,7 +121,6 @@
      
      /**
       * @brief Check if a specific I2C port is initialized
-      * 
       * @param port The I2C port to check
       * @return true if the port is initialized, false otherwise
       */
@@ -142,10 +128,8 @@
      
      /**
       * @brief Scan an I2C bus for devices
-      * 
       * Scans the specified I2C bus for connected devices and returns
       * a list of discovered I2C addresses.
-      * 
       * @param port The I2C port to scan
       * @param addresses Output vector that will be filled with found addresses
       * @return true if at least one device was found, false otherwise
@@ -154,7 +138,6 @@
      
      /**
       * @brief Get the TwoWire object for a specific I2C port
-      * 
       * @param port The I2C port
       * @return Pointer to the TwoWire object, or nullptr if not initialized
       */
@@ -162,7 +145,6 @@
      
      /**
       * @brief Get the configuration for a specific I2C port
-      * 
       * @param port The I2C port
       * @return The WireConfig structure, or nullptr if not registered
       */
@@ -170,7 +152,6 @@
      
      /**
       * @brief Check if a device is present at the specified address on a specific I2C port
-      * 
       * @param port The I2C port to check
       * @param address The I2C address to check
       * @return true if a device is present, false otherwise
@@ -179,7 +160,6 @@
      
      /**
       * @brief Convert a string port name to I2CPort enum
-      * 
       * @param portName The string port name (e.g., "I2C0", "I2C1")
       * @return The corresponding I2CPort enum value
       */
@@ -187,7 +167,6 @@
      
      /**
       * @brief Convert I2CPort enum to string
-      * 
       * @param port The I2CPort enum value
       * @return The string representation of the port
       */

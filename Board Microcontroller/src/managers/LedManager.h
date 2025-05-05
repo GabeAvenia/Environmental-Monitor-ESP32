@@ -3,7 +3,6 @@
  * @brief Manager for controlling the onboard NeoPixel LED
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup led_management LED Management
  * @brief Components for controlling the system's LED indicators
  * @{
@@ -18,7 +17,6 @@
  
  /**
   * @brief Manager for controlling the onboard NeoPixel LED
-  * 
   * This class provides a unified interface for controlling the system's LED
   * indicator, including state indication, error notification, and visual feedback.
   */
@@ -94,7 +92,6 @@
      
      /**
       * @brief Set a solid color on the NeoPixel
-      * 
       * @param color The color value (32-bit, format: 0x00RRGGBB)
       * @param brightness The brightness level (0-255)
       */
@@ -103,7 +100,6 @@
  public:
      /**
       * @brief Constructor for LedManager
-      * 
       * @param err Pointer to the error handler for logging
       * @param pin NeoPixel data pin (default: Constants::Pins::NEOPIXEL_DATA)
       * @param powerPin NeoPixel power pin (default: Constants::Pins::NEOPIXEL_PWR)
@@ -119,23 +115,19 @@
      
      /**
       * @brief Initialize the LED manager
-      * 
       * Sets up the NeoPixel hardware and initializes the LED to setup mode.
-      * 
       * @return true if initialization succeeded, false otherwise
       */
      bool begin();
      
      /**
       * @brief Set LED to setup mode (solid yellow)
-      * 
       * Used during system initialization to indicate setup in progress.
       */
      void setSetupMode();
      
      /**
       * @brief Set LED to normal operation mode (solid green)
-      * 
       * Used during normal operation to indicate system is functioning properly.
       * Will not override fatal error state if active.
       */
@@ -143,7 +135,6 @@
      
      /**
       * @brief Pulse LED to indicate sensor reading
-      * 
       * Briefly flashes the LED brighter to indicate sensor activity.
       * Will not override fatal error or warning/error indications.
       */
@@ -151,7 +142,6 @@
      
      /**
       * @brief Start identification mode (flashing blue)
-      * 
       * Flashes the LED blue to help identify a specific unit.
       * Will not override fatal error state if active.
       */
@@ -159,7 +149,6 @@
      
      /**
       * @brief Indicate a warning (orange LED for 2 seconds)
-      * 
       * Shows an orange indicator to indicate a warning condition.
       * Will not override fatal error state if active.
       */
@@ -167,7 +156,6 @@
      
      /**
       * @brief Indicate an error (red LED for 2 seconds)
-      * 
       * Shows a red indicator to indicate an error condition.
       * Will not override fatal error state if active.
       */
@@ -175,7 +163,6 @@
      
      /**
       * @brief Indicate a fatal error (permanent red LED)
-      * 
       * Shows a permanent red indicator to indicate a fatal error condition.
       * This state overrides all other states and remains until system restart.
       */
@@ -183,7 +170,6 @@
      
      /**
       * @brief Main update function for LED animations
-      * 
       * Must be called regularly from loop() or a task to update LED
       * animations and state transitions.
       */
@@ -191,14 +177,12 @@
      
      /**
       * @brief Check if identification sequence is currently active
-      * 
       * @return true if identify mode is active, false otherwise
       */
      bool isIdentifying() const;
      
      /**
       * @brief Check if a fatal error is currently being indicated
-      * 
       * @return true if in fatal error state
       */
      bool isFatalError() const;

@@ -510,7 +510,6 @@ bool SensorManager::reconnectSensor(const String& sensorName) {
 
 /**
  * @brief Attempt to reconnect all disconnected sensors
- * 
  * @return The number of successfully reconnected sensors
  */
 int SensorManager::reconnectAllSensors() {

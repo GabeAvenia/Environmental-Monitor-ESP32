@@ -3,7 +3,6 @@
  * @brief FreeRTOS task management for multi-core operation
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup task_management Task Management
  * @brief Components for managing FreeRTOS tasks and synchronization
  * @{
@@ -25,7 +24,6 @@
  
  /**
   * @brief Manages FreeRTOS tasks in a multi-core environment
-  * 
   * This class provides a clean interface for creating and managing tasks
   * on specific cores of the ESP32, ensuring proper initialization, priority
   * handling, and synchronization between tasks.
@@ -70,7 +68,6 @@
  
      /**
       * @brief Constructor for TaskManager
-      * 
       * @param sensorMgr Pointer to the SensorManager
       * @param commMgr Pointer to the CommunicationManager
       * @param ledMgr Pointer to the LedManager
@@ -86,63 +83,54 @@
      
      /**
       * @brief Initialize the task manager and create synchronization primitives
-      * 
       * @return true on success, false on failure
       */
      bool begin();
      
      /**
       * @brief Start all tasks on their respective cores
-      * 
       * @return true on success, false on failure
       */
      bool startAllTasks();
      
      /**
       * @brief Start only the LED task (simplest, lowest risk)
-      * 
       * @return true on success, false on failure
       */
      bool startLedTask();
      
      /**
       * @brief Start only the sensor task
-      * 
       * @return true on success, false on failure
       */
      bool startSensorTask();
      
      /**
       * @brief Start only the communication task
-      * 
       * @return true on success, false on failure
       */
      bool startCommTask();
      
      /**
       * @brief Check if all tasks are running
-      * 
       * @return true if all tasks are running, false otherwise
       */
      bool areAllTasksRunning() const;
      
      /**
       * @brief Get the status of all tasks
-      * 
       * @return String containing status information for all tasks
       */
      String getTaskStatusString() const;
      
      /**
       * @brief Get the memory usage of all tasks
-      * 
       * @return String containing memory usage information for all tasks
       */
      String getTaskMemoryInfo() const;
      
      /**
       * @brief Get the FreeRTOS task state as a string
-      * 
       * @param handle The task handle
       * @return String representing the task state
       */

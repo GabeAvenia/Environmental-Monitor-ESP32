@@ -3,7 +3,6 @@
  * @brief Factory for creating sensor instances
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup sensor_factory Sensor Factory
  * @ingroup sensors
  * @brief Components for dynamic sensor creation
@@ -28,7 +27,6 @@
  
  /**
   * @brief Factory class for creating sensors based on configuration
-  * 
   * This class is responsible for creating instances of different sensor types
   * based on configuration data. It encapsulates knowledge of specific sensor
   * implementations and their initialization requirements.
@@ -52,7 +50,6 @@
      
      /**
       * @brief Create a sensor using the template method pattern
-      * 
       * @tparam SensorType The type of sensor to create
       * @param config The sensor configuration
       * @return Pointer to the created sensor, or nullptr if creation failed
@@ -62,9 +59,7 @@
      
      /**
       * @brief Create a PT100 RTD sensor instance
-      * 
       * Special case for PT100 sensors that need additional parameters.
-      * 
       * @param config The sensor configuration
       * @return Pointer to the created sensor, or nullptr if creation failed
       */
@@ -72,7 +67,6 @@
      
      /**
       * @brief Parse additional settings for PT100 sensors
-      * 
       * @param additional The additional settings string
       * @param refResistor Output parameter for reference resistor value
       * @param wireMode Output parameter for wire mode
@@ -84,7 +78,6 @@
  public:
      /**
       * @brief Constructor for SensorFactory
-      * 
       * @param err Pointer to the error handler for logging
       * @param i2c Pointer to the I2C manager for I2C communication
       * @param spi Pointer to the SPI manager for SPI communication (optional)
@@ -93,17 +86,14 @@
      
      /**
       * @brief Set the SPI manager
-      * 
       * @param spi Pointer to the SPI manager
      */
     void setSPIManager(SPIManager* spi);
     
     /**
      * @brief Create a sensor instance based on the provided configuration
-     * 
      * Factory method that creates and returns an appropriate sensor instance
      * based on the configuration type and parameters.
-     * 
      * @param config The sensor configuration
      * @return Pointer to the created sensor, or nullptr if creation failed
      */

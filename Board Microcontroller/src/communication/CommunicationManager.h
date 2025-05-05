@@ -3,7 +3,6 @@
  * @brief Manager for external communications and command processing
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @defgroup communication Communication
  * @brief Components for managing external communications
  * @{
@@ -30,7 +29,6 @@
  
  /**
   * @brief Command Handler function signature
-  * 
   * @param params Vector of string parameters from the command
   * @return true if command was successfully processed
   */
@@ -38,7 +36,6 @@
  
  /**
   * @brief Manages communication with external systems using SCPI commands
-  * 
   * Processes incoming commands through both a custom command handler and SCPI parser,
   * providing a unified interface for controlling the device via serial. Supports
   * custom command processing and SCPI standards compliance.
@@ -87,7 +84,6 @@
  
      /**
       * @brief Collect readings from a sensor into a values vector
-      * 
       * @param sensorName The name of the sensor to read from
       * @param measurements The measurements to read (comma-separated or empty for all)
       * @param values Vector to collect the values into
@@ -97,7 +93,6 @@
  public:
      /**
       * @brief Constructor for CommunicationManager
-      * 
       * @param sensorMgr Pointer to sensor manager
       * @param configMgr Pointer to configuration manager
       * @param err Pointer to error handler
@@ -108,7 +103,6 @@
      
      /**
       * @brief Initialize the communication system
-      * 
       * @param baudRate Serial communication baud rate
       */
      void begin(long baudRate);
@@ -125,7 +119,6 @@
      
      /**
       * @brief Set the LED manager
-      * 
       * @param led Pointer to LED manager
       */
      void setLedManager(LedManager* led);
@@ -137,7 +130,6 @@
      
      /**
       * @brief Parse a raw command string into command and parameters
-      * 
       * @param rawCommand The full command string
       * @param command Output parameter for the extracted command
       * @param params Output parameter for the extracted parameters
@@ -146,7 +138,6 @@
  
      /**
       * @brief Process a command using the registered handler
-      * 
       * @param command The command to process
       * @param params The command parameters
       * @return true if command was found and processed successfully
@@ -160,7 +151,6 @@
      
      /**
       * @brief Handle device identification command (*IDN?)
-      * 
       * @param params Command parameters (not used)
       * @return true if command processed successfully
       */
@@ -168,7 +158,6 @@
      
      /**
       * @brief Handle measurement query command (MEAS?)
-      * 
       * @param params Sensor and measurement parameters
       * @return true if command processed successfully
       */
@@ -176,7 +165,6 @@
      
      /**
       * @brief Handle sensor listing command (SYST:SENS:LIST?)
-      * 
       * @param params Command parameters (not used)
       * @return true if command processed successfully
       */
@@ -184,7 +172,6 @@
      
      /**
       * @brief Handle configuration query command (SYST:CONF?)
-      * 
       * @param params Command parameters (not used)
       * @return true if command processed successfully
       */
@@ -192,7 +179,6 @@
      
      /**
       * @brief Handle board ID setting command (SYST:CONF:BOARD:ID)
-      * 
       * @param params Board ID parameter
       * @return true if command processed successfully
       */
@@ -200,7 +186,6 @@
      
      /**
       * @brief Handle configuration update command (SYST:CONF:UPDATE)
-      * 
       * @param params Configuration JSON
       * @return true if command processed successfully
       */
@@ -208,7 +193,6 @@
      
      /**
       * @brief Handle sensor configuration update command (SYST:CONF:SENS:UPDATE)
-      * 
       * @param params Sensor configuration JSON
       * @return true if command processed successfully
       */
@@ -216,7 +200,6 @@
      
      /**
       * @brief Handle additional configuration update command (SYST:CONF:ADD:UPDATE)
-      * 
       * @param params Additional configuration JSON
       * @return true if command processed successfully
       */
@@ -224,7 +207,6 @@
      
      /**
       * @brief Handle reset command (RESET)
-      * 
       * @param params Command parameters (not used)
       * @return true if command processed successfully
       */
@@ -232,7 +214,6 @@
      
      /**
       * @brief Handle filesystem test command (TEST:FS)
-      * 
       * @param params Command parameters (not used)
       * @return true if command processed successfully
       */
@@ -240,7 +221,6 @@
      
      /**
       * @brief Handle configuration update test command (TEST:UPDATE)
-      * 
       * @param params Command parameters (not used)
       * @return true if command processed successfully
       */
@@ -248,7 +228,6 @@
      
      /**
       * @brief Handle echo command (ECHO)
-      * 
       * @param params Text to echo
       * @return true if command processed successfully
       */
@@ -256,7 +235,6 @@
      
      /**
       * @brief Handle log routing command (SYST:LOG)
-      * 
       * @param params Destination and severity parameters
       * @return true if command processed successfully
       */
@@ -264,7 +242,6 @@
      
      /**
       * @brief Handle log status query command (SYST:LOG?)
-      * 
       * @param params Command parameters (not used)
       * @return true if command processed successfully
       */
@@ -272,7 +249,6 @@
      
      /**
       * @brief Handle LED identification command (SYST:LED:IDENT)
-      * 
       * @param params Command parameters (not used)
       * @return true if command processed successfully
       */
@@ -280,7 +256,6 @@
      
      /**
       * @brief Handle test error level commands
-      * 
       * @param params Command parameters
       * @param severity Error severity level
       * @return true if command processed successfully
@@ -289,7 +264,6 @@
      
      /**
       * @brief Handle test info level command (TEST:INFO)
-      * 
       * @param params Command parameters
       * @return true if command processed successfully
       */
@@ -297,7 +271,6 @@
      
      /**
       * @brief Handle test warning level command (TEST:WARNING)
-      * 
       * @param params Command parameters
       * @return true if command processed successfully
       */
@@ -305,7 +278,6 @@
      
      /**
       * @brief Handle test error level command (TEST:ERROR)
-      * 
       * @param params Command parameters
       * @return true if command processed successfully
       */
@@ -313,7 +285,6 @@
      
      /**
       * @brief Handle test fatal level command (TEST:FATAL)
-      * 
       * @param params Command parameters
       * @return true if command processed successfully
       */
@@ -327,42 +298,36 @@
      
      /**
       * @brief Get singleton instance
-      * 
       * @return Pointer to the singleton instance
       */
      static CommunicationManager* getInstance();
      
      /**
       * @brief Get the sensor manager
-      * 
       * @return Pointer to the sensor manager
       */
      SensorManager* getSensorManager();
      
      /**
       * @brief Get the configuration manager
-      * 
       * @return Pointer to the configuration manager
       */
      ConfigManager* getConfigManager();
      
      /**
       * @brief Get the error handler
-      * 
       * @return Pointer to the error handler
       */
      ErrorHandler* getErrorHandler();
      
      /**
       * @brief Get the SCPI parser
-      * 
       * @return Pointer to the SCPI parser
       */
      SCPI_Parser* getScpiParser() { return scpiParser; }
      
      /**
       * @brief Set the UART debug serial pointer for message routing
-      * 
       * @param debugSerial Pointer to the debug serial
       */
      static void setUartDebugSerialPtr(Print* debugSerial);

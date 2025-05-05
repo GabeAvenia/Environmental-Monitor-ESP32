@@ -12,7 +12,6 @@
 
 /**
  * @brief Implementation of the PT100 RTD temperature sensor with MAX31865 ADC.
- * 
  * This class provides access to the PT100 RTD temperature sensor,
  * using the MAX31865 ADC to convert resistance to temperature.
  */
@@ -29,7 +28,6 @@ private:
     
     /**
      * @brief Update temperature reading from the sensor.
-     * 
      * @return True if the reading was successfully updated, false otherwise.
      */
     bool updateReading() const;
@@ -37,7 +35,6 @@ private:
 public:
     /**
      * @brief Constructor for PT100Sensor.
-     * 
      * @param sensorName Name/identifier for this sensor instance.
      * @param ssPinNum Slave select pin for SPI communication.
      * @param spiMgr Pointer to the SPI manager.
@@ -55,42 +52,36 @@ public:
     
     /**
      * @brief Initialize the sensor hardware.
-     * 
      * @return true if initialization succeeded, false otherwise.
      */
     bool initialize() override;
     
     /**
      * @brief Read the current temperature value from the sensor.
-     * 
      * @return The temperature in degrees Celsius, or NAN if reading failed.
      */
     float readTemperature() override;
     
     /**
      * @brief Get the timestamp of the last temperature reading.
-     * 
      * @return Timestamp in milliseconds (from millis()).
      */
     unsigned long getTemperatureTimestamp() const override;
     
     /**
      * @brief Perform a self-test to verify the sensor is functioning properly.
-     * 
      * @return true if the self-test passed, false otherwise.
      */
     bool performSelfTest() override;
     
     /**
      * @brief Get detailed information about the sensor.
-     * 
      * @return A string containing sensor information.
      */
     String getSensorInfo() const override;
     
     /**
      * @brief Check if this sensor supports a specific interface.
-     * 
      * @param type The interface type to check for.
      * @return true if the sensor supports the interface, false otherwise.
      */
@@ -98,7 +89,6 @@ public:
     
     /**
      * @brief Get the interface implementation for a specific type.
-     * 
      * @param type The interface type to get.
      * @return Pointer to the interface, or nullptr if not supported.
      */
@@ -106,7 +96,6 @@ public:
 
     /**
      * @brief Get the MAX31865 fault status and description.
-     * 
      * @return String description of any faults, or "No Fault" if none.
      */
     String getFaultStatus() const;

@@ -3,7 +3,6 @@
  * @brief Structure for humidity reading data
  * @author Gabriel Avenia
  * @date May 2025
- *
  * @ingroup sensor_readings
  */
 
@@ -13,7 +12,6 @@
  
  /**
   * @brief Structure to hold humidity reading data
-  * 
   * Contains the humidity value, timestamp, and validity information.
   * Used to safely pass humidity readings between components.
   */
@@ -30,7 +28,6 @@
      
      /**
       * @brief Create a new humidity reading
-      * 
       * @param humidity Humidity value as percentage (0-100)
       * @param time Timestamp when reading was taken (default: current time)
       */
@@ -39,7 +36,6 @@
          
      /**
       * @brief Convert the reading to a string representation
-      * 
       * @return A string representation of the humidity reading
       */
      String toString() const {
