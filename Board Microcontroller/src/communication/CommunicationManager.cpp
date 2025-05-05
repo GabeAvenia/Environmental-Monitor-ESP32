@@ -330,21 +330,35 @@ bool CommunicationManager::handleMeasure(const std::vector<String>& params) {
                 collectSensorReadings(sensor->getName(), "", values);
             }
         } else {
-            // Process each parameter
+            // Process parameters efficiently by batching lookups
+            std::map<String, String> sensorRequests;
+            
+            // First pass: parse parameters and group by sensor name
             for (const auto& param : params) {
                 // Check if parameter contains a colon (sensor:measurements format)
                 int colonPos = param.indexOf(':');
+                String sensorName, measurements;
+                
                 if (colonPos > 0) {
-                    String sensorName = param.substring(0, colonPos);
-                    String measurements = param.substring(colonPos + 1);
-                    
+                    sensorName = param.substring(0, colonPos);
+                    measurements = param.substring(colonPos + 1);
                     errorHandler->logError(INFO, "MEAS: Reading " + sensorName + " with measurements: " + measurements);
-                    collectSensorReadings(sensorName, measurements, values);
                 } else {
-                    // No measurements specified, default to all
-                    errorHandler->logError(INFO, "MEAS: Reading " + param + " with all available measurements");
-                    collectSensorReadings(param, "", values);
+                    sensorName = param;
+                    measurements = "";
+                    errorHandler->logError(INFO, "MEAS: Reading " + sensorName + " with all available measurements");
                 }
+                
+                // Store most specific measurement request for each sensor
+                if (sensorRequests.find(sensorName) == sensorRequests.end() || 
+                    measurements.length() > sensorRequests[sensorName].length()) {
+                    sensorRequests[sensorName] = measurements;
+                }
+            }
+            
+            // Second pass: collect data for each unique sensor
+            for (const auto& [sensorName, measurements] : sensorRequests) {
+                collectSensorReadings(sensorName, measurements, values);
             }
         }
         
@@ -385,6 +399,7 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
     
     if (!sensorOk) {
         errorHandler->logError(WARNING, "Peripheral " + sensorName + " not found or not connected");
+        return;
     }
     
     // Determine which measurements to take
@@ -397,76 +412,74 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
     
     // Read temperature if requested and supported
     if (readTemp && sensorOk && sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-        bool success = false;
-        String tempValue = "ERROR";
+        // Try first reading without any delay
+        TemperatureReading tempReading = sensorManager->getTemperatureSafe(sensorName);
         
-        for (int attempt = 0; attempt < MAX_RETRIES && !success; attempt++) {
-            if (attempt > 0) {
-                // Log retry attempts after the first one
-                errorHandler->logError(WARNING, "Retry #" + String(attempt) + " for temperature reading from " + sensorName);
-                delay(RETRY_DELAY_MS); // Small delay before retry
+        if (tempReading.valid) {
+            // Fast path - reading succeeded on first try (most common case)
+            values.push_back(String(tempReading.value));
+        } else {
+            // Only if first read failed, apply retry logic with delays
+            bool success = false;
+            String tempValue = "ERROR";
+            
+            for (int attempt = 1; attempt < MAX_RETRIES && !success; attempt++) {
+                // Log retry information at INFO level
+                errorHandler->logError(INFO, "Retry #" + String(attempt) + " for temperature reading from " + sensorName);
+                delay(RETRY_DELAY_MS); // Only delay during retries when needed
+                
+                try {
+                    tempReading = sensorManager->getTemperatureSafe(sensorName);
+                    
+                    if (tempReading.valid) {
+                        tempValue = String(tempReading.value);
+                        success = true;
+                        errorHandler->logError(INFO, "Successfully read temperature from " + sensorName + " after " + String(attempt+1) + " attempts");
+                        break;
+                    }
+                } catch (...) {
+                    // Continue to next retry attempt
+                }
             }
             
-            try {
-                TemperatureReading tempReading = sensorManager->getTemperatureSafe(sensorName);
-                
-                if (tempReading.valid) {
-                    tempValue = String(tempReading.value);
-                    success = true;
-                    
-                    if (attempt > 0) {
-                        errorHandler->logError(INFO, "Successfully read temperature from " + sensorName + " after " + String(attempt+1) + " attempts");
-                    }
-                } else if (attempt == MAX_RETRIES - 1) {
-                    // Only log warning on the last attempt
-                    errorHandler->logError(WARNING, "Invalid temperature reading from " + sensorName + " after " + String(MAX_RETRIES) + " attempts");
-                }
-            } catch (...) {
-                if (attempt == MAX_RETRIES - 1) {
-                    // Only log error on the last attempt
-                    errorHandler->logError(WARNING, "Exception while reading temperature from " + sensorName + " after " + String(MAX_RETRIES) + " attempts");
-                }
-            }
+            values.push_back(success ? tempValue : "ERROR");
         }
-        
-        values.push_back(tempValue);
     }
     
     // Read humidity if requested and supported
     if (readHum && sensorOk && sensor->supportsInterface(InterfaceType::HUMIDITY)) {
-        bool success = false;
-        String humValue = "ERROR";
+        // Try first reading without any delay
+        HumidityReading humReading = sensorManager->getHumiditySafe(sensorName);
         
-        for (int attempt = 0; attempt < MAX_RETRIES && !success; attempt++) {
-            if (attempt > 0) {
-                // Log retry attempts after the first one
-                errorHandler->logError(WARNING, "Retry #" + String(attempt) + " for humidity reading from " + sensorName);
-                delay(RETRY_DELAY_MS); // Small delay before retry
+        if (humReading.valid) {
+            // Fast path - reading succeeded on first try (most common case)
+            values.push_back(String(humReading.value));
+        } else {
+            // Only if first read failed, apply retry logic with delays
+            bool success = false;
+            String humValue = "ERROR";
+            
+            for (int attempt = 1; attempt < MAX_RETRIES && !success; attempt++) {
+                // Log retry information at INFO level
+                errorHandler->logError(INFO, "Retry #" + String(attempt) + " for humidity reading from " + sensorName);
+                delay(RETRY_DELAY_MS); // Only delay during retries when needed
+                
+                try {
+                    humReading = sensorManager->getHumiditySafe(sensorName);
+                    
+                    if (humReading.valid) {
+                        humValue = String(humReading.value);
+                        success = true;
+                        errorHandler->logError(INFO, "Successfully read humidity from " + sensorName + " after " + String(attempt+1) + " attempts");
+                        break;
+                    }
+                } catch (...) {
+                    // Continue to next retry attempt
+                }
             }
             
-            try {
-                HumidityReading humReading = sensorManager->getHumiditySafe(sensorName);
-                
-                if (humReading.valid) {
-                    humValue = String(humReading.value);
-                    success = true;
-                    
-                    if (attempt > 0) {
-                        errorHandler->logError(INFO, "Successfully read humidity from " + sensorName + " after " + String(attempt+1) + " attempts");
-                    }
-                } else if (attempt == MAX_RETRIES - 1) {
-                    // Only log warning on the last attempt
-                    errorHandler->logError(WARNING, "Invalid humidity reading from " + sensorName + " after " + String(MAX_RETRIES) + " attempts");
-                }
-            } catch (...) {
-                if (attempt == MAX_RETRIES - 1) {
-                    // Only log error on the last attempt
-                    errorHandler->logError(WARNING, "Exception while reading humidity from " + sensorName + " after " + String(MAX_RETRIES) + " attempts");
-                }
-            }
+            values.push_back(success ? humValue : "ERROR");
         }
-        
-        values.push_back(humValue);
     }
 }
 
