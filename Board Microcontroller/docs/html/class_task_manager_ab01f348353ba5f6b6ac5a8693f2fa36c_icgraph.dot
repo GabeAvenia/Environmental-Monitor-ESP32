@@ -1,0 +1,11 @@
+digraph "TaskManager::cleanupTasks"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="TaskManager::cleanupTasks",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="TaskManager::~TaskManager",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_task_manager.html#a6ecdd2b8a6b7545eae64da180ba80c53",tooltip="Destructor - ensures all tasks are cleaned up."];
+}

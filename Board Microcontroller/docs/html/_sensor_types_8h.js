@@ -1,0 +1,11 @@
+var _sensor_types_8h =
+[
+    [ "SensorType", "_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435", [
+      [ "UNKNOWN", "_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435a696b031073e74bf2cb98e5ef201d4aa3", null ],
+      [ "SHT41", "_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435a58df2583ac9eec09966f7ef615ea2c17", null ],
+      [ "SI7021", "_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435aff741d5a48e2bde33b74c48f3fc66fd1", null ],
+      [ "PT100_RTD", "_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435af66b0c45568772329e32df10776fba72", null ]
+    ] ],
+    [ "sensorTypeFromString", "_sensor_types_8h.html#a3077611eccca6a6deb412eba26bbd6c7", null ],
+    [ "sensorTypeToString", "_sensor_types_8h.html#a2f6f67ff888b97e33faf4c07bf528c4f", null ]
+];

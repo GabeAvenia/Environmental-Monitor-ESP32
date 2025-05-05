@@ -1,0 +1,58 @@
+# Doxyfile for Environmental Monitor
+
+# Project information
+PROJECT_NAME           = "GPower Environmental Monitor"
+PROJECT_NUMBER         = 1.0.0
+PROJECT_BRIEF          = "Environmental monitoring system for test fixtures"
+OUTPUT_DIRECTORY       = ./docs
+
+# Input files
+INPUT                  = ./src
+FILE_PATTERNS          = *.cpp *.h
+RECURSIVE              = YES
+EXCLUDE_PATTERNS       = */build/* */test/* */examples/*
+
+# Output format
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+HTML_OUTPUT            = html
+HTML_FILE_EXTENSION    = .html
+GENERATE_TREEVIEW      = YES
+
+# Diagrams and graphs
+HAVE_DOT               = YES
+UML_LOOK               = YES
+CLASS_GRAPH            = YES
+COLLABORATION_GRAPH    = YES
+INCLUDE_GRAPH          = YES
+INCLUDED_BY_GRAPH      = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+
+# Extract everything
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+
+# Make pretty
+INLINE_SOURCES         = YES
+SOURCE_BROWSER         = YES
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+
+# Enable markdown
+MARKDOWN_SUPPORT       = YES
+USE_MDFILE_AS_MAINPAGE = README.md
+
+# Set sorting
+ALPHABETICAL_INDEX     = YES
+SORT_MEMBER_DOCS       = YES
+
+# Document all even without comments
+ALWAYS_DETAILED_SEC    = YES
+REPEAT_BRIEF           = YES
+JAVADOC_AUTOBRIEF      = YES
+
+# For ESP32
+PREDEFINED             = ESP32 ARDUINO

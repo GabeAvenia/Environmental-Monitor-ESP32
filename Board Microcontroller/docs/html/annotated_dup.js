@@ -1,0 +1,27 @@
+var annotated_dup =
+[
+    [ "BaseSensor", "class_base_sensor.html", "class_base_sensor" ],
+    [ "CommunicationManager", "class_communication_manager.html", "class_communication_manager" ],
+    [ "ConfigManager", "class_config_manager.html", "class_config_manager" ],
+    [ "ErrorEntry", "struct_error_entry.html", "struct_error_entry" ],
+    [ "ErrorHandler", "class_error_handler.html", "class_error_handler" ],
+    [ "HumidityReading", "struct_humidity_reading.html", "struct_humidity_reading" ],
+    [ "I2CManager", "class_i2_c_manager.html", "class_i2_c_manager" ],
+    [ "IHumiditySensor", "class_i_humidity_sensor.html", "class_i_humidity_sensor" ],
+    [ "ISensor", "class_i_sensor.html", "class_i_sensor" ],
+    [ "ITemperatureSensor", "class_i_temperature_sensor.html", "class_i_temperature_sensor" ],
+    [ "LedManager", "class_led_manager.html", "class_led_manager" ],
+    [ "OutputConfig", "struct_output_config.html", "struct_output_config" ],
+    [ "PT100Sensor", "class_p_t100_sensor.html", "class_p_t100_sensor" ],
+    [ "SensorCache", "struct_sensor_cache.html", "struct_sensor_cache" ],
+    [ "SensorConfig", "struct_sensor_config.html", "struct_sensor_config" ],
+    [ "SensorFactory", "class_sensor_factory.html", "class_sensor_factory" ],
+    [ "SensorManager", "class_sensor_manager.html", "class_sensor_manager" ],
+    [ "SensorRegistry", "class_sensor_registry.html", "class_sensor_registry" ],
+    [ "SHT41Sensor", "class_s_h_t41_sensor.html", "class_s_h_t41_sensor" ],
+    [ "Si7021Sensor", "class_si7021_sensor.html", "class_si7021_sensor" ],
+    [ "SPIManager", "class_s_p_i_manager.html", "class_s_p_i_manager" ],
+    [ "TaskManager", "class_task_manager.html", "class_task_manager" ],
+    [ "TemperatureReading", "struct_temperature_reading.html", "struct_temperature_reading" ],
+    [ "WireConfig", "struct_wire_config.html", "struct_wire_config" ]
+];

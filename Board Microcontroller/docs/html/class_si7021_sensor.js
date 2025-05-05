@@ -1,0 +1,25 @@
+var class_si7021_sensor =
+[
+    [ "Si7021Sensor", "class_si7021_sensor.html#a20915f718bd13f65ea4b5bdfc53f6963", null ],
+    [ "~Si7021Sensor", "class_si7021_sensor.html#a8ca991066b857163febdba7811ffaee3", null ],
+    [ "getHumidityTimestamp", "class_si7021_sensor.html#a1dbc2dda6bd902619f42768c0ea114db", null ],
+    [ "getInterface", "class_si7021_sensor.html#a7ffa5272b12c717881bbc106a2b9c873", null ],
+    [ "getSensorInfo", "class_si7021_sensor.html#a20786b26e4a6f856e832a2225141f59d", null ],
+    [ "getTemperatureTimestamp", "class_si7021_sensor.html#adba613baaacf986982175f07773e7332", null ],
+    [ "initialize", "class_si7021_sensor.html#a3393cd8564749ba1f0cbe9b94510a477", null ],
+    [ "performSelfTest", "class_si7021_sensor.html#ac632f800d7fc71a7bd0ceace6121593b", null ],
+    [ "readHumidity", "class_si7021_sensor.html#ae544941b2e427ba73227107cf8490835", null ],
+    [ "readTemperature", "class_si7021_sensor.html#ad43dbb9a7d78a04b508845e8d806409e", null ],
+    [ "reinitialize", "class_si7021_sensor.html#a45521f7c4662efbd81065e96791028fe", null ],
+    [ "supportsInterface", "class_si7021_sensor.html#a2ae685c1deb9805fc5044dfec1d9672d", null ],
+    [ "updateReadings", "class_si7021_sensor.html#a985075d6db09c0b59dfbd5f3d8b2a0dd", null ],
+    [ "humTimestamp", "class_si7021_sensor.html#aafadd019cd20cb515453a0887c9a487f", null ],
+    [ "i2cAddress", "class_si7021_sensor.html#aef08b3d7d26c4a87ac10f36a1a612f29", null ],
+    [ "i2cManager", "class_si7021_sensor.html#a7909733a415d494b7bfbf06a489610ef", null ],
+    [ "i2cPort", "class_si7021_sensor.html#a931ed135792e4418fe11acb9b2cd4499", null ],
+    [ "lastHumidity", "class_si7021_sensor.html#a554c8d8f1f2e9e448f26de15a3c1cfc1", null ],
+    [ "lastTemperature", "class_si7021_sensor.html#adf1afc017be724105437ec818e4c3a4a", null ],
+    [ "si7021", "class_si7021_sensor.html#a2f519d833635c83e01a53da41d6bdceb", null ],
+    [ "tempTimestamp", "class_si7021_sensor.html#a2160267b06a4159a944e01a1269649f5", null ],
+    [ "wire", "class_si7021_sensor.html#a1f5ed9d005dcbf1f6a4b000620f9c29d", null ]
+];

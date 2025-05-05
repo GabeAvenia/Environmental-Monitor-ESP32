@@ -1,0 +1,14 @@
+digraph "ConfigManager::loadConfigFromFile"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node1 [id="Node000001",label="ConfigManager::loadConfig\lFromFile",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="ConfigManager::createDefault\lConfig",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_config_manager.html#ad64b8ab76c62c5acb0b4a35d7ac754a7",tooltip=" "];
+  Node2 -> Node1 [id="edge2_Node000002_Node000001",color="steelblue1",style="solid",tooltip=" "];
+  Node1 -> Node3 [id="edge3_Node000001_Node000003",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="I2CManager::stringToPort",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i2_c_manager.html#a25ce4fa452bb9441a46e8fc956e9c3a2",tooltip="Convert a string port name to I2CPort enum."];
+}

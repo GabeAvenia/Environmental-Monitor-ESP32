@@ -1,0 +1,15 @@
+digraph "SHT41Sensor::updateReadings"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="SHT41Sensor::updateReadings",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Update both temperature and humidity readings from the sensor."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="SHT41Sensor::initialize",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_s_h_t41_sensor.html#aaafd05897a6ffe0dcb1702801de086a9",tooltip="Initialize the sensor hardware."];
+  Node1 -> Node3 [id="edge2_Node000001_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="SHT41Sensor::readHumidity",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_s_h_t41_sensor.html#a5af7f618ddaad1b4279ec9854143b4d5",tooltip="Read the current humidity value from the sensor."];
+  Node1 -> Node4 [id="edge3_Node000001_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="SHT41Sensor::readTemperature",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_s_h_t41_sensor.html#ad6fae69966406732d5ebfb255a45c762",tooltip="Read the current temperature value from the sensor."];
+}

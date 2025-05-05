@@ -1,0 +1,22 @@
+digraph "I2CManager::stringToPort"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="I2CManager::stringToPort",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Convert a string port name to I2CPort enum."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="ConfigManager::loadConfig\lFromFile",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_config_manager.html#a933da325afee9d238cb31529727490b9",tooltip=" "];
+  Node2 -> Node3 [id="edge2_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="ConfigManager::begin",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_config_manager.html#a0497343220fc493f5cf9574922508908",tooltip=" "];
+  Node2 -> Node4 [id="edge3_Node000002_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="ConfigManager::createDefault\lConfig",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_config_manager.html#ad64b8ab76c62c5acb0b4a35d7ac754a7",tooltip=" "];
+  Node4 -> Node2 [id="edge4_Node000004_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 -> Node5 [id="edge5_Node000002_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="ConfigManager::updateConfig\lFromJson",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_config_manager.html#abbfa7544b3ce7a29198c353ab9805e46",tooltip=" "];
+  Node1 -> Node6 [id="edge6_Node000001_Node000006",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node6 [id="Node000006",label="SensorManager::reconfigure\lSensors",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_sensor_manager.html#afd2d5b9e8844fd6cf7a25b35e2126180",tooltip="Reconfigure sensors based on new configuration."];
+  Node1 -> Node7 [id="edge7_Node000001_Node000007",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node7 [id="Node000007",label="ConfigManager::updateSensor\lConfigFromJson",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_config_manager.html#a97cf9da828f2d27c76ece9371651ff77",tooltip=" "];
+}

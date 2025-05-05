@@ -1,0 +1,15 @@
+digraph "SensorRegistry::getHumiditySensors"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node1 [id="Node000001",label="SensorRegistry::getHumidity\lSensors",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Get all humidity sensors."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="SensorRegistry::getInterfaceFrom",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_sensor_registry.html#aaa5b082a43b0278bed59b41c4fda3a29",tooltip="Helper to get a specific interface from a sensor if supported."];
+  Node2 -> Node3 [id="edge2_Node000002_Node000003",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="ISensor::getInterface",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i_sensor.html#a121bd5c03bbb2c9f27addea330bdc705",tooltip="Get interface implementation."];
+  Node2 -> Node4 [id="edge3_Node000002_Node000004",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="ISensor::supportsInterface",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i_sensor.html#a0aa4dae9e1a5405d10ab3d5354b816af",tooltip="Check if sensor supports a specific interface."];
+}

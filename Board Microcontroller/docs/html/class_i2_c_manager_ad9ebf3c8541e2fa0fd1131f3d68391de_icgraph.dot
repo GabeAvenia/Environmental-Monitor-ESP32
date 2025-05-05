@@ -1,0 +1,44 @@
+digraph "I2CManager::portToString"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="I2CManager::portToString",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Convert I2CPort enum to string."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="I2CManager::beginPort",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i2_c_manager.html#ae731726cefd93f8265fca5b521b45cc7",tooltip="Initialize a specific I2C bus."];
+  Node2 -> Node3 [id="edge2_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="I2CManager::begin",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i2_c_manager.html#aedf0c62c8372508d899c7ea9018eb0bc",tooltip="Initialize default I2C buses."];
+  Node1 -> Node4 [id="edge3_Node000001_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="SensorFactory::createI2CSensor",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_sensor_factory.html#a47edb42e6c90e0598f561ac9a5587fea",tooltip="Create a sensor using the template method pattern."];
+  Node4 -> Node5 [id="edge4_Node000004_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="SensorFactory::createSensor",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_sensor_factory.html#a1a691b564c1b5a5f4ce08989980da7f1",tooltip="Create a sensor instance based on the provided configuration."];
+  Node1 -> Node5 [id="edge5_Node000001_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node1 -> Node6 [id="edge6_Node000001_Node000006",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node6 [id="Node000006",label="I2CManager::devicePresent",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i2_c_manager.html#a2ee596f6fd05071905d94bd5c6c86f9f",tooltip="Check if a device is present at the specified address on a specific I2C port."];
+  Node6 -> Node7 [id="edge7_Node000006_Node000007",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node7 [id="Node000007",label="I2CManager::scanBus",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i2_c_manager.html#ac42d99b0ec5ab28c5aa5671c547b141a",tooltip="Scan an I2C bus for devices."];
+  Node1 -> Node8 [id="edge8_Node000001_Node000008",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node8 [id="Node000008",label="SHT41Sensor::getSensorInfo",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_s_h_t41_sensor.html#a01aef427e28039d1446ac3e7570fa5e0",tooltip="Get detailed information about the sensor."];
+  Node1 -> Node9 [id="edge9_Node000001_Node000009",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node9 [id="Node000009",label="Si7021Sensor::getSensorInfo",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_si7021_sensor.html#a20786b26e4a6f856e832a2225141f59d",tooltip="Get detailed information about the sensor."];
+  Node1 -> Node10 [id="edge10_Node000001_Node000010",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node10 [id="Node000010",label="I2CManager::getWire",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i2_c_manager.html#ab355e02449b1995ef0a1b06873da700c",tooltip="Get the TwoWire object for a specific I2C port."];
+  Node10 -> Node6 [id="edge11_Node000010_Node000006",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node10 -> Node7 [id="edge12_Node000010_Node000007",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node1 -> Node11 [id="edge13_Node000001_Node000011",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node11 [id="Node000011",label="I2CManager::registerWire",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i2_c_manager.html#a11b691980ee6051209769605b1250617",tooltip="Register a TwoWire instance for a specific I2C port."];
+  Node11 -> Node12 [id="edge14_Node000011_Node000012",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node12 [id="Node000012",label="I2CManager::I2CManager",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i2_c_manager.html#a05e1f11d34f59577afbf8ebeb3a9f1d2",tooltip="Constructor for I2CManager."];
+  Node1 -> Node7 [id="edge15_Node000001_Node000007",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node1 -> Node13 [id="edge16_Node000001_Node000013",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node13 [id="Node000013",label="SensorManager::testI2CCommunication",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_sensor_manager.html#a5ee30cbf0abf3fbd7f4701d5ccb58eb1",tooltip="Test communication with an I2C device."];
+  Node13 -> Node14 [id="edge17_Node000013_Node000014",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node14 [id="Node000014",label="SensorManager::initialize\lSensors",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_sensor_manager.html#aded8aff6d741a64d0c34668a0694dd3d",tooltip="Initialize all sensors from configuration."];
+  Node1 -> Node15 [id="edge18_Node000001_Node000015",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node15 [id="Node000015",label="ConfigManager::updateSensor\lConfigFromJson",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_config_manager.html#a97cf9da828f2d27c76ece9371651ff77",tooltip=" "];
+  Node1 -> Node16 [id="edge19_Node000001_Node000016",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node16 [id="Node000016",label="ConfigManager::updateSensor\lConfigs",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_config_manager.html#ac224a48d40874fc3cd6c0964fd4235c8",tooltip=" "];
+  Node16 -> Node15 [id="edge20_Node000016_Node000015",dir="back",color="steelblue1",style="solid",tooltip=" "];
+}

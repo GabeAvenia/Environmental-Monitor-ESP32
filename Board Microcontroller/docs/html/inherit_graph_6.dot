@@ -1,0 +1,24 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node0 [id="Node000000",label="IHumiditySensor",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i_humidity_sensor.html",tooltip="Interface for sensors that can measure humidity."];
+  Node0 -> Node1 [id="edge1_Node000000_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node1 [id="Node000001",label="SHT41Sensor",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_s_h_t41_sensor.html",tooltip="Implementation of the SHT41 temperature and humidity sensor."];
+  Node0 -> Node5 [id="edge2_Node000000_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="Si7021Sensor",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_si7021_sensor.html",tooltip="Implementation of the Si7021 temperature and humidity sensor."];
+  Node6 [id="Node000006",label="ISensor",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i_sensor.html",tooltip="Base interface for all sensors."];
+  Node6 -> Node2 [id="edge3_Node000006_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="BaseSensor",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_base_sensor.html",tooltip="Base class for all sensor implementations."];
+  Node2 -> Node3 [id="edge4_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="PT100Sensor",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_p_t100_sensor.html",tooltip="Implementation of the PT100 RTD temperature sensor with MAX31865 ADC."];
+  Node2 -> Node1 [id="edge5_Node000002_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 -> Node5 [id="edge6_Node000002_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="ITemperatureSensor",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i_temperature_sensor.html",tooltip="Interface for sensors that can measure temperature."];
+  Node4 -> Node3 [id="edge7_Node000004_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 -> Node1 [id="edge8_Node000004_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 -> Node5 [id="edge9_Node000004_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+}
