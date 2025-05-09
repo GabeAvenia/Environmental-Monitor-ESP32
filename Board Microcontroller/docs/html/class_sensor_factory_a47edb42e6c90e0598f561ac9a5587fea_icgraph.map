@@ -1,5 +1,0 @@
-<map id="SensorFactory::createI2CSensor" name="SensorFactory::createI2CSensor">
-<area shape="rect" id="Node000001" title="Create a sensor using the template method pattern." alt="" coords="245,5,457,32"/>
-<area shape="rect" id="Node000002" href="$class_sensor_factory.html#a1a691b564c1b5a5f4ce08989980da7f1" title="Create a sensor instance based on the provided configuration Factory method that creates and returns ..." alt="" coords="5,5,197,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="229,21,197,21,197,16,229,16"/>
-</map>

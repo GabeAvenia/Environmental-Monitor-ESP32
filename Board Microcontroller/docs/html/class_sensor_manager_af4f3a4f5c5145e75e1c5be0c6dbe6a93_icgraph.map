@@ -1,5 +1,0 @@
-<map id="SensorManager::reconnectSensor" name="SensorManager::reconnectSensor">
-<area shape="rect" id="Node000001" title="Attempt to reconnect a disconnected sensor Tries to re&#45;establish communication with a sensor that has..." alt="" coords="231,5,408,48"/>
-<area shape="rect" id="Node000002" href="$class_sensor_manager.html#a9eb9913b14ec7baa050e39dffadc16ca" title="Attempt to reconnect all disconnected sensors." alt="" coords="5,5,183,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,29,183,29,183,24,215,24"/>
-</map>

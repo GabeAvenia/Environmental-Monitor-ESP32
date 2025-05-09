@@ -1,5 +1,0 @@
-<map id="TaskManager::startLedTask" name="TaskManager::startLedTask">
-<area shape="rect" id="Node000001" title="Start only the LED task (simplest, lowest risk)" alt="" coords="237,5,419,32"/>
-<area shape="rect" id="Node000002" href="$class_task_manager.html#afb96f7a9368f83a7ba9802fd96fae244" title="Start all tasks on their respective cores." alt="" coords="5,5,189,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,21,189,21,189,16,221,16"/>
-</map>

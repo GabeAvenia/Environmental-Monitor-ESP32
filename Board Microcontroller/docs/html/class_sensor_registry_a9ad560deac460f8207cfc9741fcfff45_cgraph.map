@@ -1,9 +1,0 @@
-<map id="SensorRegistry::getTemperatureSensors" name="SensorRegistry::getTemperatureSensors">
-<area shape="rect" id="Node000001" title="Get all temperature sensors Returns all sensors that implement the ITemperatureSensor interface." alt="" coords="5,23,215,65"/>
-<area shape="rect" id="Node000002" href="$class_sensor_registry.html#aaa5b082a43b0278bed59b41c4fda3a29" title="Helper to get a specific interface from a sensor if supported." alt="" coords="263,31,481,57"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,41,247,41,247,47,215,47"/>
-<area shape="rect" id="Node000003" href="$class_i_sensor.html#a121bd5c03bbb2c9f27addea330bdc705" title="Get interface implementation." alt="" coords="545,5,688,32"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="481,30,529,25,530,30,482,35"/>
-<area shape="rect" id="Node000004" href="$class_i_sensor.html#a0aa4dae9e1a5405d10ab3d5354b816af" title="Check if sensor supports a specific interface." alt="" coords="529,56,704,83"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="482,53,514,56,513,61,481,58"/>
-</map>

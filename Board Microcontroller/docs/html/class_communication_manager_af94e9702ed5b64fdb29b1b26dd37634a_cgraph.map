@@ -1,5 +1,0 @@
-<map id="CommunicationManager::handleTestErrorLevel" name="CommunicationManager::handleTestErrorLevel">
-<area shape="rect" id="Node000001" title="Handle test error level commands." alt="" coords="5,5,168,48"/>
-<area shape="rect" id="Node000002" href="$class_error_handler.html#a28e4c666c764f31533832edde5d8e014" title="Convert severity level to string." alt="" coords="216,5,378,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,24,200,24,200,29,168,29"/>
-</map>

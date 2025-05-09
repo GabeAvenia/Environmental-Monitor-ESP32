@@ -1,5 +1,0 @@
-<map id="PT100Sensor::performSelfTest" name="PT100Sensor::performSelfTest">
-<area shape="rect" id="Node000001" title="Perform a self&#45;test to verify the sensor is functioning properly." alt="" coords="5,5,206,32"/>
-<area shape="rect" id="Node000002" href="$class_p_t100_sensor.html#ae9aa8647e52efca9450704c81993b6eb" title="Get the MAX31865 fault status and description." alt="" coords="254,5,447,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,16,238,16,238,21,206,21"/>
-</map>

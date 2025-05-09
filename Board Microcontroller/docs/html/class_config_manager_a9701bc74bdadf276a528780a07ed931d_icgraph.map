@@ -1,9 +1,0 @@
-<map id="ConfigManager::writeConfigToFile" name="ConfigManager::writeConfigToFile">
-<area shape="rect" id="Node000001" title="Helper methods for file operations." alt="" coords="267,72,450,115"/>
-<area shape="rect" id="Node000002" href="$class_config_manager.html#a618fff65cef9057f5fdfd2cf8ede8781" title="Update only additional configuration." alt="" coords="5,5,219,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="261,70,193,51,194,46,263,65"/>
-<area shape="rect" id="Node000003" href="$class_config_manager.html#abbfa7544b3ce7a29198c353ab9805e46" title="Update configuration from JSON." alt="" coords="15,72,209,115"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="251,96,209,96,209,91,251,91"/>
-<area shape="rect" id="Node000004" href="$class_config_manager.html#a97cf9da828f2d27c76ece9371651ff77" title="Granular configuration methods." alt="" coords="13,139,211,181"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="263,122,194,141,193,135,261,117"/>
-</map>

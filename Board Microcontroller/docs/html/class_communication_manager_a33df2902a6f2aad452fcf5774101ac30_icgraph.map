@@ -1,9 +1,0 @@
-<map id="CommunicationManager::handleUpdateSensorConfig" name="CommunicationManager::handleUpdateSensorConfig">
-<area shape="rect" id="Node000001" title="Handle sensor configuration update command (SYST:CONF:SENS:UPDATE)" alt="" coords="448,39,636,81"/>
-<area shape="rect" id="Node000002" href="$class_communication_manager.html#a53fc653207de26539054ecf3ee15783f" title="Register all commands with their handlers." alt="" coords="216,5,400,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="432,47,400,42,401,37,433,42"/>
-<area shape="rect" id="Node000004" href="$class_communication_manager.html#a5d0e3daa257d372cea146b1eb1f228c0" title="Register all SCPI commands with the parser." alt="" coords="227,72,389,115"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="433,78,390,84,389,79,432,73"/>
-<area shape="rect" id="Node000003" href="$class_communication_manager.html#af1cfd2e3cf49258ebb493f6369fad06f" title="Initialize the communication system." alt="" coords="5,5,168,48"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="200,29,168,29,168,24,200,24"/>
-</map>

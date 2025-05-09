@@ -1,5 +1,0 @@
-<map id="CommunicationManager::handleTestInfoLevel" name="CommunicationManager::handleTestInfoLevel">
-<area shape="rect" id="Node000001" title="Handle test info level command (TEST:INFO)" alt="" coords="216,5,378,48"/>
-<area shape="rect" id="Node000002" href="$class_communication_manager.html#a5d0e3daa257d372cea146b1eb1f228c0" title="Register all SCPI commands with the parser." alt="" coords="5,5,168,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,29,168,29,168,24,200,24"/>
-</map>

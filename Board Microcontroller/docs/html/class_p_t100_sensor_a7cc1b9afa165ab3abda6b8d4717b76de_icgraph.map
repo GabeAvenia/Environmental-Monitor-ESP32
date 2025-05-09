@@ -1,5 +1,0 @@
-<map id="PT100Sensor::updateReading" name="PT100Sensor::updateReading">
-<area shape="rect" id="Node000001" title="Update temperature reading from the sensor." alt="" coords="259,5,454,32"/>
-<area shape="rect" id="Node000002" href="$class_p_t100_sensor.html#a71b7a6ba9f582986da3e062fdc9b5667" title="Read the current temperature value from the sensor." alt="" coords="5,5,211,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="243,21,211,21,211,16,243,16"/>
-</map>

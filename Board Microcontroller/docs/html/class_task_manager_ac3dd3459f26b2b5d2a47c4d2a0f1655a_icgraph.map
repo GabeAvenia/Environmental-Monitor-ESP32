@@ -1,7 +1,0 @@
-<map id="TaskManager::sensorTaskFunction" name="TaskManager::sensorTaskFunction">
-<area shape="rect" id="Node000001" title="Static task functions that call the appropriate object method." alt="" coords="487,5,711,32"/>
-<area shape="rect" id="Node000002" href="$class_task_manager.html#a98f7f31db03f38c95c357b50280287fc" title="Start only the sensor task." alt="" coords="237,5,439,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="472,21,440,21,440,16,472,16"/>
-<area shape="rect" id="Node000003" href="$class_task_manager.html#afb96f7a9368f83a7ba9802fd96fae244" title="Start all tasks on their respective cores." alt="" coords="5,5,189,32"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="221,21,189,21,189,16,221,16"/>
-</map>

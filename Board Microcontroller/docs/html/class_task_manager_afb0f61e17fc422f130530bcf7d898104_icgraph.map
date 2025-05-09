@@ -1,5 +1,0 @@
-<map id="TaskManager::getTaskStateString" name="TaskManager::getTaskStateString">
-<area shape="rect" id="Node000001" title="Get the FreeRTOS task state as a string." alt="" coords="245,5,429,48"/>
-<area shape="rect" id="Node000002" href="$class_task_manager.html#afc6bc4daf8169cc2753793edcb4ebc04" title="Get the status of all tasks." alt="" coords="5,5,197,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="229,29,197,29,197,24,229,24"/>
-</map>

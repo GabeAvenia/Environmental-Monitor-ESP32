@@ -1,7 +1,0 @@
-<map id="ConfigManager::readConfigFromFile" name="ConfigManager::readConfigFromFile">
-<area shape="rect" id="Node000001" title=" " alt="" coords="267,39,447,81"/>
-<area shape="rect" id="Node000002" href="$class_config_manager.html#a618fff65cef9057f5fdfd2cf8ede8781" title="Update only additional configuration." alt="" coords="5,5,219,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,48,219,44,220,39,251,43"/>
-<area shape="rect" id="Node000003" href="$class_config_manager.html#a97cf9da828f2d27c76ece9371651ff77" title="Granular configuration methods." alt="" coords="13,72,211,115"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="251,77,211,83,211,77,251,72"/>
-</map>

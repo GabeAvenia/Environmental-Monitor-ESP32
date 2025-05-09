@@ -1,9 +1,0 @@
-<map id="Si7021Sensor::readHumidity" name="Si7021Sensor::readHumidity">
-<area shape="rect" id="Node000001" title="Read the current humidity value from the sensor." alt="" coords="5,5,193,32"/>
-<area shape="rect" id="Node000002" href="$class_si7021_sensor.html#a985075d6db09c0b59dfbd5f3d8b2a0dd" title="Update both temperature and humidity readings from the sensor." alt="" coords="241,5,445,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,16,225,16,225,21,193,21"/>
-<area shape="rect" id="Node000003" href="$class_si7021_sensor.html#a20915f718bd13f65ea4b5bdfc53f6963" title="Constructor for Si7021Sensor." alt="" coords="493,5,684,32"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="446,16,477,16,477,21,446,21"/>
-<area shape="rect" id="Node000004" href="$class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="732,5,904,32"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="685,16,717,16,717,21,685,21"/>
-</map>

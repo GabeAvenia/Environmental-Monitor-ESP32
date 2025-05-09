@@ -1,9 +1,0 @@
-<map id="CommunicationManager::handleMeasure" name="CommunicationManager::handleMeasure">
-<area shape="rect" id="Node000001" title="Handle measurement query command (MEAS?)" alt="" coords="5,23,168,65"/>
-<area shape="rect" id="Node000002" href="$class_communication_manager.html#a14eb31396c8a6ecd19c802120dd6655b" title="Collect readings from a sensor into a values vector." alt="" coords="216,23,379,65"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,41,200,41,200,47,168,47"/>
-<area shape="rect" id="Node000003" href="$class_i_sensor.html#ac7678115a091121756493cd2da886a5c" title="Check if sensor is connected and working." alt="" coords="441,5,588,32"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="379,32,425,26,426,32,380,37"/>
-<area shape="rect" id="Node000004" href="$class_i_sensor.html#a0aa4dae9e1a5405d10ab3d5354b816af" title="Check if sensor supports a specific interface." alt="" coords="427,56,602,83"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="380,51,412,55,411,60,379,56"/>
-</map>

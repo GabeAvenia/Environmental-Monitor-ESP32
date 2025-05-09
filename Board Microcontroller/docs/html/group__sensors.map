@@ -1,7 +1,0 @@
-<map id="Sensors" name="Sensors">
-<area shape="rect" id="Node000004" href="$group__sensor__factory.html" title="Components for dynamic sensor creation." alt="" coords="130,5,240,32"/>
-<area shape="rect" id="Node000002" href="$group__sensor__interfaces.html" title="Interface definitions for sensor capabilities." alt="" coords="123,56,247,83"/>
-<area shape="rect" id="Node000003" href="$group__sensor__readings.html" title="Data structures for sensor measurements." alt="" coords="124,107,246,133"/>
-<area shape="rect" id="Node000005" href="$group__sensor__types.html" title="Supported sensor type definitions." alt="" coords="135,157,235,184"/>
-<area shape="rect" id="Node000001" title="Sensor implementations and common base classes." alt="" coords="5,81,75,108"/>
-</map>

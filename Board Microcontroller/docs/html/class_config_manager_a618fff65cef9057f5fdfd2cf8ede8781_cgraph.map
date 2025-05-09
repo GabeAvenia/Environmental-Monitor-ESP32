@@ -1,9 +1,0 @@
-<map id="ConfigManager::updateAdditionalConfigFromJson" name="ConfigManager::updateAdditionalConfigFromJson">
-<area shape="rect" id="Node000001" title="Update only additional configuration." alt="" coords="5,72,219,115"/>
-<area shape="rect" id="Node000002" href="$class_config_manager.html#a0fdb87c9c3a3f96415d092396a49abfa" title="Notify all registered callbacks about configuration changes." alt="" coords="267,5,454,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,69,263,50,264,55,195,74"/>
-<area shape="rect" id="Node000003" href="$class_config_manager.html#a42490c2c73a6c706b686ef29bc7a9413" title=" " alt="" coords="270,72,450,115"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="219,91,254,91,254,96,219,96"/>
-<area shape="rect" id="Node000004" href="$class_config_manager.html#a9701bc74bdadf276a528780a07ed931d" title="Helper methods for file operations." alt="" coords="269,139,452,181"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="195,113,264,131,263,137,193,118"/>
-</map>

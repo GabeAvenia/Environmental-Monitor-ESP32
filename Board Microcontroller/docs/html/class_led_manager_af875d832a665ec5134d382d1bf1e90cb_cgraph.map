@@ -1,5 +1,0 @@
-<map id="LedManager::indicateReading" name="LedManager::indicateReading">
-<area shape="rect" id="Node000001" title="Pulse LED to indicate sensor reading Briefly flashes the LED brighter to indicate sensor activity." alt="" coords="5,5,199,32"/>
-<area shape="rect" id="Node000002" href="$class_led_manager.html#a7ef32c4cc670b9545d002ebdf9214268" title="Set a solid color on the NeoPixel." alt="" coords="247,5,396,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,16,231,16,231,21,199,21"/>
-</map>

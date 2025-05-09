@@ -1,5 +1,0 @@
-<map id="SPIManager::endTransaction" name="SPIManager::endTransaction">
-<area shape="rect" id="Node000001" title="End an SPI transaction Ends the current SPI transaction and deselects the specified SS pin." alt="" coords="218,5,408,32"/>
-<area shape="rect" id="Node000002" href="$class_s_p_i_manager.html#a045eb448c9195b462fcc68b97f74ffc9" title="Test if an SPI device is present Performs a simple test to check if a device is responding on the spe..." alt="" coords="5,5,170,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,21,170,21,170,16,202,16"/>
-</map>

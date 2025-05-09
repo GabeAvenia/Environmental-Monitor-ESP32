@@ -1,5 +1,0 @@
-<map id="SensorManager::getHumiditySafe" name="SensorManager::getHumiditySafe">
-<area shape="rect" id="Node000001" title="Get humidity reading in a thread&#45;safe manner." alt="" coords="5,5,223,32"/>
-<area shape="rect" id="Node000002" href="$class_sensor_manager.html#a20660c38f60560b55fb40184662be9db" title="Get the buffer for safe reading by other threads." alt="" coords="271,5,478,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,16,255,16,255,21,223,21"/>
-</map>

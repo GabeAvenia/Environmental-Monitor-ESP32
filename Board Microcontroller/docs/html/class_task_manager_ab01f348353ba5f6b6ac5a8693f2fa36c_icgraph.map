@@ -1,5 +1,0 @@
-<map id="TaskManager::cleanupTasks" name="TaskManager::cleanupTasks">
-<area shape="rect" id="Node000001" title="Helper method to clean up all tasks." alt="" coords="247,5,434,32"/>
-<area shape="rect" id="Node000002" href="$class_task_manager.html#a6ecdd2b8a6b7545eae64da180ba80c53" title="Destructor &#45; ensures all tasks are cleaned up." alt="" coords="5,5,199,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="231,21,199,21,199,16,231,16"/>
-</map>

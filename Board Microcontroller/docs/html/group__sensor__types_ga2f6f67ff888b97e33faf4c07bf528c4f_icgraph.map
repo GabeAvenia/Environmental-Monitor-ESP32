@@ -1,5 +1,0 @@
-<map id="sensorTypeToString" name="sensorTypeToString">
-<area shape="rect" id="Node000001" title="Convert a SensorType enum to its string representation." alt="" coords="234,5,370,32"/>
-<area shape="rect" id="Node000002" href="$class_base_sensor.html#a1260fb7f82499f81b2efd908d67ab807" title="Get the type of this sensor as a string." alt="" coords="5,5,186,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,21,186,21,186,16,218,16"/>
-</map>

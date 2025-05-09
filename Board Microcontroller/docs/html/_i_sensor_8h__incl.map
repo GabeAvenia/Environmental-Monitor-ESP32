@@ -1,7 +1,0 @@
-<map id="src/sensors/interfaces/ISensor.h" name="src/sensors/interfaces/ISensor.h">
-<area shape="rect" id="Node000001" title="Base interface for all sensors." alt="" coords="28,5,179,48"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,96,82,123"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,50,64,85,60,82,86,47"/>
-<area shape="rect" id="Node000003" href="$_interface_types_8h.html" title="Enumeration of sensor interface types." alt="" coords="106,96,224,123"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="121,47,148,82,144,85,117,50"/>
-</map>

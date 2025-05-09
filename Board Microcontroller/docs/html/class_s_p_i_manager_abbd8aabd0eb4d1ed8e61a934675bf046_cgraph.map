@@ -1,8 +1,0 @@
-<map id="SPIManager::beginTransaction" name="SPIManager::beginTransaction">
-<area shape="rect" id="Node000001" title="Begin an SPI transaction Begins an SPI transaction with the specified SS pin and settings." alt="" coords="5,13,206,40"/>
-<area shape="rect" id="Node000002" href="$class_s_p_i_manager.html#a9e07cab432e9a41da8f86fcf9109e311" title="Map a logical SS pin index to a physical pin number Converts a logical pin index (0,..." alt="" coords="483,5,664,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,24,467,24,467,29,206,29"/>
-<area shape="rect" id="Node000003" href="$class_s_p_i_manager.html#a6806bf5d471fde4d710eca4a398b2627" title="Register an SS pin for use with SPI Configures the specified pin as an output for use as an SPI slave..." alt="" coords="254,39,435,65"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,35,238,38,238,43,206,40"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="435,39,467,36,468,41,436,45"/>
-</map>

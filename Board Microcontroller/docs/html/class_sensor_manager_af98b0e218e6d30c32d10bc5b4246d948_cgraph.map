@@ -1,5 +1,0 @@
-<map id="SensorManager::getTemperatureSafe" name="SensorManager::getTemperatureSafe">
-<area shape="rect" id="Node000001" title="Get temperature reading in a thread&#45;safe manner." alt="" coords="5,5,243,32"/>
-<area shape="rect" id="Node000002" href="$class_sensor_manager.html#a20660c38f60560b55fb40184662be9db" title="Get the buffer for safe reading by other threads." alt="" coords="291,5,498,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="243,16,275,16,275,21,243,21"/>
-</map>

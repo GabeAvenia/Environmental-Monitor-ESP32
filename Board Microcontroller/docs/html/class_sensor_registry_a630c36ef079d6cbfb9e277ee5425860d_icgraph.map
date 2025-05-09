@@ -1,7 +1,0 @@
-<map id="SensorRegistry::getSensorByName" name="SensorRegistry::getSensorByName">
-<area shape="rect" id="Node000001" title="Get a sensor by name." alt="" coords="445,5,623,48"/>
-<area shape="rect" id="Node000002" href="$class_sensor_registry.html#ad0a854f5b168b6db34fae90062182ee6" title="Check if a sensor with the given name exists in the registry." alt="" coords="216,13,397,40"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="429,29,398,29,398,24,429,24"/>
-<area shape="rect" id="Node000003" href="$class_sensor_registry.html#a34cb4eb9d578858176e112921037de3d" title="Register a sensor in the registry Adds a sensor to the registry, making it available for lookup by na..." alt="" coords="5,5,168,48"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="200,29,168,29,168,24,200,24"/>
-</map>

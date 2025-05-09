@@ -1,5 +1,0 @@
-<map id="SensorFactory::createI2CSensor" name="SensorFactory::createI2CSensor">
-<area shape="rect" id="Node000001" title="Create a sensor using the template method pattern." alt="" coords="5,5,218,32"/>
-<area shape="rect" id="Node000002" href="$class_i2_c_manager.html#ad9ebf3c8541e2fa0fd1131f3d68391de" title="Convert I2CPort enum to string." alt="" coords="266,5,436,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,16,250,16,250,21,218,21"/>
-</map>

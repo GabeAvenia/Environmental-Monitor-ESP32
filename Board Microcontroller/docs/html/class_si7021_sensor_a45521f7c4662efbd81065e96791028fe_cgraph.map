@@ -1,9 +1,0 @@
-<map id="Si7021Sensor::reinitialize" name="Si7021Sensor::reinitialize">
-<area shape="rect" id="Node000001" title="Re&#45;initialize the sensor after a communication failure." alt="" coords="5,5,174,32"/>
-<area shape="rect" id="Node000002" href="$class_si7021_sensor.html#a985075d6db09c0b59dfbd5f3d8b2a0dd" title="Update both temperature and humidity readings from the sensor." alt="" coords="222,5,426,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,16,206,16,206,21,174,21"/>
-<area shape="rect" id="Node000003" href="$class_si7021_sensor.html#a20915f718bd13f65ea4b5bdfc53f6963" title="Constructor for Si7021Sensor." alt="" coords="474,5,665,32"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="427,16,458,16,458,21,427,21"/>
-<area shape="rect" id="Node000004" href="$class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="713,5,885,32"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="666,16,698,16,698,21,666,21"/>
-</map>

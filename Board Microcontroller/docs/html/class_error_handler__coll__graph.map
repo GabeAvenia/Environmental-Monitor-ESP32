@@ -1,8 +1,0 @@
-<map id="ErrorHandler" name="ErrorHandler">
-<area shape="rect" id="Node000001" title="Handles error logging and reporting with configurable output streams This class manages error reporti..." alt="" coords="36,176,197,544"/>
-<area shape="rect" id="Node000003" href="$class_led_manager.html" title="Manager for controlling the onboard NeoPixel LED This class provides a unified interface for controll..." alt="" coords="5,608,227,1893"/>
-<area shape="poly" id="edge3_Node000003_Node000001" title=" " alt="" coords="64,544,60,568,57,591,52,591,55,568,59,543"/>
-<area shape="rect" id="Node000002" href="$struct_output_config.html" title="Structure to hold output configuration Configures an output stream with the minimum severity level to..." alt="" coords="70,5,163,96"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,96,119,159,114,159,114,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="141,608,139,568,139,561,144,561,144,568,146,608"/>
-</map>

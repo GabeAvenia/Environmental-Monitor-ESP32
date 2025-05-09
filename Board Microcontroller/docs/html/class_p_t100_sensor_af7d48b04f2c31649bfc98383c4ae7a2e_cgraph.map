@@ -1,7 +1,0 @@
-<map id="PT100Sensor::PT100Sensor" name="PT100Sensor::PT100Sensor">
-<area shape="rect" id="Node000001" title="Constructor for PT100Sensor." alt="" coords="5,35,193,61"/>
-<area shape="rect" id="Node000002" href="$class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="246,5,417,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,34,230,29,231,34,193,39"/>
-<area shape="rect" id="Node000003" href="$class_s_p_i_manager.html#a9e07cab432e9a41da8f86fcf9109e311" title="Map a logical SS pin index to a physical pin number Converts a logical pin index (0,..." alt="" coords="241,56,422,99"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,57,226,61,225,67,193,62"/>
-</map>

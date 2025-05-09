@@ -1,5 +1,0 @@
-<map id="LedManager::~LedManager" name="LedManager::~LedManager">
-<area shape="rect" id="Node000001" title="Destructor &#45; ensures LED is turned off." alt="" coords="5,5,185,32"/>
-<area shape="rect" id="Node000002" href="$class_led_manager.html#a7ef32c4cc670b9545d002ebdf9214268" title="Set a solid color on the NeoPixel." alt="" coords="233,5,382,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,16,217,16,217,21,185,21"/>
-</map>

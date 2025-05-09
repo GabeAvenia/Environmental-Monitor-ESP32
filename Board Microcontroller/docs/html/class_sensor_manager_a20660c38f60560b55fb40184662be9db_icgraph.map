@@ -1,7 +1,0 @@
-<map id="SensorManager::getReadCache" name="SensorManager::getReadCache">
-<area shape="rect" id="Node000001" title="Get the buffer for safe reading by other threads." alt="" coords="291,31,498,57"/>
-<area shape="rect" id="Node000002" href="$class_sensor_manager.html#ab0aa3804f2f8f7667068f7ed74d7d8fa" title="Get humidity reading in a thread&#45;safe manner." alt="" coords="15,5,233,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="275,36,233,32,233,26,275,30"/>
-<area shape="rect" id="Node000003" href="$class_sensor_manager.html#af98b0e218e6d30c32d10bc5b4246d948" title="Get temperature reading in a thread&#45;safe manner." alt="" coords="5,56,243,83"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="276,58,243,61,243,56,275,52"/>
-</map>
