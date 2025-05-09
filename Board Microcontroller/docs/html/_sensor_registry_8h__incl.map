@@ -1,0 +1,25 @@
+<map id="src/managers/SensorRegistry.h" name="src/managers/SensorRegistry.h">
+<area shape="rect" id="Node000001" title="Registry for managing sensor instances." alt="" coords="318,5,522,32"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="436,171,513,197"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="429,31,452,79,472,155,467,156,447,81,425,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="17,171,74,197"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="317,23,230,27,141,37,64,55,36,67,17,82,9,99,10,118,18,138,29,157,24,159,13,141,5,119,4,98,13,78,33,63,62,50,140,32,230,22,317,18"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="197,88,272,115"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="392,35,278,84,276,79,390,30"/>
+<area shape="rect" id="Node000005" href="$_i_sensor_8h.html" title="Base interface for all sensors." alt="" coords="690,80,830,123"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="476,30,675,77,674,82,475,35"/>
+<area shape="rect" id="Node000006" href="$_interface_types_8h.html" title="Enumeration of sensor interface types." alt="" coords="754,171,872,197"/>
+<area shape="poly" id="edge11_Node000001_Node000006" title=" " alt="" coords="523,17,614,21,710,31,792,49,823,62,845,78,854,98,853,119,845,140,835,159,830,156,840,138,847,118,848,99,841,82,820,66,790,54,709,36,614,26,522,22"/>
+<area shape="rect" id="Node000007" href="$_i_temperature_sensor_8h.html" title="Interface for temperature measurement." alt="" coords="513,80,666,123"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="448,30,533,71,531,75,445,35"/>
+<area shape="rect" id="Node000008" href="$_i_humidity_sensor_8h.html" title="Interface for humidity measurement." alt="" coords="296,80,437,123"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="414,34,391,69,386,66,409,31"/>
+<area shape="rect" id="Node000009" href="$_error_handler_8h.html" title="Error logging and reporting system with configurable output streams." alt="" coords="26,88,174,115"/>
+<area shape="poly" id="edge12_Node000001_Node000009" title=" " alt="" coords="370,35,166,86,165,81,369,30"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="690,125,529,170,527,165,689,120"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="776,122,799,156,794,159,771,125"/>
+<area shape="poly" id="edge8_Node000007_Node000002" title=" " alt="" coords="561,125,507,164,504,159,558,121"/>
+<area shape="poly" id="edge10_Node000008_Node000002" title=" " alt="" coords="396,121,447,159,444,163,393,125"/>
+<area shape="poly" id="edge13_Node000009_Node000002" title=" " alt="" coords="153,113,186,120,422,169,421,175,185,125,152,118"/>
+<area shape="poly" id="edge14_Node000009_Node000003" title=" " alt="" coords="94,117,64,160,60,157,89,114"/>
+</map>

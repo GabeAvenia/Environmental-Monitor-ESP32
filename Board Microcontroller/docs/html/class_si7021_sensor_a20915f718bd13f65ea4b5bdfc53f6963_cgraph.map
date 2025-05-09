@@ -1,0 +1,5 @@
+<map id="Si7021Sensor::Si7021Sensor" name="Si7021Sensor::Si7021Sensor">
+<area shape="rect" id="Node000001" title="Constructor for Si7021Sensor." alt="" coords="5,5,197,32"/>
+<area shape="rect" id="Node000002" href="$class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="245,5,416,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,16,229,16,229,21,197,21"/>
+</map>

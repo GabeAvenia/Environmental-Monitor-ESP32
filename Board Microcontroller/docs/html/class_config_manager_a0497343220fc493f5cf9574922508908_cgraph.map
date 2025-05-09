@@ -1,0 +1,10 @@
+<map id="ConfigManager::begin" name="ConfigManager::begin">
+<area shape="rect" id="Node000001" title="Initialize the configuration manager Loads the configuration from file or creates a default one if no..." alt="" coords="5,13,154,40"/>
+<area shape="rect" id="Node000002" href="$class_config_manager.html#a933da325afee9d238cb31529727490b9" title="Load configuration from file." alt="" coords="202,5,381,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,24,186,24,186,29,154,29"/>
+<area shape="rect" id="Node000003" href="$class_config_manager.html#ad64b8ab76c62c5acb0b4a35d7ac754a7" title="Create default configuration." alt="" coords="429,5,624,48"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="381,33,413,33,413,38,381,38"/>
+<area shape="rect" id="Node000004" href="$class_i2_c_manager.html#a25ce4fa452bb9441a46e8fc956e9c3a2" title="Convert a string port name to I2CPort enum." alt="" coords="442,72,612,99"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="380,46,456,65,455,70,379,51"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="428,20,396,20,396,15,428,15"/>
+</map>

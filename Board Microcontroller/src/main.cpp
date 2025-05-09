@@ -53,7 +53,9 @@ void setup() {
     // Initialize UART for debug messages
     debugSerial = &Serial2;
     debugSerial->begin(115200, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
-    delay(50); // Give serial time to initialize
+    while (!debugSerial && (millis() - startTime < 1000)) {
+        delay(10); // Wait for USB Serial to be ready
+    }
     uartDebugSerial = debugSerial;
     
     // Initialize the error handler with debug output

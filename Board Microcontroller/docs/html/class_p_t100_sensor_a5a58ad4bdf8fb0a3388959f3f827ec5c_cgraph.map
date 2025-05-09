@@ -1,0 +1,5 @@
+<map id="PT100Sensor::getSensorInfo" name="PT100Sensor::getSensorInfo">
+<area shape="rect" id="Node000001" title="Get detailed information about the sensor." alt="" coords="5,5,195,32"/>
+<area shape="rect" id="Node000002" href="$class_p_t100_sensor.html#ae9aa8647e52efca9450704c81993b6eb" title="Get the MAX31865 fault status and description." alt="" coords="243,5,436,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,16,227,16,227,21,195,21"/>
+</map>

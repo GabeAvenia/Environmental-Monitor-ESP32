@@ -1,0 +1,8 @@
+<map id="I2CManager::isPortInitialized" name="I2CManager::isPortInitialized">
+<area shape="rect" id="Node000001" title="Check if a specific I2C port is initialized." alt="" coords="436,31,625,57"/>
+<area shape="rect" id="Node000002" href="$class_i2_c_manager.html#a2ee596f6fd05071905d94bd5c6c86f9f" title="Check if a device is present at the specified address on a specific I2C port." alt="" coords="205,5,388,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="420,35,388,31,389,26,421,29"/>
+<area shape="rect" id="Node000003" href="$class_i2_c_manager.html#ac42d99b0ec5ab28c5aa5671c547b141a" title="Scan an I2C bus for devices Scans the specified I2C bus for connected devices and returns a list of d..." alt="" coords="5,31,157,57"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="421,47,157,47,157,41,421,41"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="190,34,157,38,156,32,189,29"/>
+</map>

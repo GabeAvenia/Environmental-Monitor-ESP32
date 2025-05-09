@@ -1,0 +1,4 @@
+<map id="Sensor Types" name="Sensor Types">
+<area shape="rect" id="Node000001" title="Supported sensor type definitions." alt="" coords="123,5,223,32"/>
+<area shape="rect" id="Node000002" href="$group__sensors.html" title="Sensor implementations and common base classes." alt="" coords="5,5,75,32"/>
+</map>

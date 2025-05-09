@@ -106,16 +106,14 @@ $(function(){initNavTree('class_task_manager.html',''); initResizable(true); });
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_task_manager-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">TaskManager Class Reference</div></div>
+  <div class="headertitle"><div class="title">TaskManager Class Reference<div class="ingroups"><a class="el" href="group__task__management.html">Task Management</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Class for managing FreeRTOS tasks in a multi-core environment.  
+<p>Manages FreeRTOS tasks in a multi-core environment This class provides a clean interface for creating and managing tasks on specific cores of the ESP32, ensuring proper initialization, priority handling, and synchronization between tasks.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>&gt;</code></p>
@@ -123,12 +121,50 @@ $(function(){initNavTree('class_task_manager.html',''); initResizable(true); });
 Collaboration diagram for TaskManager:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager__coll__graph.png" border="0" usemap="#a_task_manager_coll__map" alt="Collaboration graph"/></div>
+<map name="a_task_manager_coll__map" id="a_task_manager_coll__map">
+<area shape="rect" title="Manages FreeRTOS tasks in a multi&#45;core environment This class provides a clean interface for creating..." alt="" coords="1000,5227,1169,6427"/>
+<area shape="rect" href="class_sensor_manager.html" title="Manages sensor configuration, initialization, and readings This class serves as the central managemen..." alt="" coords="477,3595,644,4176"/>
+<area shape="poly" title=" " alt="" coords="564,4175,575,4395,600,4645,619,4776,644,4907,674,5036,710,5162,738,5237,770,5311,843,5455,921,5586,993,5696,989,5699,916,5589,838,5458,765,5313,733,5239,705,5163,669,5038,638,4908,614,4776,595,4645,570,4395,559,4176"/>
+<area shape="rect" href="class_communication_manager.html" title="Manages communication with external systems using SCPI commands Processes incoming commands through b..." alt="" coords="817,4240,1024,5163"/>
+<area shape="poly" title=" " alt="" coords="647,4074,813,4449,808,4452,642,4076"/>
+<area shape="rect" href="class_sensor_registry.html" title="Registry for managing sensor instances This class maintains collections of sensors organized by their..." alt="" coords="779,1171,949,1475"/>
+<area shape="poly" title=" " alt="" coords="867,1474,865,1931,859,2226,849,2539,833,2850,811,3139,781,3386,762,3488,741,3571,724,3619,703,3666,656,3753,651,3750,698,3663,719,3617,736,3570,757,3487,775,3385,806,3138,828,2850,844,2539,854,2226,859,1931,862,1474"/>
+<area shape="rect" href="class_error_handler.html" title="Handles error logging and reporting with configurable output streams This class manages error reporti..." alt="" coords="726,176,887,544"/>
+<area shape="poly" title=" " alt="" coords="888,379,975,410,1074,456,1123,486,1169,521,1211,561,1246,607,1266,642,1278,675,1283,705,1283,735,1277,798,1272,876,1272,4703,1269,4802,1263,4902,1241,5103,1211,5296,1176,5473,1170,5472,1205,5295,1236,5102,1258,4902,1264,4801,1266,4703,1266,876,1271,798,1278,735,1278,706,1272,676,1261,645,1241,609,1207,565,1166,525,1120,491,1071,461,973,415,886,384"/>
+<area shape="poly" title=" " alt="" coords="726,371,606,392,535,410,462,434,388,465,318,504,254,552,199,610,152,680,124,745,111,807,108,869,119,1004,123,1082,121,1171,72,1717,46,2064,36,2245,30,2428,28,2609,33,2784,45,2953,64,3110,93,3253,112,3318,133,3379,157,3435,184,3486,214,3530,247,3569,262,3578,285,3582,344,3583,409,3582,439,3584,464,3590,462,3595,438,3589,409,3587,344,3588,284,3587,260,3583,243,3573,209,3533,179,3488,152,3437,128,3381,107,3320,88,3254,59,3111,39,2953,28,2785,23,2609,24,2428,30,2245,40,2064,67,1717,115,1171,117,1082,113,1005,103,870,106,807,119,744,147,678,195,606,250,548,315,500,386,460,460,429,534,405,605,387,726,366"/>
+<area shape="poly" title=" " alt="" coords="830,544,836,608,853,896,862,1153,857,1154,847,897,830,608,825,544"/>
+<area shape="rect" href="class_led_manager.html" title="Manager for controlling the onboard NeoPixel LED This class provides a unified interface for controll..." alt="" coords="1003,2285,1225,3571"/>
+<area shape="poly" title=" " alt="" coords="889,428,945,491,970,528,990,567,1025,1033,1056,1499,1092,2268,1087,2268,1050,1499,1019,1033,985,569,966,531,941,494,885,431"/>
+<area shape="rect" href="class_sensor_factory.html" title="Factory class for creating sensors based on configuration This class is responsible for creating inst..." alt="" coords="615,1792,822,1968"/>
+<area shape="poly" title=" " alt="" coords="762,544,751,608,744,692,739,797,735,1041,733,1475,724,1775,719,1775,728,1475,730,1041,734,797,738,692,746,608,757,543"/>
+<area shape="rect" href="class_i2_c_manager.html" title="Manages I2C bus configurations and communication This class provides a central management system for ..." alt="" coords="375,725,496,1029"/>
+<area shape="poly" title=" " alt="" coords="727,410,672,447,614,494,557,548,510,609,485,658,466,710,461,708,480,656,505,607,553,545,610,490,669,443,724,406"/>
+<area shape="rect" href="class_s_p_i_manager.html" title="Class for managing SPI communications with sensors This class provides a centralized management syste..." alt="" coords="520,608,701,1147"/>
+<area shape="poly" title=" " alt="" coords="728,449,687,506,654,569,645,593,640,591,649,567,682,503,724,446"/>
+<area shape="rect" href="class_config_manager.html" title="Manages system configuration and persistence This class handles loading, saving, and modifying the sy..." alt="" coords="137,1499,345,2261"/>
+<area shape="poly" title=" " alt="" coords="726,376,621,400,561,419,499,444,438,475,381,512,329,557,287,609,271,638,257,673,235,759,219,862,210,978,205,1102,205,1230,213,1482,208,1482,200,1230,200,1102,205,977,214,861,230,758,252,672,266,636,282,607,326,553,377,508,435,470,497,439,559,414,620,395,725,370"/>
+<area shape="poly" title=" " alt="" coords="889,500,917,567,944,651,961,719,969,788,972,876,972,3887,969,4054,961,4223,956,4223,963,4054,966,3887,966,876,964,788,956,720,939,653,912,569,884,502"/>
+<area shape="rect" href="struct_output_config.html" title="Structure to hold output configuration Configures an output stream with the minimum severity level to..." alt="" coords="760,5,853,96"/>
+<area shape="poly" title=" " alt="" coords="809,96,809,159,804,159,804,96"/>
+<area shape="poly" title=" " alt="" coords="1127,3570,1131,4333,1128,4750,1120,5163,1118,5210,1113,5210,1114,5163,1122,4750,1126,4333,1122,3570"/>
+<area shape="poly" title=" " alt="" coords="1140,2285,1155,1777,1161,1264,1158,1037,1149,843,1134,697,1124,645,1112,609,1093,576,1071,546,1017,491,958,445,900,410,903,405,961,441,1021,487,1075,542,1098,573,1117,607,1129,644,1139,696,1155,843,1163,1036,1166,1264,1161,1777,1145,2286"/>
+<area shape="poly" title=" " alt="" coords="1054,3571,1051,3595,1023,3906,990,4216,989,4223,984,4223,985,4216,1017,3905,1046,3594,1048,3570"/>
+<area shape="poly" title=" " alt="" coords="714,1968,588,3578,582,3578,709,1967"/>
+<area shape="poly" title=" " alt="" coords="434,1029,426,1499,417,2083,414,2318,415,2537,422,2756,437,2991,462,3257,500,3570,501,3577,495,3578,494,3571,457,3257,432,2991,417,2757,410,2538,409,2318,412,2083,421,1499,429,1029"/>
+<area shape="poly" title=" " alt="" coords="432,1029,437,1135,456,1252,471,1311,492,1368,518,1423,551,1473,561,1481,572,1484,585,1488,597,1497,621,1528,642,1562,674,1634,696,1708,709,1775,704,1776,690,1709,669,1636,637,1565,617,1531,594,1501,583,1492,571,1490,559,1486,547,1476,514,1425,487,1370,466,1312,451,1253,432,1136,426,1029"/>
+<area shape="poly" title=" " alt="" coords="569,1147,547,1320,530,1499,515,1783,507,2074,505,2364,508,2647,523,3166,544,3577,538,3578,518,3166,503,2647,500,2364,502,2074,510,1783,525,1498,541,1320,564,1146"/>
+<area shape="poly" title=" " alt="" coords="629,1146,641,1309,658,1474,679,1633,702,1775,697,1776,674,1633,653,1475,636,1309,623,1147"/>
+<area shape="poly" title=" " alt="" coords="253,2261,284,3570,294,3579,306,3582,320,3585,336,3592,373,3625,408,3660,469,3735,465,3739,404,3664,369,3629,333,3597,319,3590,305,3587,291,3584,279,3572,247,2261"/>
+<area shape="poly" title=" " alt="" coords="140,2216,90,2425,46,2665,29,2793,16,2925,9,3060,9,3196,17,3333,33,3467,59,3600,97,3728,145,3850,207,3967,243,4022,283,4075,326,4126,373,4174,397,4184,442,4192,569,4205,706,4217,763,4226,804,4236,802,4241,762,4231,706,4223,569,4210,441,4197,396,4189,370,4178,323,4129,279,4078,239,4025,203,3969,141,3853,91,3729,54,3601,28,3468,12,3333,4,3197,4,3060,11,2925,23,2792,40,2664,84,2423,134,2215"/>
+<area shape="poly" title=" " alt="" coords="991,5162,1001,5230,995,5231,985,5163"/>
+<area shape="poly" title=" " alt="" coords="1026,4617,1036,4630,1044,4648,1049,4672,1051,4701,1047,4742,1037,4772,1032,4770,1042,4741,1046,4701,1044,4673,1039,4650,1032,4632,1022,4620"/>
+</map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab4b6527bb74aa07e24f7ee328c742f63" id="r_ab4b6527bb74aa07e24f7ee328c742f63"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4b6527bb74aa07e24f7ee328c742f63">TaskManager</a> (<a class="el" href="class_sensor_manager.html">SensorManager</a> *sensorMgr, <a class="el" href="class_communication_manager.html">CommunicationManager</a> *commMgr, <a class="el" href="class_led_manager.html">LedManager</a> *ledMgr, <a class="el" href="class_error_handler.html">ErrorHandler</a> *errHandler)</td></tr>
-<tr class="memdesc:ab4b6527bb74aa07e24f7ee328c742f63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="class_task_manager.html" title="Class for managing FreeRTOS tasks in a multi-core environment.">TaskManager</a>.  <br /></td></tr>
+<tr class="memdesc:ab4b6527bb74aa07e24f7ee328c742f63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="class_task_manager.html" title="Manages FreeRTOS tasks in a multi-core environment This class provides a clean interface for creating...">TaskManager</a>.  <br /></td></tr>
 <tr class="separator:ab4b6527bb74aa07e24f7ee328c742f63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ecdd2b8a6b7545eae64da180ba80c53" id="r_a6ecdd2b8a6b7545eae64da180ba80c53"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ecdd2b8a6b7545eae64da180ba80c53">~TaskManager</a> ()</td></tr>
 <tr class="memdesc:a6ecdd2b8a6b7545eae64da180ba80c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor - ensures all tasks are cleaned up.  <br /></td></tr>
@@ -166,24 +202,28 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Task names for identification</div></td></tr>
 <tr class="memitem:a5d6f466246732e218a09c4ad28e1caa1" id="r_a5d6f466246732e218a09c4ad28e1caa1"><td class="memItemLeft" align="right" valign="top">static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d6f466246732e218a09c4ad28e1caa1">TASK_NAME_SENSOR</a> = &quot;SensorTask&quot;</td></tr>
 <tr class="separator:a5d6f466246732e218a09c4ad28e1caa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af67ba9b5f0fab9411469300e890eca37" id="r_af67ba9b5f0fab9411469300e890eca37"><td class="memItemLeft" align="right" valign="top">static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af67ba9b5f0fab9411469300e890eca37">TASK_NAME_COMM</a> = &quot;CommTask&quot;</td></tr>
 <tr class="separator:af67ba9b5f0fab9411469300e890eca37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca6878cacfceca661444e23fc6bf7fc5" id="r_aca6878cacfceca661444e23fc6bf7fc5"><td class="memItemLeft" align="right" valign="top">static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca6878cacfceca661444e23fc6bf7fc5">TASK_NAME_LED</a> = &quot;LedTask&quot;</td></tr>
 <tr class="separator:aca6878cacfceca661444e23fc6bf7fc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Task stack sizes (in words)</div></td></tr>
 <tr class="memitem:a7fe6413f91e4116e1951e78c1b445d72" id="r_a7fe6413f91e4116e1951e78c1b445d72"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7fe6413f91e4116e1951e78c1b445d72">STACK_SIZE_SENSOR</a> = Constants::Tasks::STACK_SIZE_SENSOR</td></tr>
 <tr class="separator:a7fe6413f91e4116e1951e78c1b445d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3528ba06f1a7ee147d01922b5d9a6624" id="r_a3528ba06f1a7ee147d01922b5d9a6624"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3528ba06f1a7ee147d01922b5d9a6624">STACK_SIZE_COMM</a> = Constants::Tasks::STACK_SIZE_COMM</td></tr>
 <tr class="separator:a3528ba06f1a7ee147d01922b5d9a6624"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e79efd5dd12839171ee66a14c0eeba8" id="r_a0e79efd5dd12839171ee66a14c0eeba8"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e79efd5dd12839171ee66a14c0eeba8">STACK_SIZE_LED</a> = Constants::Tasks::STACK_SIZE_LED</td></tr>
 <tr class="separator:a0e79efd5dd12839171ee66a14c0eeba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Task priorities (higher number = higher priority)</div></td></tr>
 <tr class="memitem:a6de430bb335862ec27cefd53a314a4a7" id="r_a6de430bb335862ec27cefd53a314a4a7"><td class="memItemLeft" align="right" valign="top">static constexpr UBaseType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6de430bb335862ec27cefd53a314a4a7">PRIORITY_SENSOR</a> = Constants::Tasks::PRIORITY_SENSOR</td></tr>
 <tr class="separator:a6de430bb335862ec27cefd53a314a4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23a3f663eef2bff4daaa414166bc9bd1" id="r_a23a3f663eef2bff4daaa414166bc9bd1"><td class="memItemLeft" align="right" valign="top">static constexpr UBaseType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23a3f663eef2bff4daaa414166bc9bd1">PRIORITY_COMM</a> = Constants::Tasks::PRIORITY_COMM</td></tr>
 <tr class="separator:a23a3f663eef2bff4daaa414166bc9bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc9ed83ef67a74083f6fce18460cefc6" id="r_acc9ed83ef67a74083f6fce18460cefc6"><td class="memItemLeft" align="right" valign="top">static constexpr UBaseType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc9ed83ef67a74083f6fce18460cefc6">PRIORITY_LED</a> = Constants::Tasks::PRIORITY_LED</td></tr>
 <tr class="separator:acc9ed83ef67a74083f6fce18460cefc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Core assignments for ESP32 dual-core operation</div></td></tr>
 <tr class="memitem:ade909646a074562ee0ab5515fb4b0ed6" id="r_ade909646a074562ee0ab5515fb4b0ed6"><td class="memItemLeft" align="right" valign="top">static constexpr BaseType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade909646a074562ee0ab5515fb4b0ed6">CORE_SENSOR</a> = Constants::Tasks::CORE_SENSOR</td></tr>
 <tr class="separator:ade909646a074562ee0ab5515fb4b0ed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bba1a3d1ad528158328eecad0e8c459" id="r_a1bba1a3d1ad528158328eecad0e8c459"><td class="memItemLeft" align="right" valign="top">static constexpr BaseType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1bba1a3d1ad528158328eecad0e8c459">CORE_COMM</a> = Constants::Tasks::CORE_COMM</td></tr>
@@ -193,18 +233,23 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr class="memitem:ab01f348353ba5f6b6ac5a8693f2fa36c" id="r_ab01f348353ba5f6b6ac5a8693f2fa36c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab01f348353ba5f6b6ac5a8693f2fa36c">cleanupTasks</a> ()</td></tr>
+<tr class="memdesc:ab01f348353ba5f6b6ac5a8693f2fa36c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to clean up all tasks.  <br /></td></tr>
+<tr class="separator:ab01f348353ba5f6b6ac5a8693f2fa36c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a3a57b0a009f3b2fc21663309f6c4ae69" id="r_a3a57b0a009f3b2fc21663309f6c4ae69"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a57b0a009f3b2fc21663309f6c4ae69">sensorTask</a> ()</td></tr>
+<tr class="memdesc:a3a57b0a009f3b2fc21663309f6c4ae69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance task methods - actual implementations.  <br /></td></tr>
 <tr class="separator:a3a57b0a009f3b2fc21663309f6c4ae69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9611d7077dd71c092f458e98a9750a14" id="r_a9611d7077dd71c092f458e98a9750a14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9611d7077dd71c092f458e98a9750a14">commTask</a> ()</td></tr>
 <tr class="separator:a9611d7077dd71c092f458e98a9750a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd44732ad9fe46c9ce29d1b89bcfb71d" id="r_abd44732ad9fe46c9ce29d1b89bcfb71d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd44732ad9fe46c9ce29d1b89bcfb71d">ledTask</a> ()</td></tr>
 <tr class="separator:abd44732ad9fe46c9ce29d1b89bcfb71d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab01f348353ba5f6b6ac5a8693f2fa36c" id="r_ab01f348353ba5f6b6ac5a8693f2fa36c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab01f348353ba5f6b6ac5a8693f2fa36c">cleanupTasks</a> ()</td></tr>
-<tr class="separator:ab01f348353ba5f6b6ac5a8693f2fa36c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ac3dd3459f26b2b5d2a47c4d2a0f1655a" id="r_ac3dd3459f26b2b5d2a47c4d2a0f1655a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3dd3459f26b2b5d2a47c4d2a0f1655a">sensorTaskFunction</a> (void *pvParameters)</td></tr>
+<tr class="memdesc:ac3dd3459f26b2b5d2a47c4d2a0f1655a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static task functions that call the appropriate object method.  <br /></td></tr>
 <tr class="separator:ac3dd3459f26b2b5d2a47c4d2a0f1655a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46013b8a8ca1fa98c3c96195e77e5072" id="r_a46013b8a8ca1fa98c3c96195e77e5072"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46013b8a8ca1fa98c3c96195e77e5072">commTaskFunction</a> (void *pvParameters)</td></tr>
 <tr class="separator:a46013b8a8ca1fa98c3c96195e77e5072"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,13 +258,20 @@ Static Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
+<tr class="memitem:a9efd75a9df24c330446e4b10dcc954f6" id="r_a9efd75a9df24c330446e4b10dcc954f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9efd75a9df24c330446e4b10dcc954f6">tasksInitialized</a> = false</td></tr>
+<tr class="memdesc:a9efd75a9df24c330446e4b10dcc954f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Task status tracking.  <br /></td></tr>
+<tr class="separator:a9efd75a9df24c330446e4b10dcc954f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a91896106ee039fee1c6c97a822b65a79" id="r_a91896106ee039fee1c6c97a822b65a79"><td class="memItemLeft" align="right" valign="top">TaskHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91896106ee039fee1c6c97a822b65a79">sensorTaskHandle</a> = nullptr</td></tr>
+<tr class="memdesc:a91896106ee039fee1c6c97a822b65a79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Task handles.  <br /></td></tr>
 <tr class="separator:a91896106ee039fee1c6c97a822b65a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4c2de9f1fe8867600c4e3d2b403c880" id="r_af4c2de9f1fe8867600c4e3d2b403c880"><td class="memItemLeft" align="right" valign="top">TaskHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4c2de9f1fe8867600c4e3d2b403c880">commTaskHandle</a> = nullptr</td></tr>
 <tr class="separator:af4c2de9f1fe8867600c4e3d2b403c880"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd1d519666bb73d4b6811c6761532625" id="r_abd1d519666bb73d4b6811c6761532625"><td class="memItemLeft" align="right" valign="top">TaskHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd1d519666bb73d4b6811c6761532625">ledTaskHandle</a> = nullptr</td></tr>
 <tr class="separator:abd1d519666bb73d4b6811c6761532625"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a4cfb16d91cbd612934fcc45a80f3d967" id="r_a4cfb16d91cbd612934fcc45a80f3d967"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_sensor_manager.html">SensorManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cfb16d91cbd612934fcc45a80f3d967">sensorManager</a> = nullptr</td></tr>
+<tr class="memdesc:a4cfb16d91cbd612934fcc45a80f3d967"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manager references.  <br /></td></tr>
 <tr class="separator:a4cfb16d91cbd612934fcc45a80f3d967"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d7245e29d4968b624210a9d5231d95d" id="r_a7d7245e29d4968b624210a9d5231d95d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_communication_manager.html">CommunicationManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d7245e29d4968b624210a9d5231d95d">commManager</a> = nullptr</td></tr>
 <tr class="separator:a7d7245e29d4968b624210a9d5231d95d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,14 +279,11 @@ Private Attributes</h2></td></tr>
 <tr class="separator:acbc0167e0ea1e60855f4a3807e23227e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab804f453324c539881a06f7f6d91250e" id="r_ab804f453324c539881a06f7f6d91250e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_error_handler.html">ErrorHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a> = nullptr</td></tr>
 <tr class="separator:ab804f453324c539881a06f7f6d91250e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9efd75a9df24c330446e4b10dcc954f6" id="r_a9efd75a9df24c330446e4b10dcc954f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9efd75a9df24c330446e4b10dcc954f6">tasksInitialized</a> = false</td></tr>
-<tr class="separator:a9efd75a9df24c330446e4b10dcc954f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class for managing FreeRTOS tasks in a multi-core environment. </p>
-<p>This class provides a clean interface for creating and managing tasks on specific cores of the ESP32, ensuring proper initialization, priority handling, and synchronization between tasks. </p>
+<div class="textblock"><p>Manages FreeRTOS tasks in a multi-core environment This class provides a clean interface for creating and managing tasks on specific cores of the ESP32, ensuring proper initialization, priority handling, and synchronization between tasks. </p>
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00022">22</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00031">31</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab4b6527bb74aa07e24f7ee328c742f63" name="ab4b6527bb74aa07e24f7ee328c742f63"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab4b6527bb74aa07e24f7ee328c742f63">&#9670;&#160;</a></span>TaskManager()</h2>
@@ -265,13 +314,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor for <a class="el" href="class_task_manager.html" title="Class for managing FreeRTOS tasks in a multi-core environment.">TaskManager</a>. </p>
+<p>Constructor for <a class="el" href="class_task_manager.html" title="Manages FreeRTOS tasks in a multi-core environment This class provides a clean interface for creating...">TaskManager</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sensorMgr</td><td>Pointer to the <a class="el" href="class_sensor_manager.html" title="Manages sensor configuration, initialization, and readings.">SensorManager</a> </td></tr>
-    <tr><td class="paramname">commMgr</td><td>Pointer to the <a class="el" href="class_communication_manager.html" title="Manages communication with external systems, handling SCPI commands.">CommunicationManager</a> </td></tr>
-    <tr><td class="paramname">ledMgr</td><td>Pointer to the <a class="el" href="class_led_manager.html" title="Simple manager for controlling the onboard NeoPixel LED.">LedManager</a> </td></tr>
-    <tr><td class="paramname">errHandler</td><td>Pointer to the <a class="el" href="class_error_handler.html" title="Handles error logging and reporting with configurable output streams.">ErrorHandler</a> </td></tr>
+    <tr><td class="paramname">sensorMgr</td><td>Pointer to the <a class="el" href="class_sensor_manager.html" title="Manages sensor configuration, initialization, and readings This class serves as the central managemen...">SensorManager</a> </td></tr>
+    <tr><td class="paramname">commMgr</td><td>Pointer to the <a class="el" href="class_communication_manager.html" title="Manages communication with external systems using SCPI commands Processes incoming commands through b...">CommunicationManager</a> </td></tr>
+    <tr><td class="paramname">ledMgr</td><td>Pointer to the <a class="el" href="class_led_manager.html" title="Manager for controlling the onboard NeoPixel LED This class provides a unified interface for controll...">LedManager</a> </td></tr>
+    <tr><td class="paramname">errHandler</td><td>Pointer to the <a class="el" href="class_error_handler.html" title="Handles error logging and reporting with configurable output streams This class manages error reporti...">ErrorHandler</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -286,21 +335,40 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>    <a class="code hl_variable" href="#af4c2de9f1fe8867600c4e3d2b403c880">commTaskHandle</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   57</span>    <a class="code hl_variable" href="#abd1d519666bb73d4b6811c6761532625">ledTaskHandle</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   58</span>}</div>
-<div class="ttc" id="aclass_task_manager_html_a4cfb16d91cbd612934fcc45a80f3d967"><div class="ttname"><a href="#a4cfb16d91cbd612934fcc45a80f3d967">TaskManager::sensorManager</a></div><div class="ttdeci">SensorManager * sensorManager</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00131">TaskManager.h:131</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_a7d7245e29d4968b624210a9d5231d95d"><div class="ttname"><a href="#a7d7245e29d4968b624210a9d5231d95d">TaskManager::commManager</a></div><div class="ttdeci">CommunicationManager * commManager</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00132">TaskManager.h:132</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_a91896106ee039fee1c6c97a822b65a79"><div class="ttname"><a href="#a91896106ee039fee1c6c97a822b65a79">TaskManager::sensorTaskHandle</a></div><div class="ttdeci">TaskHandle_t sensorTaskHandle</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00126">TaskManager.h:126</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_ab804f453324c539881a06f7f6d91250e"><div class="ttname"><a href="#ab804f453324c539881a06f7f6d91250e">TaskManager::errorHandler</a></div><div class="ttdeci">ErrorHandler * errorHandler</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00134">TaskManager.h:134</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_abd1d519666bb73d4b6811c6761532625"><div class="ttname"><a href="#abd1d519666bb73d4b6811c6761532625">TaskManager::ledTaskHandle</a></div><div class="ttdeci">TaskHandle_t ledTaskHandle</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00128">TaskManager.h:128</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_acbc0167e0ea1e60855f4a3807e23227e"><div class="ttname"><a href="#acbc0167e0ea1e60855f4a3807e23227e">TaskManager::ledManager</a></div><div class="ttdeci">LedManager * ledManager</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00133">TaskManager.h:133</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_af4c2de9f1fe8867600c4e3d2b403c880"><div class="ttname"><a href="#af4c2de9f1fe8867600c4e3d2b403c880">TaskManager::commTaskHandle</a></div><div class="ttdeci">TaskHandle_t commTaskHandle</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00127">TaskManager.h:127</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a4cfb16d91cbd612934fcc45a80f3d967"><div class="ttname"><a href="#a4cfb16d91cbd612934fcc45a80f3d967">TaskManager::sensorManager</a></div><div class="ttdeci">SensorManager * sensorManager</div><div class="ttdoc">Manager references.</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00153">TaskManager.h:153</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a7d7245e29d4968b624210a9d5231d95d"><div class="ttname"><a href="#a7d7245e29d4968b624210a9d5231d95d">TaskManager::commManager</a></div><div class="ttdeci">CommunicationManager * commManager</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00154">TaskManager.h:154</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a91896106ee039fee1c6c97a822b65a79"><div class="ttname"><a href="#a91896106ee039fee1c6c97a822b65a79">TaskManager::sensorTaskHandle</a></div><div class="ttdeci">TaskHandle_t sensorTaskHandle</div><div class="ttdoc">Task handles.</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00144">TaskManager.h:144</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_ab804f453324c539881a06f7f6d91250e"><div class="ttname"><a href="#ab804f453324c539881a06f7f6d91250e">TaskManager::errorHandler</a></div><div class="ttdeci">ErrorHandler * errorHandler</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00156">TaskManager.h:156</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_abd1d519666bb73d4b6811c6761532625"><div class="ttname"><a href="#abd1d519666bb73d4b6811c6761532625">TaskManager::ledTaskHandle</a></div><div class="ttdeci">TaskHandle_t ledTaskHandle</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00146">TaskManager.h:146</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_acbc0167e0ea1e60855f4a3807e23227e"><div class="ttname"><a href="#acbc0167e0ea1e60855f4a3807e23227e">TaskManager::ledManager</a></div><div class="ttdeci">LedManager * ledManager</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00155">TaskManager.h:155</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_af4c2de9f1fe8867600c4e3d2b403c880"><div class="ttname"><a href="#af4c2de9f1fe8867600c4e3d2b403c880">TaskManager::commTaskHandle</a></div><div class="ttdeci">TaskHandle_t commTaskHandle</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00145">TaskManager.h:145</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00132">commManager</a>, <a class="el" href="_task_manager_8h_source.html#l00127">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00134">errorHandler</a>, <a class="el" href="_task_manager_8h_source.html#l00133">ledManager</a>, <a class="el" href="_task_manager_8h_source.html#l00128">ledTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00131">sensorManager</a>, and <a class="el" href="_task_manager_8h_source.html#l00126">sensorTaskHandle</a>.</p>
+<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00154">commManager</a>, <a class="el" href="_task_manager_8h_source.html#l00145">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00156">errorHandler</a>, <a class="el" href="_task_manager_8h_source.html#l00155">ledManager</a>, <a class="el" href="_task_manager_8h_source.html#l00146">ledTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00153">sensorManager</a>, and <a class="el" href="_task_manager_8h_source.html#l00144">sensorTaskHandle</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00022">commTaskFunction()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00035">ledTaskFunction()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00009">sensorTaskFunction()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_ab4b6527bb74aa07e24f7ee328c742f63_icgraph.png" border="0" usemap="#aclass_task_manager_ab4b6527bb74aa07e24f7ee328c742f63_icgraph" alt=""/></div>
+<map name="aclass_task_manager_ab4b6527bb74aa07e24f7ee328c742f63_icgraph" id="aclass_task_manager_ab4b6527bb74aa07e24f7ee328c742f63_icgraph">
+<area shape="rect" title="Constructor for TaskManager." alt="" coords="759,56,945,83"/>
+<area shape="rect" href="class_task_manager.html#a46013b8a8ca1fa98c3c96195e77e5072" title=" " alt="" coords="488,5,710,32"/>
+<area shape="poly" title=" " alt="" coords="766,55,669,35,670,30,767,50"/>
+<area shape="rect" href="class_task_manager.html#aae3c79f5594f8eef0dddc38ebd909b5c" title=" " alt="" coords="498,56,700,83"/>
+<area shape="poly" title=" " alt="" coords="744,72,701,72,701,67,744,67"/>
+<area shape="rect" href="class_task_manager.html#ac3dd3459f26b2b5d2a47c4d2a0f1655a" title="Static task functions that call the appropriate object method." alt="" coords="487,107,711,133"/>
+<area shape="poly" title=" " alt="" coords="767,89,670,109,669,103,766,84"/>
+<area shape="rect" href="class_task_manager.html#a19953b8342f0066d395ede8ec529c003" title="Start only the communication task." alt="" coords="238,5,438,32"/>
+<area shape="poly" title=" " alt="" coords="473,21,438,21,438,16,473,16"/>
+<area shape="rect" href="class_task_manager.html#afb96f7a9368f83a7ba9802fd96fae244" title="Start all tasks on their respective cores." alt="" coords="5,56,189,83"/>
+<area shape="poly" title=" " alt="" coords="256,38,164,58,163,53,255,33"/>
+<area shape="rect" href="class_task_manager.html#a89a2f1f42fd1cd3d85dc1ff236a966ab" title="Start only the LED task (simplest, lowest risk)" alt="" coords="247,56,429,83"/>
+<area shape="poly" title=" " alt="" coords="483,72,429,72,429,67,483,67"/>
+<area shape="poly" title=" " alt="" coords="231,72,189,72,189,67,231,67"/>
+<area shape="rect" href="class_task_manager.html#a98f7f31db03f38c95c357b50280287fc" title="Start only the sensor task." alt="" coords="237,107,439,133"/>
+<area shape="poly" title=" " alt="" coords="472,123,440,123,440,117,472,117"/>
+<area shape="poly" title=" " alt="" coords="255,105,163,86,164,81,256,100"/>
+</map>
 </div>
 
 </div>
@@ -326,13 +394,18 @@ Here is the caller graph for this function:</div>
 <div class="fragment"><div class="line"><span class="lineno">   60</span>                          {</div>
 <div class="line"><span class="lineno">   61</span>    <a class="code hl_function" href="#ab01f348353ba5f6b6ac5a8693f2fa36c">cleanupTasks</a>();</div>
 <div class="line"><span class="lineno">   62</span>}</div>
-<div class="ttc" id="aclass_task_manager_html_ab01f348353ba5f6b6ac5a8693f2fa36c"><div class="ttname"><a href="#ab01f348353ba5f6b6ac5a8693f2fa36c">TaskManager::cleanupTasks</a></div><div class="ttdeci">void cleanupTasks()</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8cpp_source.html#l00237">TaskManager.cpp:237</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_ab01f348353ba5f6b6ac5a8693f2fa36c"><div class="ttname"><a href="#ab01f348353ba5f6b6ac5a8693f2fa36c">TaskManager::cleanupTasks</a></div><div class="ttdeci">void cleanupTasks()</div><div class="ttdoc">Helper method to clean up all tasks.</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8cpp_source.html#l00237">TaskManager.cpp:237</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_task_manager_8cpp_source.html#l00237">cleanupTasks()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_a6ecdd2b8a6b7545eae64da180ba80c53_cgraph.png" border="0" usemap="#aclass_task_manager_a6ecdd2b8a6b7545eae64da180ba80c53_cgraph" alt=""/></div>
+<map name="aclass_task_manager_a6ecdd2b8a6b7545eae64da180ba80c53_cgraph" id="aclass_task_manager_a6ecdd2b8a6b7545eae64da180ba80c53_cgraph">
+<area shape="rect" title="Destructor &#45; ensures all tasks are cleaned up." alt="" coords="5,5,199,32"/>
+<area shape="rect" href="class_task_manager.html#ab01f348353ba5f6b6ac5a8693f2fa36c" title="Helper method to clean up all tasks." alt="" coords="247,5,434,32"/>
+<area shape="poly" title=" " alt="" coords="199,16,231,16,231,21,199,21"/>
+</map>
 </div>
 
 </div>
@@ -363,7 +436,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  234</span>            <a class="code hl_variable" href="#af4c2de9f1fe8867600c4e3d2b403c880">commTaskHandle</a> != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  235</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00127">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00128">ledTaskHandle</a>, and <a class="el" href="_task_manager_8h_source.html#l00126">sensorTaskHandle</a>.</p>
+<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00145">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00146">ledTaskHandle</a>, and <a class="el" href="_task_manager_8h_source.html#l00144">sensorTaskHandle</a>.</p>
 
 </div>
 </div>
@@ -391,20 +464,20 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   66</span>    <span class="comment">// We&#39;re keeping this method for future initialization if needed</span></div>
 <div class="line"><span class="lineno">   67</span>    </div>
 <div class="line"><span class="lineno">   68</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">   69</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Task manager initialization started&quot;</span>);</div>
+<div class="line"><span class="lineno">   69</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Task manager initialization started&quot;</span>);</div>
 <div class="line"><span class="lineno">   70</span>    }</div>
 <div class="line"><span class="lineno">   71</span>    </div>
 <div class="line"><span class="lineno">   72</span>    <span class="comment">// Initialize any resources needed for tasks (but not the mutex)</span></div>
 <div class="line"><span class="lineno">   73</span>    </div>
 <div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">   75</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Task manager initialized successfully&quot;</span>);</div>
+<div class="line"><span class="lineno">   75</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Task manager initialized successfully&quot;</span>);</div>
 <div class="line"><span class="lineno">   76</span>    }</div>
 <div class="line"><span class="lineno">   77</span>    </div>
 <div class="line"><span class="lineno">   78</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   79</span>}</div>
-<div class="ttc" id="a_error_handler_8h_html_af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806"><div class="ttname"><a href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a></div><div class="ttdeci">@ INFO</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00011">ErrorHandler.h:11</a></div></div>
+<div class="ttc" id="agroup__error__handling_html_ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806"><div class="ttname"><a href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a></div><div class="ttdeci">@ INFO</div><div class="ttdoc">Informational message, not an error.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00025">ErrorHandler.h:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00134">errorHandler</a>, and <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>.</p>
+<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00156">errorHandler</a>, and <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>.</p>
 
 </div>
 </div>
@@ -431,6 +504,8 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Helper method to clean up all tasks. </p>
+
 <p class="definition">Definition at line <a class="el" href="_task_manager_8cpp_source.html#l00237">237</a> of file <a class="el" href="_task_manager_8cpp_source.html">TaskManager.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  237</span>                               {</div>
 <div class="line"><span class="lineno">  238</span>    <span class="comment">// Delete all tasks if they exist</span></div>
@@ -452,15 +527,20 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  254</span>    </div>
 <div class="line"><span class="lineno">  255</span>    <a class="code hl_variable" href="#a9efd75a9df24c330446e4b10dcc954f6">tasksInitialized</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  256</span>}</div>
-<div class="ttc" id="aclass_task_manager_html_a9efd75a9df24c330446e4b10dcc954f6"><div class="ttname"><a href="#a9efd75a9df24c330446e4b10dcc954f6">TaskManager::tasksInitialized</a></div><div class="ttdeci">bool tasksInitialized</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00137">TaskManager.h:137</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a9efd75a9df24c330446e4b10dcc954f6"><div class="ttname"><a href="#a9efd75a9df24c330446e4b10dcc954f6">TaskManager::tasksInitialized</a></div><div class="ttdeci">bool tasksInitialized</div><div class="ttdoc">Task status tracking.</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00162">TaskManager.h:162</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00127">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00128">ledTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00126">sensorTaskHandle</a>, and <a class="el" href="_task_manager_8h_source.html#l00137">tasksInitialized</a>.</p>
+<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00145">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00146">ledTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00144">sensorTaskHandle</a>, and <a class="el" href="_task_manager_8h_source.html#l00162">tasksInitialized</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00060">~TaskManager()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_ab01f348353ba5f6b6ac5a8693f2fa36c_icgraph.png" border="0" usemap="#aclass_task_manager_ab01f348353ba5f6b6ac5a8693f2fa36c_icgraph" alt=""/></div>
+<map name="aclass_task_manager_ab01f348353ba5f6b6ac5a8693f2fa36c_icgraph" id="aclass_task_manager_ab01f348353ba5f6b6ac5a8693f2fa36c_icgraph">
+<area shape="rect" title="Helper method to clean up all tasks." alt="" coords="247,5,434,32"/>
+<area shape="rect" href="class_task_manager.html#a6ecdd2b8a6b7545eae64da180ba80c53" title="Destructor &#45; ensures all tasks are cleaned up." alt="" coords="5,5,199,32"/>
+<area shape="poly" title=" " alt="" coords="231,21,199,21,199,16,231,16"/>
+</map>
 </div>
 
 </div>
@@ -493,7 +573,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  423</span>    <span class="comment">// Safety check</span></div>
 <div class="line"><span class="lineno">  424</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a7d7245e29d4968b624210a9d5231d95d">commManager</a>) {</div>
 <div class="line"><span class="lineno">  425</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  426</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Communication manager is null in comm task!&quot;</span>);</div>
+<div class="line"><span class="lineno">  426</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Communication manager is null in comm task!&quot;</span>);</div>
 <div class="line"><span class="lineno">  427</span>        }</div>
 <div class="line"><span class="lineno">  428</span>        <span class="comment">// Delete the task - it can&#39;t function</span></div>
 <div class="line"><span class="lineno">  429</span>        vTaskDelete(NULL);</div>
@@ -501,7 +581,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  431</span>    }</div>
 <div class="line"><span class="lineno">  432</span>    </div>
 <div class="line"><span class="lineno">  433</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  434</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Communication task started on Core &quot;</span> + String(xPortGetCoreID()));</div>
+<div class="line"><span class="lineno">  434</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Communication task started on Core &quot;</span> + String(xPortGetCoreID()));</div>
 <div class="line"><span class="lineno">  435</span>    }</div>
 <div class="line"><span class="lineno">  436</span>    </div>
 <div class="line"><span class="lineno">  437</span>    <span class="comment">// Task loop</span></div>
@@ -514,7 +594,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  444</span>            } <span class="keywordflow">catch</span> (...) {</div>
 <div class="line"><span class="lineno">  445</span>                <span class="comment">// Handle exceptions (though Arduino doesn&#39;t fully support them)</span></div>
 <div class="line"><span class="lineno">  446</span>                <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  447</span>                    <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Exception in command processing&quot;</span>);</div>
+<div class="line"><span class="lineno">  447</span>                    <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Exception in command processing&quot;</span>);</div>
 <div class="line"><span class="lineno">  448</span>                }</div>
 <div class="line"><span class="lineno">  449</span>                </div>
 <div class="line"><span class="lineno">  450</span>                <span class="comment">// Consume any remaining input to prevent command buildup</span></div>
@@ -528,9 +608,9 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  458</span>        vTaskDelay(pdMS_TO_TICKS(5));</div>
 <div class="line"><span class="lineno">  459</span>    }</div>
 <div class="line"><span class="lineno">  460</span>}</div>
-<div class="ttc" id="a_error_handler_8h_html_af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90"><div class="ttname"><a href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a></div><div class="ttdeci">@ ERROR</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00013">ErrorHandler.h:13</a></div></div>
+<div class="ttc" id="agroup__error__handling_html_ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90"><div class="ttname"><a href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a></div><div class="ttdeci">@ ERROR</div><div class="ttdoc">Error that affects operation but allows recovery.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00027">ErrorHandler.h:27</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00132">commManager</a>, <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00134">errorHandler</a>, and <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>.</p>
+<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00154">commManager</a>, <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00156">errorHandler</a>, and <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>.</p>
 
 </div>
 </div>
@@ -581,11 +661,23 @@ Here is the caller graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_a46013b8a8ca1fa98c3c96195e77e5072_cgraph.png" border="0" usemap="#aclass_task_manager_a46013b8a8ca1fa98c3c96195e77e5072_cgraph" alt=""/></div>
+<map name="aclass_task_manager_a46013b8a8ca1fa98c3c96195e77e5072_cgraph" id="aclass_task_manager_a46013b8a8ca1fa98c3c96195e77e5072_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,227,32"/>
+<area shape="rect" href="class_task_manager.html#ab4b6527bb74aa07e24f7ee328c742f63" title="Constructor for TaskManager." alt="" coords="275,5,460,32"/>
+<area shape="poly" title=" " alt="" coords="227,16,259,16,259,21,227,21"/>
+</map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_a46013b8a8ca1fa98c3c96195e77e5072_icgraph.png" border="0" usemap="#aclass_task_manager_a46013b8a8ca1fa98c3c96195e77e5072_icgraph" alt=""/></div>
+<map name="aclass_task_manager_a46013b8a8ca1fa98c3c96195e77e5072_icgraph" id="aclass_task_manager_a46013b8a8ca1fa98c3c96195e77e5072_icgraph">
+<area shape="rect" title=" " alt="" coords="485,5,706,32"/>
+<area shape="rect" href="class_task_manager.html#a19953b8342f0066d395ede8ec529c003" title="Start only the communication task." alt="" coords="237,5,437,32"/>
+<area shape="poly" title=" " alt="" coords="469,21,438,21,438,16,469,16"/>
+<area shape="rect" href="class_task_manager.html#afb96f7a9368f83a7ba9802fd96fae244" title="Start all tasks on their respective cores." alt="" coords="5,5,189,32"/>
+<area shape="poly" title=" " alt="" coords="221,21,189,21,189,16,221,16"/>
+</map>
 </div>
 
 </div>
@@ -633,7 +725,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  329</span>    <span class="keywordflow">return</span> info;</div>
 <div class="line"><span class="lineno">  330</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00127">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00128">ledTaskHandle</a>, and <a class="el" href="_task_manager_8h_source.html#l00126">sensorTaskHandle</a>.</p>
+<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00145">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00146">ledTaskHandle</a>, and <a class="el" href="_task_manager_8h_source.html#l00144">sensorTaskHandle</a>.</p>
 
 </div>
 </div>
@@ -698,6 +790,11 @@ Here is the caller graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_afb0f61e17fc422f130530bcf7d898104_icgraph.png" border="0" usemap="#aclass_task_manager_afb0f61e17fc422f130530bcf7d898104_icgraph" alt=""/></div>
+<map name="aclass_task_manager_afb0f61e17fc422f130530bcf7d898104_icgraph" id="aclass_task_manager_afb0f61e17fc422f130530bcf7d898104_icgraph">
+<area shape="rect" title="Get the FreeRTOS task state as a string." alt="" coords="245,5,429,48"/>
+<area shape="rect" href="class_task_manager.html#afc6bc4daf8169cc2753793edcb4ebc04" title="Get the status of all tasks." alt="" coords="5,5,197,48"/>
+<area shape="poly" title=" " alt="" coords="229,29,197,29,197,24,229,24"/>
+</map>
 </div>
 
 </div>
@@ -747,16 +844,21 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  304</span>    </div>
 <div class="line"><span class="lineno">  305</span>    <span class="keywordflow">return</span> status;</div>
 <div class="line"><span class="lineno">  306</span>}</div>
-<div class="ttc" id="aclass_task_manager_html_a1bba1a3d1ad528158328eecad0e8c459"><div class="ttname"><a href="#a1bba1a3d1ad528158328eecad0e8c459">TaskManager::CORE_COMM</a></div><div class="ttdeci">static constexpr BaseType_t CORE_COMM</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00041">TaskManager.h:41</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_aa3d2e6d49cac953d43f9f57af50c7610"><div class="ttname"><a href="#aa3d2e6d49cac953d43f9f57af50c7610">TaskManager::CORE_LED</a></div><div class="ttdeci">static constexpr BaseType_t CORE_LED</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00042">TaskManager.h:42</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_ade909646a074562ee0ab5515fb4b0ed6"><div class="ttname"><a href="#ade909646a074562ee0ab5515fb4b0ed6">TaskManager::CORE_SENSOR</a></div><div class="ttdeci">static constexpr BaseType_t CORE_SENSOR</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00040">TaskManager.h:40</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a1bba1a3d1ad528158328eecad0e8c459"><div class="ttname"><a href="#a1bba1a3d1ad528158328eecad0e8c459">TaskManager::CORE_COMM</a></div><div class="ttdeci">static constexpr BaseType_t CORE_COMM</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00065">TaskManager.h:65</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_aa3d2e6d49cac953d43f9f57af50c7610"><div class="ttname"><a href="#aa3d2e6d49cac953d43f9f57af50c7610">TaskManager::CORE_LED</a></div><div class="ttdeci">static constexpr BaseType_t CORE_LED</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00066">TaskManager.h:66</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_ade909646a074562ee0ab5515fb4b0ed6"><div class="ttname"><a href="#ade909646a074562ee0ab5515fb4b0ed6">TaskManager::CORE_SENSOR</a></div><div class="ttdeci">static constexpr BaseType_t CORE_SENSOR</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00064">TaskManager.h:64</a></div></div>
 <div class="ttc" id="aclass_task_manager_html_afb0f61e17fc422f130530bcf7d898104"><div class="ttname"><a href="#afb0f61e17fc422f130530bcf7d898104">TaskManager::getTaskStateString</a></div><div class="ttdeci">static String getTaskStateString(TaskHandle_t handle)</div><div class="ttdoc">Get the FreeRTOS task state as a string.</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8cpp_source.html#l00258">TaskManager.cpp:258</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00127">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00041">CORE_COMM</a>, <a class="el" href="_task_manager_8h_source.html#l00042">CORE_LED</a>, <a class="el" href="_task_manager_8h_source.html#l00040">CORE_SENSOR</a>, <a class="el" href="_task_manager_8cpp_source.html#l00258">getTaskStateString()</a>, <a class="el" href="_task_manager_8h_source.html#l00128">ledTaskHandle</a>, and <a class="el" href="_task_manager_8h_source.html#l00126">sensorTaskHandle</a>.</p>
+<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00145">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00065">CORE_COMM</a>, <a class="el" href="_task_manager_8h_source.html#l00066">CORE_LED</a>, <a class="el" href="_task_manager_8h_source.html#l00064">CORE_SENSOR</a>, <a class="el" href="_task_manager_8cpp_source.html#l00258">getTaskStateString()</a>, <a class="el" href="_task_manager_8h_source.html#l00146">ledTaskHandle</a>, and <a class="el" href="_task_manager_8h_source.html#l00144">sensorTaskHandle</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_afc6bc4daf8169cc2753793edcb4ebc04_cgraph.png" border="0" usemap="#aclass_task_manager_afc6bc4daf8169cc2753793edcb4ebc04_cgraph" alt=""/></div>
+<map name="aclass_task_manager_afc6bc4daf8169cc2753793edcb4ebc04_cgraph" id="aclass_task_manager_afc6bc4daf8169cc2753793edcb4ebc04_cgraph">
+<area shape="rect" title="Get the status of all tasks." alt="" coords="5,5,197,48"/>
+<area shape="rect" href="class_task_manager.html#afb0f61e17fc422f130530bcf7d898104" title="Get the FreeRTOS task state as a string." alt="" coords="245,5,429,48"/>
+<area shape="poly" title=" " alt="" coords="197,24,229,24,229,29,197,29"/>
+</map>
 </div>
 
 </div>
@@ -789,7 +891,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  463</span>    <span class="comment">// Safety check</span></div>
 <div class="line"><span class="lineno">  464</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#acbc0167e0ea1e60855f4a3807e23227e">ledManager</a>) {</div>
 <div class="line"><span class="lineno">  465</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  466</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;LED manager is null in LED task!&quot;</span>);</div>
+<div class="line"><span class="lineno">  466</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;LED manager is null in LED task!&quot;</span>);</div>
 <div class="line"><span class="lineno">  467</span>        }</div>
 <div class="line"><span class="lineno">  468</span>        <span class="comment">// Delete the task - it can&#39;t function</span></div>
 <div class="line"><span class="lineno">  469</span>        vTaskDelete(NULL);</div>
@@ -797,7 +899,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  471</span>    }</div>
 <div class="line"><span class="lineno">  472</span>    </div>
 <div class="line"><span class="lineno">  473</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  474</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;LED update task started on Core &quot;</span> + String(xPortGetCoreID()));</div>
+<div class="line"><span class="lineno">  474</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;LED update task started on Core &quot;</span> + String(xPortGetCoreID()));</div>
 <div class="line"><span class="lineno">  475</span>    }</div>
 <div class="line"><span class="lineno">  476</span>    </div>
 <div class="line"><span class="lineno">  477</span>    <span class="comment">// Task loop</span></div>
@@ -812,7 +914,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  486</span>    }</div>
 <div class="line"><span class="lineno">  487</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00134">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, and <a class="el" href="_task_manager_8h_source.html#l00133">ledManager</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00156">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, and <a class="el" href="_task_manager_8h_source.html#l00155">ledManager</a>.</p>
 
 </div>
 </div>
@@ -861,11 +963,23 @@ Here is the call graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_aae3c79f5594f8eef0dddc38ebd909b5c_cgraph.png" border="0" usemap="#aclass_task_manager_aae3c79f5594f8eef0dddc38ebd909b5c_cgraph" alt=""/></div>
+<map name="aclass_task_manager_aae3c79f5594f8eef0dddc38ebd909b5c_cgraph" id="aclass_task_manager_aae3c79f5594f8eef0dddc38ebd909b5c_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,208,32"/>
+<area shape="rect" href="class_task_manager.html#ab4b6527bb74aa07e24f7ee328c742f63" title="Constructor for TaskManager." alt="" coords="256,5,441,32"/>
+<area shape="poly" title=" " alt="" coords="208,16,240,16,240,21,208,21"/>
+</map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_aae3c79f5594f8eef0dddc38ebd909b5c_icgraph.png" border="0" usemap="#aclass_task_manager_aae3c79f5594f8eef0dddc38ebd909b5c_icgraph" alt=""/></div>
+<map name="aclass_task_manager_aae3c79f5594f8eef0dddc38ebd909b5c_icgraph" id="aclass_task_manager_aae3c79f5594f8eef0dddc38ebd909b5c_icgraph">
+<area shape="rect" title=" " alt="" coords="467,5,669,32"/>
+<area shape="rect" href="class_task_manager.html#a89a2f1f42fd1cd3d85dc1ff236a966ab" title="Start only the LED task (simplest, lowest risk)" alt="" coords="237,5,419,32"/>
+<area shape="poly" title=" " alt="" coords="451,21,419,21,419,16,451,16"/>
+<area shape="rect" href="class_task_manager.html#afb96f7a9368f83a7ba9802fd96fae244" title="Start all tasks on their respective cores." alt="" coords="5,5,189,32"/>
+<area shape="poly" title=" " alt="" coords="221,21,189,21,189,16,221,16"/>
+</map>
 </div>
 
 </div>
@@ -893,19 +1007,21 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Instance task methods - actual implementations. </p>
+
 <p class="definition">Definition at line <a class="el" href="_task_manager_8cpp_source.html#l00332">332</a> of file <a class="el" href="_task_manager_8cpp_source.html">TaskManager.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  332</span>                             {</div>
 <div class="line"><span class="lineno">  333</span>    <span class="comment">// Safety check for null pointers</span></div>
 <div class="line"><span class="lineno">  334</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a4cfb16d91cbd612934fcc45a80f3d967">sensorManager</a>) {</div>
 <div class="line"><span class="lineno">  335</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  336</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Sensor manager is null in sensor task!&quot;</span>);</div>
+<div class="line"><span class="lineno">  336</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Sensor manager is null in sensor task!&quot;</span>);</div>
 <div class="line"><span class="lineno">  337</span>        }</div>
 <div class="line"><span class="lineno">  338</span>        vTaskDelete(NULL);</div>
 <div class="line"><span class="lineno">  339</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  340</span>    }</div>
 <div class="line"><span class="lineno">  341</span>    </div>
 <div class="line"><span class="lineno">  342</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  343</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Sensor polling task started on Core &quot;</span> + String(xPortGetCoreID()));</div>
+<div class="line"><span class="lineno">  343</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Sensor polling task started on Core &quot;</span> + String(xPortGetCoreID()));</div>
 <div class="line"><span class="lineno">  344</span>    }</div>
 <div class="line"><span class="lineno">  345</span>    </div>
 <div class="line"><span class="lineno">  346</span>    uint32_t lastPollingTime = 0;</div>
@@ -943,7 +1059,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  378</span>                </div>
 <div class="line"><span class="lineno">  379</span>                <span class="keywordflow">if</span> (needsRecovery) {</div>
 <div class="line"><span class="lineno">  380</span>                    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  381</span>                        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Attempting sensor recovery&quot;</span>);</div>
+<div class="line"><span class="lineno">  381</span>                        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Attempting sensor recovery&quot;</span>);</div>
 <div class="line"><span class="lineno">  382</span>                    }</div>
 <div class="line"><span class="lineno">  383</span>                    </div>
 <div class="line"><span class="lineno">  384</span>                    <span class="comment">// Try to reconnect sensors with timeout</span></div>
@@ -953,7 +1069,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  388</span>                    <span class="keywordflow">if</span> (millis() - reconnectStart &lt; MAX_RECONNECT_TIME) {</div>
 <div class="line"><span class="lineno">  389</span>                        <a class="code hl_variable" href="#a4cfb16d91cbd612934fcc45a80f3d967">sensorManager</a>-&gt;reconnectAllSensors();</div>
 <div class="line"><span class="lineno">  390</span>                    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  391</span>                        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a>, <span class="stringliteral">&quot;Reconnection attempts timed out&quot;</span>);</div>
+<div class="line"><span class="lineno">  391</span>                        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a>, <span class="stringliteral">&quot;Reconnection attempts timed out&quot;</span>);</div>
 <div class="line"><span class="lineno">  392</span>                    }</div>
 <div class="line"><span class="lineno">  393</span>                    </div>
 <div class="line"><span class="lineno">  394</span>                    lastI2CRecoveryTime = currentTime;</div>
@@ -966,7 +1082,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  401</span>            } <span class="keywordflow">catch</span> (...) {</div>
 <div class="line"><span class="lineno">  402</span>                <span class="comment">// Catch any exception during reading to prevent task crash</span></div>
 <div class="line"><span class="lineno">  403</span>                <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  404</span>                    <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Exception during sensor reading update&quot;</span>);</div>
+<div class="line"><span class="lineno">  404</span>                    <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Exception during sensor reading update&quot;</span>);</div>
 <div class="line"><span class="lineno">  405</span>                }</div>
 <div class="line"><span class="lineno">  406</span>            }</div>
 <div class="line"><span class="lineno">  407</span>            </div>
@@ -983,9 +1099,9 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  418</span>        vTaskDelay(pdMS_TO_TICKS(50));</div>
 <div class="line"><span class="lineno">  419</span>    }</div>
 <div class="line"><span class="lineno">  420</span>}</div>
-<div class="ttc" id="a_error_handler_8h_html_af499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81"><div class="ttname"><a href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a></div><div class="ttdeci">@ WARNING</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00012">ErrorHandler.h:12</a></div></div>
+<div class="ttc" id="agroup__error__handling_html_ggaf499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81"><div class="ttname"><a href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a></div><div class="ttdeci">@ WARNING</div><div class="ttdoc">Warning that might require attention.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00026">ErrorHandler.h:26</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00134">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, <a class="el" href="_task_manager_8h_source.html#l00133">ledManager</a>, <a class="el" href="_task_manager_8h_source.html#l00131">sensorManager</a>, and <a class="el" href="_error_handler_8h_source.html#l00012">WARNING</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00156">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, <a class="el" href="_task_manager_8h_source.html#l00155">ledManager</a>, <a class="el" href="_task_manager_8h_source.html#l00153">sensorManager</a>, and <a class="el" href="_error_handler_8h_source.html#l00026">WARNING</a>.</p>
 
 </div>
 </div>
@@ -1012,6 +1128,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Static task functions that call the appropriate object method. </p>
+
 <p class="definition">Definition at line <a class="el" href="_task_manager_8cpp_source.html#l00009">9</a> of file <a class="el" href="_task_manager_8cpp_source.html">TaskManager.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">    9</span>                                                       {</div>
 <div class="line"><span class="lineno">   10</span>    <span class="comment">// Add a delay before accessing parameters to ensure system is stable</span></div>
@@ -1025,7 +1143,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">   18</span>        vTaskDelete(NULL);</div>
 <div class="line"><span class="lineno">   19</span>    }</div>
 <div class="line"><span class="lineno">   20</span>}</div>
-<div class="ttc" id="aclass_task_manager_html_a3a57b0a009f3b2fc21663309f6c4ae69"><div class="ttname"><a href="#a3a57b0a009f3b2fc21663309f6c4ae69">TaskManager::sensorTask</a></div><div class="ttdeci">void sensorTask()</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8cpp_source.html#l00332">TaskManager.cpp:332</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a3a57b0a009f3b2fc21663309f6c4ae69"><div class="ttname"><a href="#a3a57b0a009f3b2fc21663309f6c4ae69">TaskManager::sensorTask</a></div><div class="ttdeci">void sensorTask()</div><div class="ttdoc">Instance task methods - actual implementations.</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8cpp_source.html#l00332">TaskManager.cpp:332</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_task_manager_8cpp_source.html#l00048">TaskManager()</a>, and <a class="el" href="main_8cpp_source.html#l00027">taskManager</a>.</p>
 
@@ -1034,11 +1152,23 @@ Here is the caller graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_ac3dd3459f26b2b5d2a47c4d2a0f1655a_cgraph.png" border="0" usemap="#aclass_task_manager_ac3dd3459f26b2b5d2a47c4d2a0f1655a_cgraph" alt=""/></div>
+<map name="aclass_task_manager_ac3dd3459f26b2b5d2a47c4d2a0f1655a_cgraph" id="aclass_task_manager_ac3dd3459f26b2b5d2a47c4d2a0f1655a_cgraph">
+<area shape="rect" title="Static task functions that call the appropriate object method." alt="" coords="5,5,230,32"/>
+<area shape="rect" href="class_task_manager.html#ab4b6527bb74aa07e24f7ee328c742f63" title="Constructor for TaskManager." alt="" coords="278,5,463,32"/>
+<area shape="poly" title=" " alt="" coords="230,16,262,16,262,21,230,21"/>
+</map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_ac3dd3459f26b2b5d2a47c4d2a0f1655a_icgraph.png" border="0" usemap="#aclass_task_manager_ac3dd3459f26b2b5d2a47c4d2a0f1655a_icgraph" alt=""/></div>
+<map name="aclass_task_manager_ac3dd3459f26b2b5d2a47c4d2a0f1655a_icgraph" id="aclass_task_manager_ac3dd3459f26b2b5d2a47c4d2a0f1655a_icgraph">
+<area shape="rect" title="Static task functions that call the appropriate object method." alt="" coords="487,5,711,32"/>
+<area shape="rect" href="class_task_manager.html#a98f7f31db03f38c95c357b50280287fc" title="Start only the sensor task." alt="" coords="237,5,439,32"/>
+<area shape="poly" title=" " alt="" coords="472,21,440,21,440,16,472,16"/>
+<area shape="rect" href="class_task_manager.html#afb96f7a9368f83a7ba9802fd96fae244" title="Start all tasks on their respective cores." alt="" coords="5,5,189,32"/>
+<area shape="poly" title=" " alt="" coords="221,21,189,21,189,16,221,16"/>
+</map>
 </div>
 
 </div>
@@ -1087,11 +1217,11 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  103</span>    <span class="comment">// Just log success or failure</span></div>
 <div class="line"><span class="lineno">  104</span>    <span class="keywordflow">if</span> (success) {</div>
 <div class="line"><span class="lineno">  105</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  106</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;All tasks started successfully&quot;</span>);</div>
+<div class="line"><span class="lineno">  106</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;All tasks started successfully&quot;</span>);</div>
 <div class="line"><span class="lineno">  107</span>        }</div>
 <div class="line"><span class="lineno">  108</span>    } <span class="keywordflow">else</span> {</div>
 <div class="line"><span class="lineno">  109</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  110</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to start all tasks&quot;</span>);</div>
+<div class="line"><span class="lineno">  110</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to start all tasks&quot;</span>);</div>
 <div class="line"><span class="lineno">  111</span>        }</div>
 <div class="line"><span class="lineno">  112</span>    }</div>
 <div class="line"><span class="lineno">  113</span>    </div>
@@ -1102,11 +1232,30 @@ Here is the caller graph for this function:</div>
 <div class="ttc" id="aclass_task_manager_html_a89a2f1f42fd1cd3d85dc1ff236a966ab"><div class="ttname"><a href="#a89a2f1f42fd1cd3d85dc1ff236a966ab">TaskManager::startLedTask</a></div><div class="ttdeci">bool startLedTask()</div><div class="ttdoc">Start only the LED task (simplest, lowest risk)</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8cpp_source.html#l00117">TaskManager.cpp:117</a></div></div>
 <div class="ttc" id="aclass_task_manager_html_a98f7f31db03f38c95c357b50280287fc"><div class="ttname"><a href="#a98f7f31db03f38c95c357b50280287fc">TaskManager::startSensorTask</a></div><div class="ttdeci">bool startSensorTask()</div><div class="ttdoc">Start only the sensor task.</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8cpp_source.html#l00155">TaskManager.cpp:155</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00134">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, <a class="el" href="_task_manager_8cpp_source.html#l00193">startCommTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00117">startLedTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00155">startSensorTask()</a>, and <a class="el" href="_task_manager_8h_source.html#l00137">tasksInitialized</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00156">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, <a class="el" href="_task_manager_8cpp_source.html#l00193">startCommTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00117">startLedTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00155">startSensorTask()</a>, and <a class="el" href="_task_manager_8h_source.html#l00162">tasksInitialized</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_afb96f7a9368f83a7ba9802fd96fae244_cgraph.png" border="0" usemap="#aclass_task_manager_afb96f7a9368f83a7ba9802fd96fae244_cgraph" alt=""/></div>
+<map name="aclass_task_manager_afb96f7a9368f83a7ba9802fd96fae244_cgraph" id="aclass_task_manager_afb96f7a9368f83a7ba9802fd96fae244_cgraph">
+<area shape="rect" title="Start all tasks on their respective cores." alt="" coords="5,56,189,83"/>
+<area shape="rect" href="class_task_manager.html#a19953b8342f0066d395ede8ec529c003" title="Start only the communication task." alt="" coords="238,5,438,32"/>
+<area shape="poly" title=" " alt="" coords="163,53,256,33,257,38,165,58"/>
+<area shape="rect" href="class_task_manager.html#a89a2f1f42fd1cd3d85dc1ff236a966ab" title="Start only the LED task (simplest, lowest risk)" alt="" coords="247,56,429,83"/>
+<area shape="poly" title=" " alt="" coords="189,67,231,67,231,72,189,72"/>
+<area shape="rect" href="class_task_manager.html#a98f7f31db03f38c95c357b50280287fc" title="Start only the sensor task." alt="" coords="237,107,439,133"/>
+<area shape="poly" title=" " alt="" coords="165,81,257,100,256,106,163,86"/>
+<area shape="rect" href="class_task_manager.html#a46013b8a8ca1fa98c3c96195e77e5072" title=" " alt="" coords="488,5,710,32"/>
+<area shape="poly" title=" " alt="" coords="438,16,473,16,473,21,438,21"/>
+<area shape="rect" href="class_task_manager.html#ab4b6527bb74aa07e24f7ee328c742f63" title="Constructor for TaskManager." alt="" coords="759,56,945,83"/>
+<area shape="poly" title=" " alt="" coords="670,30,768,50,767,55,669,35"/>
+<area shape="rect" href="class_task_manager.html#aae3c79f5594f8eef0dddc38ebd909b5c" title=" " alt="" coords="498,56,700,83"/>
+<area shape="poly" title=" " alt="" coords="430,67,483,67,483,72,430,72"/>
+<area shape="poly" title=" " alt="" coords="701,67,744,67,744,72,701,72"/>
+<area shape="rect" href="class_task_manager.html#ac3dd3459f26b2b5d2a47c4d2a0f1655a" title="Static task functions that call the appropriate object method." alt="" coords="487,107,711,133"/>
+<area shape="poly" title=" " alt="" coords="440,117,471,117,471,123,440,123"/>
+<area shape="poly" title=" " alt="" coords="669,103,767,84,768,89,670,109"/>
+</map>
 </div>
 
 </div>
@@ -1138,7 +1287,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  198</span>    </div>
 <div class="line"><span class="lineno">  199</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a7d7245e29d4968b624210a9d5231d95d">commManager</a>) {</div>
 <div class="line"><span class="lineno">  200</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  201</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Communication manager not initialized for task creation&quot;</span>);</div>
+<div class="line"><span class="lineno">  201</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Communication manager not initialized for task creation&quot;</span>);</div>
 <div class="line"><span class="lineno">  202</span>        }</div>
 <div class="line"><span class="lineno">  203</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  204</span>    }</div>
@@ -1156,34 +1305,46 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  216</span>    </div>
 <div class="line"><span class="lineno">  217</span>    <span class="keywordflow">if</span> (result != pdPASS) {</div>
 <div class="line"><span class="lineno">  218</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  219</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to create communication task&quot;</span>);</div>
+<div class="line"><span class="lineno">  219</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to create communication task&quot;</span>);</div>
 <div class="line"><span class="lineno">  220</span>        }</div>
 <div class="line"><span class="lineno">  221</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  222</span>    }</div>
 <div class="line"><span class="lineno">  223</span>    </div>
 <div class="line"><span class="lineno">  224</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  225</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Communication task created successfully on Core &quot;</span> + String(<a class="code hl_variable" href="#a1bba1a3d1ad528158328eecad0e8c459">CORE_COMM</a>));</div>
+<div class="line"><span class="lineno">  225</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Communication task created successfully on Core &quot;</span> + String(<a class="code hl_variable" href="#a1bba1a3d1ad528158328eecad0e8c459">CORE_COMM</a>));</div>
 <div class="line"><span class="lineno">  226</span>    }</div>
 <div class="line"><span class="lineno">  227</span>    </div>
 <div class="line"><span class="lineno">  228</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  229</span>}</div>
-<div class="ttc" id="aclass_task_manager_html_a23a3f663eef2bff4daaa414166bc9bd1"><div class="ttname"><a href="#a23a3f663eef2bff4daaa414166bc9bd1">TaskManager::PRIORITY_COMM</a></div><div class="ttdeci">static constexpr UBaseType_t PRIORITY_COMM</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00036">TaskManager.h:36</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_a3528ba06f1a7ee147d01922b5d9a6624"><div class="ttname"><a href="#a3528ba06f1a7ee147d01922b5d9a6624">TaskManager::STACK_SIZE_COMM</a></div><div class="ttdeci">static constexpr uint32_t STACK_SIZE_COMM</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00031">TaskManager.h:31</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a23a3f663eef2bff4daaa414166bc9bd1"><div class="ttname"><a href="#a23a3f663eef2bff4daaa414166bc9bd1">TaskManager::PRIORITY_COMM</a></div><div class="ttdeci">static constexpr UBaseType_t PRIORITY_COMM</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00056">TaskManager.h:56</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a3528ba06f1a7ee147d01922b5d9a6624"><div class="ttname"><a href="#a3528ba06f1a7ee147d01922b5d9a6624">TaskManager::STACK_SIZE_COMM</a></div><div class="ttdeci">static constexpr uint32_t STACK_SIZE_COMM</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00047">TaskManager.h:47</a></div></div>
 <div class="ttc" id="aclass_task_manager_html_a46013b8a8ca1fa98c3c96195e77e5072"><div class="ttname"><a href="#a46013b8a8ca1fa98c3c96195e77e5072">TaskManager::commTaskFunction</a></div><div class="ttdeci">static void commTaskFunction(void *pvParameters)</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8cpp_source.html#l00022">TaskManager.cpp:22</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_af67ba9b5f0fab9411469300e890eca37"><div class="ttname"><a href="#af67ba9b5f0fab9411469300e890eca37">TaskManager::TASK_NAME_COMM</a></div><div class="ttdeci">static constexpr const char * TASK_NAME_COMM</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00026">TaskManager.h:26</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_af67ba9b5f0fab9411469300e890eca37"><div class="ttname"><a href="#af67ba9b5f0fab9411469300e890eca37">TaskManager::TASK_NAME_COMM</a></div><div class="ttdeci">static constexpr const char * TASK_NAME_COMM</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00038">TaskManager.h:38</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00132">commManager</a>, <a class="el" href="_task_manager_8cpp_source.html#l00022">commTaskFunction()</a>, <a class="el" href="_task_manager_8h_source.html#l00127">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00041">CORE_COMM</a>, <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00134">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, <a class="el" href="_task_manager_8h_source.html#l00036">PRIORITY_COMM</a>, <a class="el" href="_task_manager_8h_source.html#l00031">STACK_SIZE_COMM</a>, and <a class="el" href="_task_manager_8h_source.html#l00026">TASK_NAME_COMM</a>.</p>
+<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00154">commManager</a>, <a class="el" href="_task_manager_8cpp_source.html#l00022">commTaskFunction()</a>, <a class="el" href="_task_manager_8h_source.html#l00145">commTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00065">CORE_COMM</a>, <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00156">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, <a class="el" href="_task_manager_8h_source.html#l00056">PRIORITY_COMM</a>, <a class="el" href="_task_manager_8h_source.html#l00047">STACK_SIZE_COMM</a>, and <a class="el" href="_task_manager_8h_source.html#l00038">TASK_NAME_COMM</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00081">startAllTasks()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_a19953b8342f0066d395ede8ec529c003_cgraph.png" border="0" usemap="#aclass_task_manager_a19953b8342f0066d395ede8ec529c003_cgraph" alt=""/></div>
+<map name="aclass_task_manager_a19953b8342f0066d395ede8ec529c003_cgraph" id="aclass_task_manager_a19953b8342f0066d395ede8ec529c003_cgraph">
+<area shape="rect" title="Start only the communication task." alt="" coords="5,5,206,32"/>
+<area shape="rect" href="class_task_manager.html#a46013b8a8ca1fa98c3c96195e77e5072" title=" " alt="" coords="254,5,475,32"/>
+<area shape="poly" title=" " alt="" coords="206,16,238,16,238,21,206,21"/>
+<area shape="rect" href="class_task_manager.html#ab4b6527bb74aa07e24f7ee328c742f63" title="Constructor for TaskManager." alt="" coords="523,5,708,32"/>
+<area shape="poly" title=" " alt="" coords="475,16,507,16,507,21,475,21"/>
+</map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_a19953b8342f0066d395ede8ec529c003_icgraph.png" border="0" usemap="#aclass_task_manager_a19953b8342f0066d395ede8ec529c003_icgraph" alt=""/></div>
+<map name="aclass_task_manager_a19953b8342f0066d395ede8ec529c003_icgraph" id="aclass_task_manager_a19953b8342f0066d395ede8ec529c003_icgraph">
+<area shape="rect" title="Start only the communication task." alt="" coords="237,5,437,32"/>
+<area shape="rect" href="class_task_manager.html#afb96f7a9368f83a7ba9802fd96fae244" title="Start all tasks on their respective cores." alt="" coords="5,5,189,32"/>
+<area shape="poly" title=" " alt="" coords="221,21,189,21,189,16,221,16"/>
+</map>
 </div>
 
 </div>
@@ -1215,7 +1376,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  122</span>    </div>
 <div class="line"><span class="lineno">  123</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#acbc0167e0ea1e60855f4a3807e23227e">ledManager</a>) {</div>
 <div class="line"><span class="lineno">  124</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  125</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;LED manager not initialized for task creation&quot;</span>);</div>
+<div class="line"><span class="lineno">  125</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;LED manager not initialized for task creation&quot;</span>);</div>
 <div class="line"><span class="lineno">  126</span>        }</div>
 <div class="line"><span class="lineno">  127</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  128</span>    }</div>
@@ -1233,34 +1394,46 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  140</span>    </div>
 <div class="line"><span class="lineno">  141</span>    <span class="keywordflow">if</span> (result != pdPASS) {</div>
 <div class="line"><span class="lineno">  142</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  143</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to create LED task&quot;</span>);</div>
+<div class="line"><span class="lineno">  143</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to create LED task&quot;</span>);</div>
 <div class="line"><span class="lineno">  144</span>        }</div>
 <div class="line"><span class="lineno">  145</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  146</span>    }</div>
 <div class="line"><span class="lineno">  147</span>    </div>
 <div class="line"><span class="lineno">  148</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  149</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;LED task created successfully on Core &quot;</span> + String(<a class="code hl_variable" href="#aa3d2e6d49cac953d43f9f57af50c7610">CORE_LED</a>));</div>
+<div class="line"><span class="lineno">  149</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;LED task created successfully on Core &quot;</span> + String(<a class="code hl_variable" href="#aa3d2e6d49cac953d43f9f57af50c7610">CORE_LED</a>));</div>
 <div class="line"><span class="lineno">  150</span>    }</div>
 <div class="line"><span class="lineno">  151</span>    </div>
 <div class="line"><span class="lineno">  152</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  153</span>}</div>
-<div class="ttc" id="aclass_task_manager_html_a0e79efd5dd12839171ee66a14c0eeba8"><div class="ttname"><a href="#a0e79efd5dd12839171ee66a14c0eeba8">TaskManager::STACK_SIZE_LED</a></div><div class="ttdeci">static constexpr uint32_t STACK_SIZE_LED</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00032">TaskManager.h:32</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a0e79efd5dd12839171ee66a14c0eeba8"><div class="ttname"><a href="#a0e79efd5dd12839171ee66a14c0eeba8">TaskManager::STACK_SIZE_LED</a></div><div class="ttdeci">static constexpr uint32_t STACK_SIZE_LED</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00048">TaskManager.h:48</a></div></div>
 <div class="ttc" id="aclass_task_manager_html_aae3c79f5594f8eef0dddc38ebd909b5c"><div class="ttname"><a href="#aae3c79f5594f8eef0dddc38ebd909b5c">TaskManager::ledTaskFunction</a></div><div class="ttdeci">static void ledTaskFunction(void *pvParameters)</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8cpp_source.html#l00035">TaskManager.cpp:35</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_aca6878cacfceca661444e23fc6bf7fc5"><div class="ttname"><a href="#aca6878cacfceca661444e23fc6bf7fc5">TaskManager::TASK_NAME_LED</a></div><div class="ttdeci">static constexpr const char * TASK_NAME_LED</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00027">TaskManager.h:27</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_acc9ed83ef67a74083f6fce18460cefc6"><div class="ttname"><a href="#acc9ed83ef67a74083f6fce18460cefc6">TaskManager::PRIORITY_LED</a></div><div class="ttdeci">static constexpr UBaseType_t PRIORITY_LED</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00037">TaskManager.h:37</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_aca6878cacfceca661444e23fc6bf7fc5"><div class="ttname"><a href="#aca6878cacfceca661444e23fc6bf7fc5">TaskManager::TASK_NAME_LED</a></div><div class="ttdeci">static constexpr const char * TASK_NAME_LED</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00039">TaskManager.h:39</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_acc9ed83ef67a74083f6fce18460cefc6"><div class="ttname"><a href="#acc9ed83ef67a74083f6fce18460cefc6">TaskManager::PRIORITY_LED</a></div><div class="ttdeci">static constexpr UBaseType_t PRIORITY_LED</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00057">TaskManager.h:57</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00042">CORE_LED</a>, <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00134">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, <a class="el" href="_task_manager_8h_source.html#l00133">ledManager</a>, <a class="el" href="_task_manager_8cpp_source.html#l00035">ledTaskFunction()</a>, <a class="el" href="_task_manager_8h_source.html#l00128">ledTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00037">PRIORITY_LED</a>, <a class="el" href="_task_manager_8h_source.html#l00032">STACK_SIZE_LED</a>, and <a class="el" href="_task_manager_8h_source.html#l00027">TASK_NAME_LED</a>.</p>
+<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00066">CORE_LED</a>, <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00156">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, <a class="el" href="_task_manager_8h_source.html#l00155">ledManager</a>, <a class="el" href="_task_manager_8cpp_source.html#l00035">ledTaskFunction()</a>, <a class="el" href="_task_manager_8h_source.html#l00146">ledTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00057">PRIORITY_LED</a>, <a class="el" href="_task_manager_8h_source.html#l00048">STACK_SIZE_LED</a>, and <a class="el" href="_task_manager_8h_source.html#l00039">TASK_NAME_LED</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00081">startAllTasks()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_a89a2f1f42fd1cd3d85dc1ff236a966ab_cgraph.png" border="0" usemap="#aclass_task_manager_a89a2f1f42fd1cd3d85dc1ff236a966ab_cgraph" alt=""/></div>
+<map name="aclass_task_manager_a89a2f1f42fd1cd3d85dc1ff236a966ab_cgraph" id="aclass_task_manager_a89a2f1f42fd1cd3d85dc1ff236a966ab_cgraph">
+<area shape="rect" title="Start only the LED task (simplest, lowest risk)" alt="" coords="5,5,188,32"/>
+<area shape="rect" href="class_task_manager.html#aae3c79f5594f8eef0dddc38ebd909b5c" title=" " alt="" coords="236,5,438,32"/>
+<area shape="poly" title=" " alt="" coords="188,16,220,16,220,21,188,21"/>
+<area shape="rect" href="class_task_manager.html#ab4b6527bb74aa07e24f7ee328c742f63" title="Constructor for TaskManager." alt="" coords="486,5,671,32"/>
+<area shape="poly" title=" " alt="" coords="439,16,470,16,470,21,439,21"/>
+</map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_a89a2f1f42fd1cd3d85dc1ff236a966ab_icgraph.png" border="0" usemap="#aclass_task_manager_a89a2f1f42fd1cd3d85dc1ff236a966ab_icgraph" alt=""/></div>
+<map name="aclass_task_manager_a89a2f1f42fd1cd3d85dc1ff236a966ab_icgraph" id="aclass_task_manager_a89a2f1f42fd1cd3d85dc1ff236a966ab_icgraph">
+<area shape="rect" title="Start only the LED task (simplest, lowest risk)" alt="" coords="237,5,419,32"/>
+<area shape="rect" href="class_task_manager.html#afb96f7a9368f83a7ba9802fd96fae244" title="Start all tasks on their respective cores." alt="" coords="5,5,189,32"/>
+<area shape="poly" title=" " alt="" coords="221,21,189,21,189,16,221,16"/>
+</map>
 </div>
 
 </div>
@@ -1292,7 +1465,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  160</span>    </div>
 <div class="line"><span class="lineno">  161</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a4cfb16d91cbd612934fcc45a80f3d967">sensorManager</a>) {</div>
 <div class="line"><span class="lineno">  162</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  163</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Sensor manager not initialized for task creation&quot;</span>);</div>
+<div class="line"><span class="lineno">  163</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Sensor manager not initialized for task creation&quot;</span>);</div>
 <div class="line"><span class="lineno">  164</span>        }</div>
 <div class="line"><span class="lineno">  165</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  166</span>    }</div>
@@ -1310,34 +1483,46 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  178</span>    </div>
 <div class="line"><span class="lineno">  179</span>    <span class="keywordflow">if</span> (result != pdPASS) {</div>
 <div class="line"><span class="lineno">  180</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  181</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to create sensor task&quot;</span>);</div>
+<div class="line"><span class="lineno">  181</span>            <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to create sensor task&quot;</span>);</div>
 <div class="line"><span class="lineno">  182</span>        }</div>
 <div class="line"><span class="lineno">  183</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  184</span>    }</div>
 <div class="line"><span class="lineno">  185</span>    </div>
 <div class="line"><span class="lineno">  186</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>) {</div>
-<div class="line"><span class="lineno">  187</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Sensor task created successfully on Core &quot;</span> + String(<a class="code hl_variable" href="#ade909646a074562ee0ab5515fb4b0ed6">CORE_SENSOR</a>));</div>
+<div class="line"><span class="lineno">  187</span>        <a class="code hl_variable" href="#ab804f453324c539881a06f7f6d91250e">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Sensor task created successfully on Core &quot;</span> + String(<a class="code hl_variable" href="#ade909646a074562ee0ab5515fb4b0ed6">CORE_SENSOR</a>));</div>
 <div class="line"><span class="lineno">  188</span>    }</div>
 <div class="line"><span class="lineno">  189</span>    </div>
 <div class="line"><span class="lineno">  190</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  191</span>}</div>
-<div class="ttc" id="aclass_task_manager_html_a5d6f466246732e218a09c4ad28e1caa1"><div class="ttname"><a href="#a5d6f466246732e218a09c4ad28e1caa1">TaskManager::TASK_NAME_SENSOR</a></div><div class="ttdeci">static constexpr const char * TASK_NAME_SENSOR</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00025">TaskManager.h:25</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_a6de430bb335862ec27cefd53a314a4a7"><div class="ttname"><a href="#a6de430bb335862ec27cefd53a314a4a7">TaskManager::PRIORITY_SENSOR</a></div><div class="ttdeci">static constexpr UBaseType_t PRIORITY_SENSOR</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00035">TaskManager.h:35</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_a7fe6413f91e4116e1951e78c1b445d72"><div class="ttname"><a href="#a7fe6413f91e4116e1951e78c1b445d72">TaskManager::STACK_SIZE_SENSOR</a></div><div class="ttdeci">static constexpr uint32_t STACK_SIZE_SENSOR</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00030">TaskManager.h:30</a></div></div>
-<div class="ttc" id="aclass_task_manager_html_ac3dd3459f26b2b5d2a47c4d2a0f1655a"><div class="ttname"><a href="#ac3dd3459f26b2b5d2a47c4d2a0f1655a">TaskManager::sensorTaskFunction</a></div><div class="ttdeci">static void sensorTaskFunction(void *pvParameters)</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8cpp_source.html#l00009">TaskManager.cpp:9</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a5d6f466246732e218a09c4ad28e1caa1"><div class="ttname"><a href="#a5d6f466246732e218a09c4ad28e1caa1">TaskManager::TASK_NAME_SENSOR</a></div><div class="ttdeci">static constexpr const char * TASK_NAME_SENSOR</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00037">TaskManager.h:37</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a6de430bb335862ec27cefd53a314a4a7"><div class="ttname"><a href="#a6de430bb335862ec27cefd53a314a4a7">TaskManager::PRIORITY_SENSOR</a></div><div class="ttdeci">static constexpr UBaseType_t PRIORITY_SENSOR</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00055">TaskManager.h:55</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_a7fe6413f91e4116e1951e78c1b445d72"><div class="ttname"><a href="#a7fe6413f91e4116e1951e78c1b445d72">TaskManager::STACK_SIZE_SENSOR</a></div><div class="ttdeci">static constexpr uint32_t STACK_SIZE_SENSOR</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8h_source.html#l00046">TaskManager.h:46</a></div></div>
+<div class="ttc" id="aclass_task_manager_html_ac3dd3459f26b2b5d2a47c4d2a0f1655a"><div class="ttname"><a href="#ac3dd3459f26b2b5d2a47c4d2a0f1655a">TaskManager::sensorTaskFunction</a></div><div class="ttdeci">static void sensorTaskFunction(void *pvParameters)</div><div class="ttdoc">Static task functions that call the appropriate object method.</div><div class="ttdef"><b>Definition</b> <a href="_task_manager_8cpp_source.html#l00009">TaskManager.cpp:9</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00040">CORE_SENSOR</a>, <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00134">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, <a class="el" href="_task_manager_8h_source.html#l00035">PRIORITY_SENSOR</a>, <a class="el" href="_task_manager_8h_source.html#l00131">sensorManager</a>, <a class="el" href="_task_manager_8cpp_source.html#l00009">sensorTaskFunction()</a>, <a class="el" href="_task_manager_8h_source.html#l00126">sensorTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00030">STACK_SIZE_SENSOR</a>, and <a class="el" href="_task_manager_8h_source.html#l00025">TASK_NAME_SENSOR</a>.</p>
+<p class="reference">References <a class="el" href="_task_manager_8h_source.html#l00064">CORE_SENSOR</a>, <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_task_manager_8h_source.html#l00156">errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, <a class="el" href="_task_manager_8h_source.html#l00055">PRIORITY_SENSOR</a>, <a class="el" href="_task_manager_8h_source.html#l00153">sensorManager</a>, <a class="el" href="_task_manager_8cpp_source.html#l00009">sensorTaskFunction()</a>, <a class="el" href="_task_manager_8h_source.html#l00144">sensorTaskHandle</a>, <a class="el" href="_task_manager_8h_source.html#l00046">STACK_SIZE_SENSOR</a>, and <a class="el" href="_task_manager_8h_source.html#l00037">TASK_NAME_SENSOR</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00081">startAllTasks()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_a98f7f31db03f38c95c357b50280287fc_cgraph.png" border="0" usemap="#aclass_task_manager_a98f7f31db03f38c95c357b50280287fc_cgraph" alt=""/></div>
+<map name="aclass_task_manager_a98f7f31db03f38c95c357b50280287fc_cgraph" id="aclass_task_manager_a98f7f31db03f38c95c357b50280287fc_cgraph">
+<area shape="rect" title="Start only the sensor task." alt="" coords="5,5,208,32"/>
+<area shape="rect" href="class_task_manager.html#ac3dd3459f26b2b5d2a47c4d2a0f1655a" title="Static task functions that call the appropriate object method." alt="" coords="256,5,480,32"/>
+<area shape="poly" title=" " alt="" coords="208,16,240,16,240,21,208,21"/>
+<area shape="rect" href="class_task_manager.html#ab4b6527bb74aa07e24f7ee328c742f63" title="Constructor for TaskManager." alt="" coords="528,5,713,32"/>
+<area shape="poly" title=" " alt="" coords="480,16,512,16,512,21,480,21"/>
+</map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_task_manager_a98f7f31db03f38c95c357b50280287fc_icgraph.png" border="0" usemap="#aclass_task_manager_a98f7f31db03f38c95c357b50280287fc_icgraph" alt=""/></div>
+<map name="aclass_task_manager_a98f7f31db03f38c95c357b50280287fc_icgraph" id="aclass_task_manager_a98f7f31db03f38c95c357b50280287fc_icgraph">
+<area shape="rect" title="Start only the sensor task." alt="" coords="237,5,439,32"/>
+<area shape="rect" href="class_task_manager.html#afb96f7a9368f83a7ba9802fd96fae244" title="Start all tasks on their respective cores." alt="" coords="5,5,189,32"/>
+<area shape="poly" title=" " alt="" coords="221,21,189,21,189,16,221,16"/>
+</map>
 </div>
 
 </div>
@@ -1363,7 +1548,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00132">132</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00154">154</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00422">commTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00193">startCommTask()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00048">TaskManager()</a>.</p>
 
@@ -1389,7 +1574,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00127">127</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00145">145</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00231">areAllTasksRunning()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00237">cleanupTasks()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00308">getTaskMemoryInfo()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00281">getTaskStatusString()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00193">startCommTask()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00048">TaskManager()</a>.</p>
 
@@ -1415,7 +1600,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00041">41</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00065">65</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00281">getTaskStatusString()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00193">startCommTask()</a>.</p>
 
@@ -1441,7 +1626,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00042">42</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00066">66</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00281">getTaskStatusString()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00117">startLedTask()</a>.</p>
 
@@ -1467,7 +1652,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00040">40</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00064">64</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00281">getTaskStatusString()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00155">startSensorTask()</a>.</p>
 
@@ -1493,7 +1678,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00134">134</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00156">156</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00064">begin()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00422">commTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00462">ledTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00332">sensorTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00081">startAllTasks()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00193">startCommTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00117">startLedTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00155">startSensorTask()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00048">TaskManager()</a>.</p>
 
@@ -1519,7 +1704,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00133">133</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00155">155</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00462">ledTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00332">sensorTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00117">startLedTask()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00048">TaskManager()</a>.</p>
 
@@ -1545,7 +1730,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00128">128</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00146">146</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00231">areAllTasksRunning()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00237">cleanupTasks()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00308">getTaskMemoryInfo()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00281">getTaskStatusString()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00117">startLedTask()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00048">TaskManager()</a>.</p>
 
@@ -1571,7 +1756,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00036">36</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00056">56</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00193">startCommTask()</a>.</p>
 
@@ -1597,7 +1782,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00037">37</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00057">57</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00117">startLedTask()</a>.</p>
 
@@ -1623,7 +1808,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00035">35</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00055">55</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00155">startSensorTask()</a>.</p>
 
@@ -1649,7 +1834,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00131">131</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p>Manager references. </p>
+
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00153">153</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00332">sensorTask()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00155">startSensorTask()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00048">TaskManager()</a>.</p>
 
@@ -1675,7 +1862,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00126">126</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p>Task handles. </p>
+
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00144">144</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00231">areAllTasksRunning()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00237">cleanupTasks()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00308">getTaskMemoryInfo()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00281">getTaskStatusString()</a>, <a class="el" href="_task_manager_8cpp_source.html#l00155">startSensorTask()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00048">TaskManager()</a>.</p>
 
@@ -1701,7 +1890,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00031">31</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00047">47</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00193">startCommTask()</a>.</p>
 
@@ -1727,7 +1916,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00032">32</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00048">48</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00117">startLedTask()</a>.</p>
 
@@ -1753,7 +1942,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00030">30</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00046">46</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00155">startSensorTask()</a>.</p>
 
@@ -1779,7 +1968,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00026">26</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00038">38</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00193">startCommTask()</a>.</p>
 
@@ -1805,7 +1994,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00027">27</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00039">39</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00117">startLedTask()</a>.</p>
 
@@ -1831,7 +2020,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00025">25</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00037">37</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00155">startSensorTask()</a>.</p>
 
@@ -1857,7 +2046,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00137">137</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
+<p>Task status tracking. </p>
+
+<p class="definition">Definition at line <a class="el" href="_task_manager_8h_source.html#l00162">162</a> of file <a class="el" href="_task_manager_8h_source.html">TaskManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_task_manager_8cpp_source.html#l00237">cleanupTasks()</a>, and <a class="el" href="_task_manager_8cpp_source.html#l00081">startAllTasks()</a>.</p>
 

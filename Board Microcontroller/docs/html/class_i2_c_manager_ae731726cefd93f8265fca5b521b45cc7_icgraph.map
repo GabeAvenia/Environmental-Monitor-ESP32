@@ -1,0 +1,5 @@
+<map id="I2CManager::beginPort" name="I2CManager::beginPort">
+<area shape="rect" id="Node000001" title="Initialize a specific I2C bus Initializes only the specified I2C bus with its configured settings." alt="" coords="185,5,340,32"/>
+<area shape="rect" id="Node000002" href="$class_i2_c_manager.html#aedf0c62c8372508d899c7ea9018eb0bc" title="Initialize default I2C buses Initializes all registered I2C buses with their configured pin assignmen..." alt="" coords="5,5,137,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,21,137,21,137,16,169,16"/>
+</map>

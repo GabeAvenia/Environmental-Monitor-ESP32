@@ -19,12 +19,13 @@ var searchData=
   ['handleupdateadditionalconfig_16',['handleUpdateAdditionalConfig',['../class_communication_manager.html#a8f5eb6ecdb139de607e4e31a2002436b',1,'CommunicationManager']]],
   ['handleupdateconfig_17',['handleUpdateConfig',['../class_communication_manager.html#afe24efdbc43954bdf7905f5af35984de',1,'CommunicationManager']]],
   ['handleupdatesensorconfig_18',['handleUpdateSensorConfig',['../class_communication_manager.html#a33df2902a6f2aad452fcf5774101ac30',1,'CommunicationManager']]],
-  ['hassensor_19',['hasSensor',['../class_sensor_registry.html#ad0a854f5b168b6db34fae90062182ee6',1,'SensorRegistry']]],
-  ['humidity_20',['HUMIDITY',['../_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9da1bfd5cb0758595fd2f392b93a92e8fff',1,'InterfaceTypes.h']]],
-  ['humidity_21',['humidity',['../struct_sensor_cache.html#a8b15906a04f3293e51c8c568e467bd21',1,'SensorCache']]],
-  ['humidityreading_22',['HumidityReading',['../struct_humidity_reading.html',1,'HumidityReading'],['../struct_humidity_reading.html#a420f64effca3226638ab7656329c99d6',1,'HumidityReading::HumidityReading()'],['../struct_humidity_reading.html#afd8b9ded5e67da310d866e98d3bb3816',1,'HumidityReading::HumidityReading(float humidity, unsigned long time=millis())']]],
-  ['humidityreading_2eh_23',['HumidityReading.h',['../_humidity_reading_8h.html',1,'']]],
-  ['humiditytimestamp_24',['humidityTimestamp',['../class_s_h_t41_sensor.html#a2b49b301bdafe2b2c80e569b684bcecb',1,'SHT41Sensor']]],
-  ['humtimestamp_25',['humTimestamp',['../struct_sensor_cache.html#a60c7012208f6971d9c435438e0761895',1,'SensorCache::humTimestamp'],['../class_si7021_sensor.html#aafadd019cd20cb515453a0887c9a487f',1,'Si7021Sensor::humTimestamp']]],
-  ['humvalid_26',['humValid',['../struct_sensor_cache.html#a5276839eb98ad08fba370cd41f8a0c1f',1,'SensorCache']]]
+  ['handling_19',['Error Handling',['../group__error__handling.html',1,'']]],
+  ['hassensor_20',['hasSensor',['../class_sensor_registry.html#ad0a854f5b168b6db34fae90062182ee6',1,'SensorRegistry']]],
+  ['humidity_21',['HUMIDITY',['../group__sensor__interfaces.html#ggaf1ef2c97e255bd7f21d3b7614b283d9da1bfd5cb0758595fd2f392b93a92e8fff',1,'InterfaceTypes.h']]],
+  ['humidity_22',['humidity',['../struct_sensor_cache.html#a8b15906a04f3293e51c8c568e467bd21',1,'SensorCache']]],
+  ['humidityreading_23',['HumidityReading',['../struct_humidity_reading.html',1,'HumidityReading'],['../struct_humidity_reading.html#a420f64effca3226638ab7656329c99d6',1,'HumidityReading::HumidityReading()'],['../struct_humidity_reading.html#afd8b9ded5e67da310d866e98d3bb3816',1,'HumidityReading::HumidityReading(float humidity, unsigned long time=millis())']]],
+  ['humidityreading_2eh_24',['HumidityReading.h',['../_humidity_reading_8h.html',1,'']]],
+  ['humiditytimestamp_25',['humidityTimestamp',['../class_s_h_t41_sensor.html#a2b49b301bdafe2b2c80e569b684bcecb',1,'SHT41Sensor']]],
+  ['humtimestamp_26',['humTimestamp',['../struct_sensor_cache.html#a60c7012208f6971d9c435438e0761895',1,'SensorCache::humTimestamp'],['../class_si7021_sensor.html#aafadd019cd20cb515453a0887c9a487f',1,'Si7021Sensor::humTimestamp']]],
+  ['humvalid_27',['humValid',['../struct_sensor_cache.html#a5276839eb98ad08fba370cd41f8a0c1f',1,'SensorCache']]]
 ];

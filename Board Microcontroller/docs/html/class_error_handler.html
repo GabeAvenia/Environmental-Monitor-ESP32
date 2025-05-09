@@ -108,11 +108,11 @@ $(function(){initNavTree('class_error_handler.html',''); initResizable(true); })
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_error_handler-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">ErrorHandler Class Reference</div></div>
+  <div class="headertitle"><div class="title">ErrorHandler Class Reference<div class="ingroups"><a class="el" href="group__error__handling.html">Error Handling</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Handles error logging and reporting with configurable output streams.  
+<p>Handles error logging and reporting with configurable output streams This class manages error reporting and logging throughout the system, providing a centralized mechanism for error handling.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>&gt;</code></p>
@@ -120,6 +120,14 @@ $(function(){initNavTree('class_error_handler.html',''); initResizable(true); })
 Collaboration diagram for ErrorHandler:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_error_handler__coll__graph.png" border="0" usemap="#a_error_handler_coll__map" alt="Collaboration graph"/></div>
+<map name="a_error_handler_coll__map" id="a_error_handler_coll__map">
+<area shape="rect" title="Handles error logging and reporting with configurable output streams This class manages error reporti..." alt="" coords="36,176,197,544"/>
+<area shape="rect" href="class_led_manager.html" title="Manager for controlling the onboard NeoPixel LED This class provides a unified interface for controll..." alt="" coords="5,608,227,1893"/>
+<area shape="poly" title=" " alt="" coords="64,544,60,568,57,591,52,591,55,568,59,543"/>
+<area shape="rect" href="struct_output_config.html" title="Structure to hold output configuration Configures an output stream with the minimum severity level to..." alt="" coords="70,5,163,96"/>
+<area shape="poly" title=" " alt="" coords="119,96,119,159,114,159,114,96"/>
+<area shape="poly" title=" " alt="" coords="141,608,139,568,139,561,144,561,144,568,146,608"/>
+</map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -128,19 +136,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a26c31370a58d0f0d1d8d5f9fe484d235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the LED manager pointer for debugging.  <br /></td></tr>
 <tr class="separator:a26c31370a58d0f0d1d8d5f9fe484d235"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2afe1557119a59b27e8918eb45ca4865" id="r_a2afe1557119a59b27e8918eb45ca4865"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2afe1557119a59b27e8918eb45ca4865">ErrorHandler</a> (Print *output=nullptr, Print *debugOutput=nullptr)</td></tr>
-<tr class="memdesc:a2afe1557119a59b27e8918eb45ca4865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="class_error_handler.html" title="Handles error logging and reporting with configurable output streams.">ErrorHandler</a> with output stream routing.  <br /></td></tr>
+<tr class="memdesc:a2afe1557119a59b27e8918eb45ca4865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="class_error_handler.html" title="Handles error logging and reporting with configurable output streams This class manages error reporti...">ErrorHandler</a> with output stream routing.  <br /></td></tr>
 <tr class="separator:a2afe1557119a59b27e8918eb45ca4865"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa36d2bd558e67ddda04ba3290874aae" id="r_afa36d2bd558e67ddda04ba3290874aae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa36d2bd558e67ddda04ba3290874aae">setOutputSeverity</a> (Print *output, <a class="el" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a> minSeverity)</td></tr>
+<tr class="memitem:afa36d2bd558e67ddda04ba3290874aae" id="r_afa36d2bd558e67ddda04ba3290874aae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa36d2bd558e67ddda04ba3290874aae">setOutputSeverity</a> (Print *output, <a class="el" href="group__error__handling.html#gaf499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a> minSeverity)</td></tr>
 <tr class="memdesc:afa36d2bd558e67ddda04ba3290874aae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the minimum severity level for a specific output stream.  <br /></td></tr>
 <tr class="separator:afa36d2bd558e67ddda04ba3290874aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc944b229e9c3633b41ba940959271c1" id="r_acc944b229e9c3633b41ba940959271c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc944b229e9c3633b41ba940959271c1">setLedManager</a> (<a class="el" href="class_led_manager.html">LedManager</a> *led)</td></tr>
 <tr class="memdesc:acc944b229e9c3633b41ba940959271c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the LED manager for visual indication of errors.  <br /></td></tr>
 <tr class="separator:acc944b229e9c3633b41ba940959271c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3309b18e408d0ae9fce20857cc6ac0c2" id="r_a3309b18e408d0ae9fce20857cc6ac0c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3309b18e408d0ae9fce20857cc6ac0c2">enableCustomRouting</a> (bool enable=true)</td></tr>
-<tr class="memdesc:a3309b18e408d0ae9fce20857cc6ac0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable custom routing.  <br /></td></tr>
+<tr class="memdesc:a3309b18e408d0ae9fce20857cc6ac0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable custom routing When enabled, messages are routed to their configured streams.  <br /></td></tr>
 <tr class="separator:a3309b18e408d0ae9fce20857cc6ac0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02d8e77cdfa298be79d79687b99e9072" id="r_a02d8e77cdfa298be79d79687b99e9072"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02d8e77cdfa298be79d79687b99e9072">logError</a> (<a class="el" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a> severity, String message)</td></tr>
-<tr class="memdesc:a02d8e77cdfa298be79d79687b99e9072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with specified severity.  <br /></td></tr>
+<tr class="memitem:a02d8e77cdfa298be79d79687b99e9072" id="r_a02d8e77cdfa298be79d79687b99e9072"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02d8e77cdfa298be79d79687b99e9072">logError</a> (<a class="el" href="group__error__handling.html#gaf499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a> severity, String message)</td></tr>
+<tr class="memdesc:a02d8e77cdfa298be79d79687b99e9072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with specified severity Logs a message to the appropriate output streams based on severity and routing configuration.  <br /></td></tr>
 <tr class="separator:a02d8e77cdfa298be79d79687b99e9072"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae18d64c716eda28ed6ae12fdcbaee5df" id="r_ae18d64c716eda28ed6ae12fdcbaee5df"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_error_entry.html">ErrorEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae18d64c716eda28ed6ae12fdcbaee5df">getErrorLog</a> ()</td></tr>
 <tr class="memdesc:ae18d64c716eda28ed6ae12fdcbaee5df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all logged error entries.  <br /></td></tr>
@@ -154,37 +162,51 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a28e4c666c764f31533832edde5d8e014" id="r_a28e4c666c764f31533832edde5d8e014"><td class="memItemLeft" align="right" valign="top">static String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28e4c666c764f31533832edde5d8e014">severityToString</a> (<a class="el" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a> severity)</td></tr>
+<tr class="memitem:a28e4c666c764f31533832edde5d8e014" id="r_a28e4c666c764f31533832edde5d8e014"><td class="memItemLeft" align="right" valign="top">static String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28e4c666c764f31533832edde5d8e014">severityToString</a> (<a class="el" href="group__error__handling.html#gaf499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a> severity)</td></tr>
 <tr class="memdesc:a28e4c666c764f31533832edde5d8e014"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert severity level to string.  <br /></td></tr>
 <tr class="separator:a28e4c666c764f31533832edde5d8e014"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c957506a74daf83fad82b459adfbd8f" id="r_a6c957506a74daf83fad82b459adfbd8f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c957506a74daf83fad82b459adfbd8f">stringToSeverity</a> (const String &amp;severityStr)</td></tr>
+<tr class="memitem:a6c957506a74daf83fad82b459adfbd8f" id="r_a6c957506a74daf83fad82b459adfbd8f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="group__error__handling.html#gaf499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c957506a74daf83fad82b459adfbd8f">stringToSeverity</a> (const String &amp;severityStr)</td></tr>
 <tr class="memdesc:a6c957506a74daf83fad82b459adfbd8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert string to severity level.  <br /></td></tr>
 <tr class="separator:a6c957506a74daf83fad82b459adfbd8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a7081476747605501d78df7a3f6c869f6" id="r_a7081476747605501d78df7a3f6c869f6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_error_entry.html">ErrorEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7081476747605501d78df7a3f6c869f6">errorLog</a></td></tr>
+<tr class="memdesc:a7081476747605501d78df7a3f6c869f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of recent error entries.  <br /></td></tr>
 <tr class="separator:a7081476747605501d78df7a3f6c869f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17507134b310a0c5af4e820d5e7b1641" id="r_a17507134b310a0c5af4e820d5e7b1641"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17507134b310a0c5af4e820d5e7b1641">MAX_LOG_SIZE</a> = 20</td></tr>
+<tr class="memdesc:a17507134b310a0c5af4e820d5e7b1641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of log entries to store.  <br /></td></tr>
 <tr class="separator:a17507134b310a0c5af4e820d5e7b1641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a270faf2ab01e00e4c213227b1b8275f7" id="r_a270faf2ab01e00e4c213227b1b8275f7"><td class="memItemLeft" align="right" valign="top">Print *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a270faf2ab01e00e4c213227b1b8275f7">defaultOutput</a></td></tr>
+<tr class="memdesc:a270faf2ab01e00e4c213227b1b8275f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default output stream (backward compatibility)  <br /></td></tr>
 <tr class="separator:a270faf2ab01e00e4c213227b1b8275f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5dc2214e0d11568ecdb4686b30d2ce60" id="r_a5dc2214e0d11568ecdb4686b30d2ce60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_output_config.html">OutputConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5dc2214e0d11568ecdb4686b30d2ce60">usbOutput</a></td></tr>
-<tr class="separator:a5dc2214e0d11568ecdb4686b30d2ce60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46c7544178722d42a4f49442a42abd17" id="r_a46c7544178722d42a4f49442a42abd17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_output_config.html">OutputConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46c7544178722d42a4f49442a42abd17">uartOutput</a></td></tr>
-<tr class="separator:a46c7544178722d42a4f49442a42abd17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac28b41911ba0b17118908c40b57ea162" id="r_ac28b41911ba0b17118908c40b57ea162"><td class="memItemLeft" align="right" valign="top">Print *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac28b41911ba0b17118908c40b57ea162">uartDebugSerial</a></td></tr>
+<tr class="memdesc:ac28b41911ba0b17118908c40b57ea162"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to UART debug serial.  <br /></td></tr>
 <tr class="separator:ac28b41911ba0b17118908c40b57ea162"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8960704c69a7208ab3f90c58cfb1129a" id="r_a8960704c69a7208ab3f90c58cfb1129a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_led_manager.html">LedManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8960704c69a7208ab3f90c58cfb1129a">ledManager</a> = nullptr</td></tr>
+<tr class="memdesc:a8960704c69a7208ab3f90c58cfb1129a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to LED manager for visual indication.  <br /></td></tr>
 <tr class="separator:a8960704c69a7208ab3f90c58cfb1129a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b78f5f45bfeeb05a16dd19d8cae5896" id="r_a0b78f5f45bfeeb05a16dd19d8cae5896"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b78f5f45bfeeb05a16dd19d8cae5896">useCustomRouting</a></td></tr>
+<tr class="memdesc:a0b78f5f45bfeeb05a16dd19d8cae5896"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to indicate if custom routing is enabled.  <br /></td></tr>
 <tr class="separator:a0b78f5f45bfeeb05a16dd19d8cae5896"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a5dc2214e0d11568ecdb4686b30d2ce60" id="r_a5dc2214e0d11568ecdb4686b30d2ce60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_output_config.html">OutputConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5dc2214e0d11568ecdb4686b30d2ce60">usbOutput</a></td></tr>
+<tr class="memdesc:a5dc2214e0d11568ecdb4686b30d2ce60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output configurations for different destinations.  <br /></td></tr>
+<tr class="separator:a5dc2214e0d11568ecdb4686b30d2ce60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46c7544178722d42a4f49442a42abd17" id="r_a46c7544178722d42a4f49442a42abd17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_output_config.html">OutputConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46c7544178722d42a4f49442a42abd17">uartOutput</a></td></tr>
+<tr class="memdesc:a46c7544178722d42a4f49442a42abd17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration for UART debug output.  <br /></td></tr>
+<tr class="separator:a46c7544178722d42a4f49442a42abd17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Handles error logging and reporting with configurable output streams. </p>
-<p>Supports routing different severity levels to different output streams and maintains a log of recent messages. </p>
+<div class="textblock"><p>Handles error logging and reporting with configurable output streams This class manages error reporting and logging throughout the system, providing a centralized mechanism for error handling. </p>
+<p>It supports:</p><ul>
+<li>Multiple configurable output streams with severity filtering</li>
+<li>Error log storage and retrieval</li>
+<li>Visual indication of errors via LED</li>
+<li>Customizable error routing for different destinations </li>
+</ul>
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00036">36</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00061">61</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2afe1557119a59b27e8918eb45ca4865" name="a2afe1557119a59b27e8918eb45ca4865"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2afe1557119a59b27e8918eb45ca4865">&#9670;&#160;</a></span>ErrorHandler()</h2>
@@ -205,7 +227,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor for <a class="el" href="class_error_handler.html" title="Handles error logging and reporting with configurable output streams.">ErrorHandler</a> with output stream routing. </p>
+<p>Constructor for <a class="el" href="class_error_handler.html" title="Handles error logging and reporting with configurable output streams This class manages error reporti...">ErrorHandler</a> with output stream routing. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">output</td><td>Main output stream for errors (typically USB Serial) </td></tr>
@@ -221,21 +243,21 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">    8</span>  </div>
 <div class="line"><span class="lineno">    9</span>  <span class="comment">// Initialize USB output configuration</span></div>
 <div class="line"><span class="lineno">   10</span>  <a class="code hl_variable" href="#a5dc2214e0d11568ecdb4686b30d2ce60">usbOutput</a>.stream = output;</div>
-<div class="line"><span class="lineno">   11</span>  <a class="code hl_variable" href="#a5dc2214e0d11568ecdb4686b30d2ce60">usbOutput</a>.minSeverity = <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a>; <span class="comment">// Default: USB gets WARNING and higher</span></div>
+<div class="line"><span class="lineno">   11</span>  <a class="code hl_variable" href="#a5dc2214e0d11568ecdb4686b30d2ce60">usbOutput</a>.minSeverity = <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a>; <span class="comment">// Default: USB gets WARNING and higher</span></div>
 <div class="line"><span class="lineno">   12</span>  </div>
 <div class="line"><span class="lineno">   13</span>  <span class="comment">// Initialize UART output configuration</span></div>
 <div class="line"><span class="lineno">   14</span>  <a class="code hl_variable" href="#a46c7544178722d42a4f49442a42abd17">uartOutput</a>.stream = debugOutput;</div>
-<div class="line"><span class="lineno">   15</span>  <a class="code hl_variable" href="#a46c7544178722d42a4f49442a42abd17">uartOutput</a>.minSeverity = <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>;   <span class="comment">// Default: UART gets everything</span></div>
+<div class="line"><span class="lineno">   15</span>  <a class="code hl_variable" href="#a46c7544178722d42a4f49442a42abd17">uartOutput</a>.minSeverity = <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>;   <span class="comment">// Default: UART gets everything</span></div>
 <div class="line"><span class="lineno">   16</span>}</div>
-<div class="ttc" id="a_error_handler_8h_html_af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806"><div class="ttname"><a href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a></div><div class="ttdeci">@ INFO</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00011">ErrorHandler.h:11</a></div></div>
-<div class="ttc" id="a_error_handler_8h_html_af499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81"><div class="ttname"><a href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a></div><div class="ttdeci">@ WARNING</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00012">ErrorHandler.h:12</a></div></div>
-<div class="ttc" id="aclass_error_handler_html_a0b78f5f45bfeeb05a16dd19d8cae5896"><div class="ttname"><a href="#a0b78f5f45bfeeb05a16dd19d8cae5896">ErrorHandler::useCustomRouting</a></div><div class="ttdeci">bool useCustomRouting</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00055">ErrorHandler.h:55</a></div></div>
-<div class="ttc" id="aclass_error_handler_html_a270faf2ab01e00e4c213227b1b8275f7"><div class="ttname"><a href="#a270faf2ab01e00e4c213227b1b8275f7">ErrorHandler::defaultOutput</a></div><div class="ttdeci">Print * defaultOutput</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00042">ErrorHandler.h:42</a></div></div>
-<div class="ttc" id="aclass_error_handler_html_a46c7544178722d42a4f49442a42abd17"><div class="ttname"><a href="#a46c7544178722d42a4f49442a42abd17">ErrorHandler::uartOutput</a></div><div class="ttdeci">OutputConfig uartOutput</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00046">ErrorHandler.h:46</a></div></div>
-<div class="ttc" id="aclass_error_handler_html_a5dc2214e0d11568ecdb4686b30d2ce60"><div class="ttname"><a href="#a5dc2214e0d11568ecdb4686b30d2ce60">ErrorHandler::usbOutput</a></div><div class="ttdeci">OutputConfig usbOutput</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00045">ErrorHandler.h:45</a></div></div>
-<div class="ttc" id="aclass_error_handler_html_ac28b41911ba0b17118908c40b57ea162"><div class="ttname"><a href="#ac28b41911ba0b17118908c40b57ea162">ErrorHandler::uartDebugSerial</a></div><div class="ttdeci">Print * uartDebugSerial</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00049">ErrorHandler.h:49</a></div></div>
+<div class="ttc" id="aclass_error_handler_html_a0b78f5f45bfeeb05a16dd19d8cae5896"><div class="ttname"><a href="#a0b78f5f45bfeeb05a16dd19d8cae5896">ErrorHandler::useCustomRouting</a></div><div class="ttdeci">bool useCustomRouting</div><div class="ttdoc">Flag to indicate if custom routing is enabled.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00099">ErrorHandler.h:99</a></div></div>
+<div class="ttc" id="aclass_error_handler_html_a270faf2ab01e00e4c213227b1b8275f7"><div class="ttname"><a href="#a270faf2ab01e00e4c213227b1b8275f7">ErrorHandler::defaultOutput</a></div><div class="ttdeci">Print * defaultOutput</div><div class="ttdoc">Default output stream (backward compatibility)</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00076">ErrorHandler.h:76</a></div></div>
+<div class="ttc" id="aclass_error_handler_html_a46c7544178722d42a4f49442a42abd17"><div class="ttname"><a href="#a46c7544178722d42a4f49442a42abd17">ErrorHandler::uartOutput</a></div><div class="ttdeci">OutputConfig uartOutput</div><div class="ttdoc">Configuration for UART debug output.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00083">ErrorHandler.h:83</a></div></div>
+<div class="ttc" id="aclass_error_handler_html_a5dc2214e0d11568ecdb4686b30d2ce60"><div class="ttname"><a href="#a5dc2214e0d11568ecdb4686b30d2ce60">ErrorHandler::usbOutput</a></div><div class="ttdeci">OutputConfig usbOutput</div><div class="ttdoc">Output configurations for different destinations.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00082">ErrorHandler.h:82</a></div></div>
+<div class="ttc" id="aclass_error_handler_html_ac28b41911ba0b17118908c40b57ea162"><div class="ttname"><a href="#ac28b41911ba0b17118908c40b57ea162">ErrorHandler::uartDebugSerial</a></div><div class="ttdeci">Print * uartDebugSerial</div><div class="ttdoc">Reference to UART debug serial.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00089">ErrorHandler.h:89</a></div></div>
+<div class="ttc" id="agroup__error__handling_html_ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806"><div class="ttname"><a href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a></div><div class="ttdeci">@ INFO</div><div class="ttdoc">Informational message, not an error.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00025">ErrorHandler.h:25</a></div></div>
+<div class="ttc" id="agroup__error__handling_html_ggaf499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81"><div class="ttname"><a href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a></div><div class="ttdeci">@ WARNING</div><div class="ttdoc">Warning that might require attention.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00026">ErrorHandler.h:26</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00042">defaultOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, <a class="el" href="_error_handler_8h_source.html#l00049">uartDebugSerial</a>, <a class="el" href="_error_handler_8h_source.html#l00046">uartOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00045">usbOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00055">useCustomRouting</a>, and <a class="el" href="_error_handler_8h_source.html#l00012">WARNING</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00076">defaultOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, <a class="el" href="_error_handler_8h_source.html#l00089">uartDebugSerial</a>, <a class="el" href="_error_handler_8h_source.html#l00083">uartOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00082">usbOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00099">useCustomRouting</a>, and <a class="el" href="_error_handler_8h_source.html#l00026">WARNING</a>.</p>
 
 </div>
 </div>
@@ -261,9 +283,9 @@ Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  126</span>                               {</div>
 <div class="line"><span class="lineno">  127</span>  <a class="code hl_variable" href="#a7081476747605501d78df7a3f6c869f6">errorLog</a>.clear();</div>
 <div class="line"><span class="lineno">  128</span>}</div>
-<div class="ttc" id="aclass_error_handler_html_a7081476747605501d78df7a3f6c869f6"><div class="ttname"><a href="#a7081476747605501d78df7a3f6c869f6">ErrorHandler::errorLog</a></div><div class="ttdeci">std::vector&lt; ErrorEntry &gt; errorLog</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00038">ErrorHandler.h:38</a></div></div>
+<div class="ttc" id="aclass_error_handler_html_a7081476747605501d78df7a3f6c869f6"><div class="ttname"><a href="#a7081476747605501d78df7a3f6c869f6">ErrorHandler::errorLog</a></div><div class="ttdeci">std::vector&lt; ErrorEntry &gt; errorLog</div><div class="ttdoc">Vector of recent error entries.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00066">ErrorHandler.h:66</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00038">errorLog</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00066">errorLog</a>.</p>
 
 </div>
 </div>
@@ -282,9 +304,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Enable or disable custom routing. </p>
-<p>When enabled, messages are routed to their configured streams. When disabled, all messages go to the default output stream.</p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Enable or disable custom routing When enabled, messages are routed to their configured streams. </p>
+<p>When disabled, all messages go to the default output stream. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">enable</td><td>True to enable custom routing, false to disable </td></tr>
   </table>
@@ -296,7 +317,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   33</span>  <a class="code hl_variable" href="#a0b78f5f45bfeeb05a16dd19d8cae5896">useCustomRouting</a> = enable;</div>
 <div class="line"><span class="lineno">   34</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00055">useCustomRouting</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00099">useCustomRouting</a>.</p>
 
 </div>
 </div>
@@ -323,7 +344,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  123</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="#a7081476747605501d78df7a3f6c869f6">errorLog</a>;</div>
 <div class="line"><span class="lineno">  124</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00038">errorLog</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00066">errorLog</a>.</p>
 
 </div>
 </div>
@@ -353,11 +374,11 @@ Private Attributes</h2></td></tr>
 <p>Get the LED manager pointer for debugging. </p>
 <dl class="section return"><dt>Returns</dt><dd>The LED manager or nullptr if not set </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00062">62</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a8960704c69a7208ab3f90c58cfb1129a">ledManager</a>; }</div>
-<div class="ttc" id="aclass_error_handler_html_a8960704c69a7208ab3f90c58cfb1129a"><div class="ttname"><a href="#a8960704c69a7208ab3f90c58cfb1129a">ErrorHandler::ledManager</a></div><div class="ttdeci">LedManager * ledManager</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00052">ErrorHandler.h:52</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00106">106</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#a8960704c69a7208ab3f90c58cfb1129a">ledManager</a>; }</div>
+<div class="ttc" id="aclass_error_handler_html_a8960704c69a7208ab3f90c58cfb1129a"><div class="ttname"><a href="#a8960704c69a7208ab3f90c58cfb1129a">ErrorHandler::ledManager</a></div><div class="ttdeci">LedManager * ledManager</div><div class="ttdoc">Reference to LED manager for visual indication.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00094">ErrorHandler.h:94</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00052">ledManager</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00094">ledManager</a>.</p>
 
 </div>
 </div>
@@ -399,11 +420,16 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  146</span>}</div>
 <div class="ttc" id="aclass_error_handler_html_a28e4c666c764f31533832edde5d8e014"><div class="ttname"><a href="#a28e4c666c764f31533832edde5d8e014">ErrorHandler::severityToString</a></div><div class="ttdeci">static String severityToString(ErrorSeverity severity)</div><div class="ttdoc">Convert severity level to string.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8cpp_source.html#l00148">ErrorHandler.cpp:148</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00038">errorLog</a>, <a class="el" href="_error_handler_8cpp_source.html#l00148">severityToString()</a>, <a class="el" href="_error_handler_8h_source.html#l00046">uartOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00045">usbOutput</a>, and <a class="el" href="_error_handler_8h_source.html#l00055">useCustomRouting</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00066">errorLog</a>, <a class="el" href="_error_handler_8cpp_source.html#l00148">severityToString()</a>, <a class="el" href="_error_handler_8h_source.html#l00083">uartOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00082">usbOutput</a>, and <a class="el" href="_error_handler_8h_source.html#l00099">useCustomRouting</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_error_handler_a9db4470448ad6757baac69e0bbd4fcb6_cgraph.png" border="0" usemap="#aclass_error_handler_a9db4470448ad6757baac69e0bbd4fcb6_cgraph" alt=""/></div>
+<map name="aclass_error_handler_a9db4470448ad6757baac69e0bbd4fcb6_cgraph" id="aclass_error_handler_a9db4470448ad6757baac69e0bbd4fcb6_cgraph">
+<area shape="rect" title="Get the current message routing configuration status." alt="" coords="5,5,171,48"/>
+<area shape="rect" href="class_error_handler.html#a28e4c666c764f31533832edde5d8e014" title="Convert severity level to string." alt="" coords="219,5,381,48"/>
+<area shape="poly" title=" " alt="" coords="171,24,203,24,203,29,171,29"/>
+</map>
 </div>
 
 </div>
@@ -417,7 +443,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">bool ErrorHandler::logError </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a></td>          <td class="paramname"><span class="paramname"><em>severity</em></span>, </td>
+          <td class="paramtype"><a class="el" href="group__error__handling.html#gaf499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a></td>          <td class="paramname"><span class="paramname"><em>severity</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -427,8 +453,8 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Log a message with specified severity. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Log a message with specified severity Logs a message to the appropriate output streams based on severity and routing configuration. </p>
+<p>Also triggers visual indication via LED if available and if severity warrants it. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">severity</td><td>The severity level (INFO, WARNING, ERROR, FATAL) </td></tr>
     <tr><td class="paramname">message</td><td>The message to log </td></tr>
@@ -456,13 +482,13 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   51</span>  <span class="comment">// Trigger LED indication if LED manager is available</span></div>
 <div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a8960704c69a7208ab3f90c58cfb1129a">ledManager</a>) {</div>
 <div class="line"><span class="lineno">   53</span>    <span class="keywordflow">switch</span> (severity) {</div>
-<div class="line"><span class="lineno">   54</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a>:</div>
+<div class="line"><span class="lineno">   54</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a>:</div>
 <div class="line"><span class="lineno">   55</span>        <a class="code hl_variable" href="#a8960704c69a7208ab3f90c58cfb1129a">ledManager</a>-&gt;indicateWarning();</div>
 <div class="line"><span class="lineno">   56</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   57</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>:</div>
+<div class="line"><span class="lineno">   57</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>:</div>
 <div class="line"><span class="lineno">   58</span>        <a class="code hl_variable" href="#a8960704c69a7208ab3f90c58cfb1129a">ledManager</a>-&gt;indicateError();</div>
 <div class="line"><span class="lineno">   59</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   60</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0">FATAL</a>:</div>
+<div class="line"><span class="lineno">   60</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0">FATAL</a>:</div>
 <div class="line"><span class="lineno">   61</span>        <a class="code hl_variable" href="#a8960704c69a7208ab3f90c58cfb1129a">ledManager</a>-&gt;indicateFatalError();</div>
 <div class="line"><span class="lineno">   62</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   63</span>      <span class="keywordflow">default</span>:</div>
@@ -521,20 +547,25 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  116</span>  }</div>
 <div class="line"><span class="lineno">  117</span>  </div>
 <div class="line"><span class="lineno">  118</span>  <span class="comment">// Return true if this was a FATAL error, allowing the caller to take action</span></div>
-<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">return</span> (severity == <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0">FATAL</a>);</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">return</span> (severity == <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0">FATAL</a>);</div>
 <div class="line"><span class="lineno">  120</span>}</div>
-<div class="ttc" id="a_error_handler_8h_html_af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90"><div class="ttname"><a href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a></div><div class="ttdeci">@ ERROR</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00013">ErrorHandler.h:13</a></div></div>
-<div class="ttc" id="a_error_handler_8h_html_af499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0"><div class="ttname"><a href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0">FATAL</a></div><div class="ttdeci">@ FATAL</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00014">ErrorHandler.h:14</a></div></div>
-<div class="ttc" id="aclass_error_handler_html_a17507134b310a0c5af4e820d5e7b1641"><div class="ttname"><a href="#a17507134b310a0c5af4e820d5e7b1641">ErrorHandler::MAX_LOG_SIZE</a></div><div class="ttdeci">const int MAX_LOG_SIZE</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00039">ErrorHandler.h:39</a></div></div>
-<div class="ttc" id="astruct_error_entry_html_a04aaf7fa2f3caba2495c49a7a20c65b1"><div class="ttname"><a href="struct_error_entry.html#a04aaf7fa2f3caba2495c49a7a20c65b1">ErrorEntry::timestamp</a></div><div class="ttdeci">unsigned long timestamp</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00021">ErrorHandler.h:21</a></div></div>
-<div class="ttc" id="astruct_error_entry_html_a26b95e4d9f37cec9ca31b371a9a292f6"><div class="ttname"><a href="struct_error_entry.html#a26b95e4d9f37cec9ca31b371a9a292f6">ErrorEntry::message</a></div><div class="ttdeci">String message</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00020">ErrorHandler.h:20</a></div></div>
-<div class="ttc" id="astruct_error_entry_html_ad31962dc8edc9a9f87f11885b138ce30"><div class="ttname"><a href="struct_error_entry.html#ad31962dc8edc9a9f87f11885b138ce30">ErrorEntry::severity</a></div><div class="ttdeci">ErrorSeverity severity</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00019">ErrorHandler.h:19</a></div></div>
+<div class="ttc" id="aclass_error_handler_html_a17507134b310a0c5af4e820d5e7b1641"><div class="ttname"><a href="#a17507134b310a0c5af4e820d5e7b1641">ErrorHandler::MAX_LOG_SIZE</a></div><div class="ttdeci">const int MAX_LOG_SIZE</div><div class="ttdoc">Maximum number of log entries to store.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00071">ErrorHandler.h:71</a></div></div>
+<div class="ttc" id="agroup__error__handling_html_ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90"><div class="ttname"><a href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a></div><div class="ttdeci">@ ERROR</div><div class="ttdoc">Error that affects operation but allows recovery.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00027">ErrorHandler.h:27</a></div></div>
+<div class="ttc" id="agroup__error__handling_html_ggaf499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0"><div class="ttname"><a href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0">FATAL</a></div><div class="ttdeci">@ FATAL</div><div class="ttdoc">Fatal error that prevents continued operation.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00028">ErrorHandler.h:28</a></div></div>
+<div class="ttc" id="astruct_error_entry_html_a04aaf7fa2f3caba2495c49a7a20c65b1"><div class="ttname"><a href="struct_error_entry.html#a04aaf7fa2f3caba2495c49a7a20c65b1">ErrorEntry::timestamp</a></div><div class="ttdeci">unsigned long timestamp</div><div class="ttdoc">Timestamp when error occurred (millis)</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00039">ErrorHandler.h:39</a></div></div>
+<div class="ttc" id="astruct_error_entry_html_a26b95e4d9f37cec9ca31b371a9a292f6"><div class="ttname"><a href="struct_error_entry.html#a26b95e4d9f37cec9ca31b371a9a292f6">ErrorEntry::message</a></div><div class="ttdeci">String message</div><div class="ttdoc">Error message content.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00038">ErrorHandler.h:38</a></div></div>
+<div class="ttc" id="astruct_error_entry_html_ad31962dc8edc9a9f87f11885b138ce30"><div class="ttname"><a href="struct_error_entry.html#ad31962dc8edc9a9f87f11885b138ce30">ErrorEntry::severity</a></div><div class="ttdeci">ErrorSeverity severity</div><div class="ttdoc">Severity level of the error.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00037">ErrorHandler.h:37</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00042">defaultOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_error_handler_8h_source.html#l00038">errorLog</a>, <a class="el" href="_error_handler_8h_source.html#l00014">FATAL</a>, <a class="el" href="_error_handler_8h_source.html#l00052">ledManager</a>, <a class="el" href="_error_handler_8h_source.html#l00039">MAX_LOG_SIZE</a>, <a class="el" href="_error_handler_8h_source.html#l00020">ErrorEntry::message</a>, <a class="el" href="_error_handler_8h_source.html#l00019">ErrorEntry::severity</a>, <a class="el" href="_error_handler_8cpp_source.html#l00148">severityToString()</a>, <a class="el" href="_error_handler_8h_source.html#l00021">ErrorEntry::timestamp</a>, <a class="el" href="_error_handler_8h_source.html#l00046">uartOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00045">usbOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00055">useCustomRouting</a>, and <a class="el" href="_error_handler_8h_source.html#l00012">WARNING</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00076">defaultOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_error_handler_8h_source.html#l00066">errorLog</a>, <a class="el" href="_error_handler_8h_source.html#l00028">FATAL</a>, <a class="el" href="_error_handler_8h_source.html#l00094">ledManager</a>, <a class="el" href="_error_handler_8h_source.html#l00071">MAX_LOG_SIZE</a>, <a class="el" href="_error_handler_8h_source.html#l00038">ErrorEntry::message</a>, <a class="el" href="_error_handler_8h_source.html#l00037">ErrorEntry::severity</a>, <a class="el" href="_error_handler_8cpp_source.html#l00148">severityToString()</a>, <a class="el" href="_error_handler_8h_source.html#l00039">ErrorEntry::timestamp</a>, <a class="el" href="_error_handler_8h_source.html#l00083">uartOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00082">usbOutput</a>, <a class="el" href="_error_handler_8h_source.html#l00099">useCustomRouting</a>, and <a class="el" href="_error_handler_8h_source.html#l00026">WARNING</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_error_handler_a02d8e77cdfa298be79d79687b99e9072_cgraph.png" border="0" usemap="#aclass_error_handler_a02d8e77cdfa298be79d79687b99e9072_cgraph" alt=""/></div>
+<map name="aclass_error_handler_a02d8e77cdfa298be79d79687b99e9072_cgraph" id="aclass_error_handler_a02d8e77cdfa298be79d79687b99e9072_cgraph">
+<area shape="rect" title="Log a message with specified severity Logs a message to the appropriate output streams based on sever..." alt="" coords="5,13,153,40"/>
+<area shape="rect" href="class_error_handler.html#a28e4c666c764f31533832edde5d8e014" title="Convert severity level to string." alt="" coords="201,5,363,48"/>
+<area shape="poly" title=" " alt="" coords="153,24,185,24,185,29,153,29"/>
+</map>
 </div>
 
 </div>
@@ -567,7 +598,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   29</span>  <a class="code hl_variable" href="#a8960704c69a7208ab3f90c58cfb1129a">ledManager</a> = led;</div>
 <div class="line"><span class="lineno">   30</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00052">ledManager</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00094">ledManager</a>.</p>
 
 </div>
 </div>
@@ -585,7 +616,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a></td>          <td class="paramname"><span class="paramname"><em>minSeverity</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="group__error__handling.html#gaf499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a></td>          <td class="paramname"><span class="paramname"><em>minSeverity</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -610,7 +641,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   25</span>  }</div>
 <div class="line"><span class="lineno">   26</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00046">uartOutput</a>, and <a class="el" href="_error_handler_8h_source.html#l00045">usbOutput</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00083">uartOutput</a>, and <a class="el" href="_error_handler_8h_source.html#l00082">usbOutput</a>.</p>
 
 </div>
 </div>
@@ -626,7 +657,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">String ErrorHandler::severityToString </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a></td>          <td class="paramname"><span class="paramname"><em>severity</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="group__error__handling.html#gaf499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a></td>          <td class="paramname"><span class="paramname"><em>severity</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -649,21 +680,49 @@ Here is the call graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00148">148</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  148</span>                                                            {</div>
 <div class="line"><span class="lineno">  149</span>  <span class="keywordflow">switch</span> (severity) {</div>
-<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>: <span class="keywordflow">return</span> <span class="stringliteral">&quot;INFO&quot;</span>;</div>
-<div class="line"><span class="lineno">  151</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a>: <span class="keywordflow">return</span> <span class="stringliteral">&quot;WARNING&quot;</span>;</div>
-<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>: <span class="keywordflow">return</span> <span class="stringliteral">&quot;ERROR&quot;</span>;</div>
-<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0">FATAL</a>: <span class="keywordflow">return</span> <span class="stringliteral">&quot;FATAL&quot;</span>;</div>
+<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>: <span class="keywordflow">return</span> <span class="stringliteral">&quot;INFO&quot;</span>;</div>
+<div class="line"><span class="lineno">  151</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a>: <span class="keywordflow">return</span> <span class="stringliteral">&quot;WARNING&quot;</span>;</div>
+<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>: <span class="keywordflow">return</span> <span class="stringliteral">&quot;ERROR&quot;</span>;</div>
+<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0">FATAL</a>: <span class="keywordflow">return</span> <span class="stringliteral">&quot;FATAL&quot;</span>;</div>
 <div class="line"><span class="lineno">  154</span>    <span class="keywordflow">default</span>: <span class="keywordflow">return</span> <span class="stringliteral">&quot;UNKNOWN&quot;</span>;</div>
 <div class="line"><span class="lineno">  155</span>  }</div>
 <div class="line"><span class="lineno">  156</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_error_handler_8h_source.html#l00014">FATAL</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, and <a class="el" href="_error_handler_8h_source.html#l00012">WARNING</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_error_handler_8h_source.html#l00028">FATAL</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, and <a class="el" href="_error_handler_8h_source.html#l00026">WARNING</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_error_handler_8cpp_source.html#l00130">getRoutingStatus()</a>, <a class="el" href="_communication_manager_8cpp_source.html#l00647">CommunicationManager::handleLogRouting()</a>, <a class="el" href="_communication_manager_8cpp_source.html#l00712">CommunicationManager::handleTestErrorLevel()</a>, and <a class="el" href="_error_handler_8cpp_source.html#l00036">logError()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_error_handler_a28e4c666c764f31533832edde5d8e014_icgraph.png" border="0" usemap="#aclass_error_handler_a28e4c666c764f31533832edde5d8e014_icgraph" alt=""/></div>
+<map name="aclass_error_handler_a28e4c666c764f31533832edde5d8e014_icgraph" id="aclass_error_handler_a28e4c666c764f31533832edde5d8e014_icgraph">
+<area shape="rect" title="Convert severity level to string." alt="" coords="661,105,824,148"/>
+<area shape="rect" href="class_error_handler.html#a9db4470448ad6757baac69e0bbd4fcb6" title="Get the current message routing configuration status." alt="" coords="448,5,613,48"/>
+<area shape="poly" title=" " alt="" coords="687,100,612,62,586,51,588,46,614,58,690,95"/>
+<area shape="rect" href="class_communication_manager.html#a10b20a1f75bc05bd5f73fef2e230e906" title="Handle log routing command (SYST:LOG)" alt="" coords="450,72,612,115"/>
+<area shape="poly" title=" " alt="" coords="645,114,612,109,613,104,646,109"/>
+<area shape="rect" href="class_communication_manager.html#af94e9702ed5b64fdb29b1b26dd37634a" title="Handle test error level commands." alt="" coords="450,139,612,181"/>
+<area shape="poly" title=" " alt="" coords="646,144,613,150,612,145,645,139"/>
+<area shape="rect" href="class_error_handler.html#a02d8e77cdfa298be79d79687b99e9072" title="Log a message with specified severity Logs a message to the appropriate output streams based on sever..." alt="" coords="457,205,604,232"/>
+<area shape="poly" title=" " alt="" coords="692,158,614,196,582,207,581,202,612,191,689,153"/>
+<area shape="rect" href="class_communication_manager.html#a53fc653207de26539054ecf3ee15783f" title="Register all commands with their handlers." alt="" coords="216,72,400,115"/>
+<area shape="poly" title=" " alt="" coords="434,96,400,96,400,91,434,91"/>
+<area shape="rect" href="class_communication_manager.html#a5d0e3daa257d372cea146b1eb1f228c0" title="Register all SCPI commands with the parser." alt="" coords="5,197,168,240"/>
+<area shape="poly" title=" " alt="" coords="463,69,408,53,344,42,279,43,247,50,217,62,200,75,190,90,183,108,170,128,110,199,106,195,166,125,178,105,186,88,196,72,214,58,245,45,278,38,345,37,409,47,465,64"/>
+<area shape="rect" href="class_communication_manager.html#af1cfd2e3cf49258ebb493f6369fad06f" title="Initialize the communication system." alt="" coords="5,72,168,115"/>
+<area shape="poly" title=" " alt="" coords="200,96,168,96,168,91,200,91"/>
+<area shape="poly" title=" " alt="" coords="442,136,381,118,383,113,444,131"/>
+<area shape="poly" title=" " alt="" coords="439,188,400,196,279,211,168,219,168,213,278,206,400,191,438,183"/>
+<area shape="rect" href="class_communication_manager.html#a1d29336b745b0540c5f7b557301108a1" title="Handle test fatal level command (TEST:FATAL)" alt="" coords="227,256,389,299"/>
+<area shape="poly" title=" " alt="" coords="457,191,450,195,426,217,402,240,368,258,366,253,398,235,422,213,446,191,454,186"/>
+<area shape="rect" href="class_communication_manager.html#ad4ff77464bcadd5a23b8c0a48302df64" title="Handle test info level command (TEST:INFO)" alt="" coords="227,323,389,365"/>
+<area shape="poly" title=" " alt="" coords="452,193,450,195,438,210,432,224,427,253,422,282,414,297,402,313,387,324,383,320,398,309,410,295,416,281,422,252,427,222,434,207,446,192,449,189"/>
+<area shape="rect" href="class_communication_manager.html#a8fc41f7f8332a1b4ce19273026b082e6" title="Handle test warning level command (TEST:WARNING)" alt="" coords="223,139,393,181"/>
+<area shape="poly" title=" " alt="" coords="434,163,394,163,394,157,434,157"/>
+<area shape="poly" title=" " alt="" coords="211,255,167,243,169,238,213,249"/>
+<area shape="poly" title=" " alt="" coords="225,318,214,313,158,278,112,243,115,239,161,274,217,308,227,313"/>
+<area shape="poly" title=" " alt="" coords="211,188,169,200,168,195,210,183"/>
+</map>
 </div>
 
 </div>
@@ -678,7 +737,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a> ErrorHandler::stringToSeverity </td>
+          <td class="memname"><a class="el" href="group__error__handling.html#gaf499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a> ErrorHandler::stringToSeverity </td>
           <td>(</td>
           <td class="paramtype">const String &amp;</td>          <td class="paramname"><span class="paramname"><em>severityStr</em></span></td><td>)</td>
           <td></td>
@@ -698,28 +757,39 @@ Here is the caller graph for this function:</div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87f">ErrorSeverity</a> value (defaults to INFO if not recognized) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__error__handling.html#gaf499e45fe1f4c813befc79c1fbd1e87f" title="Error severity levels Defines the different severity levels for error messages, in order of increasin...">ErrorSeverity</a> value (defaults to INFO if not recognized) </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00158">158</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  158</span>                                                                      {</div>
 <div class="line"><span class="lineno">  159</span>  String upper = severityStr;</div>
 <div class="line"><span class="lineno">  160</span>  upper.toUpperCase();</div>
 <div class="line"><span class="lineno">  161</span>  </div>
-<div class="line"><span class="lineno">  162</span>  <span class="keywordflow">if</span> (upper == <span class="stringliteral">&quot;WARNING&quot;</span>) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a>;</div>
-<div class="line"><span class="lineno">  163</span>  <span class="keywordflow">if</span> (upper == <span class="stringliteral">&quot;ERROR&quot;</span>) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>;</div>
-<div class="line"><span class="lineno">  164</span>  <span class="keywordflow">if</span> (upper == <span class="stringliteral">&quot;FATAL&quot;</span>) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0">FATAL</a>;</div>
+<div class="line"><span class="lineno">  162</span>  <span class="keywordflow">if</span> (upper == <span class="stringliteral">&quot;WARNING&quot;</span>) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa984de77c680eaff141ec910e25568a81">WARNING</a>;</div>
+<div class="line"><span class="lineno">  163</span>  <span class="keywordflow">if</span> (upper == <span class="stringliteral">&quot;ERROR&quot;</span>) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>;</div>
+<div class="line"><span class="lineno">  164</span>  <span class="keywordflow">if</span> (upper == <span class="stringliteral">&quot;FATAL&quot;</span>) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa651d8a47a6976d6fe05c0e03fb4cd2d0">FATAL</a>;</div>
 <div class="line"><span class="lineno">  165</span>  </div>
 <div class="line"><span class="lineno">  166</span>  <span class="comment">// Default to INFO for unrecognized values</span></div>
-<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>;</div>
+<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>;</div>
 <div class="line"><span class="lineno">  168</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_error_handler_8h_source.html#l00014">FATAL</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, and <a class="el" href="_error_handler_8h_source.html#l00012">WARNING</a>.</p>
+<p class="reference">References <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_error_handler_8h_source.html#l00028">FATAL</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, and <a class="el" href="_error_handler_8h_source.html#l00026">WARNING</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_communication_manager_8cpp_source.html#l00647">CommunicationManager::handleLogRouting()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_error_handler_a6c957506a74daf83fad82b459adfbd8f_icgraph.png" border="0" usemap="#aclass_error_handler_a6c957506a74daf83fad82b459adfbd8f_icgraph" alt=""/></div>
+<map name="aclass_error_handler_a6c957506a74daf83fad82b459adfbd8f_icgraph" id="aclass_error_handler_a6c957506a74daf83fad82b459adfbd8f_icgraph">
+<area shape="rect" title="Convert string to severity level." alt="" coords="658,47,855,73"/>
+<area shape="rect" href="class_communication_manager.html#a10b20a1f75bc05bd5f73fef2e230e906" title="Handle log routing command (SYST:LOG)" alt="" coords="448,39,610,81"/>
+<area shape="poly" title=" " alt="" coords="643,63,611,63,611,57,643,57"/>
+<area shape="rect" href="class_communication_manager.html#a53fc653207de26539054ecf3ee15783f" title="Register all commands with their handlers." alt="" coords="216,5,400,48"/>
+<area shape="poly" title=" " alt="" coords="432,48,400,43,401,38,433,43"/>
+<area shape="rect" href="class_communication_manager.html#a5d0e3daa257d372cea146b1eb1f228c0" title="Register all SCPI commands with the parser." alt="" coords="227,72,389,115"/>
+<area shape="poly" title=" " alt="" coords="433,77,390,84,389,78,432,72"/>
+<area shape="rect" href="class_communication_manager.html#af1cfd2e3cf49258ebb493f6369fad06f" title="Initialize the communication system." alt="" coords="5,5,168,48"/>
+<area shape="poly" title=" " alt="" coords="200,29,168,29,168,24,200,24"/>
+</map>
 </div>
 
 </div>
@@ -745,7 +815,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00042">42</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p>Default output stream (backward compatibility) </p>
+
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00076">76</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_error_handler_8cpp_source.html#l00004">ErrorHandler()</a>, and <a class="el" href="_error_handler_8cpp_source.html#l00036">logError()</a>.</p>
 
@@ -771,7 +843,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00038">38</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p>Vector of recent error entries. </p>
+
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00066">66</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_error_handler_8cpp_source.html#l00126">clearErrors()</a>, <a class="el" href="_error_handler_8cpp_source.html#l00122">getErrorLog()</a>, <a class="el" href="_error_handler_8cpp_source.html#l00130">getRoutingStatus()</a>, and <a class="el" href="_error_handler_8cpp_source.html#l00036">logError()</a>.</p>
 
@@ -797,9 +871,11 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00052">52</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p>Reference to LED manager for visual indication. </p>
 
-<p class="reference">Referenced by <a class="el" href="_error_handler_8h_source.html#l00062">getLedManager()</a>, <a class="el" href="_error_handler_8cpp_source.html#l00036">logError()</a>, and <a class="el" href="_error_handler_8cpp_source.html#l00028">setLedManager()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00094">94</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_error_handler_8h_source.html#l00106">getLedManager()</a>, <a class="el" href="_error_handler_8cpp_source.html#l00036">logError()</a>, and <a class="el" href="_error_handler_8cpp_source.html#l00028">setLedManager()</a>.</p>
 
 </div>
 </div>
@@ -823,7 +899,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00039">39</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p>Maximum number of log entries to store. </p>
+
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00071">71</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_error_handler_8cpp_source.html#l00036">logError()</a>.</p>
 
@@ -849,7 +927,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00049">49</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p>Reference to UART debug serial. </p>
+
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00089">89</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_error_handler_8cpp_source.html#l00004">ErrorHandler()</a>.</p>
 
@@ -875,7 +955,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00046">46</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p>Configuration for UART debug output. </p>
+
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00083">83</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_error_handler_8cpp_source.html#l00004">ErrorHandler()</a>, <a class="el" href="_error_handler_8cpp_source.html#l00130">getRoutingStatus()</a>, <a class="el" href="_error_handler_8cpp_source.html#l00036">logError()</a>, and <a class="el" href="_error_handler_8cpp_source.html#l00018">setOutputSeverity()</a>.</p>
 
@@ -901,7 +983,10 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00045">45</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p>Output configurations for different destinations. </p>
+<p>Configuration for USB serial output </p>
+
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00082">82</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_error_handler_8cpp_source.html#l00004">ErrorHandler()</a>, <a class="el" href="_error_handler_8cpp_source.html#l00130">getRoutingStatus()</a>, <a class="el" href="_error_handler_8cpp_source.html#l00036">logError()</a>, and <a class="el" href="_error_handler_8cpp_source.html#l00018">setOutputSeverity()</a>.</p>
 
@@ -927,7 +1012,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00055">55</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p>Flag to indicate if custom routing is enabled. </p>
+
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00099">99</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_error_handler_8cpp_source.html#l00032">enableCustomRouting()</a>, <a class="el" href="_error_handler_8cpp_source.html#l00004">ErrorHandler()</a>, <a class="el" href="_error_handler_8cpp_source.html#l00130">getRoutingStatus()</a>, and <a class="el" href="_error_handler_8cpp_source.html#l00036">logError()</a>.</p>
 

@@ -1,0 +1,11 @@
+<map id="SHT41Sensor" name="SHT41Sensor">
+<area shape="rect" id="Node000001" title="Implementation of the SHT41 temperature and humidity sensor." alt="" coords="162,624,349,1099"/>
+<area shape="rect" id="Node000002" href="$class_base_sensor.html" title="Base class for all sensor implementations This abstract class implements common functionality for all..." alt="" coords="5,293,138,576"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,588,165,644,160,646,136,590"/>
+<area shape="rect" id="Node000003" href="$class_i_sensor.html" title="Base interface for all sensors Defines core functionality that all sensors must implement,..." alt="" coords="5,5,138,245"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="74,260,74,294,69,294,69,260"/>
+<area shape="rect" id="Node000004" href="$class_i_temperature_sensor.html" title="Interface for sensors that can measure temperature Defines the methods that must be implemented by an..." alt="" coords="162,379,349,491"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="258,506,258,624,253,624,253,506"/>
+<area shape="rect" id="Node000005" href="$class_i_humidity_sensor.html" title="Interface for sensors that can measure humidity Defines the methods that must be implemented by any s..." alt="" coords="374,379,541,491"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="427,505,352,665,347,662,422,503"/>
+</map>

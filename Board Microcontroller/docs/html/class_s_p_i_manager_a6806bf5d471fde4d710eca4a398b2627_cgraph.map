@@ -1,0 +1,5 @@
+<map id="SPIManager::registerSSPin" name="SPIManager::registerSSPin">
+<area shape="rect" id="Node000001" title="Register an SS pin for use with SPI Configures the specified pin as an output for use as an SPI slave..." alt="" coords="5,13,187,40"/>
+<area shape="rect" id="Node000002" href="$class_s_p_i_manager.html#a9e07cab432e9a41da8f86fcf9109e311" title="Map a logical SS pin index to a physical pin number Converts a logical pin index (0,..." alt="" coords="235,5,416,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,24,219,24,219,29,187,29"/>
+</map>

@@ -1,0 +1,24 @@
+<map id="src/config/ConfigManager.h" name="src/config/ConfigManager.h">
+<area shape="rect" id="Node000001" title="Configuration management system." alt="" coords="301,5,482,32"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="58,229,134,256"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="301,24,225,34,143,56,105,74,69,96,38,123,13,156,9,174,17,190,34,206,55,219,52,224,31,210,13,194,4,174,8,154,34,119,66,91,102,69,142,51,224,29,300,19"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="228,229,286,256"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="404,31,423,60,442,99,448,121,450,142,447,163,438,183,409,210,374,228,336,238,302,243,301,238,335,233,372,223,406,206,434,180,442,162,445,142,443,122,437,101,419,63,399,34"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="498,80,576,107"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="418,30,499,70,497,75,416,35"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="600,80,704,107"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="438,30,592,73,591,78,436,35"/>
+<area shape="rect" id="Node000006" href="$_error_handler_8h.html" title="Error logging and reporting system with configurable output streams." alt="" coords="22,155,169,181"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="323,35,257,54,192,82,150,113,118,145,114,141,147,108,189,78,255,49,321,30"/>
+<area shape="rect" id="Node000007" href="$_i2_c_manager_8h.html" title="Manager for I2C bus communication and device access." alt="" coords="202,80,379,107"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="376,35,322,73,319,68,372,30"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="98,182,98,214,93,214,93,182"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="125,179,216,220,214,225,123,184"/>
+<area shape="poly" id="edge9_Node000007_Node000002" title=" " alt="" coords="277,109,183,183,128,222,125,218,179,179,273,105"/>
+<area shape="poly" id="edge11_Node000007_Node000003" title=" " alt="" coords="290,108,266,215,261,214,285,107"/>
+<area shape="poly" id="edge13_Node000007_Node000006" title=" " alt="" coords="257,110,145,151,143,146,256,105"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="294,155,353,181"/>
+<area shape="poly" id="edge10_Node000007_Node000008" title=" " alt="" coords="299,106,314,139,309,142,294,108"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="378,155,424,181"/>
+<area shape="poly" id="edge12_Node000007_Node000009" title=" " alt="" coords="311,105,371,144,368,148,308,109"/>
+</map>

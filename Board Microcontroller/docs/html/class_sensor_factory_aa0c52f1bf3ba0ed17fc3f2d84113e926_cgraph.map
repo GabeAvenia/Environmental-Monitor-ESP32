@@ -1,0 +1,5 @@
+<map id="SensorFactory::createPT100Sensor" name="SensorFactory::createPT100Sensor">
+<area shape="rect" id="Node000001" title="Create a PT100 RTD sensor instance Special case for PT100 sensors that need additional parameters." alt="" coords="5,5,194,48"/>
+<area shape="rect" id="Node000002" href="$class_sensor_factory.html#a311f11e27cd6d881e79b4db0c3557b4b" title="Parse additional settings for PT100 sensors." alt="" coords="242,5,445,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,24,226,24,226,29,194,29"/>
+</map>

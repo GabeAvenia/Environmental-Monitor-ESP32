@@ -1,0 +1,11 @@
+<map id="SensorManager::initializeSensors" name="SensorManager::initializeSensors">
+<area shape="rect" id="Node000001" title="Initialize all sensors from configuration Scans I2C and SPI buses for devices, then initializes senso..." alt="" coords="5,48,173,91"/>
+<area shape="rect" id="Node000002" href="$class_i_sensor.html#a3dc74c4ea04ec253eadf843e9f98d9c8" title="Initialize sensor hardware." alt="" coords="288,5,409,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="173,50,272,31,273,36,174,56"/>
+<area shape="rect" id="Node000003" href="$class_sensor_manager.html#a5ee30cbf0abf3fbd7f4701d5ccb58eb1" title="Test communication with an I2C device." alt="" coords="221,56,476,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,67,206,67,206,72,173,72"/>
+<area shape="rect" id="Node000005" href="$class_sensor_manager.html#ae3bf9e3cbe51e80b82437dfa4c006b5c" title="Test communication with an SPI device." alt="" coords="221,107,476,133"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="174,83,262,100,261,106,173,88"/>
+<area shape="rect" id="Node000004" href="$class_i2_c_manager.html#ad9ebf3c8541e2fa0fd1131f3d68391de" title="Convert I2CPort enum to string." alt="" coords="524,56,694,83"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="476,67,508,67,508,72,476,72"/>
+</map>

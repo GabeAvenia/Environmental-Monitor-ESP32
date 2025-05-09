@@ -1,0 +1,38 @@
+<map id="I2CManager::portToString" name="I2CManager::portToString">
+<area shape="rect" id="Node000001" title="Convert I2CPort enum to string." alt="" coords="752,284,923,311"/>
+<area shape="rect" id="Node000002" href="$class_i2_c_manager.html#ae731726cefd93f8265fca5b521b45cc7" title="Initialize a specific I2C bus Initializes only the specified I2C bus with its configured settings." alt="" coords="500,5,655,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="827,270,813,220,788,159,752,97,729,70,703,46,680,33,654,25,656,20,682,28,706,42,733,66,756,94,793,157,818,219,833,268"/>
+<area shape="rect" id="Node000004" href="$class_sensor_factory.html#a47edb42e6c90e0598f561ac9a5587fea" title="Create a sensor using the template method pattern." alt="" coords="471,56,683,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="823,271,805,232,779,187,745,142,703,104,666,86,669,81,706,99,749,138,783,184,810,230,828,268"/>
+<area shape="rect" id="Node000005" href="$class_sensor_factory.html#a1a691b564c1b5a5f4ce08989980da7f1" title="Create a sensor instance based on the provided configuration Factory method that creates and returns ..." alt="" coords="208,81,399,108"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="818,272,772,211,740,180,703,154,649,136,570,122,399,104,400,98,571,117,650,131,706,150,743,175,776,207,823,269"/>
+<area shape="rect" id="Node000006" href="$class_i2_c_manager.html#a2ee596f6fd05071905d94bd5c6c86f9f" title="Check if a device is present at the specified address on a specific I2C port." alt="" coords="212,232,395,259"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="794,280,751,262,704,249,623,239,541,235,396,239,396,234,541,229,624,233,705,244,753,257,796,275"/>
+<area shape="rect" id="Node000007" href="$class_i2_c_manager.html#ac42d99b0ec5ab28c5aa5671c547b141a" title="Scan an I2C bus for devices Scans the specified I2C bus for connected devices and returns a list of d..." alt="" coords="5,232,157,259"/>
+<area shape="poly" id="edge15_Node000001_Node000007" title=" " alt="" coords="806,277,760,246,732,233,704,223,627,206,547,198,467,196,390,199,248,214,142,234,141,229,248,209,389,194,467,191,548,193,627,201,705,217,734,228,762,242,809,272"/>
+<area shape="rect" id="Node000008" href="$class_s_h_t41_sensor.html#a01aef427e28039d1446ac3e7570fa5e0" title="Get detailed information about the sensor." alt="" coords="481,259,673,285"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="737,290,674,284,674,279,737,285"/>
+<area shape="rect" id="Node000009" href="$class_si7021_sensor.html#a20786b26e4a6f856e832a2225141f59d" title="Get detailed information about the sensor." alt="" coords="482,309,673,336"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="737,310,674,316,673,311,737,304"/>
+<area shape="rect" id="Node000010" href="$class_i2_c_manager.html#ab355e02449b1995ef0a1b06873da700c" title="Get the TwoWire object for a specific I2C port." alt="" coords="504,360,650,387"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="792,319,705,351,651,364,650,358,704,345,790,314"/>
+<area shape="rect" id="Node000011" href="$class_i2_c_manager.html#a11b691980ee6051209769605b1250617" title="Register a TwoWire instance for a specific I2C port Associates a TwoWire instance with a specific I2C..." alt="" coords="492,411,662,437"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="813,324,766,364,737,384,705,401,664,415,662,410,703,396,734,380,763,360,810,320"/>
+<area shape="rect" id="Node000013" href="$class_sensor_manager.html#a5ee30cbf0abf3fbd7f4701d5ccb58eb1" title="Test communication with an I2C device." alt="" coords="450,461,704,488"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="823,325,777,390,744,424,706,452,680,463,678,458,703,447,740,420,773,386,819,322"/>
+<area shape="rect" id="Node000015" href="$class_config_manager.html#a97cf9da828f2d27c76ece9371651ff77" title="Granular configuration methods." alt="" coords="205,545,402,588"/>
+<area shape="poly" id="edge18_Node000001_Node000015" title=" " alt="" coords="829,326,812,366,786,415,751,463,729,484,706,502,663,516,586,531,403,557,402,552,585,525,662,511,703,498,726,480,747,459,781,412,807,364,824,324"/>
+<area shape="rect" id="Node000016" href="$class_config_manager.html#ac224a48d40874fc3cd6c0964fd4235c8" title="Update sensor configurations." alt="" coords="478,563,676,605"/>
+<area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="831,326,816,374,790,433,754,493,732,521,706,546,676,564,673,560,703,542,728,518,750,490,785,430,811,372,826,324"/>
+<area shape="rect" id="Node000003" href="$class_i2_c_manager.html#aedf0c62c8372508d899c7ea9018eb0bc" title="Initialize default I2C buses Initializes all registered I2C buses with their configured pin assignmen..." alt="" coords="238,5,369,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="484,21,369,21,369,16,484,16"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="456,83,400,88,399,83,455,78"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="196,248,157,248,157,243,196,243"/>
+<area shape="poly" id="edge11_Node000010_Node000006" title=" " alt="" coords="489,364,449,350,409,330,373,306,318,261,321,257,376,301,412,325,451,346,491,358"/>
+<area shape="poly" id="edge12_Node000010_Node000007" title=" " alt="" coords="489,359,449,351,270,303,127,262,129,257,272,298,451,345,490,354"/>
+<area shape="rect" id="Node000012" href="$class_i2_c_manager.html#a05e1f11d34f59577afbf8ebeb3a9f1d2" title="Constructor for I2CManager Initializes the manager and registers default I2C buses." alt="" coords="218,407,389,433"/>
+<area shape="poly" id="edge14_Node000011_Node000012" title=" " alt="" coords="476,425,389,424,389,419,476,420"/>
+<area shape="rect" id="Node000014" href="$class_sensor_manager.html#aded8aff6d741a64d0c34668a0694dd3d" title="Initialize all sensors from configuration Scans I2C and SPI buses for devices, then initializes senso..." alt="" coords="220,457,387,500"/>
+<area shape="poly" id="edge17_Node000013_Node000014" title=" " alt="" coords="434,479,388,480,388,475,434,474"/>
+<area shape="poly" id="edge20_Node000016_Node000015" title=" " alt="" coords="463,579,402,576,403,570,463,574"/>
+</map>

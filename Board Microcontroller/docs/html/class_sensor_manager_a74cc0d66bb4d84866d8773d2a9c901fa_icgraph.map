@@ -1,0 +1,5 @@
+<map id="SensorManager::compareConfigurations" name="SensorManager::compareConfigurations">
+<area shape="rect" id="Node000001" title="Compare old and new sensor configurations Determines which sensors need to be added or removed when r..." alt="" coords="238,13,492,40"/>
+<area shape="rect" id="Node000002" href="$class_sensor_manager.html#afd2d5b9e8844fd6cf7a25b35e2126180" title="Reconfigure sensors based on new configuration Updates the sensor configuration based on new JSON set..." alt="" coords="5,5,190,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="222,29,190,29,190,24,222,24"/>
+</map>

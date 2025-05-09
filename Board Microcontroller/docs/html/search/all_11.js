@@ -4,7 +4,7 @@ var searchData=
   ['uart_5ftx_5fpin_1',['UART_TX_PIN',['../main_8cpp.html#a54ddd6fd92deeae13dd4765eeed7cbe1',1,'main.cpp']]],
   ['uartdebugserial_2',['uartDebugSerial',['../class_communication_manager.html#a42b1b0432b7e208fd09c66659b712363',1,'CommunicationManager::uartDebugSerial'],['../class_error_handler.html#ac28b41911ba0b17118908c40b57ea162',1,'ErrorHandler::uartDebugSerial'],['../main_8cpp.html#a874920820420de06272e293361d2761e',1,'uartDebugSerial:&#160;main.cpp']]],
   ['uartoutput_3',['uartOutput',['../class_error_handler.html#a46c7544178722d42a4f49442a42abd17',1,'ErrorHandler']]],
-  ['unknown_4',['UNKNOWN',['../_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435a696b031073e74bf2cb98e5ef201d4aa3',1,'SensorTypes.h']]],
+  ['unknown_4',['UNKNOWN',['../group__sensor__types.html#gga213c434cb928c4ca22513e2302632435a696b031073e74bf2cb98e5ef201d4aa3',1,'SensorTypes.h']]],
   ['unregistersensor_5',['unregisterSensor',['../class_sensor_registry.html#adfec6bf32234fff6dfdb6743383ac970',1,'SensorRegistry']]],
   ['update_6',['update',['../class_led_manager.html#ae549d2947bc00d5ebc85ed6e6b34c368',1,'LedManager']]],
   ['update_5fadditional_5fconfig_7',['UPDATE_ADDITIONAL_CONFIG',['../namespace_constants_1_1_s_c_p_i.html#a23d1e24a444de1102f6d11f9292ad3d9',1,'Constants::SCPI']]],

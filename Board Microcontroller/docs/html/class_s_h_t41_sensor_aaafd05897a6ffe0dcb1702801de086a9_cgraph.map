@@ -1,0 +1,9 @@
+<map id="SHT41Sensor::initialize" name="SHT41Sensor::initialize">
+<area shape="rect" id="Node000001" title="Initialize the sensor hardware." alt="" coords="5,5,164,32"/>
+<area shape="rect" id="Node000002" href="$class_s_h_t41_sensor.html#a466d50aa41c2468b68d30c435ae20718" title="Update both temperature and humidity readings from the sensor." alt="" coords="212,5,417,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,16,196,16,196,21,164,21"/>
+<area shape="rect" id="Node000003" href="$class_s_h_t41_sensor.html#a37c4f5b7957a9c45797b391377e40375" title="Constructor for SHT41Sensor." alt="" coords="465,5,658,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="418,16,449,16,449,21,418,21"/>
+<area shape="rect" id="Node000004" href="$class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="706,5,878,32"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="659,16,691,16,691,21,659,21"/>
+</map>

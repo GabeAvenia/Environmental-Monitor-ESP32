@@ -1,0 +1,27 @@
+<map id="src/managers/SensorRegistry.cpp" name="src/managers/SensorRegistry.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="311,5,529,32"/>
+<area shape="rect" id="Node000002" href="$_sensor_registry_8h.html" title="Registry for managing sensor instances." alt="" coords="359,80,481,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="423,33,423,64,417,64,417,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="436,245,513,272"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="429,106,452,154,472,230,467,231,447,156,425,108"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="17,245,74,272"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="359,97,268,100,165,109,116,116,73,127,39,140,17,156,9,173,10,193,18,213,29,231,24,234,13,215,5,194,4,172,13,153,36,135,72,121,115,111,165,103,268,94,359,92"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="197,163,272,189"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="392,110,278,159,276,154,390,105"/>
+<area shape="rect" id="Node000006" href="$_i_sensor_8h.html" title="Base interface for all sensors." alt="" coords="690,155,830,197"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="476,105,675,151,674,156,475,110"/>
+<area shape="rect" id="Node000007" href="$_interface_types_8h.html" title="Enumeration of sensor interface types." alt="" coords="754,245,872,272"/>
+<area shape="poly" id="edge12_Node000002_Node000007" title=" " alt="" coords="481,91,576,93,684,102,736,110,782,120,819,134,845,153,854,172,853,194,845,215,835,233,830,231,840,212,847,192,848,173,841,156,817,139,781,125,735,115,684,107,575,99,481,97"/>
+<area shape="rect" id="Node000008" href="$_i_temperature_sensor_8h.html" title="Interface for temperature measurement." alt="" coords="513,155,666,197"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="448,105,533,145,531,150,445,110"/>
+<area shape="rect" id="Node000009" href="$_i_humidity_sensor_8h.html" title="Interface for humidity measurement." alt="" coords="296,155,437,197"/>
+<area shape="poly" id="edge10_Node000002_Node000009" title=" " alt="" coords="414,109,391,143,386,140,409,106"/>
+<area shape="rect" id="Node000010" href="$_error_handler_8h.html" title="Error logging and reporting system with configurable output streams." alt="" coords="26,163,174,189"/>
+<area shape="poly" id="edge13_Node000002_Node000010" title=" " alt="" coords="370,110,166,161,165,156,369,105"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="690,200,529,245,527,240,689,195"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="776,196,799,231,794,234,771,199"/>
+<area shape="poly" id="edge9_Node000008_Node000003" title=" " alt="" coords="561,200,507,238,504,234,558,196"/>
+<area shape="poly" id="edge11_Node000009_Node000003" title=" " alt="" coords="396,196,447,234,444,238,393,200"/>
+<area shape="poly" id="edge14_Node000010_Node000003" title=" " alt="" coords="153,187,186,195,422,244,421,249,185,200,152,193"/>
+<area shape="poly" id="edge15_Node000010_Node000004" title=" " alt="" coords="94,191,64,234,60,231,89,188"/>
+</map>

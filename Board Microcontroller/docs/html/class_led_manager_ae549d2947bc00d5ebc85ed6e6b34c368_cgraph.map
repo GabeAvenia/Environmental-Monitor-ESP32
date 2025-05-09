@@ -1,0 +1,8 @@
+<map id="LedManager::update" name="LedManager::update">
+<area shape="rect" id="Node000001" title="Main update function for LED animations Must be called regularly from loop() or a task to update LED ..." alt="" coords="5,5,145,32"/>
+<area shape="rect" id="Node000002" href="$class_led_manager.html#a7ef32c4cc670b9545d002ebdf9214268" title="Set a solid color on the NeoPixel." alt="" coords="433,5,582,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,16,417,16,417,21,145,21"/>
+<area shape="rect" id="Node000003" href="$class_led_manager.html#a7a5998b5846495bd18f856856e32c432" title="Set LED to normal operation mode (solid green) Used during normal operation to indicate system is fun..." alt="" coords="193,31,385,57"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="145,24,177,28,177,33,145,30"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="385,30,417,26,418,32,386,35"/>
+</map>

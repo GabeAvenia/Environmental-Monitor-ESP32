@@ -107,40 +107,54 @@ $(function(){initNavTree('struct_wire_config.html',''); initResizable(true); });
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="struct_wire_config-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">WireConfig Struct Reference</div></div>
+  <div class="headertitle"><div class="title">WireConfig Struct Reference<div class="ingroups"><a class="el" href="group__communication.html">Communication</a> &raquo; <a class="el" href="group__i2c__management.html">I2C Management</a></div></div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Configuration parameters for a TwoWire instance Holds configuration data for an I2C bus, including pin assignments, initialization state, and clock frequency.  
+ <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for WireConfig:</div>
 <div class="dyncontent">
 <div class="center"><img src="struct_wire_config__coll__graph.png" border="0" usemap="#a_wire_config_coll__map" alt="Collaboration graph"/></div>
+<map name="a_wire_config_coll__map" id="a_wire_config_coll__map">
+<area shape="rect" title="Configuration parameters for a TwoWire instance Holds configuration data for an I2C bus,..." alt="" coords="5,5,121,181"/>
+</map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a09c45e945dadd8aa8e6ce1844d0dbfbb" id="r_a09c45e945dadd8aa8e6ce1844d0dbfbb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09c45e945dadd8aa8e6ce1844d0dbfbb">WireConfig</a> ()</td></tr>
+<tr class="memdesc:a09c45e945dadd8aa8e6ce1844d0dbfbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor with null initialization.  <br /></td></tr>
 <tr class="separator:a09c45e945dadd8aa8e6ce1844d0dbfbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d3828774e5f5705dae85ce77cb0cc41" id="r_a5d3828774e5f5705dae85ce77cb0cc41"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d3828774e5f5705dae85ce77cb0cc41">WireConfig</a> (TwoWire *w, int sda, int scl, uint32_t freq=100000)</td></tr>
+<tr class="memdesc:a5d3828774e5f5705dae85ce77cb0cc41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with parameters.  <br /></td></tr>
 <tr class="separator:a5d3828774e5f5705dae85ce77cb0cc41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ad83c4fd6a6273c3955ef011cf50c8f0b" id="r_ad83c4fd6a6273c3955ef011cf50c8f0b"><td class="memItemLeft" align="right" valign="top">TwoWire *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad83c4fd6a6273c3955ef011cf50c8f0b">wire</a></td></tr>
+<tr class="memdesc:ad83c4fd6a6273c3955ef011cf50c8f0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the TwoWire instance.  <br /></td></tr>
 <tr class="separator:ad83c4fd6a6273c3955ef011cf50c8f0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8c09b0a6f07b97d6cff80566b135d89" id="r_ae8c09b0a6f07b97d6cff80566b135d89"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae8c09b0a6f07b97d6cff80566b135d89">sdaPin</a></td></tr>
+<tr class="memdesc:ae8c09b0a6f07b97d6cff80566b135d89"><td class="mdescLeft">&#160;</td><td class="mdescRight">SDA pin number.  <br /></td></tr>
 <tr class="separator:ae8c09b0a6f07b97d6cff80566b135d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a670deffc1ceefd6c7983a4d1e858e937" id="r_a670deffc1ceefd6c7983a4d1e858e937"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a670deffc1ceefd6c7983a4d1e858e937">sclPin</a></td></tr>
+<tr class="memdesc:a670deffc1ceefd6c7983a4d1e858e937"><td class="mdescLeft">&#160;</td><td class="mdescRight">SCL pin number.  <br /></td></tr>
 <tr class="separator:a670deffc1ceefd6c7983a4d1e858e937"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa5ebf16a072e29c59fa257a2e5bf3c1" id="r_aaa5ebf16a072e29c59fa257a2e5bf3c1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa5ebf16a072e29c59fa257a2e5bf3c1">initialized</a></td></tr>
+<tr class="memdesc:aaa5ebf16a072e29c59fa257a2e5bf3c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this bus has been initialized.  <br /></td></tr>
 <tr class="separator:aaa5ebf16a072e29c59fa257a2e5bf3c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78498d53005e410e857806e9435cd879" id="r_a78498d53005e410e857806e9435cd879"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78498d53005e410e857806e9435cd879">clockFrequency</a></td></tr>
+<tr class="memdesc:a78498d53005e410e857806e9435cd879"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C clock frequency in Hz.  <br /></td></tr>
 <tr class="separator:a78498d53005e410e857806e9435cd879"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00019">19</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+<div class="textblock"><p>Configuration parameters for a TwoWire instance Holds configuration data for an I2C bus, including pin assignments, initialization state, and clock frequency. </p>
+
+<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00038">38</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a09c45e945dadd8aa8e6ce1844d0dbfbb" name="a09c45e945dadd8aa8e6ce1844d0dbfbb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a09c45e945dadd8aa8e6ce1844d0dbfbb">&#9670;&#160;</a></span>WireConfig() <span class="overload">[1/2]</span></h2>
@@ -165,16 +179,18 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00026">26</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>                 : <a class="code hl_variable" href="#ad83c4fd6a6273c3955ef011cf50c8f0b">wire</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="#ae8c09b0a6f07b97d6cff80566b135d89">sdaPin</a>(-1), <a class="code hl_variable" href="#a670deffc1ceefd6c7983a4d1e858e937">sclPin</a>(-1), </div>
-<div class="line"><span class="lineno">   27</span>                   <a class="code hl_variable" href="#aaa5ebf16a072e29c59fa257a2e5bf3c1">initialized</a>(<span class="keyword">false</span>), <a class="code hl_variable" href="#a78498d53005e410e857806e9435cd879">clockFrequency</a>(100000) {}</div>
-<div class="ttc" id="astruct_wire_config_html_a670deffc1ceefd6c7983a4d1e858e937"><div class="ttname"><a href="#a670deffc1ceefd6c7983a4d1e858e937">WireConfig::sclPin</a></div><div class="ttdeci">int sclPin</div><div class="ttdef"><b>Definition</b> <a href="_i2_c_manager_8h_source.html#l00022">I2CManager.h:22</a></div></div>
-<div class="ttc" id="astruct_wire_config_html_a78498d53005e410e857806e9435cd879"><div class="ttname"><a href="#a78498d53005e410e857806e9435cd879">WireConfig::clockFrequency</a></div><div class="ttdeci">uint32_t clockFrequency</div><div class="ttdef"><b>Definition</b> <a href="_i2_c_manager_8h_source.html#l00024">I2CManager.h:24</a></div></div>
-<div class="ttc" id="astruct_wire_config_html_aaa5ebf16a072e29c59fa257a2e5bf3c1"><div class="ttname"><a href="#aaa5ebf16a072e29c59fa257a2e5bf3c1">WireConfig::initialized</a></div><div class="ttdeci">bool initialized</div><div class="ttdef"><b>Definition</b> <a href="_i2_c_manager_8h_source.html#l00023">I2CManager.h:23</a></div></div>
-<div class="ttc" id="astruct_wire_config_html_ad83c4fd6a6273c3955ef011cf50c8f0b"><div class="ttname"><a href="#ad83c4fd6a6273c3955ef011cf50c8f0b">WireConfig::wire</a></div><div class="ttdeci">TwoWire * wire</div><div class="ttdef"><b>Definition</b> <a href="_i2_c_manager_8h_source.html#l00020">I2CManager.h:20</a></div></div>
-<div class="ttc" id="astruct_wire_config_html_ae8c09b0a6f07b97d6cff80566b135d89"><div class="ttname"><a href="#ae8c09b0a6f07b97d6cff80566b135d89">WireConfig::sdaPin</a></div><div class="ttdeci">int sdaPin</div><div class="ttdef"><b>Definition</b> <a href="_i2_c_manager_8h_source.html#l00021">I2CManager.h:21</a></div></div>
+<p>Default constructor with null initialization. </p>
+
+<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00048">48</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>                  : <a class="code hl_variable" href="#ad83c4fd6a6273c3955ef011cf50c8f0b">wire</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="#ae8c09b0a6f07b97d6cff80566b135d89">sdaPin</a>(-1), <a class="code hl_variable" href="#a670deffc1ceefd6c7983a4d1e858e937">sclPin</a>(-1), </div>
+<div class="line"><span class="lineno">   49</span>                    <a class="code hl_variable" href="#aaa5ebf16a072e29c59fa257a2e5bf3c1">initialized</a>(<span class="keyword">false</span>), <a class="code hl_variable" href="#a78498d53005e410e857806e9435cd879">clockFrequency</a>(100000) {}</div>
+<div class="ttc" id="astruct_wire_config_html_a670deffc1ceefd6c7983a4d1e858e937"><div class="ttname"><a href="#a670deffc1ceefd6c7983a4d1e858e937">WireConfig::sclPin</a></div><div class="ttdeci">int sclPin</div><div class="ttdoc">SCL pin number.</div><div class="ttdef"><b>Definition</b> <a href="_i2_c_manager_8h_source.html#l00041">I2CManager.h:41</a></div></div>
+<div class="ttc" id="astruct_wire_config_html_a78498d53005e410e857806e9435cd879"><div class="ttname"><a href="#a78498d53005e410e857806e9435cd879">WireConfig::clockFrequency</a></div><div class="ttdeci">uint32_t clockFrequency</div><div class="ttdoc">I2C clock frequency in Hz.</div><div class="ttdef"><b>Definition</b> <a href="_i2_c_manager_8h_source.html#l00043">I2CManager.h:43</a></div></div>
+<div class="ttc" id="astruct_wire_config_html_aaa5ebf16a072e29c59fa257a2e5bf3c1"><div class="ttname"><a href="#aaa5ebf16a072e29c59fa257a2e5bf3c1">WireConfig::initialized</a></div><div class="ttdeci">bool initialized</div><div class="ttdoc">Whether this bus has been initialized.</div><div class="ttdef"><b>Definition</b> <a href="_i2_c_manager_8h_source.html#l00042">I2CManager.h:42</a></div></div>
+<div class="ttc" id="astruct_wire_config_html_ad83c4fd6a6273c3955ef011cf50c8f0b"><div class="ttname"><a href="#ad83c4fd6a6273c3955ef011cf50c8f0b">WireConfig::wire</a></div><div class="ttdeci">TwoWire * wire</div><div class="ttdoc">Pointer to the TwoWire instance.</div><div class="ttdef"><b>Definition</b> <a href="_i2_c_manager_8h_source.html#l00039">I2CManager.h:39</a></div></div>
+<div class="ttc" id="astruct_wire_config_html_ae8c09b0a6f07b97d6cff80566b135d89"><div class="ttname"><a href="#ae8c09b0a6f07b97d6cff80566b135d89">WireConfig::sdaPin</a></div><div class="ttdeci">int sdaPin</div><div class="ttdoc">SDA pin number.</div><div class="ttdef"><b>Definition</b> <a href="_i2_c_manager_8h_source.html#l00040">I2CManager.h:40</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i2_c_manager_8h_source.html#l00024">clockFrequency</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00023">initialized</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00022">sclPin</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00021">sdaPin</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00020">wire</a>.</p>
+<p class="reference">References <a class="el" href="_i2_c_manager_8h_source.html#l00043">clockFrequency</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00042">initialized</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00041">sclPin</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00040">sdaPin</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00039">wire</a>.</p>
 
 </div>
 </div>
@@ -215,10 +231,21 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00029">29</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>        : <a class="code hl_variable" href="#ad83c4fd6a6273c3955ef011cf50c8f0b">wire</a>(w), <a class="code hl_variable" href="#ae8c09b0a6f07b97d6cff80566b135d89">sdaPin</a>(sda), <a class="code hl_variable" href="#a670deffc1ceefd6c7983a4d1e858e937">sclPin</a>(scl), <a class="code hl_variable" href="#aaa5ebf16a072e29c59fa257a2e5bf3c1">initialized</a>(<span class="keyword">false</span>), <a class="code hl_variable" href="#a78498d53005e410e857806e9435cd879">clockFrequency</a>(freq) {}</div>
+<p>Constructor with parameters. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">w</td><td>Pointer to TwoWire instance </td></tr>
+    <tr><td class="paramname">sda</td><td>SDA pin number </td></tr>
+    <tr><td class="paramname">scl</td><td>SCL pin number </td></tr>
+    <tr><td class="paramname">freq</td><td>I2C clock frequency in Hz (default: 100kHz) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00058">58</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>         : <a class="code hl_variable" href="#ad83c4fd6a6273c3955ef011cf50c8f0b">wire</a>(w), <a class="code hl_variable" href="#ae8c09b0a6f07b97d6cff80566b135d89">sdaPin</a>(sda), <a class="code hl_variable" href="#a670deffc1ceefd6c7983a4d1e858e937">sclPin</a>(scl), <a class="code hl_variable" href="#aaa5ebf16a072e29c59fa257a2e5bf3c1">initialized</a>(<span class="keyword">false</span>), <a class="code hl_variable" href="#a78498d53005e410e857806e9435cd879">clockFrequency</a>(freq) {}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i2_c_manager_8h_source.html#l00024">clockFrequency</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00023">initialized</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00022">sclPin</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00021">sdaPin</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00020">wire</a>.</p>
+<p class="reference">References <a class="el" href="_i2_c_manager_8h_source.html#l00043">clockFrequency</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00042">initialized</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00041">sclPin</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00040">sdaPin</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00039">wire</a>.</p>
 
 </div>
 </div>
@@ -235,9 +262,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00024">24</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+<p>I2C clock frequency in Hz. </p>
 
-<p class="reference">Referenced by <a class="el" href="_i2_c_manager_8cpp_source.html#l00041">I2CManager::beginPort()</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00026">WireConfig()</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00029">WireConfig()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00043">43</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_i2_c_manager_8cpp_source.html#l00041">I2CManager::beginPort()</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00048">WireConfig()</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00058">WireConfig()</a>.</p>
 
 </div>
 </div>
@@ -253,9 +282,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00023">23</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+<p>Whether this bus has been initialized. </p>
 
-<p class="reference">Referenced by <a class="el" href="_i2_c_manager_8cpp_source.html#l00041">I2CManager::beginPort()</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00026">WireConfig()</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00029">WireConfig()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00042">42</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_i2_c_manager_8cpp_source.html#l00041">I2CManager::beginPort()</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00048">WireConfig()</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00058">WireConfig()</a>.</p>
 
 </div>
 </div>
@@ -271,9 +302,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00022">22</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+<p>SCL pin number. </p>
 
-<p class="reference">Referenced by <a class="el" href="_i2_c_manager_8cpp_source.html#l00041">I2CManager::beginPort()</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00026">WireConfig()</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00029">WireConfig()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00041">41</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_i2_c_manager_8cpp_source.html#l00041">I2CManager::beginPort()</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00048">WireConfig()</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00058">WireConfig()</a>.</p>
 
 </div>
 </div>
@@ -289,9 +322,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00021">21</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+<p>SDA pin number. </p>
 
-<p class="reference">Referenced by <a class="el" href="_i2_c_manager_8cpp_source.html#l00041">I2CManager::beginPort()</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00026">WireConfig()</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00029">WireConfig()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00040">40</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_i2_c_manager_8cpp_source.html#l00041">I2CManager::beginPort()</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00048">WireConfig()</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00058">WireConfig()</a>.</p>
 
 </div>
 </div>
@@ -307,9 +342,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00020">20</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+<p>Pointer to the TwoWire instance. </p>
 
-<p class="reference">Referenced by <a class="el" href="_i2_c_manager_8cpp_source.html#l00041">I2CManager::beginPort()</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00026">WireConfig()</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00029">WireConfig()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_manager_8h_source.html#l00039">39</a> of file <a class="el" href="_i2_c_manager_8h_source.html">I2CManager.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_i2_c_manager_8cpp_source.html#l00041">I2CManager::beginPort()</a>, <a class="el" href="_i2_c_manager_8h_source.html#l00048">WireConfig()</a>, and <a class="el" href="_i2_c_manager_8h_source.html#l00058">WireConfig()</a>.</p>
 
 </div>
 </div>

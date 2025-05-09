@@ -1,0 +1,7 @@
+<map id="I2CManager::begin" name="I2CManager::begin">
+<area shape="rect" id="Node000001" title="Initialize default I2C buses Initializes all registered I2C buses with their configured pin assignmen..." alt="" coords="5,5,137,32"/>
+<area shape="rect" id="Node000002" href="$class_i2_c_manager.html#ae731726cefd93f8265fca5b521b45cc7" title="Initialize a specific I2C bus Initializes only the specified I2C bus with its configured settings." alt="" coords="185,5,340,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,16,169,16,169,21,137,21"/>
+<area shape="rect" id="Node000003" href="$class_i2_c_manager.html#ad9ebf3c8541e2fa0fd1131f3d68391de" title="Convert I2CPort enum to string." alt="" coords="388,5,558,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="341,16,372,16,372,21,341,21"/>
+</map>

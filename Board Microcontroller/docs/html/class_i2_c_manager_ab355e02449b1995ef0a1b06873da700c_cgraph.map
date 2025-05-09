@@ -1,0 +1,5 @@
+<map id="I2CManager::getWire" name="I2CManager::getWire">
+<area shape="rect" id="Node000001" title="Get the TwoWire object for a specific I2C port." alt="" coords="5,5,151,32"/>
+<area shape="rect" id="Node000002" href="$class_i2_c_manager.html#ad9ebf3c8541e2fa0fd1131f3d68391de" title="Convert I2CPort enum to string." alt="" coords="199,5,369,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,16,183,16,183,21,151,21"/>
+</map>

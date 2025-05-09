@@ -1,0 +1,9 @@
+<map id="SHT41Sensor::updateReadings" name="SHT41Sensor::updateReadings">
+<area shape="rect" id="Node000001" title="Update both temperature and humidity readings from the sensor." alt="" coords="262,56,467,83"/>
+<area shape="rect" id="Node000002" href="$class_s_h_t41_sensor.html#aaafd05897a6ffe0dcb1702801de086a9" title="Initialize the sensor hardware." alt="" coords="30,5,189,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="278,55,180,35,181,30,279,50"/>
+<area shape="rect" id="Node000003" href="$class_s_h_t41_sensor.html#a5af7f618ddaad1b4279ec9854143b4d5" title="Read the current humidity value from the sensor." alt="" coords="15,56,204,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="246,72,204,72,204,67,246,67"/>
+<area shape="rect" id="Node000004" href="$class_s_h_t41_sensor.html#ad6fae69966406732d5ebfb255a45c762" title="Read the current temperature value from the sensor." alt="" coords="5,107,214,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="279,89,181,109,180,103,278,84"/>
+</map>

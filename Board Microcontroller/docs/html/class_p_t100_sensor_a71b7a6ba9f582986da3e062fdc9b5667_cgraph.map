@@ -1,0 +1,7 @@
+<map id="PT100Sensor::readTemperature" name="PT100Sensor::readTemperature">
+<area shape="rect" id="Node000001" title="Read the current temperature value from the sensor." alt="" coords="5,5,211,32"/>
+<area shape="rect" id="Node000002" href="$class_p_t100_sensor.html#a7cc1b9afa165ab3abda6b8d4717b76de" title="Update temperature reading from the sensor." alt="" coords="259,5,454,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,16,243,16,243,21,211,21"/>
+<area shape="rect" id="Node000003" href="$class_p_t100_sensor.html#ae9aa8647e52efca9450704c81993b6eb" title="Get the MAX31865 fault status and description." alt="" coords="502,5,695,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="454,16,486,16,486,21,454,21"/>
+</map>

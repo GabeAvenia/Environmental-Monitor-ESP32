@@ -1,0 +1,7 @@
+<map id="CommunicationManager::processCommand" name="CommunicationManager::processCommand">
+<area shape="rect" id="Node000001" title="Process a command using the registered handler." alt="" coords="216,39,378,81"/>
+<area shape="rect" id="Node000002" href="$class_communication_manager.html#a2193e7cb3570ce7d250d2153c62f0d43" title="Process a single incoming command line." alt="" coords="5,5,168,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,47,168,42,169,37,201,42"/>
+<area shape="rect" id="Node000003" href="$class_communication_manager.html#a8d8cb55f294ee1375384a0abab47ec05" title="Process incoming serial data and handle complete commands." alt="" coords="5,72,168,115"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,78,169,83,168,78,200,73"/>
+</map>

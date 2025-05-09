@@ -1,0 +1,53 @@
+<map id="CommunicationManager::setupCommands" name="CommunicationManager::setupCommands">
+<area shape="rect" id="Node000001" title="Register all SCPI commands with the parser." alt="" coords="5,572,168,615"/>
+<area shape="rect" id="Node000002" href="$class_communication_manager.html#a8fb1f9767a9c2a586a3eb921ec74f890" title="Handle echo command (ECHO)" alt="" coords="237,5,399,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,571,101,464,127,311,145,232,165,159,188,99,214,58,222,50,226,54,218,62,193,102,170,161,150,233,133,312,107,465,93,572"/>
+<area shape="rect" id="Node000003" href="$class_communication_manager.html#a9e466f6aae9c40128ceaf16e04ca3760" title="Handle configuration query command (SYST:CONF?)" alt="" coords="237,72,399,115"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="84,571,86,489,92,433,102,370,117,305,140,240,172,179,214,125,222,118,225,122,218,128,177,182,145,242,123,306,107,371,97,433,92,489,90,571"/>
+<area shape="rect" id="Node000004" href="$class_communication_manager.html#ab28d570529a2303b1081e6016034c008" title="Handle device identification command (*IDN?)" alt="" coords="237,139,399,181"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="86,571,91,500,109,398,126,343,148,288,177,237,214,191,222,185,225,189,218,195,181,240,153,291,131,345,115,399,97,500,91,572"/>
+<area shape="rect" id="Node000005" href="$class_communication_manager.html#a9a16aa4fb18dfea11b2b3363b442f455" title="Handle LED identification command (SYST:LED:IDENT)" alt="" coords="237,205,399,248"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="87,571,97,510,118,426,134,381,155,337,182,295,214,258,222,251,225,256,218,262,186,298,160,339,139,383,123,428,102,511,92,572"/>
+<area shape="rect" id="Node000006" href="$class_communication_manager.html#a1f7efa0a376d4f54d0ad503f4154216c" title="Handle sensor listing command (SYST:SENS:LIST?)" alt="" coords="237,272,399,315"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="90,571,103,521,127,455,163,385,186,353,214,325,222,318,225,323,217,329,191,356,167,388,131,457,108,522,95,572"/>
+<area shape="rect" id="Node000007" href="$class_communication_manager.html#a10b20a1f75bc05bd5f73fef2e230e906" title="Handle log routing command (SYST:LOG)" alt="" coords="237,339,399,381"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="93,571,110,532,136,484,171,434,214,391,221,386,225,390,217,395,175,438,141,487,115,535,98,573"/>
+<area shape="rect" id="Node000010" href="$class_communication_manager.html#aa623a44630d5beecf132c1bbcf42c9a0" title="Handle log status query command (SYST:LOG?)" alt="" coords="237,405,399,448"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="101,570,148,514,179,484,214,458,223,453,225,457,217,462,183,488,152,518,105,573"/>
+<area shape="rect" id="Node000011" href="$class_communication_manager.html#ab395f48ff53e0ebe90d460b5db023a31" title="Handle measurement query command (MEAS?)" alt="" coords="237,923,399,965"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="93,614,103,673,125,752,141,794,162,836,187,875,218,909,225,915,222,919,214,913,183,878,157,838,136,796,120,753,98,674,88,615"/>
+<area shape="rect" id="Node000015" href="$class_communication_manager.html#acc48d8601ba151bde49491bc78b4c22b" title="Handle board ID setting command (SYST:CONF:BOARD:ID)" alt="" coords="237,539,399,581"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="167,579,221,571,222,577,168,584"/>
+<area shape="rect" id="Node000016" href="$class_communication_manager.html#af94e9702ed5b64fdb29b1b26dd37634a" title="Handle test error level commands." alt="" coords="485,605,647,648"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="121,613,165,638,216,657,282,667,349,667,414,660,472,649,473,655,415,665,350,672,282,672,215,663,162,643,118,618"/>
+<area shape="rect" id="Node000017" href="$class_communication_manager.html#a1d29336b745b0540c5f7b557301108a1" title="Handle test fatal level command (TEST:FATAL)" alt="" coords="237,789,399,832"/>
+<area shape="poly" id="edge17_Node000001_Node000017" title=" " alt="" coords="100,614,117,649,143,692,177,737,217,775,225,780,222,785,214,779,173,740,139,695,112,651,95,616"/>
+<area shape="rect" id="Node000018" href="$class_communication_manager.html#a2c99f4b4153b21958293f7712deaaf8c" title="Handle filesystem test command (TEST:FS)" alt="" coords="237,723,399,765"/>
+<area shape="poly" id="edge19_Node000001_Node000018" title=" " alt="" coords="110,613,157,657,217,702,239,714,237,718,214,706,153,661,106,617"/>
+<area shape="rect" id="Node000019" href="$class_communication_manager.html#ad4ff77464bcadd5a23b8c0a48302df64" title="Handle test info level command (TEST:INFO)" alt="" coords="237,472,399,515"/>
+<area shape="poly" id="edge20_Node000001_Node000019" title=" " alt="" coords="124,569,215,524,230,518,232,523,217,529,127,574"/>
+<area shape="rect" id="Node000020" href="$class_communication_manager.html#a205f94dd9f32637e2edd6cf97f1fb6f4" title="Handle configuration update test command (TEST:UPDATE)" alt="" coords="232,856,404,899"/>
+<area shape="poly" id="edge22_Node000001_Node000020" title=" " alt="" coords="96,615,109,662,134,723,169,787,192,816,217,842,221,845,218,849,214,846,188,820,165,790,129,725,104,663,90,616"/>
+<area shape="rect" id="Node000021" href="$class_communication_manager.html#a8fc41f7f8332a1b4ce19273026b082e6" title="Handle test warning level command (TEST:WARNING)" alt="" coords="233,605,403,648"/>
+<area shape="poly" id="edge23_Node000001_Node000021" title=" " alt="" coords="168,602,218,610,217,615,167,608"/>
+<area shape="rect" id="Node000022" href="$class_communication_manager.html#a8f5eb6ecdb139de607e4e31a2002436b" title="Handle additional configuration update command (SYST:CONF:ADD:UPDATE)" alt="" coords="216,989,420,1032"/>
+<area shape="poly" id="edge25_Node000001_Node000022" title=" " alt="" coords="91,615,98,684,117,780,133,833,154,884,182,933,218,976,220,978,217,982,214,979,178,936,150,887,128,835,111,782,92,685,86,615"/>
+<area shape="rect" id="Node000023" href="$class_communication_manager.html#afe24efdbc43954bdf7905f5af35984de" title="Handle configuration update command (SYST:CONF:UPDATE)" alt="" coords="237,1056,399,1099"/>
+<area shape="poly" id="edge26_Node000001_Node000023" title=" " alt="" coords="90,615,93,694,99,749,109,809,124,871,147,933,178,991,218,1042,225,1049,222,1053,214,1046,173,994,142,935,119,873,103,810,93,749,88,695,85,615"/>
+<area shape="rect" id="Node000024" href="$class_communication_manager.html#a33df2902a6f2aad452fcf5774101ac30" title="Handle sensor configuration update command (SYST:CONF:SENS:UPDATE)" alt="" coords="224,1123,412,1165"/>
+<area shape="poly" id="edge27_Node000001_Node000024" title=" " alt="" coords="93,615,107,719,134,867,151,943,171,1013,193,1070,218,1109,220,1111,216,1115,214,1112,188,1073,166,1015,146,945,128,868,102,719,88,615"/>
+<area shape="rect" id="Node000008" href="$class_error_handler.html#a28e4c666c764f31533832edde5d8e014" title="Convert severity level to string." alt="" coords="719,472,881,515"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="400,350,459,349,527,352,597,363,665,383,696,398,725,417,771,459,767,463,721,422,693,403,663,388,596,368,526,358,459,354,400,355"/>
+<area shape="rect" id="Node000009" href="$class_error_handler.html#a6c957506a74daf83fad82b459adfbd8f" title="Convert string to severity level." alt="" coords="468,397,664,424"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="400,374,483,391,482,396,399,379"/>
+<area shape="rect" id="Node000012" href="$class_communication_manager.html#a14eb31396c8a6ecd19c802120dd6655b" title="Collect readings from a sensor into a values vector." alt="" coords="484,923,648,965"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="400,941,469,941,469,947,400,947"/>
+<area shape="rect" id="Node000013" href="$class_i_sensor.html#ac7678115a091121756493cd2da886a5c" title="Check if sensor is connected and working." alt="" coords="726,956,874,983"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="649,950,712,957,711,962,648,956"/>
+<area shape="rect" id="Node000014" href="$class_i_sensor.html#a0aa4dae9e1a5405d10ab3d5354b816af" title="Check if sensor supports a specific interface." alt="" coords="712,905,888,932"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="648,932,697,927,697,932,649,938"/>
+<area shape="poly" id="edge16_Node000016_Node000008" title=" " alt="" coords="604,603,747,520,749,525,606,607"/>
+<area shape="poly" id="edge18_Node000017_Node000016" title=" " alt="" coords="397,786,419,775,454,749,487,718,538,659,542,662,491,722,458,753,421,780,399,791"/>
+<area shape="poly" id="edge21_Node000019_Node000016" title=" " alt="" coords="394,513,421,524,479,558,528,593,525,598,476,562,419,529,392,518"/>
+<area shape="poly" id="edge24_Node000021_Node000016" title=" " alt="" coords="403,624,470,624,470,629,403,629"/>
+</map>

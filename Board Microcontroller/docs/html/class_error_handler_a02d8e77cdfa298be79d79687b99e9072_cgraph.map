@@ -1,0 +1,5 @@
+<map id="ErrorHandler::logError" name="ErrorHandler::logError">
+<area shape="rect" id="Node000001" title="Log a message with specified severity Logs a message to the appropriate output streams based on sever..." alt="" coords="5,13,153,40"/>
+<area shape="rect" id="Node000002" href="$class_error_handler.html#a28e4c666c764f31533832edde5d8e014" title="Convert severity level to string." alt="" coords="201,5,363,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,24,185,24,185,29,153,29"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="IHumiditySensor" name="IHumiditySensor">
+<area shape="rect" id="Node000001" title="Interface for sensors that can measure humidity Defines the methods that must be implemented by any s..." alt="" coords="121,5,288,117"/>
+<area shape="rect" id="Node000002" href="$class_s_h_t41_sensor.html" title="Implementation of the SHT41 temperature and humidity sensor." alt="" coords="5,176,192,651"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,132,172,177,167,175,181,131"/>
+<area shape="rect" id="Node000003" href="$class_si7021_sensor.html" title="Implementation of the Si7021 temperature and humidity sensor." alt="" coords="216,165,403,661"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,131,238,165,233,166,222,132"/>
+</map>

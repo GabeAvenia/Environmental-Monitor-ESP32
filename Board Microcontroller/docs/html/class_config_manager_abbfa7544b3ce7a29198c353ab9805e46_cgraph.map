@@ -1,0 +1,16 @@
+<map id="ConfigManager::updateConfigFromJson" name="ConfigManager::updateConfigFromJson">
+<area shape="rect" id="Node000001" title="Update configuration from JSON." alt="" coords="5,89,200,132"/>
+<area shape="rect" id="Node000002" href="$class_config_manager.html#aa17b1b927dfc27e30e76ef2a4421351c" title="Complete configuration methods." alt="" coords="248,5,449,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,86,193,63,247,41,269,34,271,39,249,47,195,68,147,91"/>
+<area shape="rect" id="Node000003" href="$class_config_manager.html#a933da325afee9d238cb31529727490b9" title="Load configuration from file." alt="" coords="259,56,438,99"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="200,95,243,89,243,94,201,100"/>
+<area shape="rect" id="Node000006" href="$class_config_manager.html#a0fdb87c9c3a3f96415d092396a49abfa" title="Notify all registered callbacks about configuration changes." alt="" coords="255,123,442,165"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="201,121,240,127,239,132,200,127"/>
+<area shape="rect" id="Node000007" href="$class_config_manager.html#a9701bc74bdadf276a528780a07ed931d" title="Helper methods for file operations." alt="" coords="257,189,440,232"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="148,130,249,175,265,181,263,186,247,180,146,135"/>
+<area shape="rect" id="Node000004" href="$class_config_manager.html#ad64b8ab76c62c5acb0b4a35d7ac754a7" title="Create default configuration." alt="" coords="497,56,692,99"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="438,83,482,84,482,89,438,89"/>
+<area shape="rect" id="Node000005" href="$class_i2_c_manager.html#a25ce4fa452bb9441a46e8fc956e9c3a2" title="Convert a string port name to I2CPort enum." alt="" coords="510,123,680,149"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="439,96,521,116,520,121,438,101"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="497,71,454,71,454,66,497,66"/>
+</map>

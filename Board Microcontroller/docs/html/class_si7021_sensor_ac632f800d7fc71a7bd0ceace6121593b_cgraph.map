@@ -1,0 +1,9 @@
+<map id="Si7021Sensor::performSelfTest" name="Si7021Sensor::performSelfTest">
+<area shape="rect" id="Node000001" title="Perform a self&#45;test to verify the sensor is functioning properly." alt="" coords="5,5,208,32"/>
+<area shape="rect" id="Node000002" href="$class_si7021_sensor.html#a985075d6db09c0b59dfbd5f3d8b2a0dd" title="Update both temperature and humidity readings from the sensor." alt="" coords="256,5,460,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,16,240,16,240,21,208,21"/>
+<area shape="rect" id="Node000003" href="$class_si7021_sensor.html#a20915f718bd13f65ea4b5bdfc53f6963" title="Constructor for Si7021Sensor." alt="" coords="508,5,699,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="461,16,492,16,492,21,461,21"/>
+<area shape="rect" id="Node000004" href="$class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="747,5,919,32"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="700,16,732,16,732,21,700,21"/>
+</map>

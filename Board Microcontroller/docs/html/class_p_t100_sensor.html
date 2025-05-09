@@ -120,11 +120,39 @@ $(function(){initNavTree('class_p_t100_sensor.html',''); initResizable(true); })
 Inheritance diagram for PT100Sensor:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_p_t100_sensor__inherit__graph.png" border="0" usemap="#a_p_t100_sensor_inherit__map" alt="Inheritance graph"/></div>
+<map name="a_p_t100_sensor_inherit__map" id="a_p_t100_sensor_inherit__map">
+<area shape="rect" title="Implementation of the PT100 RTD temperature sensor with MAX31865 ADC." alt="" coords="70,624,257,1035"/>
+<area shape="rect" href="class_base_sensor.html" title="Base class for all sensor implementations This abstract class implements common functionality for all..." alt="" coords="5,293,138,576"/>
+<area shape="poly" title=" " alt="" coords="111,590,119,624,113,625,106,591"/>
+<area shape="rect" href="class_i_sensor.html" title="Base interface for all sensors Defines core functionality that all sensors must implement,..." alt="" coords="5,5,138,245"/>
+<area shape="poly" title=" " alt="" coords="74,260,74,294,69,294,69,260"/>
+<area shape="rect" href="class_i_temperature_sensor.html" title="Interface for sensors that can measure temperature Defines the methods that must be implemented by an..." alt="" coords="162,379,349,491"/>
+<area shape="poly" title=" " alt="" coords="242,506,214,625,209,624,237,505"/>
+</map>
 </div>
 <div class="dynheader">
 Collaboration diagram for PT100Sensor:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_p_t100_sensor__coll__graph.png" border="0" usemap="#a_p_t100_sensor_coll__map" alt="Collaboration graph"/></div>
+<map name="a_p_t100_sensor_coll__map" id="a_p_t100_sensor_coll__map">
+<area shape="rect" title="Implementation of the PT100 RTD temperature sensor with MAX31865 ADC." alt="" coords="405,1957,592,2347"/>
+<area shape="rect" href="class_base_sensor.html" title="Base class for all sensor implementations This abstract class implements common functionality for all..." alt="" coords="5,1120,138,1381"/>
+<area shape="poly" title=" " alt="" coords="61,1396,60,1510,71,1639,83,1705,100,1770,123,1833,153,1892,177,1928,205,1962,271,2021,341,2069,407,2106,404,2111,338,2074,268,2025,202,1965,173,1931,148,1895,118,1835,95,1771,78,1706,66,1639,55,1511,56,1396"/>
+<area shape="rect" href="class_i_sensor.html" title="Base interface for all sensors Defines core functionality that all sensors must implement,..." alt="" coords="5,240,138,480"/>
+<area shape="poly" title=" " alt="" coords="74,495,74,1120,69,1120,69,495"/>
+<area shape="rect" href="class_error_handler.html" title="Handles error logging and reporting with configurable output streams This class manages error reporti..." alt="" coords="210,176,371,544"/>
+<area shape="poly" title=" " alt="" coords="212,497,172,569,142,634,118,703,100,774,86,845,71,982,68,1103,62,1103,66,982,81,844,95,772,113,701,137,632,167,567,208,494"/>
+<area shape="rect" href="class_led_manager.html" title="Manager for controlling the onboard NeoPixel LED This class provides a unified interface for controll..." alt="" coords="162,608,384,1893"/>
+<area shape="poly" title=" " alt="" coords="262,544,259,568,258,591,252,591,254,568,256,543"/>
+<area shape="rect" href="class_s_p_i_manager.html" title="Class for managing SPI communications with sensors This class provides a centralized management syste..." alt="" coords="408,981,589,1520"/>
+<area shape="poly" title=" " alt="" coords="373,467,401,516,424,567,453,665,474,766,488,867,497,964,492,965,483,868,469,767,447,666,419,569,396,518,368,469"/>
+<area shape="rect" href="struct_output_config.html" title="Structure to hold output configuration Configures an output stream with the minimum severity level to..." alt="" coords="244,5,337,96"/>
+<area shape="poly" title=" " alt="" coords="293,96,293,159,288,159,288,96"/>
+<area shape="poly" title=" " alt="" coords="343,609,339,568,338,561,343,560,344,568,348,608"/>
+<area shape="rect" href="class_i_temperature_sensor.html" title="Interface for sensors that can measure temperature Defines the methods that must be implemented by an..." alt="" coords="613,1195,800,1307"/>
+<area shape="poly" title=" " alt="" coords="703,1322,690,1433,670,1576,641,1735,604,1894,583,1958,578,1957,599,1893,636,1734,665,1575,685,1432,697,1321"/>
+<area shape="poly" title=" " alt="" coords="501,1520,501,1940,496,1940,496,1520"/>
+</map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -150,18 +178,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5a58ad4bdf8fb0a3388959f3f827ec5c" id="r_a5a58ad4bdf8fb0a3388959f3f827ec5c"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a58ad4bdf8fb0a3388959f3f827ec5c">getSensorInfo</a> () const override</td></tr>
 <tr class="memdesc:a5a58ad4bdf8fb0a3388959f3f827ec5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get detailed information about the sensor.  <br /></td></tr>
 <tr class="separator:a5a58ad4bdf8fb0a3388959f3f827ec5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9faa1344aa0baa7f7055343d94d798d" id="r_ab9faa1344aa0baa7f7055343d94d798d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9faa1344aa0baa7f7055343d94d798d">supportsInterface</a> (<a class="el" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a> <a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) const override</td></tr>
+<tr class="memitem:ab9faa1344aa0baa7f7055343d94d798d" id="r_ab9faa1344aa0baa7f7055343d94d798d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9faa1344aa0baa7f7055343d94d798d">supportsInterface</a> (<a class="el" href="group__sensor__interfaces.html#gaf1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a> <a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) const override</td></tr>
 <tr class="memdesc:ab9faa1344aa0baa7f7055343d94d798d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this sensor supports a specific interface.  <br /></td></tr>
 <tr class="separator:ab9faa1344aa0baa7f7055343d94d798d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada2d52f706261965d93482afd75695df" id="r_ada2d52f706261965d93482afd75695df"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada2d52f706261965d93482afd75695df">getInterface</a> (<a class="el" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a> <a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) const override</td></tr>
+<tr class="memitem:ada2d52f706261965d93482afd75695df" id="r_ada2d52f706261965d93482afd75695df"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada2d52f706261965d93482afd75695df">getInterface</a> (<a class="el" href="group__sensor__interfaces.html#gaf1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a> <a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) const override</td></tr>
 <tr class="memdesc:ada2d52f706261965d93482afd75695df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the interface implementation for a specific type.  <br /></td></tr>
 <tr class="separator:ada2d52f706261965d93482afd75695df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9aa8647e52efca9450704c81993b6eb" id="r_ae9aa8647e52efca9450704c81993b6eb"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9aa8647e52efca9450704c81993b6eb">getFaultStatus</a> () const</td></tr>
 <tr class="memdesc:ae9aa8647e52efca9450704c81993b6eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the MAX31865 fault status and description.  <br /></td></tr>
 <tr class="separator:ae9aa8647e52efca9450704c81993b6eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_base_sensor"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_base_sensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_base_sensor.html">BaseSensor</a></td></tr>
-<tr class="memitem:a583f6418d773b6a5256c65c81b676494 inherit pub_methods_class_base_sensor" id="r_a583f6418d773b6a5256c65c81b676494"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor</a> (const String &amp;sensorName, <a class="el" href="_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435">SensorType</a> sensorType, <a class="el" href="class_error_handler.html">ErrorHandler</a> *err)</td></tr>
-<tr class="memdesc:a583f6418d773b6a5256c65c81b676494 inherit pub_methods_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="class_base_sensor.html" title="Base class for all sensor implementations.">BaseSensor</a>.  <br /></td></tr>
+<tr class="memitem:a583f6418d773b6a5256c65c81b676494 inherit pub_methods_class_base_sensor" id="r_a583f6418d773b6a5256c65c81b676494"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor</a> (const String &amp;sensorName, <a class="el" href="group__sensor__types.html#ga213c434cb928c4ca22513e2302632435">SensorType</a> sensorType, <a class="el" href="class_error_handler.html">ErrorHandler</a> *err)</td></tr>
+<tr class="memdesc:a583f6418d773b6a5256c65c81b676494 inherit pub_methods_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="class_base_sensor.html" title="Base class for all sensor implementations This abstract class implements common functionality for all...">BaseSensor</a>.  <br /></td></tr>
 <tr class="separator:a583f6418d773b6a5256c65c81b676494 inherit pub_methods_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf438c921c43a1b8641add2fa9dad2ad inherit pub_methods_class_base_sensor" id="r_abf438c921c43a1b8641add2fa9dad2ad"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#abf438c921c43a1b8641add2fa9dad2ad">~BaseSensor</a> ()</td></tr>
 <tr class="memdesc:abf438c921c43a1b8641add2fa9dad2ad inherit pub_methods_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
@@ -172,7 +200,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af1fac0159f2b7c747bcb57de84323ccb inherit pub_methods_class_base_sensor" id="r_af1fac0159f2b7c747bcb57de84323ccb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#af1fac0159f2b7c747bcb57de84323ccb">isConnected</a> () const override</td></tr>
 <tr class="memdesc:af1fac0159f2b7c747bcb57de84323ccb inherit pub_methods_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the sensor is currently connected and operational.  <br /></td></tr>
 <tr class="separator:af1fac0159f2b7c747bcb57de84323ccb inherit pub_methods_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c7cc45247b3cde1cfe9656ba53c7144 inherit pub_methods_class_base_sensor" id="r_a6c7cc45247b3cde1cfe9656ba53c7144"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435">SensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a6c7cc45247b3cde1cfe9656ba53c7144">getType</a> () const</td></tr>
+<tr class="memitem:a6c7cc45247b3cde1cfe9656ba53c7144 inherit pub_methods_class_base_sensor" id="r_a6c7cc45247b3cde1cfe9656ba53c7144"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__sensor__types.html#ga213c434cb928c4ca22513e2302632435">SensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a6c7cc45247b3cde1cfe9656ba53c7144">getType</a> () const</td></tr>
 <tr class="memdesc:a6c7cc45247b3cde1cfe9656ba53c7144 inherit pub_methods_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the type of this sensor as an enum value.  <br /></td></tr>
 <tr class="separator:a6c7cc45247b3cde1cfe9656ba53c7144 inherit pub_methods_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1260fb7f82499f81b2efd908d67ab807 inherit pub_methods_class_base_sensor" id="r_a1260fb7f82499f81b2efd908d67ab807"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a1260fb7f82499f81b2efd908d67ab807">getTypeString</a> () const override</td></tr>
@@ -180,9 +208,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1260fb7f82499f81b2efd908d67ab807 inherit pub_methods_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_i_sensor"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_i_sensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_i_sensor.html">ISensor</a></td></tr>
 <tr class="memitem:adbd5b40ebbf9a78b9845d22dddfac351 inherit pub_methods_class_i_sensor" id="r_adbd5b40ebbf9a78b9845d22dddfac351"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_sensor.html#adbd5b40ebbf9a78b9845d22dddfac351">~ISensor</a> ()=default</td></tr>
+<tr class="memdesc:adbd5b40ebbf9a78b9845d22dddfac351 inherit pub_methods_class_i_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
 <tr class="separator:adbd5b40ebbf9a78b9845d22dddfac351 inherit pub_methods_class_i_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_i_temperature_sensor"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_i_temperature_sensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_i_temperature_sensor.html">ITemperatureSensor</a></td></tr>
 <tr class="memitem:aa8d577a906fed137000386fa74934516 inherit pub_methods_class_i_temperature_sensor" id="r_aa8d577a906fed137000386fa74934516"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_temperature_sensor.html#aa8d577a906fed137000386fa74934516">~ITemperatureSensor</a> ()=default</td></tr>
+<tr class="memdesc:aa8d577a906fed137000386fa74934516 inherit pub_methods_class_i_temperature_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
 <tr class="separator:aa8d577a906fed137000386fa74934516 inherit pub_methods_class_i_temperature_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
@@ -221,7 +251,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a258921596b9aef501817f8d2136671b0 inherit pro_attribs_class_base_sensor" id="r_a258921596b9aef501817f8d2136671b0"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a></td></tr>
 <tr class="memdesc:a258921596b9aef501817f8d2136671b0 inherit pro_attribs_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique identifier for this sensor.  <br /></td></tr>
 <tr class="separator:a258921596b9aef501817f8d2136671b0 inherit pro_attribs_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b4542f8f8209605fde691f30bc4aa5e inherit pro_attribs_class_base_sensor" id="r_a3b4542f8f8209605fde691f30bc4aa5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435">SensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a></td></tr>
+<tr class="memitem:a3b4542f8f8209605fde691f30bc4aa5e inherit pro_attribs_class_base_sensor" id="r_a3b4542f8f8209605fde691f30bc4aa5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__sensor__types.html#ga213c434cb928c4ca22513e2302632435">SensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a></td></tr>
 <tr class="memdesc:a3b4542f8f8209605fde691f30bc4aa5e inherit pro_attribs_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of sensor.  <br /></td></tr>
 <tr class="separator:a3b4542f8f8209605fde691f30bc4aa5e inherit pro_attribs_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab7ae500e598ce4ed84ff8ab570d9913 inherit pro_attribs_class_base_sensor" id="r_aab7ae500e598ce4ed84ff8ab570d9913"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a></td></tr>
@@ -235,7 +265,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Implementation of the PT100 RTD temperature sensor with MAX31865 ADC. </p>
 <p>This class provides access to the PT100 RTD temperature sensor, using the MAX31865 ADC to convert resistance to temperature. </p>
 
-<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00019">19</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00018">18</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af7d48b04f2c31649bfc98383c4ae7a2e" name="af7d48b04f2c31649bfc98383c4ae7a2e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af7d48b04f2c31649bfc98383c4ae7a2e">&#9670;&#160;</a></span>PT100Sensor()</h2>
@@ -290,7 +320,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8cpp_source.html#l00003">3</a> of file <a class="el" href="_p_t100_sensor_8cpp_source.html">PT100Sensor.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    5</span>    : <a class="code hl_function" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor</a>(sensorName, <a class="code hl_enumvalue" href="_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435af66b0c45568772329e32df10776fba72">SensorType::PT100_RTD</a>, err),</div>
+<div class="fragment"><div class="line"><span class="lineno">    5</span>    : <a class="code hl_function" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor</a>(sensorName, <a class="code hl_enumvalue" href="group__sensor__types.html#gga213c434cb928c4ca22513e2302632435af66b0c45568772329e32df10776fba72">SensorType::PT100_RTD</a>, err),</div>
 <div class="line"><span class="lineno">    6</span>    <a class="code hl_variable" href="#ae94049a78855ebdab4e0c8ce2996efe7">max31865</a>(spiMgr-&gt;<a class="code hl_function" href="class_s_p_i_manager.html#a9e07cab432e9a41da8f86fcf9109e311">mapLogicalToPhysicalPin</a>(ssPinNum)), <span class="comment">// Use the mapping function</span></div>
 <div class="line"><span class="lineno">    7</span>    <a class="code hl_variable" href="#a5f9c5e76c075f17eb64decf698a97230">spiManager</a>(spiMgr),</div>
 <div class="line"><span class="lineno">    8</span>    <a class="code hl_variable" href="#a5e62a0d3cabefc04b1ab859030907d57">ssPin</a>(ssPinNum),    <span class="comment">// Store the logical pin</span></div>
@@ -301,27 +331,34 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   13</span> </div>
 <div class="line"><span class="lineno">   14</span>    <span class="comment">// Log the physical pin being used</span></div>
 <div class="line"><span class="lineno">   15</span>    <span class="keywordtype">int</span> physicalPin = spiMgr-&gt;<a class="code hl_function" href="class_s_p_i_manager.html#a9e07cab432e9a41da8f86fcf9109e311">mapLogicalToPhysicalPin</a>(ssPinNum);</div>
-<div class="line"><span class="lineno">   16</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;PT100 sensor using physical SS pin: &quot;</span> + String(physicalPin) + </div>
+<div class="line"><span class="lineno">   16</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;PT100 sensor using physical SS pin: &quot;</span> + String(physicalPin) + </div>
 <div class="line"><span class="lineno">   17</span>        <span class="stringliteral">&quot; (logical pin: &quot;</span> + String(ssPinNum) + <span class="stringliteral">&quot;)&quot;</span>);</div>
 <div class="line"><span class="lineno">   18</span>    }</div>
-<div class="ttc" id="a_error_handler_8h_html_af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806"><div class="ttname"><a href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a></div><div class="ttdeci">@ INFO</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00011">ErrorHandler.h:11</a></div></div>
-<div class="ttc" id="a_sensor_types_8h_html_a213c434cb928c4ca22513e2302632435af66b0c45568772329e32df10776fba72"><div class="ttname"><a href="_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435af66b0c45568772329e32df10776fba72">SensorType::PT100_RTD</a></div><div class="ttdeci">@ PT100_RTD</div><div class="ttdef"><b>Definition</b> <a href="_sensor_types_8h_source.html#l00013">SensorTypes.h:13</a></div></div>
-<div class="ttc" id="aclass_base_sensor_html_a583f6418d773b6a5256c65c81b676494"><div class="ttname"><a href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor::BaseSensor</a></div><div class="ttdeci">BaseSensor(const String &amp;sensorName, SensorType sensorType, ErrorHandler *err)</div><div class="ttdoc">Constructor for BaseSensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00030">BaseSensor.h:30</a></div></div>
-<div class="ttc" id="aclass_base_sensor_html_ac57236a191fb2f8509a5e1e3d292b593"><div class="ttname"><a href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">BaseSensor::errorHandler</a></div><div class="ttdeci">ErrorHandler * errorHandler</div><div class="ttdoc">Error reporting mechanism.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00020">BaseSensor.h:20</a></div></div>
-<div class="ttc" id="aclass_p_t100_sensor_html_a0ed374c3b7ee03be82ac831bac8b4792"><div class="ttname"><a href="#a0ed374c3b7ee03be82ac831bac8b4792">PT100Sensor::lastTemperature</a></div><div class="ttdeci">float lastTemperature</div><div class="ttdoc">Last temperature reading.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00027">PT100Sensor.h:27</a></div></div>
-<div class="ttc" id="aclass_p_t100_sensor_html_a1c2b75e22ba663020753d4b52ca57636"><div class="ttname"><a href="#a1c2b75e22ba663020753d4b52ca57636">PT100Sensor::numWires</a></div><div class="ttdeci">int numWires</div><div class="ttdoc">Number of wires (2, 3, or 4)</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00026">PT100Sensor.h:26</a></div></div>
-<div class="ttc" id="aclass_p_t100_sensor_html_a5e62a0d3cabefc04b1ab859030907d57"><div class="ttname"><a href="#a5e62a0d3cabefc04b1ab859030907d57">PT100Sensor::ssPin</a></div><div class="ttdeci">int ssPin</div><div class="ttdoc">SPI slave select pin.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00024">PT100Sensor.h:24</a></div></div>
-<div class="ttc" id="aclass_p_t100_sensor_html_a5f9c5e76c075f17eb64decf698a97230"><div class="ttname"><a href="#a5f9c5e76c075f17eb64decf698a97230">PT100Sensor::spiManager</a></div><div class="ttdeci">SPIManager * spiManager</div><div class="ttdoc">SPI manager for communication.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00023">PT100Sensor.h:23</a></div></div>
-<div class="ttc" id="aclass_p_t100_sensor_html_a698177d943c9d7d19fbd8970221e1e21"><div class="ttname"><a href="#a698177d943c9d7d19fbd8970221e1e21">PT100Sensor::rRef</a></div><div class="ttdeci">float rRef</div><div class="ttdoc">Reference resistor value (430.0 ohms by default)</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00025">PT100Sensor.h:25</a></div></div>
-<div class="ttc" id="aclass_p_t100_sensor_html_ae94049a78855ebdab4e0c8ce2996efe7"><div class="ttname"><a href="#ae94049a78855ebdab4e0c8ce2996efe7">PT100Sensor::max31865</a></div><div class="ttdeci">Adafruit_MAX31865 max31865</div><div class="ttdoc">Underlying Adafruit driver.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00022">PT100Sensor.h:22</a></div></div>
-<div class="ttc" id="aclass_p_t100_sensor_html_af65c8b36ba01c5667e5224dcc2b0b015"><div class="ttname"><a href="#af65c8b36ba01c5667e5224dcc2b0b015">PT100Sensor::tempTimestamp</a></div><div class="ttdeci">unsigned long tempTimestamp</div><div class="ttdoc">Timestamp of last temperature reading.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00028">PT100Sensor.h:28</a></div></div>
-<div class="ttc" id="aclass_s_p_i_manager_html_a9e07cab432e9a41da8f86fcf9109e311"><div class="ttname"><a href="class_s_p_i_manager.html#a9e07cab432e9a41da8f86fcf9109e311">SPIManager::mapLogicalToPhysicalPin</a></div><div class="ttdeci">int mapLogicalToPhysicalPin(int logicalPin)</div><div class="ttdoc">Map a logical SS pin index to a physical pin number.</div><div class="ttdef"><b>Definition</b> <a href="_s_p_i_manager_8h_source.html#l00038">SPIManager.h:38</a></div></div>
+<div class="ttc" id="aclass_base_sensor_html_a583f6418d773b6a5256c65c81b676494"><div class="ttname"><a href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor::BaseSensor</a></div><div class="ttdeci">BaseSensor(const String &amp;sensorName, SensorType sensorType, ErrorHandler *err)</div><div class="ttdoc">Constructor for BaseSensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00039">BaseSensor.h:39</a></div></div>
+<div class="ttc" id="aclass_base_sensor_html_ac57236a191fb2f8509a5e1e3d292b593"><div class="ttname"><a href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">BaseSensor::errorHandler</a></div><div class="ttdeci">ErrorHandler * errorHandler</div><div class="ttdoc">Error reporting mechanism.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00030">BaseSensor.h:30</a></div></div>
+<div class="ttc" id="aclass_p_t100_sensor_html_a0ed374c3b7ee03be82ac831bac8b4792"><div class="ttname"><a href="#a0ed374c3b7ee03be82ac831bac8b4792">PT100Sensor::lastTemperature</a></div><div class="ttdeci">float lastTemperature</div><div class="ttdoc">Last temperature reading.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00026">PT100Sensor.h:26</a></div></div>
+<div class="ttc" id="aclass_p_t100_sensor_html_a1c2b75e22ba663020753d4b52ca57636"><div class="ttname"><a href="#a1c2b75e22ba663020753d4b52ca57636">PT100Sensor::numWires</a></div><div class="ttdeci">int numWires</div><div class="ttdoc">Number of wires (2, 3, or 4)</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00025">PT100Sensor.h:25</a></div></div>
+<div class="ttc" id="aclass_p_t100_sensor_html_a5e62a0d3cabefc04b1ab859030907d57"><div class="ttname"><a href="#a5e62a0d3cabefc04b1ab859030907d57">PT100Sensor::ssPin</a></div><div class="ttdeci">int ssPin</div><div class="ttdoc">SPI slave select pin.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00023">PT100Sensor.h:23</a></div></div>
+<div class="ttc" id="aclass_p_t100_sensor_html_a5f9c5e76c075f17eb64decf698a97230"><div class="ttname"><a href="#a5f9c5e76c075f17eb64decf698a97230">PT100Sensor::spiManager</a></div><div class="ttdeci">SPIManager * spiManager</div><div class="ttdoc">SPI manager for communication.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00022">PT100Sensor.h:22</a></div></div>
+<div class="ttc" id="aclass_p_t100_sensor_html_a698177d943c9d7d19fbd8970221e1e21"><div class="ttname"><a href="#a698177d943c9d7d19fbd8970221e1e21">PT100Sensor::rRef</a></div><div class="ttdeci">float rRef</div><div class="ttdoc">Reference resistor value (430.0 ohms by default)</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00024">PT100Sensor.h:24</a></div></div>
+<div class="ttc" id="aclass_p_t100_sensor_html_ae94049a78855ebdab4e0c8ce2996efe7"><div class="ttname"><a href="#ae94049a78855ebdab4e0c8ce2996efe7">PT100Sensor::max31865</a></div><div class="ttdeci">Adafruit_MAX31865 max31865</div><div class="ttdoc">Underlying Adafruit driver.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00021">PT100Sensor.h:21</a></div></div>
+<div class="ttc" id="aclass_p_t100_sensor_html_af65c8b36ba01c5667e5224dcc2b0b015"><div class="ttname"><a href="#af65c8b36ba01c5667e5224dcc2b0b015">PT100Sensor::tempTimestamp</a></div><div class="ttdeci">unsigned long tempTimestamp</div><div class="ttdoc">Timestamp of last temperature reading.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00027">PT100Sensor.h:27</a></div></div>
+<div class="ttc" id="aclass_s_p_i_manager_html_a9e07cab432e9a41da8f86fcf9109e311"><div class="ttname"><a href="class_s_p_i_manager.html#a9e07cab432e9a41da8f86fcf9109e311">SPIManager::mapLogicalToPhysicalPin</a></div><div class="ttdeci">int mapLogicalToPhysicalPin(int logicalPin)</div><div class="ttdoc">Map a logical SS pin index to a physical pin number Converts a logical pin index (0,...</div><div class="ttdef"><b>Definition</b> <a href="_s_p_i_manager_8h_source.html#l00070">SPIManager.h:70</a></div></div>
+<div class="ttc" id="agroup__error__handling_html_ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806"><div class="ttname"><a href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a></div><div class="ttdeci">@ INFO</div><div class="ttdoc">Informational message, not an error.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00025">ErrorHandler.h:25</a></div></div>
+<div class="ttc" id="agroup__sensor__types_html_gga213c434cb928c4ca22513e2302632435af66b0c45568772329e32df10776fba72"><div class="ttname"><a href="group__sensor__types.html#gga213c434cb928c4ca22513e2302632435af66b0c45568772329e32df10776fba72">SensorType::PT100_RTD</a></div><div class="ttdeci">@ PT100_RTD</div><div class="ttdoc">PT100 RTD temperature sensor with MAX31865.</div><div class="ttdef"><b>Definition</b> <a href="_sensor_types_8h_source.html#l00023">SensorTypes.h:23</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00030">BaseSensor::BaseSensor()</a>, <a class="el" href="_base_sensor_8h_source.html#l00020">BaseSensor::errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00027">lastTemperature</a>, <a class="el" href="_s_p_i_manager_8h_source.html#l00038">SPIManager::mapLogicalToPhysicalPin()</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00022">max31865</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00026">numWires</a>, <a class="el" href="_sensor_types_8h_source.html#l00013">PT100_RTD</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00025">rRef</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00023">spiManager</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00024">ssPin</a>, and <a class="el" href="_p_t100_sensor_8h_source.html#l00028">tempTimestamp</a>.</p>
+<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00039">BaseSensor::BaseSensor()</a>, <a class="el" href="_base_sensor_8h_source.html#l00030">BaseSensor::errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00026">lastTemperature</a>, <a class="el" href="_s_p_i_manager_8h_source.html#l00070">SPIManager::mapLogicalToPhysicalPin()</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00021">max31865</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00025">numWires</a>, <a class="el" href="_sensor_types_8h_source.html#l00023">PT100_RTD</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00024">rRef</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00022">spiManager</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00023">ssPin</a>, and <a class="el" href="_p_t100_sensor_8h_source.html#l00027">tempTimestamp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_p_t100_sensor_af7d48b04f2c31649bfc98383c4ae7a2e_cgraph.png" border="0" usemap="#aclass_p_t100_sensor_af7d48b04f2c31649bfc98383c4ae7a2e_cgraph" alt=""/></div>
+<map name="aclass_p_t100_sensor_af7d48b04f2c31649bfc98383c4ae7a2e_cgraph" id="aclass_p_t100_sensor_af7d48b04f2c31649bfc98383c4ae7a2e_cgraph">
+<area shape="rect" title="Constructor for PT100Sensor." alt="" coords="5,35,193,61"/>
+<area shape="rect" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="246,5,417,32"/>
+<area shape="poly" title=" " alt="" coords="193,34,230,29,231,34,193,39"/>
+<area shape="rect" href="class_s_p_i_manager.html#a9e07cab432e9a41da8f86fcf9109e311" title="Map a logical SS pin index to a physical pin number Converts a logical pin index (0,..." alt="" coords="241,56,422,99"/>
+<area shape="poly" title=" " alt="" coords="193,57,226,61,225,67,193,62"/>
+</map>
 </div>
 
 </div>
@@ -406,13 +443,26 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  266</span>    <span class="keywordflow">return</span> faultStr;</div>
 <div class="line"><span class="lineno">  267</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_p_t100_sensor_8h_source.html#l00022">max31865</a>.</p>
+<p class="reference">References <a class="el" href="_p_t100_sensor_8h_source.html#l00021">max31865</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_p_t100_sensor_8cpp_source.html#l00185">getSensorInfo()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00023">initialize()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00148">performSelfTest()</a>, and <a class="el" href="_p_t100_sensor_8cpp_source.html#l00095">updateReading()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_p_t100_sensor_ae9aa8647e52efca9450704c81993b6eb_icgraph.png" border="0" usemap="#aclass_p_t100_sensor_ae9aa8647e52efca9450704c81993b6eb_icgraph" alt=""/></div>
+<map name="aclass_p_t100_sensor_ae9aa8647e52efca9450704c81993b6eb_icgraph" id="aclass_p_t100_sensor_ae9aa8647e52efca9450704c81993b6eb_icgraph">
+<area shape="rect" title="Get the MAX31865 fault status and description." alt="" coords="507,81,700,108"/>
+<area shape="rect" href="class_p_t100_sensor.html#a5a58ad4bdf8fb0a3388959f3f827ec5c" title="Get detailed information about the sensor." alt="" coords="264,5,454,32"/>
+<area shape="poly" title=" " alt="" coords="551,78,458,47,417,35,419,30,460,41,553,73"/>
+<area shape="rect" href="class_p_t100_sensor.html#a069271f9d96a56033f6970370fee508e" title="Initialize the sensor hardware." alt="" coords="281,56,436,83"/>
+<area shape="poly" title=" " alt="" coords="492,86,437,80,437,75,492,80"/>
+<area shape="rect" href="class_p_t100_sensor.html#aa667878300235d70b223b23d7eceea8d" title="Perform a self&#45;test to verify the sensor is functioning properly." alt="" coords="259,107,459,133"/>
+<area shape="poly" title=" " alt="" coords="492,109,460,112,459,107,491,104"/>
+<area shape="rect" href="class_p_t100_sensor.html#a7cc1b9afa165ab3abda6b8d4717b76de" title="Update temperature reading from the sensor." alt="" coords="261,157,456,184"/>
+<area shape="poly" title=" " alt="" coords="553,116,460,148,419,159,417,154,458,143,551,111"/>
+<area shape="rect" href="class_p_t100_sensor.html#a71b7a6ba9f582986da3e062fdc9b5667" title="Read the current temperature value from the sensor." alt="" coords="5,157,211,184"/>
+<area shape="poly" title=" " alt="" coords="246,173,211,173,211,168,246,168"/>
+</map>
 </div>
 
 </div>
@@ -429,7 +479,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">void * PT100Sensor::getInterface </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="group__sensor__interfaces.html#gaf1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -454,16 +504,16 @@ Here is the caller graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8cpp_source.html#l00224">224</a> of file <a class="el" href="_p_t100_sensor_8cpp_source.html">PT100Sensor.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  224</span>                                                        {</div>
 <div class="line"><span class="lineno">  225</span>    <span class="keywordflow">switch</span> (<a class="code hl_variable" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) {</div>
-<div class="line"><span class="lineno">  226</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a>:</div>
+<div class="line"><span class="lineno">  226</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__sensor__interfaces.html#ggaf1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a>:</div>
 <div class="line"><span class="lineno">  227</span>            <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span>ITemperatureSensor*<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span>ITemperatureSensor*<span class="keyword">&gt;</span>(<span class="keyword">this</span>));</div>
 <div class="line"><span class="lineno">  228</span>        <span class="keywordflow">default</span>:</div>
 <div class="line"><span class="lineno">  229</span>            <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  230</span>    }</div>
 <div class="line"><span class="lineno">  231</span>}</div>
-<div class="ttc" id="a_interface_types_8h_html_af1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76"><div class="ttname"><a href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a></div><div class="ttdeci">@ TEMPERATURE</div><div class="ttdef"><b>Definition</b> <a href="_interface_types_8h_source.html#l00007">InterfaceTypes.h:7</a></div></div>
-<div class="ttc" id="aclass_base_sensor_html_a3b4542f8f8209605fde691f30bc4aa5e"><div class="ttname"><a href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">BaseSensor::type</a></div><div class="ttdeci">SensorType type</div><div class="ttdoc">Type of sensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00018">BaseSensor.h:18</a></div></div>
+<div class="ttc" id="aclass_base_sensor_html_a3b4542f8f8209605fde691f30bc4aa5e"><div class="ttname"><a href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">BaseSensor::type</a></div><div class="ttdeci">SensorType type</div><div class="ttdoc">Type of sensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00028">BaseSensor.h:28</a></div></div>
+<div class="ttc" id="agroup__sensor__interfaces_html_ggaf1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76"><div class="ttname"><a href="group__sensor__interfaces.html#ggaf1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a></div><div class="ttdeci">@ TEMPERATURE</div><div class="ttdoc">Temperature measurement capability.</div><div class="ttdef"><b>Definition</b> <a href="_interface_types_8h_source.html#l00020">InterfaceTypes.h:20</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_interface_types_8h_source.html#l00007">TEMPERATURE</a>, and <a class="el" href="_base_sensor_8h_source.html#l00018">BaseSensor::type</a>.</p>
+<p class="reference">References <a class="el" href="_interface_types_8h_source.html#l00020">TEMPERATURE</a>, and <a class="el" href="_base_sensor_8h_source.html#l00028">BaseSensor::type</a>.</p>
 
 </div>
 </div>
@@ -525,15 +575,20 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  211</span>    </div>
 <div class="line"><span class="lineno">  212</span>    <span class="keywordflow">return</span> info;</div>
 <div class="line"><span class="lineno">  213</span>}</div>
-<div class="ttc" id="aclass_base_sensor_html_a258921596b9aef501817f8d2136671b0"><div class="ttname"><a href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">BaseSensor::name</a></div><div class="ttdeci">String name</div><div class="ttdoc">Unique identifier for this sensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00017">BaseSensor.h:17</a></div></div>
-<div class="ttc" id="aclass_base_sensor_html_aab7ae500e598ce4ed84ff8ab570d9913"><div class="ttname"><a href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">BaseSensor::connected</a></div><div class="ttdeci">bool connected</div><div class="ttdoc">Connection status.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00019">BaseSensor.h:19</a></div></div>
+<div class="ttc" id="aclass_base_sensor_html_a258921596b9aef501817f8d2136671b0"><div class="ttname"><a href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">BaseSensor::name</a></div><div class="ttdeci">String name</div><div class="ttdoc">Unique identifier for this sensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00027">BaseSensor.h:27</a></div></div>
+<div class="ttc" id="aclass_base_sensor_html_aab7ae500e598ce4ed84ff8ab570d9913"><div class="ttname"><a href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">BaseSensor::connected</a></div><div class="ttdeci">bool connected</div><div class="ttdoc">Connection status.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00029">BaseSensor.h:29</a></div></div>
 <div class="ttc" id="aclass_p_t100_sensor_html_ae9aa8647e52efca9450704c81993b6eb"><div class="ttname"><a href="#ae9aa8647e52efca9450704c81993b6eb">PT100Sensor::getFaultStatus</a></div><div class="ttdeci">String getFaultStatus() const</div><div class="ttdoc">Get the MAX31865 fault status and description.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8cpp_source.html#l00233">PT100Sensor.cpp:233</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00019">BaseSensor::connected</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00233">getFaultStatus()</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00027">lastTemperature</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00022">max31865</a>, <a class="el" href="_base_sensor_8h_source.html#l00017">BaseSensor::name</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00026">numWires</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00025">rRef</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00024">ssPin</a>, and <a class="el" href="_p_t100_sensor_8h_source.html#l00028">tempTimestamp</a>.</p>
+<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00029">BaseSensor::connected</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00233">getFaultStatus()</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00026">lastTemperature</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00021">max31865</a>, <a class="el" href="_base_sensor_8h_source.html#l00027">BaseSensor::name</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00025">numWires</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00024">rRef</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00023">ssPin</a>, and <a class="el" href="_p_t100_sensor_8h_source.html#l00027">tempTimestamp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_p_t100_sensor_a5a58ad4bdf8fb0a3388959f3f827ec5c_cgraph.png" border="0" usemap="#aclass_p_t100_sensor_a5a58ad4bdf8fb0a3388959f3f827ec5c_cgraph" alt=""/></div>
+<map name="aclass_p_t100_sensor_a5a58ad4bdf8fb0a3388959f3f827ec5c_cgraph" id="aclass_p_t100_sensor_a5a58ad4bdf8fb0a3388959f3f827ec5c_cgraph">
+<area shape="rect" title="Get detailed information about the sensor." alt="" coords="5,5,195,32"/>
+<area shape="rect" href="class_p_t100_sensor.html#ae9aa8647e52efca9450704c81993b6eb" title="Get the MAX31865 fault status and description." alt="" coords="243,5,436,32"/>
+<area shape="poly" title=" " alt="" coords="195,16,227,16,227,21,195,21"/>
+</map>
 </div>
 
 </div>
@@ -571,7 +626,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  145</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="#af65c8b36ba01c5667e5224dcc2b0b015">tempTimestamp</a>;</div>
 <div class="line"><span class="lineno">  146</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_p_t100_sensor_8h_source.html#l00028">tempTimestamp</a>.</p>
+<p class="reference">References <a class="el" href="_p_t100_sensor_8h_source.html#l00027">tempTimestamp</a>.</p>
 
 </div>
 </div>
@@ -605,11 +660,11 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8cpp_source.html#l00023">23</a> of file <a class="el" href="_p_t100_sensor_8cpp_source.html">PT100Sensor.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   23</span>                             {</div>
-<div class="line"><span class="lineno">   24</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Initializing PT100 RTD sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a> + <span class="stringliteral">&quot; on SS pin &quot;</span> + String(<a class="code hl_variable" href="#a5e62a0d3cabefc04b1ab859030907d57">ssPin</a>));</div>
+<div class="line"><span class="lineno">   24</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Initializing PT100 RTD sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a> + <span class="stringliteral">&quot; on SS pin &quot;</span> + String(<a class="code hl_variable" href="#a5e62a0d3cabefc04b1ab859030907d57">ssPin</a>));</div>
 <div class="line"><span class="lineno">   25</span>    </div>
 <div class="line"><span class="lineno">   26</span>    <span class="comment">// Make sure SPI is initialized</span></div>
 <div class="line"><span class="lineno">   27</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a5f9c5e76c075f17eb64decf698a97230">spiManager</a> || !<a class="code hl_variable" href="#a5f9c5e76c075f17eb64decf698a97230">spiManager</a>-&gt;isInitialized()) {</div>
-<div class="line"><span class="lineno">   28</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;SPI not initialized for PT100 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
+<div class="line"><span class="lineno">   28</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;SPI not initialized for PT100 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
 <div class="line"><span class="lineno">   29</span>        <a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   30</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   31</span>    }</div>
@@ -638,14 +693,14 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   54</span>    <span class="comment">// Check for any faults</span></div>
 <div class="line"><span class="lineno">   55</span>    uint8_t fault = <a class="code hl_variable" href="#ae94049a78855ebdab4e0c8ce2996efe7">max31865</a>.readFault();</div>
 <div class="line"><span class="lineno">   56</span>    <span class="keywordflow">if</span> (fault) {</div>
-<div class="line"><span class="lineno">   57</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;MAX31865 fault detected during initialization: &quot;</span> + <a class="code hl_function" href="#ae9aa8647e52efca9450704c81993b6eb">getFaultStatus</a>());</div>
+<div class="line"><span class="lineno">   57</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;MAX31865 fault detected during initialization: &quot;</span> + <a class="code hl_function" href="#ae9aa8647e52efca9450704c81993b6eb">getFaultStatus</a>());</div>
 <div class="line"><span class="lineno">   58</span>        <a class="code hl_variable" href="#ae94049a78855ebdab4e0c8ce2996efe7">max31865</a>.clearFault();</div>
 <div class="line"><span class="lineno">   59</span>        <span class="comment">// Only fail initialization for critical faults</span></div>
 <div class="line"><span class="lineno">   60</span>        <span class="keywordflow">if</span> (fault &amp; (MAX31865_FAULT_OVUV | MAX31865_FAULT_REFINHIGH | MAX31865_FAULT_REFINLOW)) {</div>
 <div class="line"><span class="lineno">   61</span>            <a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   62</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   63</span>        }</div>
-<div class="line"><span class="lineno">   64</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Non-critical fault detected, attempting to continue&quot;</span>);</div>
+<div class="line"><span class="lineno">   64</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Non-critical fault detected, attempting to continue&quot;</span>);</div>
 <div class="line"><span class="lineno">   65</span>    }</div>
 <div class="line"><span class="lineno">   66</span>    </div>
 <div class="line"><span class="lineno">   67</span>    <span class="comment">// Read the RTD value directly for diagnostics</span></div>
@@ -653,18 +708,18 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   69</span>    <span class="keywordtype">float</span> ratio = rtd / 32768.0;</div>
 <div class="line"><span class="lineno">   70</span>    <span class="keywordtype">float</span> resistance = ratio * <a class="code hl_variable" href="#a698177d943c9d7d19fbd8970221e1e21">rRef</a>;</div>
 <div class="line"><span class="lineno">   71</span>    </div>
-<div class="line"><span class="lineno">   72</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Initial PT100 RTD value: &quot;</span> + String(rtd));</div>
-<div class="line"><span class="lineno">   73</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Initial PT100 resistance: &quot;</span> + String(resistance) + <span class="stringliteral">&quot; ohms (ratio: &quot;</span> + String(ratio, 8) + <span class="stringliteral">&quot;)&quot;</span>);</div>
+<div class="line"><span class="lineno">   72</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Initial PT100 RTD value: &quot;</span> + String(rtd));</div>
+<div class="line"><span class="lineno">   73</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Initial PT100 resistance: &quot;</span> + String(resistance) + <span class="stringliteral">&quot; ohms (ratio: &quot;</span> + String(ratio, 8) + <span class="stringliteral">&quot;)&quot;</span>);</div>
 <div class="line"><span class="lineno">   74</span>    </div>
 <div class="line"><span class="lineno">   75</span>    <span class="comment">// Check if RTD value is zero, which indicates a likely connection issue</span></div>
 <div class="line"><span class="lineno">   76</span>    <span class="keywordflow">if</span> (rtd == 0) {</div>
-<div class="line"><span class="lineno">   77</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;RTD value is 0, suggesting a connection problem. Check wiring and SPI communication.&quot;</span>);</div>
+<div class="line"><span class="lineno">   77</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;RTD value is 0, suggesting a connection problem. Check wiring and SPI communication.&quot;</span>);</div>
 <div class="line"><span class="lineno">   78</span>        <span class="comment">// Let&#39;s not mark it as disconnected yet, to allow for diagnostics</span></div>
 <div class="line"><span class="lineno">   79</span>    }</div>
 <div class="line"><span class="lineno">   80</span>    </div>
 <div class="line"><span class="lineno">   81</span>    <span class="comment">// Get initial temperature reading</span></div>
 <div class="line"><span class="lineno">   82</span>    <span class="keywordtype">float</span> temp = <a class="code hl_variable" href="#ae94049a78855ebdab4e0c8ce2996efe7">max31865</a>.temperature(<a class="code hl_define" href="_p_t100_sensor_8h.html#a2000418579abf155fefdc55f650cf486">PT100_RTD_VALUE</a>, <a class="code hl_variable" href="#a698177d943c9d7d19fbd8970221e1e21">rRef</a>);</div>
-<div class="line"><span class="lineno">   83</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Initial PT100 temperature: &quot;</span> + String(temp) + <span class="stringliteral">&quot;°C&quot;</span>);</div>
+<div class="line"><span class="lineno">   83</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Initial PT100 temperature: &quot;</span> + String(temp) + <span class="stringliteral">&quot;°C&quot;</span>);</div>
 <div class="line"><span class="lineno">   84</span>    </div>
 <div class="line"><span class="lineno">   85</span>    <span class="comment">// Still mark as connected even with suspicious values for diagnostic purposes</span></div>
 <div class="line"><span class="lineno">   86</span>    <a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a> = <span class="keyword">true</span>;</div>
@@ -675,14 +730,19 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   91</span>    </div>
 <div class="line"><span class="lineno">   92</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   93</span>}</div>
-<div class="ttc" id="a_error_handler_8h_html_af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90"><div class="ttname"><a href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a></div><div class="ttdeci">@ ERROR</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00013">ErrorHandler.h:13</a></div></div>
 <div class="ttc" id="a_p_t100_sensor_8h_html_a2000418579abf155fefdc55f650cf486"><div class="ttname"><a href="_p_t100_sensor_8h.html#a2000418579abf155fefdc55f650cf486">PT100_RTD_VALUE</a></div><div class="ttdeci">#define PT100_RTD_VALUE</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8h_source.html#l00011">PT100Sensor.h:11</a></div></div>
+<div class="ttc" id="agroup__error__handling_html_ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90"><div class="ttname"><a href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a></div><div class="ttdeci">@ ERROR</div><div class="ttdoc">Error that affects operation but allows recovery.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00027">ErrorHandler.h:27</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00019">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00020">BaseSensor::errorHandler</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00233">getFaultStatus()</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00027">lastTemperature</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00022">max31865</a>, <a class="el" href="_base_sensor_8h_source.html#l00017">BaseSensor::name</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00026">numWires</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00011">PT100_RTD_VALUE</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00025">rRef</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00023">spiManager</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00024">ssPin</a>, and <a class="el" href="_p_t100_sensor_8h_source.html#l00028">tempTimestamp</a>.</p>
+<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00029">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00030">BaseSensor::errorHandler</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00233">getFaultStatus()</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00026">lastTemperature</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00021">max31865</a>, <a class="el" href="_base_sensor_8h_source.html#l00027">BaseSensor::name</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00025">numWires</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00011">PT100_RTD_VALUE</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00024">rRef</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00022">spiManager</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00023">ssPin</a>, and <a class="el" href="_p_t100_sensor_8h_source.html#l00027">tempTimestamp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_p_t100_sensor_a069271f9d96a56033f6970370fee508e_cgraph.png" border="0" usemap="#aclass_p_t100_sensor_a069271f9d96a56033f6970370fee508e_cgraph" alt=""/></div>
+<map name="aclass_p_t100_sensor_a069271f9d96a56033f6970370fee508e_cgraph" id="aclass_p_t100_sensor_a069271f9d96a56033f6970370fee508e_cgraph">
+<area shape="rect" title="Initialize the sensor hardware." alt="" coords="5,5,161,32"/>
+<area shape="rect" href="class_p_t100_sensor.html#ae9aa8647e52efca9450704c81993b6eb" title="Get the MAX31865 fault status and description." alt="" coords="209,5,402,32"/>
+<area shape="poly" title=" " alt="" coords="161,16,193,16,193,21,161,21"/>
+</map>
 </div>
 
 </div>
@@ -717,47 +777,52 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8cpp_source.html#l00148">148</a> of file <a class="el" href="_p_t100_sensor_8cpp_source.html">PT100Sensor.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  148</span>                                  {</div>
-<div class="line"><span class="lineno">  149</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Performing self-test on PT100 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
+<div class="line"><span class="lineno">  149</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Performing self-test on PT100 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
 <div class="line"><span class="lineno">  150</span>    </div>
 <div class="line"><span class="lineno">  151</span>    <span class="comment">// Read the RTD value directly to check if the sensor is connected</span></div>
 <div class="line"><span class="lineno">  152</span>    uint16_t rtd = <a class="code hl_variable" href="#ae94049a78855ebdab4e0c8ce2996efe7">max31865</a>.readRTD();</div>
 <div class="line"><span class="lineno">  153</span>    <span class="keywordtype">float</span> ratio = rtd / 32768.0;</div>
 <div class="line"><span class="lineno">  154</span>    <span class="keywordtype">float</span> resistance = ratio * <a class="code hl_variable" href="#a698177d943c9d7d19fbd8970221e1e21">rRef</a>;</div>
 <div class="line"><span class="lineno">  155</span>    </div>
-<div class="line"><span class="lineno">  156</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;PT100 RTD value: &quot;</span> + String(rtd) + </div>
+<div class="line"><span class="lineno">  156</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;PT100 RTD value: &quot;</span> + String(rtd) + </div>
 <div class="line"><span class="lineno">  157</span>           <span class="stringliteral">&quot;, Ratio: &quot;</span> + String(ratio, 8) + </div>
 <div class="line"><span class="lineno">  158</span>           <span class="stringliteral">&quot;, Resistance: &quot;</span> + String(resistance, 3) + <span class="stringliteral">&quot; ohms&quot;</span>);</div>
 <div class="line"><span class="lineno">  159</span>    </div>
 <div class="line"><span class="lineno">  160</span>    <span class="comment">// Check for any faults</span></div>
 <div class="line"><span class="lineno">  161</span>    uint8_t fault = <a class="code hl_variable" href="#ae94049a78855ebdab4e0c8ce2996efe7">max31865</a>.readFault();</div>
 <div class="line"><span class="lineno">  162</span>    <span class="keywordflow">if</span> (fault) {</div>
-<div class="line"><span class="lineno">  163</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;MAX31865 fault detected during self-test: &quot;</span> + <a class="code hl_function" href="#ae9aa8647e52efca9450704c81993b6eb">getFaultStatus</a>());</div>
+<div class="line"><span class="lineno">  163</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;MAX31865 fault detected during self-test: &quot;</span> + <a class="code hl_function" href="#ae9aa8647e52efca9450704c81993b6eb">getFaultStatus</a>());</div>
 <div class="line"><span class="lineno">  164</span>        <a class="code hl_variable" href="#ae94049a78855ebdab4e0c8ce2996efe7">max31865</a>.clearFault();</div>
 <div class="line"><span class="lineno">  165</span>    }</div>
 <div class="line"><span class="lineno">  166</span>    </div>
 <div class="line"><span class="lineno">  167</span>    <span class="comment">// Only consider it a failure if RTD is 0, suggesting no connection</span></div>
 <div class="line"><span class="lineno">  168</span>    <span class="keywordflow">if</span> (rtd == 0) {</div>
-<div class="line"><span class="lineno">  169</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Self-test failed: RTD value is 0, suggesting no connection&quot;</span>);</div>
+<div class="line"><span class="lineno">  169</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Self-test failed: RTD value is 0, suggesting no connection&quot;</span>);</div>
 <div class="line"><span class="lineno">  170</span>        <a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  171</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  172</span>    }</div>
 <div class="line"><span class="lineno">  173</span>    </div>
 <div class="line"><span class="lineno">  174</span>    <span class="comment">// Try to read temperature to complete the test</span></div>
 <div class="line"><span class="lineno">  175</span>    <span class="keywordtype">float</span> temp = <a class="code hl_variable" href="#ae94049a78855ebdab4e0c8ce2996efe7">max31865</a>.temperature(<a class="code hl_define" href="_p_t100_sensor_8h.html#a2000418579abf155fefdc55f650cf486">PT100_RTD_VALUE</a>, <a class="code hl_variable" href="#a698177d943c9d7d19fbd8970221e1e21">rRef</a>);</div>
-<div class="line"><span class="lineno">  176</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;PT100 temperature reading: &quot;</span> + String(temp) + <span class="stringliteral">&quot;°C&quot;</span>);</div>
+<div class="line"><span class="lineno">  176</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;PT100 temperature reading: &quot;</span> + String(temp) + <span class="stringliteral">&quot;°C&quot;</span>);</div>
 <div class="line"><span class="lineno">  177</span>    </div>
 <div class="line"><span class="lineno">  178</span>    <span class="comment">// Keep connected true for diagnostics</span></div>
 <div class="line"><span class="lineno">  179</span>    <a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  180</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Self-test passed for PT100 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
+<div class="line"><span class="lineno">  180</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Self-test passed for PT100 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
 <div class="line"><span class="lineno">  181</span>    </div>
 <div class="line"><span class="lineno">  182</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  183</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00019">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00020">BaseSensor::errorHandler</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00233">getFaultStatus()</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00022">max31865</a>, <a class="el" href="_base_sensor_8h_source.html#l00017">BaseSensor::name</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00011">PT100_RTD_VALUE</a>, and <a class="el" href="_p_t100_sensor_8h_source.html#l00025">rRef</a>.</p>
+<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00029">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00030">BaseSensor::errorHandler</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00233">getFaultStatus()</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00021">max31865</a>, <a class="el" href="_base_sensor_8h_source.html#l00027">BaseSensor::name</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00011">PT100_RTD_VALUE</a>, and <a class="el" href="_p_t100_sensor_8h_source.html#l00024">rRef</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_p_t100_sensor_aa667878300235d70b223b23d7eceea8d_cgraph.png" border="0" usemap="#aclass_p_t100_sensor_aa667878300235d70b223b23d7eceea8d_cgraph" alt=""/></div>
+<map name="aclass_p_t100_sensor_aa667878300235d70b223b23d7eceea8d_cgraph" id="aclass_p_t100_sensor_aa667878300235d70b223b23d7eceea8d_cgraph">
+<area shape="rect" title="Perform a self&#45;test to verify the sensor is functioning properly." alt="" coords="5,5,206,32"/>
+<area shape="rect" href="class_p_t100_sensor.html#ae9aa8647e52efca9450704c81993b6eb" title="Get the MAX31865 fault status and description." alt="" coords="254,5,447,32"/>
+<area shape="poly" title=" " alt="" coords="206,16,238,16,238,21,206,21"/>
+</map>
 </div>
 
 </div>
@@ -797,11 +862,18 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  142</span>}</div>
 <div class="ttc" id="aclass_p_t100_sensor_html_a7cc1b9afa165ab3abda6b8d4717b76de"><div class="ttname"><a href="#a7cc1b9afa165ab3abda6b8d4717b76de">PT100Sensor::updateReading</a></div><div class="ttdeci">bool updateReading() const</div><div class="ttdoc">Update temperature reading from the sensor.</div><div class="ttdef"><b>Definition</b> <a href="_p_t100_sensor_8cpp_source.html#l00095">PT100Sensor.cpp:95</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_p_t100_sensor_8h_source.html#l00027">lastTemperature</a>, and <a class="el" href="_p_t100_sensor_8cpp_source.html#l00095">updateReading()</a>.</p>
+<p class="reference">References <a class="el" href="_p_t100_sensor_8h_source.html#l00026">lastTemperature</a>, and <a class="el" href="_p_t100_sensor_8cpp_source.html#l00095">updateReading()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_p_t100_sensor_a71b7a6ba9f582986da3e062fdc9b5667_cgraph.png" border="0" usemap="#aclass_p_t100_sensor_a71b7a6ba9f582986da3e062fdc9b5667_cgraph" alt=""/></div>
+<map name="aclass_p_t100_sensor_a71b7a6ba9f582986da3e062fdc9b5667_cgraph" id="aclass_p_t100_sensor_a71b7a6ba9f582986da3e062fdc9b5667_cgraph">
+<area shape="rect" title="Read the current temperature value from the sensor." alt="" coords="5,5,211,32"/>
+<area shape="rect" href="class_p_t100_sensor.html#a7cc1b9afa165ab3abda6b8d4717b76de" title="Update temperature reading from the sensor." alt="" coords="259,5,454,32"/>
+<area shape="poly" title=" " alt="" coords="211,16,243,16,243,21,211,21"/>
+<area shape="rect" href="class_p_t100_sensor.html#ae9aa8647e52efca9450704c81993b6eb" title="Get the MAX31865 fault status and description." alt="" coords="502,5,695,32"/>
+<area shape="poly" title=" " alt="" coords="454,16,486,16,486,21,454,21"/>
+</map>
 </div>
 
 </div>
@@ -818,7 +890,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">bool PT100Sensor::supportsInterface </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="group__sensor__interfaces.html#gaf1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -843,14 +915,14 @@ Here is the call graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8cpp_source.html#l00215">215</a> of file <a class="el" href="_p_t100_sensor_8cpp_source.html">PT100Sensor.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  215</span>                                                            {</div>
 <div class="line"><span class="lineno">  216</span>    <span class="keywordflow">switch</span> (<a class="code hl_variable" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) {</div>
-<div class="line"><span class="lineno">  217</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a>:</div>
+<div class="line"><span class="lineno">  217</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__sensor__interfaces.html#ggaf1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a>:</div>
 <div class="line"><span class="lineno">  218</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  219</span>        <span class="keywordflow">default</span>:</div>
 <div class="line"><span class="lineno">  220</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  221</span>    }</div>
 <div class="line"><span class="lineno">  222</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_interface_types_8h_source.html#l00007">TEMPERATURE</a>, and <a class="el" href="_base_sensor_8h_source.html#l00018">BaseSensor::type</a>.</p>
+<p class="reference">References <a class="el" href="_interface_types_8h_source.html#l00020">TEMPERATURE</a>, and <a class="el" href="_base_sensor_8h_source.html#l00028">BaseSensor::type</a>.</p>
 
 </div>
 </div>
@@ -883,7 +955,7 @@ Here is the call graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8cpp_source.html#l00095">95</a> of file <a class="el" href="_p_t100_sensor_8cpp_source.html">PT100Sensor.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   95</span>                                      {</div>
 <div class="line"><span class="lineno">   96</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a>) {</div>
-<div class="line"><span class="lineno">   97</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Attempted to read from disconnected PT100 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
+<div class="line"><span class="lineno">   97</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Attempted to read from disconnected PT100 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
 <div class="line"><span class="lineno">   98</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   99</span>    }</div>
 <div class="line"><span class="lineno">  100</span>    </div>
@@ -894,7 +966,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  105</span>    </div>
 <div class="line"><span class="lineno">  106</span>    <span class="comment">// Only warn if RTD is zero, but don&#39;t disconnect</span></div>
 <div class="line"><span class="lineno">  107</span>    <span class="keywordflow">if</span> (rtd == 0) {</div>
-<div class="line"><span class="lineno">  108</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;WARNING: PT100 RTD value is 0, suggesting a connection problem&quot;</span>);</div>
+<div class="line"><span class="lineno">  108</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;WARNING: PT100 RTD value is 0, suggesting a connection problem&quot;</span>);</div>
 <div class="line"><span class="lineno">  109</span>    }</div>
 <div class="line"><span class="lineno">  110</span>    </div>
 <div class="line"><span class="lineno">  111</span>    <span class="comment">// Read the temperature</span></div>
@@ -906,13 +978,13 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  117</span>        <span class="comment">// Check for any faults</span></div>
 <div class="line"><span class="lineno">  118</span>        uint8_t fault = <a class="code hl_variable" href="#ae94049a78855ebdab4e0c8ce2996efe7">max31865</a>.readFault();</div>
 <div class="line"><span class="lineno">  119</span>        <span class="keywordflow">if</span> (fault) {</div>
-<div class="line"><span class="lineno">  120</span>            <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;MAX31865 fault detected during reading: &quot;</span> + <a class="code hl_function" href="#ae9aa8647e52efca9450704c81993b6eb">getFaultStatus</a>());</div>
+<div class="line"><span class="lineno">  120</span>            <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;MAX31865 fault detected during reading: &quot;</span> + <a class="code hl_function" href="#ae9aa8647e52efca9450704c81993b6eb">getFaultStatus</a>());</div>
 <div class="line"><span class="lineno">  121</span>            <a class="code hl_variable" href="#ae94049a78855ebdab4e0c8ce2996efe7">max31865</a>.clearFault();</div>
 <div class="line"><span class="lineno">  122</span>            <span class="comment">// Don&#39;t immediately disconnect for non-critical faults</span></div>
 <div class="line"><span class="lineno">  123</span>        }</div>
 <div class="line"><span class="lineno">  124</span>    } <span class="keywordflow">catch</span> (...) {</div>
 <div class="line"><span class="lineno">  125</span>        <span class="comment">// Catch any exceptions that might occur during reading</span></div>
-<div class="line"><span class="lineno">  126</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Exception occurred while reading PT100 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
+<div class="line"><span class="lineno">  126</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Exception occurred while reading PT100 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
 <div class="line"><span class="lineno">  127</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  128</span>    }</div>
 <div class="line"><span class="lineno">  129</span>    </div>
@@ -925,18 +997,28 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  136</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  137</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00019">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00020">BaseSensor::errorHandler</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00233">getFaultStatus()</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00027">lastTemperature</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00022">max31865</a>, <a class="el" href="_base_sensor_8h_source.html#l00017">BaseSensor::name</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00011">PT100_RTD_VALUE</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00025">rRef</a>, and <a class="el" href="_p_t100_sensor_8h_source.html#l00028">tempTimestamp</a>.</p>
+<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00029">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00030">BaseSensor::errorHandler</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00233">getFaultStatus()</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00026">lastTemperature</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00021">max31865</a>, <a class="el" href="_base_sensor_8h_source.html#l00027">BaseSensor::name</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00011">PT100_RTD_VALUE</a>, <a class="el" href="_p_t100_sensor_8h_source.html#l00024">rRef</a>, and <a class="el" href="_p_t100_sensor_8h_source.html#l00027">tempTimestamp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_p_t100_sensor_8cpp_source.html#l00139">readTemperature()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_p_t100_sensor_a7cc1b9afa165ab3abda6b8d4717b76de_cgraph.png" border="0" usemap="#aclass_p_t100_sensor_a7cc1b9afa165ab3abda6b8d4717b76de_cgraph" alt=""/></div>
+<map name="aclass_p_t100_sensor_a7cc1b9afa165ab3abda6b8d4717b76de_cgraph" id="aclass_p_t100_sensor_a7cc1b9afa165ab3abda6b8d4717b76de_cgraph">
+<area shape="rect" title="Update temperature reading from the sensor." alt="" coords="5,5,201,32"/>
+<area shape="rect" href="class_p_t100_sensor.html#ae9aa8647e52efca9450704c81993b6eb" title="Get the MAX31865 fault status and description." alt="" coords="249,5,442,32"/>
+<area shape="poly" title=" " alt="" coords="201,16,233,16,233,21,201,21"/>
+</map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_p_t100_sensor_a7cc1b9afa165ab3abda6b8d4717b76de_icgraph.png" border="0" usemap="#aclass_p_t100_sensor_a7cc1b9afa165ab3abda6b8d4717b76de_icgraph" alt=""/></div>
+<map name="aclass_p_t100_sensor_a7cc1b9afa165ab3abda6b8d4717b76de_icgraph" id="aclass_p_t100_sensor_a7cc1b9afa165ab3abda6b8d4717b76de_icgraph">
+<area shape="rect" title="Update temperature reading from the sensor." alt="" coords="259,5,454,32"/>
+<area shape="rect" href="class_p_t100_sensor.html#a71b7a6ba9f582986da3e062fdc9b5667" title="Read the current temperature value from the sensor." alt="" coords="5,5,211,32"/>
+<area shape="poly" title=" " alt="" coords="243,21,211,21,211,16,243,16"/>
+</map>
 </div>
 
 </div>
@@ -964,7 +1046,7 @@ Here is the caller graph for this function:</div>
 
 <p>Last temperature reading. </p>
 
-<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00027">27</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00026">26</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_p_t100_sensor_8cpp_source.html#l00185">getSensorInfo()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00023">initialize()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00003">PT100Sensor()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00139">readTemperature()</a>, and <a class="el" href="_p_t100_sensor_8cpp_source.html#l00095">updateReading()</a>.</p>
 
@@ -992,7 +1074,7 @@ Here is the caller graph for this function:</div>
 
 <p>Underlying Adafruit driver. </p>
 
-<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00022">22</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00021">21</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_p_t100_sensor_8cpp_source.html#l00233">getFaultStatus()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00185">getSensorInfo()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00023">initialize()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00148">performSelfTest()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00003">PT100Sensor()</a>, and <a class="el" href="_p_t100_sensor_8cpp_source.html#l00095">updateReading()</a>.</p>
 
@@ -1020,7 +1102,7 @@ Here is the caller graph for this function:</div>
 
 <p>Number of wires (2, 3, or 4) </p>
 
-<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00026">26</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00025">25</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_p_t100_sensor_8cpp_source.html#l00185">getSensorInfo()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00023">initialize()</a>, and <a class="el" href="_p_t100_sensor_8cpp_source.html#l00003">PT100Sensor()</a>.</p>
 
@@ -1048,7 +1130,7 @@ Here is the caller graph for this function:</div>
 
 <p>Reference resistor value (430.0 ohms by default) </p>
 
-<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00025">25</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00024">24</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_p_t100_sensor_8cpp_source.html#l00185">getSensorInfo()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00023">initialize()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00148">performSelfTest()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00003">PT100Sensor()</a>, and <a class="el" href="_p_t100_sensor_8cpp_source.html#l00095">updateReading()</a>.</p>
 
@@ -1076,7 +1158,7 @@ Here is the caller graph for this function:</div>
 
 <p>SPI manager for communication. </p>
 
-<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00023">23</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00022">22</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_p_t100_sensor_8cpp_source.html#l00023">initialize()</a>, and <a class="el" href="_p_t100_sensor_8cpp_source.html#l00003">PT100Sensor()</a>.</p>
 
@@ -1104,7 +1186,7 @@ Here is the caller graph for this function:</div>
 
 <p>SPI slave select pin. </p>
 
-<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00024">24</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00023">23</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_p_t100_sensor_8cpp_source.html#l00185">getSensorInfo()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00023">initialize()</a>, and <a class="el" href="_p_t100_sensor_8cpp_source.html#l00003">PT100Sensor()</a>.</p>
 
@@ -1132,7 +1214,7 @@ Here is the caller graph for this function:</div>
 
 <p>Timestamp of last temperature reading. </p>
 
-<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00028">28</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_t100_sensor_8h_source.html#l00027">27</a> of file <a class="el" href="_p_t100_sensor_8h_source.html">PT100Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_p_t100_sensor_8cpp_source.html#l00185">getSensorInfo()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00144">getTemperatureTimestamp()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00023">initialize()</a>, <a class="el" href="_p_t100_sensor_8cpp_source.html#l00003">PT100Sensor()</a>, and <a class="el" href="_p_t100_sensor_8cpp_source.html#l00095">updateReading()</a>.</p>
 

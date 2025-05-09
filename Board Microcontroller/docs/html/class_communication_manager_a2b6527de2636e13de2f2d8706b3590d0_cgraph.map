@@ -1,0 +1,5 @@
+<map id="CommunicationManager::getInstance" name="CommunicationManager::getInstance">
+<area shape="rect" id="Node000001" title="Get singleton instance." alt="" coords="5,5,168,48"/>
+<area shape="rect" id="Node000002" href="$class_communication_manager.html#a1ed5feab695e7dcd484c415a292a0b0f" title="Constructor for CommunicationManager." alt="" coords="216,5,386,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,24,200,24,200,29,168,29"/>
+</map>

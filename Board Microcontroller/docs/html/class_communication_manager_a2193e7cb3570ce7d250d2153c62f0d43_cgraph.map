@@ -1,0 +1,7 @@
+<map id="CommunicationManager::processCommandLine" name="CommunicationManager::processCommandLine">
+<area shape="rect" id="Node000001" title="Process a single incoming command line." alt="" coords="5,39,168,81"/>
+<area shape="rect" id="Node000002" href="$class_communication_manager.html#afd6185dedcf10bc99f3f56487e02f12b" title="Parse a raw command string into command and parameters." alt="" coords="216,5,378,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,44,200,39,201,45,169,50"/>
+<area shape="rect" id="Node000003" href="$class_communication_manager.html#ab3b74ba264ff8450d50593ac0326b0b0" title="Process a command using the registered handler." alt="" coords="216,72,378,115"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,70,201,75,200,81,168,76"/>
+</map>

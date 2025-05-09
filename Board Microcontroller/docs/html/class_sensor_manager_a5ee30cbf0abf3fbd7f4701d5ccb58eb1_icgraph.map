@@ -1,0 +1,5 @@
+<map id="SensorManager::testI2CCommunication" name="SensorManager::testI2CCommunication">
+<area shape="rect" id="Node000001" title="Test communication with an I2C device." alt="" coords="221,13,475,40"/>
+<area shape="rect" id="Node000002" href="$class_sensor_manager.html#aded8aff6d741a64d0c34668a0694dd3d" title="Initialize all sensors from configuration Scans I2C and SPI buses for devices, then initializes senso..." alt="" coords="5,5,173,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,29,173,29,173,24,205,24"/>
+</map>

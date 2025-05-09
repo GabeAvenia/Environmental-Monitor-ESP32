@@ -1,0 +1,4 @@
+<map id="Sensor Management" name="Sensor Management">
+<area shape="rect" id="Node000001" title="Components for managing sensors and their readings." alt="" coords="5,5,147,32"/>
+<area shape="rect" id="Node000002" href="$group__sensor__registry.html" title="Components for tracking and managing sensor instances." alt="" coords="195,5,310,32"/>
+</map>

@@ -1,0 +1,23 @@
+<map id="ISensor::supportsInterface" name="ISensor::supportsInterface">
+<area shape="rect" id="Node000001" title="Check if sensor supports a specific interface." alt="" coords="977,131,1152,157"/>
+<area shape="rect" id="Node000002" href="$class_communication_manager.html#a14eb31396c8a6ecd19c802120dd6655b" title="Collect readings from a sensor into a values vector." alt="" coords="738,52,901,95"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1000,128,895,98,897,93,1001,123"/>
+<area shape="rect" id="Node000007" href="$class_sensor_registry.html#aaa5b082a43b0278bed59b41c4fda3a29" title="Helper to get a specific interface from a sensor if supported." alt="" coords="710,131,929,157"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="961,147,929,147,929,141,961,141"/>
+<area shape="rect" id="Node000010" href="$class_sensor_manager.html#aaa624bba75f0859b4581080aaf57778c" title="Update readings for a single sensor." alt="" coords="719,197,920,240"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1004,165,893,199,891,194,1003,160"/>
+<area shape="rect" id="Node000003" href="$class_communication_manager.html#ab395f48ff53e0ebe90d460b5db023a31" title="Handle measurement query command (MEAS?)" alt="" coords="474,39,636,81"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="722,71,637,67,637,61,722,66"/>
+<area shape="rect" id="Node000004" href="$class_communication_manager.html#a53fc653207de26539054ecf3ee15783f" title="Register all commands with their handlers." alt="" coords="216,5,400,48"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="458,50,400,42,401,36,459,44"/>
+<area shape="rect" id="Node000006" href="$class_communication_manager.html#a5d0e3daa257d372cea146b1eb1f228c0" title="Register all SCPI commands with the parser." alt="" coords="227,72,389,115"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="459,76,390,85,389,80,458,70"/>
+<area shape="rect" id="Node000005" href="$class_communication_manager.html#af1cfd2e3cf49258ebb493f6369fad06f" title="Initialize the communication system." alt="" coords="5,5,168,48"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="200,29,168,29,168,24,200,24"/>
+<area shape="rect" id="Node000008" href="$class_sensor_registry.html#aa26b5698c84019990182364840afcd2a" title="Get all humidity sensors Returns all sensors that implement the IHumiditySensor interface." alt="" coords="460,105,650,148"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="695,138,650,136,650,130,695,133"/>
+<area shape="rect" id="Node000009" href="$class_sensor_registry.html#a9ad560deac460f8207cfc9741fcfff45" title="Get all temperature sensors Returns all sensors that implement the ITemperatureSensor interface." alt="" coords="450,172,660,215"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="730,163,661,176,660,171,729,158"/>
+<area shape="rect" id="Node000011" href="$class_sensor_manager.html#a571b6b763e7f41e4105f72d90cde9c18" title="Update readings from all sensors Iterates through all sensors and updates their readings in the activ..." alt="" coords="448,239,662,265"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="704,236,663,241,662,236,703,231"/>
+</map>

@@ -110,7 +110,7 @@ $(function(){initNavTree('class_i_temperature_sensor.html',''); initResizable(tr
 </div><!--header-->
 <div class="contents">
 
-<p>Interface for sensors that can measure temperature.  
+<p>Interface for sensors that can measure temperature Defines the methods that must be implemented by any sensor that provides temperature measurement capability.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_i_temperature_sensor_8h_source.html">ITemperatureSensor.h</a>&gt;</code></p>
@@ -118,16 +118,29 @@ $(function(){initNavTree('class_i_temperature_sensor.html',''); initResizable(tr
 Inheritance diagram for ITemperatureSensor:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_i_temperature_sensor__inherit__graph.png" border="0" usemap="#a_i_temperature_sensor_inherit__map" alt="Inheritance graph"/></div>
+<map name="a_i_temperature_sensor_inherit__map" id="a_i_temperature_sensor_inherit__map">
+<area shape="rect" title="Interface for sensors that can measure temperature Defines the methods that must be implemented by an..." alt="" coords="216,5,403,117"/>
+<area shape="rect" href="class_p_t100_sensor.html" title="Implementation of the PT100 RTD temperature sensor with MAX31865 ADC." alt="" coords="5,208,192,619"/>
+<area shape="poly" title=" " alt="" coords="237,130,206,167,180,210,176,207,202,164,233,126"/>
+<area shape="rect" href="class_s_h_t41_sensor.html" title="Implementation of the SHT41 temperature and humidity sensor." alt="" coords="216,176,403,651"/>
+<area shape="poly" title=" " alt="" coords="312,132,312,176,307,176,307,132"/>
+<area shape="rect" href="class_si7021_sensor.html" title="Implementation of the Si7021 temperature and humidity sensor." alt="" coords="427,165,614,661"/>
+<area shape="poly" title=" " alt="" coords="386,126,417,164,429,182,425,185,413,167,382,130"/>
+</map>
 </div>
 <div class="dynheader">
 Collaboration diagram for ITemperatureSensor:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_i_temperature_sensor__coll__graph.png" border="0" usemap="#a_i_temperature_sensor_coll__map" alt="Collaboration graph"/></div>
+<map name="a_i_temperature_sensor_coll__map" id="a_i_temperature_sensor_coll__map">
+<area shape="rect" title="Interface for sensors that can measure temperature Defines the methods that must be implemented by an..." alt="" coords="5,5,192,117"/>
+</map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa8d577a906fed137000386fa74934516" id="r_aa8d577a906fed137000386fa74934516"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8d577a906fed137000386fa74934516">~ITemperatureSensor</a> ()=default</td></tr>
+<tr class="memdesc:aa8d577a906fed137000386fa74934516"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
 <tr class="separator:aa8d577a906fed137000386fa74934516"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05d1fe036c425114f331d817fc24c6e7" id="r_a05d1fe036c425114f331d817fc24c6e7"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05d1fe036c425114f331d817fc24c6e7">readTemperature</a> ()=0</td></tr>
 <tr class="memdesc:a05d1fe036c425114f331d817fc24c6e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read current temperature from sensor.  <br /></td></tr>
@@ -137,9 +150,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5c90d8974b2afc73fdb542ef4c1dfd97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface for sensors that can measure temperature. </p>
+<div class="textblock"><p>Interface for sensors that can measure temperature Defines the methods that must be implemented by any sensor that provides temperature measurement capability. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_temperature_sensor_8h_source.html#l00008">8</a> of file <a class="el" href="_i_temperature_sensor_8h_source.html">ITemperatureSensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_temperature_sensor_8h_source.html#l00018">18</a> of file <a class="el" href="_i_temperature_sensor_8h_source.html">ITemperatureSensor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa8d577a906fed137000386fa74934516" name="aa8d577a906fed137000386fa74934516"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa8d577a906fed137000386fa74934516">&#9670;&#160;</a></span>~ITemperatureSensor()</h2>
@@ -163,6 +176,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Virtual destructor. </p>
 
 </div>
 </div>
@@ -230,6 +245,13 @@ Public Member Functions</h2></td></tr>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_i_temperature_sensor_a05d1fe036c425114f331d817fc24c6e7_icgraph.png" border="0" usemap="#aclass_i_temperature_sensor_a05d1fe036c425114f331d817fc24c6e7_icgraph" alt=""/></div>
+<map name="aclass_i_temperature_sensor_a05d1fe036c425114f331d817fc24c6e7_icgraph" id="aclass_i_temperature_sensor_a05d1fe036c425114f331d817fc24c6e7_icgraph">
+<area shape="rect" title="Read current temperature from sensor." alt="" coords="516,5,654,48"/>
+<area shape="rect" href="class_sensor_manager.html#aaa624bba75f0859b4581080aaf57778c" title="Update readings for a single sensor." alt="" coords="268,5,468,48"/>
+<area shape="poly" title=" " alt="" coords="501,29,468,29,468,24,501,24"/>
+<area shape="rect" href="class_sensor_manager.html#a571b6b763e7f41e4105f72d90cde9c18" title="Update readings from all sensors Iterates through all sensors and updates their readings in the activ..." alt="" coords="5,13,220,40"/>
+<area shape="poly" title=" " alt="" coords="252,29,220,29,220,24,252,24"/>
+</map>
 </div>
 
 </div>

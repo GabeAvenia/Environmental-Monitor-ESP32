@@ -1,0 +1,9 @@
+<map id="SensorManager::reconfigureSensors" name="SensorManager::reconfigureSensors">
+<area shape="rect" id="Node000001" title="Reconfigure sensors based on new configuration Updates the sensor configuration based on new JSON set..." alt="" coords="5,48,190,91"/>
+<area shape="rect" id="Node000002" href="$class_sensor_manager.html#a74cc0d66bb4d84866d8773d2a9c901fa" title="Compare old and new sensor configurations Determines which sensors need to be added or removed when r..." alt="" coords="238,5,492,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="190,49,275,33,276,38,191,54"/>
+<area shape="rect" id="Node000003" href="$class_i_sensor.html#a3dc74c4ea04ec253eadf843e9f98d9c8" title="Initialize sensor hardware." alt="" coords="304,56,426,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="190,67,289,67,289,72,190,72"/>
+<area shape="rect" id="Node000004" href="$class_i2_c_manager.html#a25ce4fa452bb9441a46e8fc956e9c3a2" title="Convert a string port name to I2CPort enum." alt="" coords="280,107,450,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="191,84,276,101,275,106,190,89"/>
+</map>

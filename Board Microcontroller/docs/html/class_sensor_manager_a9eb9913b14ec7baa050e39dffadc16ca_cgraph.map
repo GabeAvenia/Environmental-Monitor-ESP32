@@ -1,0 +1,17 @@
+<map id="SensorManager::reconnectAllSensors" name="SensorManager::reconnectAllSensors">
+<area shape="rect" id="Node000001" title="Attempt to reconnect all disconnected sensors." alt="" coords="5,69,183,112"/>
+<area shape="rect" id="Node000002" href="$class_sensor_manager.html#aeffa52fc110a4c89f419ff0c83b9a465" title="Get the sensor registry." alt="" coords="231,48,418,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,77,215,73,215,78,183,82"/>
+<area shape="rect" id="Node000003" href="$class_sensor_manager.html#af4f3a4f5c5145e75e1c5be0c6dbe6a93" title="Attempt to reconnect a disconnected sensor Tries to re&#45;establish communication with a sensor that has..." alt="" coords="236,99,413,141"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="183,99,220,104,220,109,182,105"/>
+<area shape="rect" id="Node000004" href="$class_sensor_manager.html#a83b53fec526382a408794f7fa38ca72f" title="Find a sensor by name." alt="" coords="466,5,648,32"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="394,96,417,84,431,74,440,63,450,52,465,42,477,36,480,40,467,46,453,56,444,67,434,78,419,89,397,100"/>
+<area shape="rect" id="Node000005" href="$class_i_sensor.html#a875ad4ccfd3be5bd26e3b5a374e92837" title="Get sensor type as string." alt="" coords="480,56,634,83"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="413,98,477,84,478,89,414,103"/>
+<area shape="rect" id="Node000006" href="$class_i_sensor.html#a3dc74c4ea04ec253eadf843e9f98d9c8" title="Initialize sensor hardware." alt="" coords="496,107,618,133"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="413,117,481,117,481,123,413,123"/>
+<area shape="rect" id="Node000007" href="$class_i_sensor.html#ac7678115a091121756493cd2da886a5c" title="Check if sensor is connected and working." alt="" coords="484,157,631,184"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="414,137,478,151,477,156,413,142"/>
+<area shape="rect" id="Node000008" href="$class_i_sensor.html#a22189914ca10da923d91ca3cfdeb7503" title="Perform sensor self&#45;test." alt="" coords="474,208,640,235"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="362,140,411,167,467,194,486,200,484,205,465,198,409,172,360,144"/>
+</map>

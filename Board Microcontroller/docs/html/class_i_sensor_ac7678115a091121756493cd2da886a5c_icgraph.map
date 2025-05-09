@@ -1,0 +1,21 @@
+<map id="ISensor::isConnected" name="ISensor::isConnected">
+<area shape="rect" id="Node000001" title="Check if sensor is connected and working." alt="" coords="959,113,1106,140"/>
+<area shape="rect" id="Node000002" href="$class_communication_manager.html#a14eb31396c8a6ecd19c802120dd6655b" title="Collect readings from a sensor into a values vector." alt="" coords="729,39,892,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="970,111,883,85,885,79,971,106"/>
+<area shape="rect" id="Node000007" href="$class_sensor_manager.html#af4f3a4f5c5145e75e1c5be0c6dbe6a93" title="Attempt to reconnect a disconnected sensor Tries to re&#45;establish communication with a sensor that has..." alt="" coords="722,105,899,148"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="943,129,900,129,900,124,943,124"/>
+<area shape="rect" id="Node000009" href="$class_sensor_manager.html#aaa624bba75f0859b4581080aaf57778c" title="Update readings for a single sensor." alt="" coords="710,172,911,215"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="971,148,885,174,883,169,970,142"/>
+<area shape="rect" id="Node000003" href="$class_communication_manager.html#ab395f48ff53e0ebe90d460b5db023a31" title="Handle measurement query command (MEAS?)" alt="" coords="474,39,636,81"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="713,63,637,63,637,57,713,57"/>
+<area shape="rect" id="Node000004" href="$class_communication_manager.html#a53fc653207de26539054ecf3ee15783f" title="Register all commands with their handlers." alt="" coords="216,5,400,48"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="458,50,400,42,401,36,459,44"/>
+<area shape="rect" id="Node000006" href="$class_communication_manager.html#a5d0e3daa257d372cea146b1eb1f228c0" title="Register all SCPI commands with the parser." alt="" coords="227,72,389,115"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="459,76,390,85,389,80,458,70"/>
+<area shape="rect" id="Node000005" href="$class_communication_manager.html#af1cfd2e3cf49258ebb493f6369fad06f" title="Initialize the communication system." alt="" coords="5,5,168,48"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="200,29,168,29,168,24,200,24"/>
+<area shape="rect" id="Node000008" href="$class_sensor_manager.html#a9eb9913b14ec7baa050e39dffadc16ca" title="Attempt to reconnect all disconnected sensors." alt="" coords="466,105,644,148"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="707,129,644,129,644,124,707,124"/>
+<area shape="rect" id="Node000010" href="$class_sensor_manager.html#a571b6b763e7f41e4105f72d90cde9c18" title="Update readings from all sensors Iterates through all sensors and updates their readings in the activ..." alt="" coords="448,180,662,207"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="694,196,663,196,663,191,694,191"/>
+</map>

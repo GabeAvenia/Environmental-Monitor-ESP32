@@ -1,0 +1,7 @@
+<map id="ISensor::getTypeString" name="ISensor::getTypeString">
+<area shape="rect" id="Node000001" title="Get sensor type as string." alt="" coords="456,13,610,40"/>
+<area shape="rect" id="Node000002" href="$class_sensor_manager.html#af4f3a4f5c5145e75e1c5be0c6dbe6a93" title="Attempt to reconnect a disconnected sensor Tries to re&#45;establish communication with a sensor that has..." alt="" coords="231,5,408,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="440,29,409,29,409,24,440,24"/>
+<area shape="rect" id="Node000003" href="$class_sensor_manager.html#a9eb9913b14ec7baa050e39dffadc16ca" title="Attempt to reconnect all disconnected sensors." alt="" coords="5,5,183,48"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="215,29,183,29,183,24,215,24"/>
+</map>

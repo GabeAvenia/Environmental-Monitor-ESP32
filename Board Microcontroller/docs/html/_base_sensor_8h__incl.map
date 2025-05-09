@@ -1,0 +1,18 @@
+<map id="src/sensors/BaseSensor.h" name="src/sensors/BaseSensor.h">
+<area shape="rect" id="Node000001" title="Base class for all sensor implementations." alt="" coords="209,5,384,32"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="152,155,228,181"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="273,35,244,54,217,82,203,111,196,140,190,139,198,109,213,78,240,50,270,30"/>
+<area shape="rect" id="Node000003" href="$_i_sensor_8h.html" title="Base interface for all sensors." alt="" coords="227,80,366,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="299,33,299,64,294,64,294,33"/>
+<area shape="rect" id="Node000004" href="$_interface_types_8h.html" title="Enumeration of sensor interface types." alt="" coords="297,155,416,181"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="326,30,356,50,369,63,380,79,385,95,384,111,374,142,369,140,379,111,379,95,375,81,365,66,353,54,323,35"/>
+<area shape="rect" id="Node000005" href="$_error_handler_8h.html" title="Error logging and reporting system with configurable output streams." alt="" coords="5,80,153,107"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="259,35,132,77,131,72,258,30"/>
+<area shape="rect" id="Node000007" href="$_sensor_types_8h.html" title="Enumeration of supported sensor types." alt="" coords="441,80,549,107"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="332,30,447,72,445,77,330,35"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="279,109,222,148,219,143,276,105"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="309,106,339,141,334,145,305,109"/>
+<area shape="poly" id="edge7_Node000005_Node000002" title=" " alt="" coords="100,105,159,144,156,148,97,109"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="50,155,108,181"/>
+<area shape="poly" id="edge8_Node000005_Node000006" title=" " alt="" coords="82,107,82,139,76,139,76,107"/>
+</map>

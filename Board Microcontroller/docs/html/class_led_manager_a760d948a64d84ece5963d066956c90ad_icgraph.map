@@ -1,0 +1,5 @@
+<map id="LedManager::setSetupMode" name="LedManager::setSetupMode">
+<area shape="rect" id="Node000001" title="Set LED to setup mode (solid yellow) Used during system initialization to indicate setup in progress." alt="" coords="185,5,369,32"/>
+<area shape="rect" id="Node000002" href="$class_led_manager.html#a3206a18813d40d261e0742e52740552c" title="Initialize the LED manager Sets up the NeoPixel hardware and initializes the LED to setup mode." alt="" coords="5,5,137,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,21,137,21,137,16,169,16"/>
+</map>

@@ -1,0 +1,17 @@
+<map id="src/managers/I2CManager.cpp" name="src/managers/I2CManager.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="80,5,280,32"/>
+<area shape="rect" id="Node000002" href="$_i2_c_manager_8h.html" title="Manager for I2C bus communication and device access." alt="" coords="129,80,232,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,33,183,64,178,64,178,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="70,229,146,256"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="129,100,98,106,66,117,37,133,13,156,9,165,9,174,18,191,38,207,62,221,60,225,35,212,14,195,3,175,4,164,9,153,33,129,64,112,96,101,128,95"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="23,155,82,181"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="159,110,89,149,87,144,157,105"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="222,229,280,256"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="233,97,261,104,290,115,317,131,339,153,343,164,344,174,335,193,316,210,294,224,292,220,313,206,330,190,339,173,338,165,334,156,314,135,288,119,260,109,232,102"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="278,155,325,181"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="203,105,269,144,266,149,200,110"/>
+<area shape="rect" id="Node000007" href="$_error_handler_8h.html" title="Error logging and reporting system with configurable output streams." alt="" coords="107,155,254,181"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="183,107,183,139,178,139,178,107"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="170,184,133,220,130,216,166,180"/>
+<area shape="poly" id="edge8_Node000007_Node000005" title=" " alt="" coords="195,180,230,216,226,220,191,184"/>
+</map>

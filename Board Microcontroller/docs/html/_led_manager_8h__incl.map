@@ -1,0 +1,14 @@
+<map id="src/managers/LedManager.h" name="src/managers/LedManager.h">
+<area shape="rect" id="Node000001" title="Manager for controlling the onboard NeoPixel LED." alt="" coords="79,5,265,32"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="35,155,112,181"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,35,44,53,27,66,13,81,8,97,14,113,26,129,43,143,39,147,22,133,9,116,3,97,8,79,23,62,42,48,82,30"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="23,80,161,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,35,119,72,115,68,156,31"/>
+<area shape="rect" id="Node000004" href="$_error_handler_8h.html" title="Error logging and reporting system with configurable output streams." alt="" coords="184,80,320,107"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="188,31,229,68,225,72,184,35"/>
+<area shape="rect" id="Node000006" href="$_constants_8h.html" title="System&#45;wide constants and configuration values." alt="" coords="343,80,436,107"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="211,30,338,72,336,77,209,35"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="222,110,120,151,118,146,220,105"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="223,155,281,181"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="255,107,255,139,249,139,249,107"/>
+</map>

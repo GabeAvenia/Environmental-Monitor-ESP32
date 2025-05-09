@@ -1,0 +1,7 @@
+<map id="TaskManager::commTaskFunction" name="TaskManager::commTaskFunction">
+<area shape="rect" id="Node000001" title=" " alt="" coords="485,5,706,32"/>
+<area shape="rect" id="Node000002" href="$class_task_manager.html#a19953b8342f0066d395ede8ec529c003" title="Start only the communication task." alt="" coords="237,5,437,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="469,21,438,21,438,16,469,16"/>
+<area shape="rect" id="Node000003" href="$class_task_manager.html#afb96f7a9368f83a7ba9802fd96fae244" title="Start all tasks on their respective cores." alt="" coords="5,5,189,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="221,21,189,21,189,16,221,16"/>
+</map>

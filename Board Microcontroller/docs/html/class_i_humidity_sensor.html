@@ -110,7 +110,7 @@ $(function(){initNavTree('class_i_humidity_sensor.html',''); initResizable(true)
 </div><!--header-->
 <div class="contents">
 
-<p>Interface for sensors that can measure humidity.  
+<p>Interface for sensors that can measure humidity Defines the methods that must be implemented by any sensor that provides humidity measurement capability.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_i_humidity_sensor_8h_source.html">IHumiditySensor.h</a>&gt;</code></p>
@@ -118,16 +118,27 @@ $(function(){initNavTree('class_i_humidity_sensor.html',''); initResizable(true)
 Inheritance diagram for IHumiditySensor:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_i_humidity_sensor__inherit__graph.png" border="0" usemap="#a_i_humidity_sensor_inherit__map" alt="Inheritance graph"/></div>
+<map name="a_i_humidity_sensor_inherit__map" id="a_i_humidity_sensor_inherit__map">
+<area shape="rect" title="Interface for sensors that can measure humidity Defines the methods that must be implemented by any s..." alt="" coords="121,5,288,117"/>
+<area shape="rect" href="class_s_h_t41_sensor.html" title="Implementation of the SHT41 temperature and humidity sensor." alt="" coords="5,176,192,651"/>
+<area shape="poly" title=" " alt="" coords="186,132,172,177,167,175,181,131"/>
+<area shape="rect" href="class_si7021_sensor.html" title="Implementation of the Si7021 temperature and humidity sensor." alt="" coords="216,165,403,661"/>
+<area shape="poly" title=" " alt="" coords="228,131,238,165,233,166,222,132"/>
+</map>
 </div>
 <div class="dynheader">
 Collaboration diagram for IHumiditySensor:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_i_humidity_sensor__coll__graph.png" border="0" usemap="#a_i_humidity_sensor_coll__map" alt="Collaboration graph"/></div>
+<map name="a_i_humidity_sensor_coll__map" id="a_i_humidity_sensor_coll__map">
+<area shape="rect" title="Interface for sensors that can measure humidity Defines the methods that must be implemented by any s..." alt="" coords="5,5,172,117"/>
+</map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4cfeda87f98c9467239f5386a4b562b7" id="r_a4cfeda87f98c9467239f5386a4b562b7"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cfeda87f98c9467239f5386a4b562b7">~IHumiditySensor</a> ()=default</td></tr>
+<tr class="memdesc:a4cfeda87f98c9467239f5386a4b562b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
 <tr class="separator:a4cfeda87f98c9467239f5386a4b562b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afec1199e10ebd2817e7696833b8214e0" id="r_afec1199e10ebd2817e7696833b8214e0"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afec1199e10ebd2817e7696833b8214e0">readHumidity</a> ()=0</td></tr>
 <tr class="memdesc:afec1199e10ebd2817e7696833b8214e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read current humidity from sensor.  <br /></td></tr>
@@ -137,9 +148,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac20f853e4f090989c5b1c2bc5f6ed31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface for sensors that can measure humidity. </p>
+<div class="textblock"><p>Interface for sensors that can measure humidity Defines the methods that must be implemented by any sensor that provides humidity measurement capability. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_humidity_sensor_8h_source.html#l00008">8</a> of file <a class="el" href="_i_humidity_sensor_8h_source.html">IHumiditySensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_humidity_sensor_8h_source.html#l00018">18</a> of file <a class="el" href="_i_humidity_sensor_8h_source.html">IHumiditySensor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4cfeda87f98c9467239f5386a4b562b7" name="a4cfeda87f98c9467239f5386a4b562b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4cfeda87f98c9467239f5386a4b562b7">&#9670;&#160;</a></span>~IHumiditySensor()</h2>
@@ -163,6 +174,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Virtual destructor. </p>
 
 </div>
 </div>
@@ -230,6 +243,13 @@ Public Member Functions</h2></td></tr>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_i_humidity_sensor_afec1199e10ebd2817e7696833b8214e0_icgraph.png" border="0" usemap="#aclass_i_humidity_sensor_afec1199e10ebd2817e7696833b8214e0_icgraph" alt=""/></div>
+<map name="aclass_i_humidity_sensor_afec1199e10ebd2817e7696833b8214e0_icgraph" id="aclass_i_humidity_sensor_afec1199e10ebd2817e7696833b8214e0_icgraph">
+<area shape="rect" title="Read current humidity from sensor." alt="" coords="516,13,719,40"/>
+<area shape="rect" href="class_sensor_manager.html#aaa624bba75f0859b4581080aaf57778c" title="Update readings for a single sensor." alt="" coords="268,5,468,48"/>
+<area shape="poly" title=" " alt="" coords="500,29,469,29,469,24,500,24"/>
+<area shape="rect" href="class_sensor_manager.html#a571b6b763e7f41e4105f72d90cde9c18" title="Update readings from all sensors Iterates through all sensors and updates their readings in the activ..." alt="" coords="5,13,220,40"/>
+<area shape="poly" title=" " alt="" coords="252,29,220,29,220,24,252,24"/>
+</map>
 </div>
 
 </div>

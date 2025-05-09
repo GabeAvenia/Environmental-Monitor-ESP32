@@ -1,0 +1,11 @@
+<map id="SensorManager::findSensor" name="SensorManager::findSensor">
+<area shape="rect" id="Node000001" title="Find a sensor by name." alt="" coords="516,47,698,73"/>
+<area shape="rect" id="Node000002" href="$class_sensor_manager.html#af4f3a4f5c5145e75e1c5be0c6dbe6a93" title="Attempt to reconnect a disconnected sensor Tries to re&#45;establish communication with a sensor that has..." alt="" coords="279,5,456,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="500,48,456,42,457,36,501,43"/>
+<area shape="rect" id="Node000004" href="$class_sensor_manager.html#aaa624bba75f0859b4581080aaf57778c" title="Update readings for a single sensor." alt="" coords="268,72,468,115"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="501,77,469,82,468,77,500,72"/>
+<area shape="rect" id="Node000003" href="$class_sensor_manager.html#a9eb9913b14ec7baa050e39dffadc16ca" title="Attempt to reconnect all disconnected sensors." alt="" coords="24,5,201,48"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="264,29,202,29,202,24,264,24"/>
+<area shape="rect" id="Node000005" href="$class_sensor_manager.html#a571b6b763e7f41e4105f72d90cde9c18" title="Update readings from all sensors Iterates through all sensors and updates their readings in the activ..." alt="" coords="5,80,220,107"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="252,96,220,96,220,91,252,91"/>
+</map>

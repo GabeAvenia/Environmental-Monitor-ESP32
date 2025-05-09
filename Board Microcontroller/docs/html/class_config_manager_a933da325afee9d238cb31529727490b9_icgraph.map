@@ -1,0 +1,10 @@
+<map id="ConfigManager::loadConfigFromFile" name="ConfigManager::loadConfigFromFile">
+<area shape="rect" id="Node000001" title="Load configuration from file." alt="" coords="249,56,428,99"/>
+<area shape="rect" id="Node000002" href="$class_config_manager.html#a0497343220fc493f5cf9574922508908" title="Initialize the configuration manager Loads the configuration from file or creates a default one if no..." alt="" coords="29,5,177,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="235,54,159,35,160,30,236,49"/>
+<area shape="rect" id="Node000003" href="$class_config_manager.html#ad64b8ab76c62c5acb0b4a35d7ac754a7" title="Create default configuration." alt="" coords="5,56,201,99"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="233,89,201,89,201,84,233,84"/>
+<area shape="rect" id="Node000004" href="$class_config_manager.html#abbfa7544b3ce7a29198c353ab9805e46" title="Update configuration from JSON." alt="" coords="6,123,200,165"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="247,106,182,125,180,119,245,101"/>
+<area shape="poly" id="edge3_Node000003_Node000001" title=" " alt="" coords="216,66,248,66,248,71,216,71"/>
+</map>

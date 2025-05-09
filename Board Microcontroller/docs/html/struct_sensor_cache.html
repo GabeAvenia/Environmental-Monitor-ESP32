@@ -106,11 +106,11 @@ $(function(){initNavTree('struct_sensor_cache.html',''); initResizable(true); })
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="struct_sensor_cache-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SensorCache Struct Reference</div></div>
+  <div class="headertitle"><div class="title">SensorCache Struct Reference<div class="ingroups"><a class="el" href="group__sensor__management.html">Sensor Management</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Structure for caching sensor readings.  
+<p>Structure for caching sensor readings Used to store the most recent readings from sensors to avoid frequent hardware reads and provide thread-safe access.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>&gt;</code></p>
@@ -118,27 +118,36 @@ $(function(){initNavTree('struct_sensor_cache.html',''); initResizable(true); })
 Collaboration diagram for SensorCache:</div>
 <div class="dyncontent">
 <div class="center"><img src="struct_sensor_cache__coll__graph.png" border="0" usemap="#a_sensor_cache_coll__map" alt="Collaboration graph"/></div>
+<map name="a_sensor_cache_coll__map" id="a_sensor_cache_coll__map">
+<area shape="rect" title="Structure for caching sensor readings Used to store the most recent readings from sensors to avoid fr..." alt="" coords="5,5,123,181"/>
+</map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aa0436e325fa21c15633c913a977438e7" id="r_aa0436e325fa21c15633c913a977438e7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0436e325fa21c15633c913a977438e7">temperature</a> = NAN</td></tr>
+<tr class="memdesc:aa0436e325fa21c15633c913a977438e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature value in Celsius.  <br /></td></tr>
 <tr class="separator:aa0436e325fa21c15633c913a977438e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b15906a04f3293e51c8c568e467bd21" id="r_a8b15906a04f3293e51c8c568e467bd21"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b15906a04f3293e51c8c568e467bd21">humidity</a> = NAN</td></tr>
+<tr class="memdesc:a8b15906a04f3293e51c8c568e467bd21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Humidity value in percentage (0-100)  <br /></td></tr>
 <tr class="separator:a8b15906a04f3293e51c8c568e467bd21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdd96eb8dfacd3f9d68e8413dbbdc500" id="r_acdd96eb8dfacd3f9d68e8413dbbdc500"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdd96eb8dfacd3f9d68e8413dbbdc500">tempTimestamp</a> = 0</td></tr>
+<tr class="memdesc:acdd96eb8dfacd3f9d68e8413dbbdc500"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timestamp of temperature reading.  <br /></td></tr>
 <tr class="separator:acdd96eb8dfacd3f9d68e8413dbbdc500"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60c7012208f6971d9c435438e0761895" id="r_a60c7012208f6971d9c435438e0761895"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60c7012208f6971d9c435438e0761895">humTimestamp</a> = 0</td></tr>
+<tr class="memdesc:a60c7012208f6971d9c435438e0761895"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timestamp of humidity reading.  <br /></td></tr>
 <tr class="separator:a60c7012208f6971d9c435438e0761895"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a530057a8b8e4fb8d7be43706dca2c498" id="r_a530057a8b8e4fb8d7be43706dca2c498"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a530057a8b8e4fb8d7be43706dca2c498">tempValid</a> = false</td></tr>
+<tr class="memdesc:a530057a8b8e4fb8d7be43706dca2c498"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validity flag for temperature reading.  <br /></td></tr>
 <tr class="separator:a530057a8b8e4fb8d7be43706dca2c498"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5276839eb98ad08fba370cd41f8a0c1f" id="r_a5276839eb98ad08fba370cd41f8a0c1f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5276839eb98ad08fba370cd41f8a0c1f">humValid</a> = false</td></tr>
+<tr class="memdesc:a5276839eb98ad08fba370cd41f8a0c1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validity flag for humidity reading.  <br /></td></tr>
 <tr class="separator:a5276839eb98ad08fba370cd41f8a0c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Structure for caching sensor readings. </p>
+<div class="textblock"><p>Structure for caching sensor readings Used to store the most recent readings from sensors to avoid frequent hardware reads and provide thread-safe access. </p>
 
-<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00024">24</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00036">36</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a8b15906a04f3293e51c8c568e467bd21" name="a8b15906a04f3293e51c8c568e467bd21"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8b15906a04f3293e51c8c568e467bd21">&#9670;&#160;</a></span>humidity</h2>
@@ -152,7 +161,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00026">26</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
+<p>Humidity value in percentage (0-100) </p>
+
+<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00038">38</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_sensor_manager_8cpp_source.html#l00320">SensorManager::updateSensorCache()</a>.</p>
 
@@ -170,7 +181,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00028">28</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
+<p>Timestamp of humidity reading. </p>
+
+<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00040">40</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_sensor_manager_8cpp_source.html#l00320">SensorManager::updateSensorCache()</a>.</p>
 
@@ -188,7 +201,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00030">30</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
+<p>Validity flag for humidity reading. </p>
+
+<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00042">42</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_sensor_manager_8cpp_source.html#l00320">SensorManager::updateSensorCache()</a>.</p>
 
@@ -206,7 +221,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00025">25</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
+<p>Temperature value in Celsius. </p>
+
+<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00037">37</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_sensor_manager_8cpp_source.html#l00320">SensorManager::updateSensorCache()</a>.</p>
 
@@ -224,7 +241,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00027">27</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
+<p>Timestamp of temperature reading. </p>
+
+<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00039">39</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_sensor_manager_8cpp_source.html#l00320">SensorManager::updateSensorCache()</a>.</p>
 
@@ -242,7 +261,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00029">29</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
+<p>Validity flag for temperature reading. </p>
+
+<p class="definition">Definition at line <a class="el" href="_sensor_manager_8h_source.html#l00041">41</a> of file <a class="el" href="_sensor_manager_8h_source.html">SensorManager.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_sensor_manager_8cpp_source.html#l00320">SensorManager::updateSensorCache()</a>.</p>
 

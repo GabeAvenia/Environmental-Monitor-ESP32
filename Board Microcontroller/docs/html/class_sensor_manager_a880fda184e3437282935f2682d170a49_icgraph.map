@@ -1,0 +1,7 @@
+<map id="SensorManager::getActiveCache" name="SensorManager::getActiveCache">
+<area shape="rect" id="Node000001" title="Get the active buffer being written to." alt="" coords="516,5,691,48"/>
+<area shape="rect" id="Node000002" href="$class_sensor_manager.html#aaa624bba75f0859b4581080aaf57778c" title="Update readings for a single sensor." alt="" coords="268,5,468,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="500,29,469,29,469,24,500,24"/>
+<area shape="rect" id="Node000003" href="$class_sensor_manager.html#a571b6b763e7f41e4105f72d90cde9c18" title="Update readings from all sensors Iterates through all sensors and updates their readings in the activ..." alt="" coords="5,13,220,40"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="252,29,220,29,220,24,252,24"/>
+</map>

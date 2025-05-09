@@ -1,0 +1,5 @@
+<map id="I2CManager::registerWire" name="I2CManager::registerWire">
+<area shape="rect" id="Node000001" title="Register a TwoWire instance for a specific I2C port Associates a TwoWire instance with a specific I2C..." alt="" coords="225,5,395,32"/>
+<area shape="rect" id="Node000002" href="$class_i2_c_manager.html#a05e1f11d34f59577afbf8ebeb3a9f1d2" title="Constructor for I2CManager Initializes the manager and registers default I2C buses." alt="" coords="5,5,177,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,21,177,21,177,16,209,16"/>
+</map>

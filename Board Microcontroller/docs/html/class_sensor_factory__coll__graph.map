@@ -1,0 +1,16 @@
+<map id="SensorFactory" name="SensorFactory">
+<area shape="rect" id="Node000001" title="Factory class for creating sensors based on configuration This class is responsible for creating inst..." alt="" coords="407,1957,614,2133"/>
+<area shape="rect" id="Node000002" href="$class_error_handler.html" title="Handles error logging and reporting with configurable output streams This class manages error reporti..." alt="" coords="324,176,485,544"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="326,405,269,441,210,488,156,544,134,575,115,609,94,663,74,729,42,885,20,1067,9,1260,12,1452,19,1543,30,1629,45,1709,64,1780,87,1842,115,1892,140,1923,171,1949,204,1971,241,1989,317,2016,391,2031,389,2037,316,2021,239,1994,202,1976,167,1953,137,1926,110,1895,82,1844,59,1782,39,1710,25,1630,14,1544,7,1452,4,1260,14,1066,36,885,69,727,89,662,110,607,129,573,152,541,207,484,266,437,323,400"/>
+<area shape="rect" id="Node000004" href="$class_led_manager.html" title="Manager for controlling the onboard NeoPixel LED This class provides a unified interface for controll..." alt="" coords="203,608,425,1893"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="327,497,302,569,297,592,291,591,297,567,322,495"/>
+<area shape="rect" id="Node000005" href="$class_i2_c_manager.html" title="Manages I2C bus configurations and communication This class provides a central management system for ..." alt="" coords="450,1099,571,1403"/>
+<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="462,543,466,568,486,702,499,838,511,1082,506,1082,493,838,480,702,461,568,456,544"/>
+<area shape="rect" id="Node000006" href="$class_s_p_i_manager.html" title="Class for managing SPI communications with sensors This class provides a centralized management syste..." alt="" coords="594,981,775,1520"/>
+<area shape="poly" id="edge8_Node000006_Node000002" title=" " alt="" coords="487,450,540,524,565,565,585,607,616,694,640,785,658,876,671,964,665,965,652,877,635,786,611,696,580,609,560,567,536,526,483,453"/>
+<area shape="rect" id="Node000003" href="$struct_output_config.html" title="Structure to hold output configuration Configures an output stream with the minimum severity level to..." alt="" coords="358,5,451,96"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="408,96,408,159,402,159,402,96"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="377,608,382,560,387,561,382,608"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="513,1402,513,1941,508,1941,508,1402"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="680,1520,670,1621,652,1726,627,1833,593,1934,589,1943,584,1941,588,1932,622,1831,647,1725,664,1620,675,1519"/>
+</map>

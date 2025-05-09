@@ -1,0 +1,19 @@
+<map id="SensorManager::updateReadings" name="SensorManager::updateReadings">
+<area shape="rect" id="Node000001" title="Update readings from all sensors Iterates through all sensors and updates their readings in the activ..." alt="" coords="5,173,220,200"/>
+<area shape="rect" id="Node000002" href="$class_sensor_manager.html#aaa624bba75f0859b4581080aaf57778c" title="Update readings for a single sensor." alt="" coords="268,165,468,208"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,184,252,184,252,189,220,189"/>
+<area shape="rect" id="Node000003" href="$class_sensor_manager.html#a83b53fec526382a408794f7fa38ca72f" title="Find a sensor by name." alt="" coords="526,5,709,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="383,163,437,103,474,70,515,42,527,36,529,41,517,46,477,74,441,106,387,167"/>
+<area shape="rect" id="Node000004" href="$class_sensor_manager.html#a880fda184e3437282935f2682d170a49" title="Get the active buffer being written to." alt="" coords="530,56,705,99"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="406,163,515,108,531,102,533,107,517,113,408,167"/>
+<area shape="rect" id="Node000005" href="$class_i_sensor.html#a121bd5c03bbb2c9f27addea330bdc705" title="Get interface implementation." alt="" coords="546,123,689,149"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="468,164,533,150,534,156,469,169"/>
+<area shape="rect" id="Node000006" href="$class_i_sensor.html#ac7678115a091121756493cd2da886a5c" title="Check if sensor is connected and working." alt="" coords="544,173,691,200"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="469,184,528,184,528,189,469,189"/>
+<area shape="rect" id="Node000007" href="$class_i_humidity_sensor.html#afec1199e10ebd2817e7696833b8214e0" title="Read current humidity from sensor." alt="" coords="516,224,719,251"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="469,204,534,218,533,223,468,210"/>
+<area shape="rect" id="Node000008" href="$class_i_temperature_sensor.html#a05d1fe036c425114f331d817fc24c6e7" title="Read current temperature from sensor." alt="" coords="548,275,687,317"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="408,206,517,260,535,267,533,272,515,265,406,211"/>
+<area shape="rect" id="Node000009" href="$class_i_sensor.html#a0aa4dae9e1a5405d10ab3d5354b816af" title="Check if sensor supports a specific interface." alt="" coords="530,341,705,368"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="387,206,441,267,477,299,517,327,529,333,527,338,515,332,474,304,437,271,383,210"/>
+</map>

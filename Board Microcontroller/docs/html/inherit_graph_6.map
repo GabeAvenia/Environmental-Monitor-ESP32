@@ -1,0 +1,18 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$class_i_humidity_sensor.html" title="Interface for sensors that can measure humidity Defines the methods that must be implemented by any s..." alt="" coords="130,5,248,32"/>
+<area shape="rect" id="Node000001" href="$class_s_h_t41_sensor.html" title="Implementation of the SHT41 temperature and humidity sensor." alt="" coords="306,56,409,83"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="251,34,311,53,310,58,249,39"/>
+<area shape="rect" id="Node000005" href="$class_si7021_sensor.html" title="Implementation of the Si7021 temperature and humidity sensor." alt="" coords="306,5,409,32"/>
+<area shape="poly" id="edge2_Node000000_Node000005" title=" " alt="" coords="263,16,306,16,306,21,263,21"/>
+<area shape="rect" id="Node000006" href="$class_i_sensor.html" title="Base interface for all sensors Defines core functionality that all sensors must implement,..." alt="" coords="5,107,72,133"/>
+<area shape="rect" id="Node000002" href="$class_base_sensor.html" title="Base class for all sensor implementations This abstract class implements common functionality for all..." alt="" coords="143,107,235,133"/>
+<area shape="poly" id="edge3_Node000006_Node000002" title=" " alt="" coords="87,117,142,117,142,123,87,123"/>
+<area shape="poly" id="edge5_Node000002_Node000001" title=" " alt="" coords="249,99,310,81,312,86,251,104"/>
+<area shape="poly" id="edge6_Node000002_Node000005" title=" " alt="" coords="248,98,256,92,271,80,280,68,290,56,304,42,323,30,326,35,308,46,294,59,284,71,275,84,260,97,251,102"/>
+<area shape="rect" id="Node000003" href="$class_p_t100_sensor.html" title="Implementation of the PT100 RTD temperature sensor with MAX31865 ADC." alt="" coords="308,107,408,133"/>
+<area shape="poly" id="edge4_Node000002_Node000003" title=" " alt="" coords="251,117,307,117,307,123,251,123"/>
+<area shape="rect" id="Node000004" href="$class_i_temperature_sensor.html" title="Interface for sensors that can measure temperature Defines the methods that must be implemented by an..." alt="" coords="120,56,258,83"/>
+<area shape="poly" id="edge8_Node000004_Node000001" title=" " alt="" coords="274,67,305,67,305,72,274,72"/>
+<area shape="poly" id="edge9_Node000004_Node000005" title=" " alt="" coords="249,49,310,30,311,35,251,54"/>
+<area shape="poly" id="edge7_Node000004_Node000003" title=" " alt="" coords="251,85,311,104,310,109,249,90"/>
+</map>

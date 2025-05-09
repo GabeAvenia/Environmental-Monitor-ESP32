@@ -1,0 +1,21 @@
+<map id="SHT41Sensor" name="SHT41Sensor">
+<area shape="rect" id="Node000001" title="Implementation of the SHT41 temperature and humidity sensor." alt="" coords="506,1957,693,2411"/>
+<area shape="rect" id="Node000002" href="$class_base_sensor.html" title="Base class for all sensor implementations This abstract class implements common functionality for all..." alt="" coords="5,1120,138,1381"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="59,1396,57,1511,60,1575,68,1640,80,1706,98,1771,122,1833,153,1892,187,1939,228,1981,273,2020,321,2053,419,2109,508,2148,505,2153,417,2114,319,2058,270,2024,224,1985,183,1942,148,1895,117,1836,92,1773,75,1707,63,1641,55,1575,52,1511,53,1396"/>
+<area shape="rect" id="Node000003" href="$class_i_sensor.html" title="Base interface for all sensors Defines core functionality that all sensors must implement,..." alt="" coords="5,240,138,480"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="74,495,74,1120,69,1120,69,495"/>
+<area shape="rect" id="Node000004" href="$class_error_handler.html" title="Handles error logging and reporting with configurable output streams This class manages error reporti..." alt="" coords="210,176,371,544"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="213,467,183,517,159,569,136,636,118,706,92,849,78,985,73,1103,68,1103,73,984,87,848,113,705,131,635,154,567,178,514,208,465"/>
+<area shape="rect" id="Node000006" href="$class_led_manager.html" title="Manager for controlling the onboard NeoPixel LED This class provides a unified interface for controll..." alt="" coords="162,608,384,1893"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="249,544,246,568,244,591,238,591,241,568,244,543"/>
+<area shape="rect" id="Node000009" href="$class_i2_c_manager.html" title="Manages I2C bus configurations and communication This class provides a central management system for ..." alt="" coords="409,1099,530,1403"/>
+<area shape="poly" id="edge10_Node000009_Node000004" title=" " alt="" coords="373,482,394,524,410,567,428,632,443,700,463,835,473,966,476,1082,471,1082,468,966,458,836,438,701,423,634,405,569,389,526,368,484"/>
+<area shape="rect" id="Node000005" href="$struct_output_config.html" title="Structure to hold output configuration Configures an output stream with the minimum severity level to..." alt="" coords="244,5,337,96"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="293,96,293,159,288,159,288,96"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="328,608,325,568,325,561,330,561,330,568,333,608"/>
+<area shape="rect" id="Node000007" href="$class_i_temperature_sensor.html" title="Interface for sensors that can measure temperature Defines the methods that must be implemented by an..." alt="" coords="554,1195,741,1307"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="647,1322,614,1958,609,1957,642,1321"/>
+<area shape="rect" id="Node000008" href="$class_i_humidity_sensor.html" title="Interface for sensors that can measure humidity Defines the methods that must be implemented by any s..." alt="" coords="766,1195,933,1307"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="849,1322,841,1434,825,1578,797,1737,778,1817,756,1894,728,1964,696,2031,691,2028,724,1962,751,1892,773,1815,792,1736,820,1577,836,1433,844,1322"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="479,1402,498,1652,514,1793,535,1933,537,1940,532,1941,530,1934,509,1794,492,1652,473,1403"/>
+</map>

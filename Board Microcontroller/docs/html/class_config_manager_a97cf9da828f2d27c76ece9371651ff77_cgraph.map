@@ -1,0 +1,17 @@
+<map id="ConfigManager::updateSensorConfigFromJson" name="ConfigManager::updateSensorConfigFromJson">
+<area shape="rect" id="Node000001" title="Granular configuration methods." alt="" coords="5,136,203,179"/>
+<area shape="rect" id="Node000002" href="$class_config_manager.html#a0fdb87c9c3a3f96415d092396a49abfa" title="Notify all registered callbacks about configuration changes." alt="" coords="496,11,683,54"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,134,142,107,172,77,208,48,250,26,307,10,367,4,426,4,481,9,480,14,426,9,368,9,308,15,252,31,211,52,175,81,145,111,123,138"/>
+<area shape="rect" id="Node000003" href="$class_i2_c_manager.html#ad9ebf3c8541e2fa0fd1131f3d68391de" title="Convert I2CPort enum to string." alt="" coords="504,136,675,163"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="152,177,199,196,251,210,306,219,350,222,393,220,447,210,503,192,551,169,553,173,505,197,449,215,393,225,350,228,306,224,250,215,197,201,150,182"/>
+<area shape="rect" id="Node000004" href="$class_config_manager.html#a42490c2c73a6c706b686ef29bc7a9413" title=" " alt="" coords="259,107,440,150"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="203,143,243,138,244,144,203,149"/>
+<area shape="rect" id="Node000005" href="$class_i2_c_manager.html#a25ce4fa452bb9441a46e8fc956e9c3a2" title="Convert a string port name to I2CPort enum." alt="" coords="264,174,434,200"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="203,167,249,172,249,178,203,172"/>
+<area shape="rect" id="Node000006" href="$class_config_manager.html#ac224a48d40874fc3cd6c0964fd4235c8" title="Update sensor configurations." alt="" coords="251,40,448,83"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="152,133,250,93,267,86,268,91,252,98,154,138"/>
+<area shape="rect" id="Node000007" href="$class_config_manager.html#a9701bc74bdadf276a528780a07ed931d" title="Helper methods for file operations." alt="" coords="258,275,441,318"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="135,177,188,215,252,254,276,266,274,271,249,259,185,220,132,182"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="448,47,480,43,481,48,449,52"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="417,81,449,93,541,128,539,133,447,98,415,86"/>
+</map>

@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "GPower Environmental Monitor", "index.html", [
+    [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -60,8 +61,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_base_sensor_8h.html",
-"class_led_manager.html#a5c1c079c44fb816130ae5d1789d2201b",
-"functions_m.html"
+"class_p_t100_sensor.html#a5a58ad4bdf8fb0a3388959f3f827ec5c",
+"group__i2c__management.html#gga7999ce31693f8df62009a6af63775c17a11042a5d329ddd4e369c1350dc2e87d4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

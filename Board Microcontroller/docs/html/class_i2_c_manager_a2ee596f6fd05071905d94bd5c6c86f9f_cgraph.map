@@ -1,0 +1,10 @@
+<map id="I2CManager::devicePresent" name="I2CManager::devicePresent">
+<area shape="rect" id="Node000001" title="Check if a device is present at the specified address on a specific I2C port." alt="" coords="5,56,189,83"/>
+<area shape="rect" id="Node000002" href="$class_i2_c_manager.html#ab355e02449b1995ef0a1b06873da700c" title="Get the TwoWire object for a specific I2C port." alt="" coords="259,5,404,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,53,251,33,252,38,163,58"/>
+<area shape="rect" id="Node000003" href="$class_i2_c_manager.html#ad9ebf3c8541e2fa0fd1131f3d68391de" title="Convert I2CPort enum to string." alt="" coords="474,31,644,57"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="189,62,458,47,459,52,189,67"/>
+<area shape="rect" id="Node000004" href="$class_i2_c_manager.html#ae6de290f0cc8eaa0b253a91300be0770" title="Check if a specific I2C port is initialized." alt="" coords="237,107,426,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="163,81,252,100,251,105,162,86"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="405,24,459,30,458,35,404,29"/>
+</map>

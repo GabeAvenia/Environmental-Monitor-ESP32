@@ -120,16 +120,48 @@ $(function(){initNavTree('class_s_h_t41_sensor.html',''); initResizable(true); }
 Inheritance diagram for SHT41Sensor:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_s_h_t41_sensor__inherit__graph.png" border="0" usemap="#a_s_h_t41_sensor_inherit__map" alt="Inheritance graph"/></div>
+<map name="a_s_h_t41_sensor_inherit__map" id="a_s_h_t41_sensor_inherit__map">
+<area shape="rect" title="Implementation of the SHT41 temperature and humidity sensor." alt="" coords="162,624,349,1099"/>
+<area shape="rect" href="class_base_sensor.html" title="Base class for all sensor implementations This abstract class implements common functionality for all..." alt="" coords="5,293,138,576"/>
+<area shape="poly" title=" " alt="" coords="141,588,165,644,160,646,136,590"/>
+<area shape="rect" href="class_i_sensor.html" title="Base interface for all sensors Defines core functionality that all sensors must implement,..." alt="" coords="5,5,138,245"/>
+<area shape="poly" title=" " alt="" coords="74,260,74,294,69,294,69,260"/>
+<area shape="rect" href="class_i_temperature_sensor.html" title="Interface for sensors that can measure temperature Defines the methods that must be implemented by an..." alt="" coords="162,379,349,491"/>
+<area shape="poly" title=" " alt="" coords="258,506,258,624,253,624,253,506"/>
+<area shape="rect" href="class_i_humidity_sensor.html" title="Interface for sensors that can measure humidity Defines the methods that must be implemented by any s..." alt="" coords="374,379,541,491"/>
+<area shape="poly" title=" " alt="" coords="427,505,352,665,347,662,422,503"/>
+</map>
 </div>
 <div class="dynheader">
 Collaboration diagram for SHT41Sensor:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_s_h_t41_sensor__coll__graph.png" border="0" usemap="#a_s_h_t41_sensor_coll__map" alt="Collaboration graph"/></div>
+<map name="a_s_h_t41_sensor_coll__map" id="a_s_h_t41_sensor_coll__map">
+<area shape="rect" title="Implementation of the SHT41 temperature and humidity sensor." alt="" coords="506,1957,693,2411"/>
+<area shape="rect" href="class_base_sensor.html" title="Base class for all sensor implementations This abstract class implements common functionality for all..." alt="" coords="5,1120,138,1381"/>
+<area shape="poly" title=" " alt="" coords="59,1396,57,1511,60,1575,68,1640,80,1706,98,1771,122,1833,153,1892,187,1939,228,1981,273,2020,321,2053,419,2109,508,2148,505,2153,417,2114,319,2058,270,2024,224,1985,183,1942,148,1895,117,1836,92,1773,75,1707,63,1641,55,1575,52,1511,53,1396"/>
+<area shape="rect" href="class_i_sensor.html" title="Base interface for all sensors Defines core functionality that all sensors must implement,..." alt="" coords="5,240,138,480"/>
+<area shape="poly" title=" " alt="" coords="74,495,74,1120,69,1120,69,495"/>
+<area shape="rect" href="class_error_handler.html" title="Handles error logging and reporting with configurable output streams This class manages error reporti..." alt="" coords="210,176,371,544"/>
+<area shape="poly" title=" " alt="" coords="213,467,183,517,159,569,136,636,118,706,92,849,78,985,73,1103,68,1103,73,984,87,848,113,705,131,635,154,567,178,514,208,465"/>
+<area shape="rect" href="class_led_manager.html" title="Manager for controlling the onboard NeoPixel LED This class provides a unified interface for controll..." alt="" coords="162,608,384,1893"/>
+<area shape="poly" title=" " alt="" coords="249,544,246,568,244,591,238,591,241,568,244,543"/>
+<area shape="rect" href="class_i2_c_manager.html" title="Manages I2C bus configurations and communication This class provides a central management system for ..." alt="" coords="409,1099,530,1403"/>
+<area shape="poly" title=" " alt="" coords="373,482,394,524,410,567,428,632,443,700,463,835,473,966,476,1082,471,1082,468,966,458,836,438,701,423,634,405,569,389,526,368,484"/>
+<area shape="rect" href="struct_output_config.html" title="Structure to hold output configuration Configures an output stream with the minimum severity level to..." alt="" coords="244,5,337,96"/>
+<area shape="poly" title=" " alt="" coords="293,96,293,159,288,159,288,96"/>
+<area shape="poly" title=" " alt="" coords="328,608,325,568,325,561,330,561,330,568,333,608"/>
+<area shape="rect" href="class_i_temperature_sensor.html" title="Interface for sensors that can measure temperature Defines the methods that must be implemented by an..." alt="" coords="554,1195,741,1307"/>
+<area shape="poly" title=" " alt="" coords="647,1322,614,1958,609,1957,642,1321"/>
+<area shape="rect" href="class_i_humidity_sensor.html" title="Interface for sensors that can measure humidity Defines the methods that must be implemented by any s..." alt="" coords="766,1195,933,1307"/>
+<area shape="poly" title=" " alt="" coords="849,1322,841,1434,825,1578,797,1737,778,1817,756,1894,728,1964,696,2031,691,2028,724,1962,751,1892,773,1815,792,1736,820,1577,836,1433,844,1322"/>
+<area shape="poly" title=" " alt="" coords="479,1402,498,1652,514,1793,535,1933,537,1940,532,1941,530,1934,509,1794,492,1652,473,1403"/>
+</map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a37c4f5b7957a9c45797b391377e40375" id="r_a37c4f5b7957a9c45797b391377e40375"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37c4f5b7957a9c45797b391377e40375">SHT41Sensor</a> (const String &amp;sensorName, int address, TwoWire *i2cBus, <a class="el" href="class_i2_c_manager.html">I2CManager</a> *i2cMgr, <a class="el" href="_i2_c_manager_8h.html#a7999ce31693f8df62009a6af63775c17">I2CPort</a> port, <a class="el" href="class_error_handler.html">ErrorHandler</a> *err)</td></tr>
+<tr class="memitem:a37c4f5b7957a9c45797b391377e40375" id="r_a37c4f5b7957a9c45797b391377e40375"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37c4f5b7957a9c45797b391377e40375">SHT41Sensor</a> (const String &amp;sensorName, int address, TwoWire *i2cBus, <a class="el" href="class_i2_c_manager.html">I2CManager</a> *i2cMgr, <a class="el" href="group__i2c__management.html#ga7999ce31693f8df62009a6af63775c17">I2CPort</a> port, <a class="el" href="class_error_handler.html">ErrorHandler</a> *err)</td></tr>
 <tr class="memdesc:a37c4f5b7957a9c45797b391377e40375"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="class_s_h_t41_sensor.html" title="Implementation of the SHT41 temperature and humidity sensor.">SHT41Sensor</a>.  <br /></td></tr>
 <tr class="separator:a37c4f5b7957a9c45797b391377e40375"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96fb3c7e1ebcfb0046449ba9943a3105" id="r_a96fb3c7e1ebcfb0046449ba9943a3105"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96fb3c7e1ebcfb0046449ba9943a3105">~SHT41Sensor</a> ()</td></tr>
@@ -156,15 +188,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a01aef427e28039d1446ac3e7570fa5e0" id="r_a01aef427e28039d1446ac3e7570fa5e0"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a01aef427e28039d1446ac3e7570fa5e0">getSensorInfo</a> () const override</td></tr>
 <tr class="memdesc:a01aef427e28039d1446ac3e7570fa5e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get detailed information about the sensor.  <br /></td></tr>
 <tr class="separator:a01aef427e28039d1446ac3e7570fa5e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fa85995ec67a565f450a45b96cdb0d7" id="r_a0fa85995ec67a565f450a45b96cdb0d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fa85995ec67a565f450a45b96cdb0d7">supportsInterface</a> (<a class="el" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a> <a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) const override</td></tr>
+<tr class="memitem:a0fa85995ec67a565f450a45b96cdb0d7" id="r_a0fa85995ec67a565f450a45b96cdb0d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fa85995ec67a565f450a45b96cdb0d7">supportsInterface</a> (<a class="el" href="group__sensor__interfaces.html#gaf1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a> <a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) const override</td></tr>
 <tr class="memdesc:a0fa85995ec67a565f450a45b96cdb0d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this sensor supports a specific interface.  <br /></td></tr>
 <tr class="separator:a0fa85995ec67a565f450a45b96cdb0d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fd023dbb140fc978c3bbcddf944d076" id="r_a3fd023dbb140fc978c3bbcddf944d076"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fd023dbb140fc978c3bbcddf944d076">getInterface</a> (<a class="el" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a> <a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) const override</td></tr>
+<tr class="memitem:a3fd023dbb140fc978c3bbcddf944d076" id="r_a3fd023dbb140fc978c3bbcddf944d076"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fd023dbb140fc978c3bbcddf944d076">getInterface</a> (<a class="el" href="group__sensor__interfaces.html#gaf1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a> <a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) const override</td></tr>
 <tr class="memdesc:a3fd023dbb140fc978c3bbcddf944d076"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the interface implementation for a specific type.  <br /></td></tr>
 <tr class="separator:a3fd023dbb140fc978c3bbcddf944d076"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_base_sensor"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_base_sensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_base_sensor.html">BaseSensor</a></td></tr>
-<tr class="memitem:a583f6418d773b6a5256c65c81b676494 inherit pub_methods_class_base_sensor" id="r_a583f6418d773b6a5256c65c81b676494"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor</a> (const String &amp;sensorName, <a class="el" href="_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435">SensorType</a> sensorType, <a class="el" href="class_error_handler.html">ErrorHandler</a> *err)</td></tr>
-<tr class="memdesc:a583f6418d773b6a5256c65c81b676494 inherit pub_methods_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="class_base_sensor.html" title="Base class for all sensor implementations.">BaseSensor</a>.  <br /></td></tr>
+<tr class="memitem:a583f6418d773b6a5256c65c81b676494 inherit pub_methods_class_base_sensor" id="r_a583f6418d773b6a5256c65c81b676494"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor</a> (const String &amp;sensorName, <a class="el" href="group__sensor__types.html#ga213c434cb928c4ca22513e2302632435">SensorType</a> sensorType, <a class="el" href="class_error_handler.html">ErrorHandler</a> *err)</td></tr>
+<tr class="memdesc:a583f6418d773b6a5256c65c81b676494 inherit pub_methods_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="class_base_sensor.html" title="Base class for all sensor implementations This abstract class implements common functionality for all...">BaseSensor</a>.  <br /></td></tr>
 <tr class="separator:a583f6418d773b6a5256c65c81b676494 inherit pub_methods_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf438c921c43a1b8641add2fa9dad2ad inherit pub_methods_class_base_sensor" id="r_abf438c921c43a1b8641add2fa9dad2ad"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#abf438c921c43a1b8641add2fa9dad2ad">~BaseSensor</a> ()</td></tr>
 <tr class="memdesc:abf438c921c43a1b8641add2fa9dad2ad inherit pub_methods_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
@@ -175,7 +207,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af1fac0159f2b7c747bcb57de84323ccb inherit pub_methods_class_base_sensor" id="r_af1fac0159f2b7c747bcb57de84323ccb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#af1fac0159f2b7c747bcb57de84323ccb">isConnected</a> () const override</td></tr>
 <tr class="memdesc:af1fac0159f2b7c747bcb57de84323ccb inherit pub_methods_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the sensor is currently connected and operational.  <br /></td></tr>
 <tr class="separator:af1fac0159f2b7c747bcb57de84323ccb inherit pub_methods_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c7cc45247b3cde1cfe9656ba53c7144 inherit pub_methods_class_base_sensor" id="r_a6c7cc45247b3cde1cfe9656ba53c7144"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435">SensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a6c7cc45247b3cde1cfe9656ba53c7144">getType</a> () const</td></tr>
+<tr class="memitem:a6c7cc45247b3cde1cfe9656ba53c7144 inherit pub_methods_class_base_sensor" id="r_a6c7cc45247b3cde1cfe9656ba53c7144"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__sensor__types.html#ga213c434cb928c4ca22513e2302632435">SensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a6c7cc45247b3cde1cfe9656ba53c7144">getType</a> () const</td></tr>
 <tr class="memdesc:a6c7cc45247b3cde1cfe9656ba53c7144 inherit pub_methods_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the type of this sensor as an enum value.  <br /></td></tr>
 <tr class="separator:a6c7cc45247b3cde1cfe9656ba53c7144 inherit pub_methods_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1260fb7f82499f81b2efd908d67ab807 inherit pub_methods_class_base_sensor" id="r_a1260fb7f82499f81b2efd908d67ab807"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a1260fb7f82499f81b2efd908d67ab807">getTypeString</a> () const override</td></tr>
@@ -183,12 +215,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1260fb7f82499f81b2efd908d67ab807 inherit pub_methods_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_i_sensor"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_i_sensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_i_sensor.html">ISensor</a></td></tr>
 <tr class="memitem:adbd5b40ebbf9a78b9845d22dddfac351 inherit pub_methods_class_i_sensor" id="r_adbd5b40ebbf9a78b9845d22dddfac351"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_sensor.html#adbd5b40ebbf9a78b9845d22dddfac351">~ISensor</a> ()=default</td></tr>
+<tr class="memdesc:adbd5b40ebbf9a78b9845d22dddfac351 inherit pub_methods_class_i_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
 <tr class="separator:adbd5b40ebbf9a78b9845d22dddfac351 inherit pub_methods_class_i_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_i_temperature_sensor"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_i_temperature_sensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_i_temperature_sensor.html">ITemperatureSensor</a></td></tr>
 <tr class="memitem:aa8d577a906fed137000386fa74934516 inherit pub_methods_class_i_temperature_sensor" id="r_aa8d577a906fed137000386fa74934516"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_temperature_sensor.html#aa8d577a906fed137000386fa74934516">~ITemperatureSensor</a> ()=default</td></tr>
+<tr class="memdesc:aa8d577a906fed137000386fa74934516 inherit pub_methods_class_i_temperature_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
 <tr class="separator:aa8d577a906fed137000386fa74934516 inherit pub_methods_class_i_temperature_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_i_humidity_sensor"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_i_humidity_sensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_i_humidity_sensor.html">IHumiditySensor</a></td></tr>
 <tr class="memitem:a4cfeda87f98c9467239f5386a4b562b7 inherit pub_methods_class_i_humidity_sensor" id="r_a4cfeda87f98c9467239f5386a4b562b7"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_humidity_sensor.html#a4cfeda87f98c9467239f5386a4b562b7">~IHumiditySensor</a> ()=default</td></tr>
+<tr class="memdesc:a4cfeda87f98c9467239f5386a4b562b7 inherit pub_methods_class_i_humidity_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
 <tr class="separator:a4cfeda87f98c9467239f5386a4b562b7 inherit pub_methods_class_i_humidity_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
@@ -205,7 +240,7 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a1fe05f3eec2fda2f1005d87c6939e13f" id="r_a1fe05f3eec2fda2f1005d87c6939e13f"><td class="memItemLeft" align="right" valign="top">TwoWire *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1fe05f3eec2fda2f1005d87c6939e13f">wire</a></td></tr>
 <tr class="memdesc:a1fe05f3eec2fda2f1005d87c6939e13f"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C bus for communication.  <br /></td></tr>
 <tr class="separator:a1fe05f3eec2fda2f1005d87c6939e13f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a360fcfab1c0f7927e8b1d6b04c8fae34" id="r_a360fcfab1c0f7927e8b1d6b04c8fae34"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_i2_c_manager_8h.html#a7999ce31693f8df62009a6af63775c17">I2CPort</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a360fcfab1c0f7927e8b1d6b04c8fae34">i2cPort</a></td></tr>
+<tr class="memitem:a360fcfab1c0f7927e8b1d6b04c8fae34" id="r_a360fcfab1c0f7927e8b1d6b04c8fae34"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__i2c__management.html#ga7999ce31693f8df62009a6af63775c17">I2CPort</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a360fcfab1c0f7927e8b1d6b04c8fae34">i2cPort</a></td></tr>
 <tr class="memdesc:a360fcfab1c0f7927e8b1d6b04c8fae34"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C port identifier.  <br /></td></tr>
 <tr class="separator:a360fcfab1c0f7927e8b1d6b04c8fae34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af782b6eb4cdceaa3b003467628a90f92" id="r_af782b6eb4cdceaa3b003467628a90f92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i2_c_manager.html">I2CManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af782b6eb4cdceaa3b003467628a90f92">i2cManager</a></td></tr>
@@ -233,7 +268,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a258921596b9aef501817f8d2136671b0 inherit pro_attribs_class_base_sensor" id="r_a258921596b9aef501817f8d2136671b0"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a></td></tr>
 <tr class="memdesc:a258921596b9aef501817f8d2136671b0 inherit pro_attribs_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique identifier for this sensor.  <br /></td></tr>
 <tr class="separator:a258921596b9aef501817f8d2136671b0 inherit pro_attribs_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b4542f8f8209605fde691f30bc4aa5e inherit pro_attribs_class_base_sensor" id="r_a3b4542f8f8209605fde691f30bc4aa5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435">SensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a></td></tr>
+<tr class="memitem:a3b4542f8f8209605fde691f30bc4aa5e inherit pro_attribs_class_base_sensor" id="r_a3b4542f8f8209605fde691f30bc4aa5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__sensor__types.html#ga213c434cb928c4ca22513e2302632435">SensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a></td></tr>
 <tr class="memdesc:a3b4542f8f8209605fde691f30bc4aa5e inherit pro_attribs_class_base_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of sensor.  <br /></td></tr>
 <tr class="separator:a3b4542f8f8209605fde691f30bc4aa5e inherit pro_attribs_class_base_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab7ae500e598ce4ed84ff8ab570d9913 inherit pro_attribs_class_base_sensor" id="r_aab7ae500e598ce4ed84ff8ab570d9913"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a></td></tr>
@@ -247,7 +282,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Implementation of the SHT41 temperature and humidity sensor. </p>
 <p>This class provides access to the SHT41 sensor, which can measure both temperature and humidity. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00018">18</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00017">17</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a37c4f5b7957a9c45797b391377e40375" name="a37c4f5b7957a9c45797b391377e40375"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a37c4f5b7957a9c45797b391377e40375">&#9670;&#160;</a></span>SHT41Sensor()</h2>
@@ -278,7 +313,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="_i2_c_manager_8h.html#a7999ce31693f8df62009a6af63775c17">I2CPort</a></td>          <td class="paramname"><span class="paramname"><em>port</em></span>, </td>
+          <td class="paramtype"><a class="el" href="group__i2c__management.html#ga7999ce31693f8df62009a6af63775c17">I2CPort</a></td>          <td class="paramname"><span class="paramname"><em>port</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -302,7 +337,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00003">3</a> of file <a class="el" href="_s_h_t41_sensor_8cpp_source.html">SHT41Sensor.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    5</span>    : <a class="code hl_function" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor</a>(sensorName, <a class="code hl_enumvalue" href="_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435a58df2583ac9eec09966f7ef615ea2c17">SensorType::SHT41</a>, err),</div>
+<div class="fragment"><div class="line"><span class="lineno">    5</span>    : <a class="code hl_function" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor</a>(sensorName, <a class="code hl_enumvalue" href="group__sensor__types.html#gga213c434cb928c4ca22513e2302632435a58df2583ac9eec09966f7ef615ea2c17">SensorType::SHT41</a>, err),</div>
 <div class="line"><span class="lineno">    6</span>      <a class="code hl_variable" href="#a1fe05f3eec2fda2f1005d87c6939e13f">wire</a>(i2cBus),</div>
 <div class="line"><span class="lineno">    7</span>      <a class="code hl_variable" href="#a360fcfab1c0f7927e8b1d6b04c8fae34">i2cPort</a>(port),</div>
 <div class="line"><span class="lineno">    8</span>      <a class="code hl_variable" href="#af782b6eb4cdceaa3b003467628a90f92">i2cManager</a>(i2cMgr),</div>
@@ -312,29 +347,45 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   12</span>      <a class="code hl_variable" href="#a404761ec62471799bcc593688e54db95">tempTimestamp</a>(0),</div>
 <div class="line"><span class="lineno">   13</span>      <a class="code hl_variable" href="#a2b49b301bdafe2b2c80e569b684bcecb">humidityTimestamp</a>(0) {</div>
 <div class="line"><span class="lineno">   14</span>}</div>
-<div class="ttc" id="a_sensor_types_8h_html_a213c434cb928c4ca22513e2302632435a58df2583ac9eec09966f7ef615ea2c17"><div class="ttname"><a href="_sensor_types_8h.html#a213c434cb928c4ca22513e2302632435a58df2583ac9eec09966f7ef615ea2c17">SensorType::SHT41</a></div><div class="ttdeci">@ SHT41</div><div class="ttdef"><b>Definition</b> <a href="_sensor_types_8h_source.html#l00011">SensorTypes.h:11</a></div></div>
-<div class="ttc" id="aclass_base_sensor_html_a583f6418d773b6a5256c65c81b676494"><div class="ttname"><a href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor::BaseSensor</a></div><div class="ttdeci">BaseSensor(const String &amp;sensorName, SensorType sensorType, ErrorHandler *err)</div><div class="ttdoc">Constructor for BaseSensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00030">BaseSensor.h:30</a></div></div>
-<div class="ttc" id="aclass_s_h_t41_sensor_html_a1fe05f3eec2fda2f1005d87c6939e13f"><div class="ttname"><a href="#a1fe05f3eec2fda2f1005d87c6939e13f">SHT41Sensor::wire</a></div><div class="ttdeci">TwoWire * wire</div><div class="ttdoc">I2C bus for communication.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00023">SHT41Sensor.h:23</a></div></div>
-<div class="ttc" id="aclass_s_h_t41_sensor_html_a2b49b301bdafe2b2c80e569b684bcecb"><div class="ttname"><a href="#a2b49b301bdafe2b2c80e569b684bcecb">SHT41Sensor::humidityTimestamp</a></div><div class="ttdeci">unsigned long humidityTimestamp</div><div class="ttdoc">Timestamp of last humidity reading.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00030">SHT41Sensor.h:30</a></div></div>
-<div class="ttc" id="aclass_s_h_t41_sensor_html_a2c302946e291c9967acfca1c2217ca92"><div class="ttname"><a href="#a2c302946e291c9967acfca1c2217ca92">SHT41Sensor::i2cAddress</a></div><div class="ttdeci">int i2cAddress</div><div class="ttdoc">I2C address of the sensor.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00026">SHT41Sensor.h:26</a></div></div>
-<div class="ttc" id="aclass_s_h_t41_sensor_html_a360fcfab1c0f7927e8b1d6b04c8fae34"><div class="ttname"><a href="#a360fcfab1c0f7927e8b1d6b04c8fae34">SHT41Sensor::i2cPort</a></div><div class="ttdeci">I2CPort i2cPort</div><div class="ttdoc">I2C port identifier.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00024">SHT41Sensor.h:24</a></div></div>
-<div class="ttc" id="aclass_s_h_t41_sensor_html_a404761ec62471799bcc593688e54db95"><div class="ttname"><a href="#a404761ec62471799bcc593688e54db95">SHT41Sensor::tempTimestamp</a></div><div class="ttdeci">unsigned long tempTimestamp</div><div class="ttdoc">Timestamp of last temperature reading.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00029">SHT41Sensor.h:29</a></div></div>
-<div class="ttc" id="aclass_s_h_t41_sensor_html_abb8527c14809317b24239f1a87d1b2dd"><div class="ttname"><a href="#abb8527c14809317b24239f1a87d1b2dd">SHT41Sensor::lastHumidity</a></div><div class="ttdeci">float lastHumidity</div><div class="ttdoc">Last humidity reading.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00028">SHT41Sensor.h:28</a></div></div>
-<div class="ttc" id="aclass_s_h_t41_sensor_html_af782b6eb4cdceaa3b003467628a90f92"><div class="ttname"><a href="#af782b6eb4cdceaa3b003467628a90f92">SHT41Sensor::i2cManager</a></div><div class="ttdeci">I2CManager * i2cManager</div><div class="ttdoc">Reference to I2C manager.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00025">SHT41Sensor.h:25</a></div></div>
-<div class="ttc" id="aclass_s_h_t41_sensor_html_afeb647c3ac6f25fdd310506165c5d854"><div class="ttname"><a href="#afeb647c3ac6f25fdd310506165c5d854">SHT41Sensor::lastTemperature</a></div><div class="ttdeci">float lastTemperature</div><div class="ttdoc">Last temperature reading.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00027">SHT41Sensor.h:27</a></div></div>
+<div class="ttc" id="aclass_base_sensor_html_a583f6418d773b6a5256c65c81b676494"><div class="ttname"><a href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494">BaseSensor::BaseSensor</a></div><div class="ttdeci">BaseSensor(const String &amp;sensorName, SensorType sensorType, ErrorHandler *err)</div><div class="ttdoc">Constructor for BaseSensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00039">BaseSensor.h:39</a></div></div>
+<div class="ttc" id="aclass_s_h_t41_sensor_html_a1fe05f3eec2fda2f1005d87c6939e13f"><div class="ttname"><a href="#a1fe05f3eec2fda2f1005d87c6939e13f">SHT41Sensor::wire</a></div><div class="ttdeci">TwoWire * wire</div><div class="ttdoc">I2C bus for communication.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00022">SHT41Sensor.h:22</a></div></div>
+<div class="ttc" id="aclass_s_h_t41_sensor_html_a2b49b301bdafe2b2c80e569b684bcecb"><div class="ttname"><a href="#a2b49b301bdafe2b2c80e569b684bcecb">SHT41Sensor::humidityTimestamp</a></div><div class="ttdeci">unsigned long humidityTimestamp</div><div class="ttdoc">Timestamp of last humidity reading.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00029">SHT41Sensor.h:29</a></div></div>
+<div class="ttc" id="aclass_s_h_t41_sensor_html_a2c302946e291c9967acfca1c2217ca92"><div class="ttname"><a href="#a2c302946e291c9967acfca1c2217ca92">SHT41Sensor::i2cAddress</a></div><div class="ttdeci">int i2cAddress</div><div class="ttdoc">I2C address of the sensor.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00025">SHT41Sensor.h:25</a></div></div>
+<div class="ttc" id="aclass_s_h_t41_sensor_html_a360fcfab1c0f7927e8b1d6b04c8fae34"><div class="ttname"><a href="#a360fcfab1c0f7927e8b1d6b04c8fae34">SHT41Sensor::i2cPort</a></div><div class="ttdeci">I2CPort i2cPort</div><div class="ttdoc">I2C port identifier.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00023">SHT41Sensor.h:23</a></div></div>
+<div class="ttc" id="aclass_s_h_t41_sensor_html_a404761ec62471799bcc593688e54db95"><div class="ttname"><a href="#a404761ec62471799bcc593688e54db95">SHT41Sensor::tempTimestamp</a></div><div class="ttdeci">unsigned long tempTimestamp</div><div class="ttdoc">Timestamp of last temperature reading.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00028">SHT41Sensor.h:28</a></div></div>
+<div class="ttc" id="aclass_s_h_t41_sensor_html_abb8527c14809317b24239f1a87d1b2dd"><div class="ttname"><a href="#abb8527c14809317b24239f1a87d1b2dd">SHT41Sensor::lastHumidity</a></div><div class="ttdeci">float lastHumidity</div><div class="ttdoc">Last humidity reading.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00027">SHT41Sensor.h:27</a></div></div>
+<div class="ttc" id="aclass_s_h_t41_sensor_html_af782b6eb4cdceaa3b003467628a90f92"><div class="ttname"><a href="#af782b6eb4cdceaa3b003467628a90f92">SHT41Sensor::i2cManager</a></div><div class="ttdeci">I2CManager * i2cManager</div><div class="ttdoc">Reference to I2C manager.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00024">SHT41Sensor.h:24</a></div></div>
+<div class="ttc" id="aclass_s_h_t41_sensor_html_afeb647c3ac6f25fdd310506165c5d854"><div class="ttname"><a href="#afeb647c3ac6f25fdd310506165c5d854">SHT41Sensor::lastTemperature</a></div><div class="ttdeci">float lastTemperature</div><div class="ttdoc">Last temperature reading.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00026">SHT41Sensor.h:26</a></div></div>
+<div class="ttc" id="agroup__sensor__types_html_gga213c434cb928c4ca22513e2302632435a58df2583ac9eec09966f7ef615ea2c17"><div class="ttname"><a href="group__sensor__types.html#gga213c434cb928c4ca22513e2302632435a58df2583ac9eec09966f7ef615ea2c17">SensorType::SHT41</a></div><div class="ttdeci">@ SHT41</div><div class="ttdoc">Sensirion SHT41 temperature/humidity sensor.</div><div class="ttdef"><b>Definition</b> <a href="_sensor_types_8h_source.html#l00021">SensorTypes.h:21</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00030">BaseSensor::BaseSensor()</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00030">humidityTimestamp</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00026">i2cAddress</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00025">i2cManager</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00024">i2cPort</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00028">lastHumidity</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00027">lastTemperature</a>, <a class="el" href="_sensor_types_8h_source.html#l00011">SHT41</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00029">tempTimestamp</a>, and <a class="el" href="_s_h_t41_sensor_8h_source.html#l00023">wire</a>.</p>
+<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00039">BaseSensor::BaseSensor()</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00029">humidityTimestamp</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00025">i2cAddress</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00024">i2cManager</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00023">i2cPort</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00027">lastHumidity</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00026">lastTemperature</a>, <a class="el" href="_sensor_types_8h_source.html#l00021">SHT41</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00028">tempTimestamp</a>, and <a class="el" href="_s_h_t41_sensor_8h_source.html#l00022">wire</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_s_h_t41_sensor_a37c4f5b7957a9c45797b391377e40375_cgraph.png" border="0" usemap="#aclass_s_h_t41_sensor_a37c4f5b7957a9c45797b391377e40375_cgraph" alt=""/></div>
+<map name="aclass_s_h_t41_sensor_a37c4f5b7957a9c45797b391377e40375_cgraph" id="aclass_s_h_t41_sensor_a37c4f5b7957a9c45797b391377e40375_cgraph">
+<area shape="rect" title="Constructor for SHT41Sensor." alt="" coords="5,5,199,32"/>
+<area shape="rect" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="247,5,418,32"/>
+<area shape="poly" title=" " alt="" coords="199,16,231,16,231,21,199,21"/>
+</map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_s_h_t41_sensor_a37c4f5b7957a9c45797b391377e40375_icgraph.png" border="0" usemap="#aclass_s_h_t41_sensor_a37c4f5b7957a9c45797b391377e40375_icgraph" alt=""/></div>
+<map name="aclass_s_h_t41_sensor_a37c4f5b7957a9c45797b391377e40375_icgraph" id="aclass_s_h_t41_sensor_a37c4f5b7957a9c45797b391377e40375_icgraph">
+<area shape="rect" title="Constructor for SHT41Sensor." alt="" coords="515,56,708,83"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#a466d50aa41c2468b68d30c435ae20718" title="Update both temperature and humidity readings from the sensor." alt="" coords="262,56,467,83"/>
+<area shape="poly" title=" " alt="" coords="499,72,467,72,467,67,499,67"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#aaafd05897a6ffe0dcb1702801de086a9" title="Initialize the sensor hardware." alt="" coords="30,5,189,32"/>
+<area shape="poly" title=" " alt="" coords="278,55,180,35,181,30,279,50"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#a5af7f618ddaad1b4279ec9854143b4d5" title="Read the current humidity value from the sensor." alt="" coords="15,56,204,83"/>
+<area shape="poly" title=" " alt="" coords="246,72,204,72,204,67,246,67"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#ad6fae69966406732d5ebfb255a45c762" title="Read the current temperature value from the sensor." alt="" coords="5,107,214,133"/>
+<area shape="poly" title=" " alt="" coords="279,89,181,109,180,103,278,84"/>
+</map>
 </div>
 
 </div>
@@ -397,7 +448,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  126</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="#a2b49b301bdafe2b2c80e569b684bcecb">humidityTimestamp</a>;</div>
 <div class="line"><span class="lineno">  127</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_s_h_t41_sensor_8h_source.html#l00030">humidityTimestamp</a>.</p>
+<p class="reference">References <a class="el" href="_s_h_t41_sensor_8h_source.html#l00029">humidityTimestamp</a>.</p>
 
 </div>
 </div>
@@ -413,7 +464,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">void * SHT41Sensor::getInterface </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="group__sensor__interfaces.html#gaf1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -438,19 +489,19 @@ Here is the caller graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00174">174</a> of file <a class="el" href="_s_h_t41_sensor_8cpp_source.html">SHT41Sensor.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  174</span>                                                        {</div>
 <div class="line"><span class="lineno">  175</span>    <span class="keywordflow">switch</span> (<a class="code hl_variable" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) {</div>
-<div class="line"><span class="lineno">  176</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a>:</div>
+<div class="line"><span class="lineno">  176</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__sensor__interfaces.html#ggaf1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a>:</div>
 <div class="line"><span class="lineno">  177</span>            <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span>ITemperatureSensor*<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span>ITemperatureSensor*<span class="keyword">&gt;</span>(<span class="keyword">this</span>));</div>
-<div class="line"><span class="lineno">  178</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9da1bfd5cb0758595fd2f392b93a92e8fff">InterfaceType::HUMIDITY</a>:</div>
+<div class="line"><span class="lineno">  178</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__sensor__interfaces.html#ggaf1ef2c97e255bd7f21d3b7614b283d9da1bfd5cb0758595fd2f392b93a92e8fff">InterfaceType::HUMIDITY</a>:</div>
 <div class="line"><span class="lineno">  179</span>            <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span>IHumiditySensor*<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span>IHumiditySensor*<span class="keyword">&gt;</span>(<span class="keyword">this</span>));</div>
 <div class="line"><span class="lineno">  180</span>        <span class="keywordflow">default</span>:</div>
 <div class="line"><span class="lineno">  181</span>            <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  182</span>    }</div>
 <div class="line"><span class="lineno">  183</span>}</div>
-<div class="ttc" id="a_interface_types_8h_html_af1ef2c97e255bd7f21d3b7614b283d9da1bfd5cb0758595fd2f392b93a92e8fff"><div class="ttname"><a href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9da1bfd5cb0758595fd2f392b93a92e8fff">InterfaceType::HUMIDITY</a></div><div class="ttdeci">@ HUMIDITY</div><div class="ttdef"><b>Definition</b> <a href="_interface_types_8h_source.html#l00008">InterfaceTypes.h:8</a></div></div>
-<div class="ttc" id="a_interface_types_8h_html_af1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76"><div class="ttname"><a href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a></div><div class="ttdeci">@ TEMPERATURE</div><div class="ttdef"><b>Definition</b> <a href="_interface_types_8h_source.html#l00007">InterfaceTypes.h:7</a></div></div>
-<div class="ttc" id="aclass_base_sensor_html_a3b4542f8f8209605fde691f30bc4aa5e"><div class="ttname"><a href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">BaseSensor::type</a></div><div class="ttdeci">SensorType type</div><div class="ttdoc">Type of sensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00018">BaseSensor.h:18</a></div></div>
+<div class="ttc" id="aclass_base_sensor_html_a3b4542f8f8209605fde691f30bc4aa5e"><div class="ttname"><a href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">BaseSensor::type</a></div><div class="ttdeci">SensorType type</div><div class="ttdoc">Type of sensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00028">BaseSensor.h:28</a></div></div>
+<div class="ttc" id="agroup__sensor__interfaces_html_ggaf1ef2c97e255bd7f21d3b7614b283d9da1bfd5cb0758595fd2f392b93a92e8fff"><div class="ttname"><a href="group__sensor__interfaces.html#ggaf1ef2c97e255bd7f21d3b7614b283d9da1bfd5cb0758595fd2f392b93a92e8fff">InterfaceType::HUMIDITY</a></div><div class="ttdeci">@ HUMIDITY</div><div class="ttdoc">Humidity measurement capability.</div><div class="ttdef"><b>Definition</b> <a href="_interface_types_8h_source.html#l00021">InterfaceTypes.h:21</a></div></div>
+<div class="ttc" id="agroup__sensor__interfaces_html_ggaf1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76"><div class="ttname"><a href="group__sensor__interfaces.html#ggaf1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a></div><div class="ttdeci">@ TEMPERATURE</div><div class="ttdoc">Temperature measurement capability.</div><div class="ttdef"><b>Definition</b> <a href="_interface_types_8h_source.html#l00020">InterfaceTypes.h:20</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_interface_types_8h_source.html#l00008">HUMIDITY</a>, <a class="el" href="_interface_types_8h_source.html#l00007">TEMPERATURE</a>, and <a class="el" href="_base_sensor_8h_source.html#l00018">BaseSensor::type</a>.</p>
+<p class="reference">References <a class="el" href="_interface_types_8h_source.html#l00021">HUMIDITY</a>, <a class="el" href="_interface_types_8h_source.html#l00020">TEMPERATURE</a>, and <a class="el" href="_base_sensor_8h_source.html#l00028">BaseSensor::type</a>.</p>
 
 </div>
 </div>
@@ -502,15 +553,20 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  160</span>    </div>
 <div class="line"><span class="lineno">  161</span>    <span class="keywordflow">return</span> info;</div>
 <div class="line"><span class="lineno">  162</span>}</div>
-<div class="ttc" id="aclass_base_sensor_html_a258921596b9aef501817f8d2136671b0"><div class="ttname"><a href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">BaseSensor::name</a></div><div class="ttdeci">String name</div><div class="ttdoc">Unique identifier for this sensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00017">BaseSensor.h:17</a></div></div>
-<div class="ttc" id="aclass_base_sensor_html_aab7ae500e598ce4ed84ff8ab570d9913"><div class="ttname"><a href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">BaseSensor::connected</a></div><div class="ttdeci">bool connected</div><div class="ttdoc">Connection status.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00019">BaseSensor.h:19</a></div></div>
+<div class="ttc" id="aclass_base_sensor_html_a258921596b9aef501817f8d2136671b0"><div class="ttname"><a href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">BaseSensor::name</a></div><div class="ttdeci">String name</div><div class="ttdoc">Unique identifier for this sensor.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00027">BaseSensor.h:27</a></div></div>
+<div class="ttc" id="aclass_base_sensor_html_aab7ae500e598ce4ed84ff8ab570d9913"><div class="ttname"><a href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">BaseSensor::connected</a></div><div class="ttdeci">bool connected</div><div class="ttdoc">Connection status.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00029">BaseSensor.h:29</a></div></div>
 <div class="ttc" id="aclass_i2_c_manager_html_ad9ebf3c8541e2fa0fd1131f3d68391de"><div class="ttname"><a href="class_i2_c_manager.html#ad9ebf3c8541e2fa0fd1131f3d68391de">I2CManager::portToString</a></div><div class="ttdeci">static String portToString(I2CPort port)</div><div class="ttdoc">Convert I2CPort enum to string.</div><div class="ttdef"><b>Definition</b> <a href="_i2_c_manager_8cpp_source.html#l00156">I2CManager.cpp:156</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00019">BaseSensor::connected</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00026">i2cAddress</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00024">i2cPort</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00028">lastHumidity</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00027">lastTemperature</a>, <a class="el" href="_base_sensor_8h_source.html#l00017">BaseSensor::name</a>, <a class="el" href="_i2_c_manager_8cpp_source.html#l00156">I2CManager::portToString()</a>, and <a class="el" href="_s_h_t41_sensor_8h_source.html#l00029">tempTimestamp</a>.</p>
+<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00029">BaseSensor::connected</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00025">i2cAddress</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00023">i2cPort</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00027">lastHumidity</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00026">lastTemperature</a>, <a class="el" href="_base_sensor_8h_source.html#l00027">BaseSensor::name</a>, <a class="el" href="_i2_c_manager_8cpp_source.html#l00156">I2CManager::portToString()</a>, and <a class="el" href="_s_h_t41_sensor_8h_source.html#l00028">tempTimestamp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_s_h_t41_sensor_a01aef427e28039d1446ac3e7570fa5e0_cgraph.png" border="0" usemap="#aclass_s_h_t41_sensor_a01aef427e28039d1446ac3e7570fa5e0_cgraph" alt=""/></div>
+<map name="aclass_s_h_t41_sensor_a01aef427e28039d1446ac3e7570fa5e0_cgraph" id="aclass_s_h_t41_sensor_a01aef427e28039d1446ac3e7570fa5e0_cgraph">
+<area shape="rect" title="Get detailed information about the sensor." alt="" coords="5,5,198,32"/>
+<area shape="rect" href="class_i2_c_manager.html#ad9ebf3c8541e2fa0fd1131f3d68391de" title="Convert I2CPort enum to string." alt="" coords="246,5,416,32"/>
+<area shape="poly" title=" " alt="" coords="198,16,230,16,230,21,198,21"/>
+</map>
 </div>
 
 </div>
@@ -548,7 +604,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  122</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="#a404761ec62471799bcc593688e54db95">tempTimestamp</a>;</div>
 <div class="line"><span class="lineno">  123</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_s_h_t41_sensor_8h_source.html#l00029">tempTimestamp</a>.</p>
+<p class="reference">References <a class="el" href="_s_h_t41_sensor_8h_source.html#l00028">tempTimestamp</a>.</p>
 
 </div>
 </div>
@@ -582,7 +638,7 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00020">20</a> of file <a class="el" href="_s_h_t41_sensor_8cpp_source.html">SHT41Sensor.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   20</span>                             {</div>
-<div class="line"><span class="lineno">   21</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Initializing SHT41 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
+<div class="line"><span class="lineno">   21</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Initializing SHT41 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
 <div class="line"><span class="lineno">   22</span>    </div>
 <div class="line"><span class="lineno">   23</span>    <span class="comment">// Add timeout for sensor initialization</span></div>
 <div class="line"><span class="lineno">   24</span>    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> timeout = 1000; <span class="comment">// 1 second timeout</span></div>
@@ -604,7 +660,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   40</span>    }</div>
 <div class="line"><span class="lineno">   41</span>    </div>
 <div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> (!initResult) {</div>
-<div class="line"><span class="lineno">   43</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to initialize SHT41 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a> + <span class="stringliteral">&quot; (timed out)&quot;</span>);</div>
+<div class="line"><span class="lineno">   43</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to initialize SHT41 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a> + <span class="stringliteral">&quot; (timed out)&quot;</span>);</div>
 <div class="line"><span class="lineno">   44</span>        <a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   45</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   46</span>    }</div>
@@ -614,7 +670,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   50</span>    <a class="code hl_variable" href="#ab9f78e2782d49cf4d7e49459cdf7e351">sht4</a>.setHeater(SHT4X_NO_HEATER);</div>
 <div class="line"><span class="lineno">   51</span>    </div>
 <div class="line"><span class="lineno">   52</span>    <a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   53</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;SHT41 sensor initialized successfully: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
+<div class="line"><span class="lineno">   53</span>    <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;SHT41 sensor initialized successfully: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
 <div class="line"><span class="lineno">   54</span>    </div>
 <div class="line"><span class="lineno">   55</span>    <span class="comment">// Only try to get initial readings if we have time left</span></div>
 <div class="line"><span class="lineno">   56</span>    <span class="keywordflow">if</span> (millis() - startTime &lt; timeout - 200) {</div>
@@ -623,17 +679,26 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   59</span>    </div>
 <div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   61</span>}</div>
-<div class="ttc" id="a_error_handler_8h_html_af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90"><div class="ttname"><a href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a></div><div class="ttdeci">@ ERROR</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00013">ErrorHandler.h:13</a></div></div>
-<div class="ttc" id="a_error_handler_8h_html_af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806"><div class="ttname"><a href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a></div><div class="ttdeci">@ INFO</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00011">ErrorHandler.h:11</a></div></div>
-<div class="ttc" id="aclass_base_sensor_html_ac57236a191fb2f8509a5e1e3d292b593"><div class="ttname"><a href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">BaseSensor::errorHandler</a></div><div class="ttdeci">ErrorHandler * errorHandler</div><div class="ttdoc">Error reporting mechanism.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00020">BaseSensor.h:20</a></div></div>
+<div class="ttc" id="aclass_base_sensor_html_ac57236a191fb2f8509a5e1e3d292b593"><div class="ttname"><a href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">BaseSensor::errorHandler</a></div><div class="ttdeci">ErrorHandler * errorHandler</div><div class="ttdoc">Error reporting mechanism.</div><div class="ttdef"><b>Definition</b> <a href="_base_sensor_8h_source.html#l00030">BaseSensor.h:30</a></div></div>
 <div class="ttc" id="aclass_s_h_t41_sensor_html_a466d50aa41c2468b68d30c435ae20718"><div class="ttname"><a href="#a466d50aa41c2468b68d30c435ae20718">SHT41Sensor::updateReadings</a></div><div class="ttdeci">bool updateReadings() const</div><div class="ttdoc">Update both temperature and humidity readings from the sensor.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8cpp_source.html#l00063">SHT41Sensor.cpp:63</a></div></div>
-<div class="ttc" id="aclass_s_h_t41_sensor_html_ab9f78e2782d49cf4d7e49459cdf7e351"><div class="ttname"><a href="#ab9f78e2782d49cf4d7e49459cdf7e351">SHT41Sensor::sht4</a></div><div class="ttdeci">Adafruit_SHT4x sht4</div><div class="ttdoc">Underlying Adafruit driver (mutable for const methods)</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00022">SHT41Sensor.h:22</a></div></div>
+<div class="ttc" id="aclass_s_h_t41_sensor_html_ab9f78e2782d49cf4d7e49459cdf7e351"><div class="ttname"><a href="#ab9f78e2782d49cf4d7e49459cdf7e351">SHT41Sensor::sht4</a></div><div class="ttdeci">Adafruit_SHT4x sht4</div><div class="ttdoc">Underlying Adafruit driver (mutable for const methods)</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8h_source.html#l00021">SHT41Sensor.h:21</a></div></div>
+<div class="ttc" id="agroup__error__handling_html_ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90"><div class="ttname"><a href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a></div><div class="ttdeci">@ ERROR</div><div class="ttdoc">Error that affects operation but allows recovery.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00027">ErrorHandler.h:27</a></div></div>
+<div class="ttc" id="agroup__error__handling_html_ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806"><div class="ttname"><a href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a></div><div class="ttdeci">@ INFO</div><div class="ttdoc">Informational message, not an error.</div><div class="ttdef"><b>Definition</b> <a href="_error_handler_8h_source.html#l00025">ErrorHandler.h:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00019">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00020">BaseSensor::errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, <a class="el" href="_base_sensor_8h_source.html#l00017">BaseSensor::name</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00022">sht4</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>, and <a class="el" href="_s_h_t41_sensor_8h_source.html#l00023">wire</a>.</p>
+<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00029">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00030">BaseSensor::errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, <a class="el" href="_base_sensor_8h_source.html#l00027">BaseSensor::name</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00021">sht4</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>, and <a class="el" href="_s_h_t41_sensor_8h_source.html#l00022">wire</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_s_h_t41_sensor_aaafd05897a6ffe0dcb1702801de086a9_cgraph.png" border="0" usemap="#aclass_s_h_t41_sensor_aaafd05897a6ffe0dcb1702801de086a9_cgraph" alt=""/></div>
+<map name="aclass_s_h_t41_sensor_aaafd05897a6ffe0dcb1702801de086a9_cgraph" id="aclass_s_h_t41_sensor_aaafd05897a6ffe0dcb1702801de086a9_cgraph">
+<area shape="rect" title="Initialize the sensor hardware." alt="" coords="5,5,164,32"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#a466d50aa41c2468b68d30c435ae20718" title="Update both temperature and humidity readings from the sensor." alt="" coords="212,5,417,32"/>
+<area shape="poly" title=" " alt="" coords="164,16,196,16,196,21,164,21"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#a37c4f5b7957a9c45797b391377e40375" title="Constructor for SHT41Sensor." alt="" coords="465,5,658,32"/>
+<area shape="poly" title=" " alt="" coords="418,16,449,16,449,21,418,21"/>
+<area shape="rect" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="706,5,878,32"/>
+<area shape="poly" title=" " alt="" coords="659,16,691,16,691,21,659,21"/>
+</map>
 </div>
 
 </div>
@@ -672,17 +737,17 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  131</span>    <span class="keywordtype">bool</span> success = <a class="code hl_variable" href="#ab9f78e2782d49cf4d7e49459cdf7e351">sht4</a>.getEvent(&amp;humidity, &amp;temp);</div>
 <div class="line"><span class="lineno">  132</span>    </div>
 <div class="line"><span class="lineno">  133</span>    <span class="keywordflow">if</span> (!success) {</div>
-<div class="line"><span class="lineno">  134</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Self-test failed for SHT41 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
+<div class="line"><span class="lineno">  134</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Self-test failed for SHT41 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
 <div class="line"><span class="lineno">  135</span>        <a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  136</span>    } <span class="keywordflow">else</span> {</div>
 <div class="line"><span class="lineno">  137</span>        <a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  138</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Self-test passed for SHT41 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
+<div class="line"><span class="lineno">  138</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa748005382152808a72b1a9177d9dc806">INFO</a>, <span class="stringliteral">&quot;Self-test passed for SHT41 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
 <div class="line"><span class="lineno">  139</span>    }</div>
 <div class="line"><span class="lineno">  140</span>    </div>
 <div class="line"><span class="lineno">  141</span>    <span class="keywordflow">return</span> success;</div>
 <div class="line"><span class="lineno">  142</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00019">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00020">BaseSensor::errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00011">INFO</a>, <a class="el" href="_base_sensor_8h_source.html#l00017">BaseSensor::name</a>, and <a class="el" href="_s_h_t41_sensor_8h_source.html#l00022">sht4</a>.</p>
+<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00029">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00030">BaseSensor::errorHandler</a>, <a class="el" href="_error_handler_8h_source.html#l00025">INFO</a>, <a class="el" href="_base_sensor_8h_source.html#l00027">BaseSensor::name</a>, and <a class="el" href="_s_h_t41_sensor_8h_source.html#l00021">sht4</a>.</p>
 
 </div>
 </div>
@@ -722,11 +787,20 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  118</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="#abb8527c14809317b24239f1a87d1b2dd">lastHumidity</a>;</div>
 <div class="line"><span class="lineno">  119</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_s_h_t41_sensor_8h_source.html#l00028">lastHumidity</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>.</p>
+<p class="reference">References <a class="el" href="_s_h_t41_sensor_8h_source.html#l00027">lastHumidity</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_s_h_t41_sensor_a5af7f618ddaad1b4279ec9854143b4d5_cgraph.png" border="0" usemap="#aclass_s_h_t41_sensor_a5af7f618ddaad1b4279ec9854143b4d5_cgraph" alt=""/></div>
+<map name="aclass_s_h_t41_sensor_a5af7f618ddaad1b4279ec9854143b4d5_cgraph" id="aclass_s_h_t41_sensor_a5af7f618ddaad1b4279ec9854143b4d5_cgraph">
+<area shape="rect" title="Read the current humidity value from the sensor." alt="" coords="5,5,194,32"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#a466d50aa41c2468b68d30c435ae20718" title="Update both temperature and humidity readings from the sensor." alt="" coords="242,5,447,32"/>
+<area shape="poly" title=" " alt="" coords="194,16,226,16,226,21,194,21"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#a37c4f5b7957a9c45797b391377e40375" title="Constructor for SHT41Sensor." alt="" coords="495,5,688,32"/>
+<area shape="poly" title=" " alt="" coords="448,16,479,16,479,21,448,21"/>
+<area shape="rect" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="736,5,908,32"/>
+<area shape="poly" title=" " alt="" coords="689,16,721,16,721,21,689,21"/>
+</map>
 </div>
 
 </div>
@@ -767,11 +841,20 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  111</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="#afeb647c3ac6f25fdd310506165c5d854">lastTemperature</a>;</div>
 <div class="line"><span class="lineno">  112</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_s_h_t41_sensor_8h_source.html#l00027">lastTemperature</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>.</p>
+<p class="reference">References <a class="el" href="_s_h_t41_sensor_8h_source.html#l00026">lastTemperature</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_s_h_t41_sensor_ad6fae69966406732d5ebfb255a45c762_cgraph.png" border="0" usemap="#aclass_s_h_t41_sensor_ad6fae69966406732d5ebfb255a45c762_cgraph" alt=""/></div>
+<map name="aclass_s_h_t41_sensor_ad6fae69966406732d5ebfb255a45c762_cgraph" id="aclass_s_h_t41_sensor_ad6fae69966406732d5ebfb255a45c762_cgraph">
+<area shape="rect" title="Read the current temperature value from the sensor." alt="" coords="5,5,214,32"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#a466d50aa41c2468b68d30c435ae20718" title="Update both temperature and humidity readings from the sensor." alt="" coords="262,5,467,32"/>
+<area shape="poly" title=" " alt="" coords="214,16,246,16,246,21,214,21"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#a37c4f5b7957a9c45797b391377e40375" title="Constructor for SHT41Sensor." alt="" coords="515,5,708,32"/>
+<area shape="poly" title=" " alt="" coords="468,16,499,16,499,21,468,21"/>
+<area shape="rect" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="756,5,928,32"/>
+<area shape="poly" title=" " alt="" coords="709,16,741,16,741,21,709,21"/>
+</map>
 </div>
 
 </div>
@@ -788,7 +871,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">bool SHT41Sensor::supportsInterface </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="group__sensor__interfaces.html#gaf1ef2c97e255bd7f21d3b7614b283d9d">InterfaceType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -813,15 +896,15 @@ Here is the call graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00164">164</a> of file <a class="el" href="_s_h_t41_sensor_8cpp_source.html">SHT41Sensor.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  164</span>                                                            {</div>
 <div class="line"><span class="lineno">  165</span>    <span class="keywordflow">switch</span> (<a class="code hl_variable" href="class_base_sensor.html#a3b4542f8f8209605fde691f30bc4aa5e">type</a>) {</div>
-<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a>:</div>
-<div class="line"><span class="lineno">  167</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_interface_types_8h.html#af1ef2c97e255bd7f21d3b7614b283d9da1bfd5cb0758595fd2f392b93a92e8fff">InterfaceType::HUMIDITY</a>:</div>
+<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__sensor__interfaces.html#ggaf1ef2c97e255bd7f21d3b7614b283d9dab976538812ef6e3e5881e245d5fc3c76">InterfaceType::TEMPERATURE</a>:</div>
+<div class="line"><span class="lineno">  167</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__sensor__interfaces.html#ggaf1ef2c97e255bd7f21d3b7614b283d9da1bfd5cb0758595fd2f392b93a92e8fff">InterfaceType::HUMIDITY</a>:</div>
 <div class="line"><span class="lineno">  168</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  169</span>        <span class="keywordflow">default</span>:</div>
 <div class="line"><span class="lineno">  170</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  171</span>    }</div>
 <div class="line"><span class="lineno">  172</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_interface_types_8h_source.html#l00008">HUMIDITY</a>, <a class="el" href="_interface_types_8h_source.html#l00007">TEMPERATURE</a>, and <a class="el" href="_base_sensor_8h_source.html#l00018">BaseSensor::type</a>.</p>
+<p class="reference">References <a class="el" href="_interface_types_8h_source.html#l00021">HUMIDITY</a>, <a class="el" href="_interface_types_8h_source.html#l00020">TEMPERATURE</a>, and <a class="el" href="_base_sensor_8h_source.html#l00028">BaseSensor::type</a>.</p>
 
 </div>
 </div>
@@ -854,7 +937,7 @@ Here is the call graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">63</a> of file <a class="el" href="_s_h_t41_sensor_8cpp_source.html">SHT41Sensor.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   63</span>                                       {</div>
 <div class="line"><span class="lineno">   64</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a>) {</div>
-<div class="line"><span class="lineno">   65</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Attempted to read from disconnected sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
+<div class="line"><span class="lineno">   65</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Attempted to read from disconnected sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a>);</div>
 <div class="line"><span class="lineno">   66</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   67</span>    }</div>
 <div class="line"><span class="lineno">   68</span>    </div>
@@ -880,7 +963,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   88</span>    }</div>
 <div class="line"><span class="lineno">   89</span>    </div>
 <div class="line"><span class="lineno">   90</span>    <span class="keywordflow">if</span> (!readResult) {</div>
-<div class="line"><span class="lineno">   91</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="_error_handler_8h.html#af499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to read from SHT41 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a> + <span class="stringliteral">&quot; (timed out)&quot;</span>);</div>
+<div class="line"><span class="lineno">   91</span>        <a class="code hl_variable" href="class_base_sensor.html#ac57236a191fb2f8509a5e1e3d292b593">errorHandler</a>-&gt;logError(<a class="code hl_enumvalue" href="group__error__handling.html#ggaf499e45fe1f4c813befc79c1fbd1e87fa2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <span class="stringliteral">&quot;Failed to read from SHT41 sensor: &quot;</span> + <a class="code hl_variable" href="class_base_sensor.html#a258921596b9aef501817f8d2136671b0">name</a> + <span class="stringliteral">&quot; (timed out)&quot;</span>);</div>
 <div class="line"><span class="lineno">   92</span>        <span class="keyword">const_cast&lt;</span><a class="code hl_function" href="#a37c4f5b7957a9c45797b391377e40375">SHT41Sensor</a>*<span class="keyword">&gt;</span>(<span class="keyword">this</span>)-&gt;<a class="code hl_variable" href="class_base_sensor.html#aab7ae500e598ce4ed84ff8ab570d9913">connected</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   93</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   94</span>    }</div>
@@ -897,18 +980,34 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  105</span>}</div>
 <div class="ttc" id="aclass_s_h_t41_sensor_html_a37c4f5b7957a9c45797b391377e40375"><div class="ttname"><a href="#a37c4f5b7957a9c45797b391377e40375">SHT41Sensor::SHT41Sensor</a></div><div class="ttdeci">SHT41Sensor(const String &amp;sensorName, int address, TwoWire *i2cBus, I2CManager *i2cMgr, I2CPort port, ErrorHandler *err)</div><div class="ttdoc">Constructor for SHT41Sensor.</div><div class="ttdef"><b>Definition</b> <a href="_s_h_t41_sensor_8cpp_source.html#l00003">SHT41Sensor.cpp:3</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00019">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00013">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00020">BaseSensor::errorHandler</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00030">humidityTimestamp</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00028">lastHumidity</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00027">lastTemperature</a>, <a class="el" href="_base_sensor_8h_source.html#l00017">BaseSensor::name</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00022">sht4</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00003">SHT41Sensor()</a>, and <a class="el" href="_s_h_t41_sensor_8h_source.html#l00029">tempTimestamp</a>.</p>
+<p class="reference">References <a class="el" href="_base_sensor_8h_source.html#l00029">BaseSensor::connected</a>, <a class="el" href="_error_handler_8h_source.html#l00027">ERROR</a>, <a class="el" href="_base_sensor_8h_source.html#l00030">BaseSensor::errorHandler</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00029">humidityTimestamp</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00027">lastHumidity</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00026">lastTemperature</a>, <a class="el" href="_base_sensor_8h_source.html#l00027">BaseSensor::name</a>, <a class="el" href="_s_h_t41_sensor_8h_source.html#l00021">sht4</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00003">SHT41Sensor()</a>, and <a class="el" href="_s_h_t41_sensor_8h_source.html#l00028">tempTimestamp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00020">initialize()</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00114">readHumidity()</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00107">readTemperature()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_s_h_t41_sensor_a466d50aa41c2468b68d30c435ae20718_cgraph.png" border="0" usemap="#aclass_s_h_t41_sensor_a466d50aa41c2468b68d30c435ae20718_cgraph" alt=""/></div>
+<map name="aclass_s_h_t41_sensor_a466d50aa41c2468b68d30c435ae20718_cgraph" id="aclass_s_h_t41_sensor_a466d50aa41c2468b68d30c435ae20718_cgraph">
+<area shape="rect" title="Update both temperature and humidity readings from the sensor." alt="" coords="5,5,211,32"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#a37c4f5b7957a9c45797b391377e40375" title="Constructor for SHT41Sensor." alt="" coords="259,5,452,32"/>
+<area shape="poly" title=" " alt="" coords="211,16,243,16,243,21,211,21"/>
+<area shape="rect" href="class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="500,5,671,32"/>
+<area shape="poly" title=" " alt="" coords="453,16,484,16,484,21,453,21"/>
+</map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_s_h_t41_sensor_a466d50aa41c2468b68d30c435ae20718_icgraph.png" border="0" usemap="#aclass_s_h_t41_sensor_a466d50aa41c2468b68d30c435ae20718_icgraph" alt=""/></div>
+<map name="aclass_s_h_t41_sensor_a466d50aa41c2468b68d30c435ae20718_icgraph" id="aclass_s_h_t41_sensor_a466d50aa41c2468b68d30c435ae20718_icgraph">
+<area shape="rect" title="Update both temperature and humidity readings from the sensor." alt="" coords="262,56,467,83"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#aaafd05897a6ffe0dcb1702801de086a9" title="Initialize the sensor hardware." alt="" coords="30,5,189,32"/>
+<area shape="poly" title=" " alt="" coords="278,55,180,35,181,30,279,50"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#a5af7f618ddaad1b4279ec9854143b4d5" title="Read the current humidity value from the sensor." alt="" coords="15,56,204,83"/>
+<area shape="poly" title=" " alt="" coords="246,72,204,72,204,67,246,67"/>
+<area shape="rect" href="class_s_h_t41_sensor.html#ad6fae69966406732d5ebfb255a45c762" title="Read the current temperature value from the sensor." alt="" coords="5,107,214,133"/>
+<area shape="poly" title=" " alt="" coords="279,89,181,109,180,103,278,84"/>
+</map>
 </div>
 
 </div>
@@ -936,7 +1035,7 @@ Here is the caller graph for this function:</div>
 
 <p>Timestamp of last humidity reading. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00030">30</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00029">29</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00125">getHumidityTimestamp()</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00003">SHT41Sensor()</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>.</p>
 
@@ -964,7 +1063,7 @@ Here is the caller graph for this function:</div>
 
 <p>I2C address of the sensor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00026">26</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00025">25</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00144">getSensorInfo()</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00003">SHT41Sensor()</a>.</p>
 
@@ -992,7 +1091,7 @@ Here is the caller graph for this function:</div>
 
 <p>Reference to I2C manager. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00025">25</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00024">24</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00003">SHT41Sensor()</a>.</p>
 
@@ -1008,7 +1107,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_i2_c_manager_8h.html#a7999ce31693f8df62009a6af63775c17">I2CPort</a> SHT41Sensor::i2cPort</td>
+          <td class="memname"><a class="el" href="group__i2c__management.html#ga7999ce31693f8df62009a6af63775c17">I2CPort</a> SHT41Sensor::i2cPort</td>
         </tr>
       </table>
   </td>
@@ -1020,7 +1119,7 @@ Here is the caller graph for this function:</div>
 
 <p>I2C port identifier. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00024">24</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00023">23</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00144">getSensorInfo()</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00003">SHT41Sensor()</a>.</p>
 
@@ -1048,7 +1147,7 @@ Here is the caller graph for this function:</div>
 
 <p>Last humidity reading. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00028">28</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00027">27</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00144">getSensorInfo()</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00114">readHumidity()</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00003">SHT41Sensor()</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>.</p>
 
@@ -1076,7 +1175,7 @@ Here is the caller graph for this function:</div>
 
 <p>Last temperature reading. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00027">27</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00026">26</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00144">getSensorInfo()</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00107">readTemperature()</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00003">SHT41Sensor()</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>.</p>
 
@@ -1104,7 +1203,7 @@ Here is the caller graph for this function:</div>
 
 <p>Underlying Adafruit driver (mutable for const methods) </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00022">22</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00021">21</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00020">initialize()</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00129">performSelfTest()</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>.</p>
 
@@ -1132,7 +1231,7 @@ Here is the caller graph for this function:</div>
 
 <p>Timestamp of last temperature reading. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00029">29</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00028">28</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00144">getSensorInfo()</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00121">getTemperatureTimestamp()</a>, <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00003">SHT41Sensor()</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00063">updateReadings()</a>.</p>
 
@@ -1160,7 +1259,7 @@ Here is the caller graph for this function:</div>
 
 <p>I2C bus for communication. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00023">23</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_h_t41_sensor_8h_source.html#l00022">22</a> of file <a class="el" href="_s_h_t41_sensor_8h_source.html">SHT41Sensor.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00020">initialize()</a>, and <a class="el" href="_s_h_t41_sensor_8cpp_source.html#l00003">SHT41Sensor()</a>.</p>
 

@@ -106,22 +106,24 @@ $(function(){initNavTree('_i_humidity_sensor_8h_source.html',''); initResizable(
   <div class="headertitle"><div class="title">IHumiditySensor.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="_i_humidity_sensor_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;Arduino.h&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span></div>
-<div class="foldopen" id="foldopen00008" data-start="{" data-end="};">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="class_i_humidity_sensor.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="class_i_humidity_sensor.html">IHumiditySensor</a> {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="class_i_humidity_sensor.html#a4cfeda87f98c9467239f5386a4b562b7">   10</a></span>    <span class="keyword">virtual</span> <a class="code hl_function" href="class_i_humidity_sensor.html#a4cfeda87f98c9467239f5386a4b562b7">~IHumiditySensor</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="class_i_humidity_sensor.html#afec1199e10ebd2817e7696833b8214e0">   16</a></span>    <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code hl_function" href="class_i_humidity_sensor.html#afec1199e10ebd2817e7696833b8214e0">readHumidity</a>() = 0;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="class_i_humidity_sensor.html#ac20f853e4f090989c5b1c2bc5f6ed31e">   22</a></span>    <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code hl_function" href="class_i_humidity_sensor.html#ac20f853e4f090989c5b1c2bc5f6ed31e">getHumidityTimestamp</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>};</div>
+<a href="_i_humidity_sensor_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor"> #pragma once</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor"> #include &lt;Arduino.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="class_i_humidity_sensor.html">   18</a></span> <span class="keyword">class </span><a class="code hl_class" href="class_i_humidity_sensor.html">IHumiditySensor</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="class_i_humidity_sensor.html#a4cfeda87f98c9467239f5386a4b562b7">   23</a></span>     <span class="keyword">virtual</span> <a class="code hl_function" href="class_i_humidity_sensor.html#a4cfeda87f98c9467239f5386a4b562b7">~IHumiditySensor</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>     </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_i_humidity_sensor.html#afec1199e10ebd2817e7696833b8214e0">   29</a></span>     <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code hl_function" href="class_i_humidity_sensor.html#afec1199e10ebd2817e7696833b8214e0">readHumidity</a>() = 0;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>     </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="class_i_humidity_sensor.html#ac20f853e4f090989c5b1c2bc5f6ed31e">   35</a></span>     <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code hl_function" href="class_i_humidity_sensor.html#ac20f853e4f090989c5b1c2bc5f6ed31e">getHumidityTimestamp</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> };</div>
 </div>
-<div class="ttc" id="aclass_i_humidity_sensor_html"><div class="ttname"><a href="class_i_humidity_sensor.html">IHumiditySensor</a></div><div class="ttdoc">Interface for sensors that can measure humidity.</div><div class="ttdef"><b>Definition</b> <a href="#l00008">IHumiditySensor.h:8</a></div></div>
-<div class="ttc" id="aclass_i_humidity_sensor_html_a4cfeda87f98c9467239f5386a4b562b7"><div class="ttname"><a href="class_i_humidity_sensor.html#a4cfeda87f98c9467239f5386a4b562b7">IHumiditySensor::~IHumiditySensor</a></div><div class="ttdeci">virtual ~IHumiditySensor()=default</div></div>
+<div class="ttc" id="aclass_i_humidity_sensor_html"><div class="ttname"><a href="class_i_humidity_sensor.html">IHumiditySensor</a></div><div class="ttdoc">Interface for sensors that can measure humidity Defines the methods that must be implemented by any s...</div><div class="ttdef"><b>Definition</b> <a href="#l00018">IHumiditySensor.h:18</a></div></div>
+<div class="ttc" id="aclass_i_humidity_sensor_html_a4cfeda87f98c9467239f5386a4b562b7"><div class="ttname"><a href="class_i_humidity_sensor.html#a4cfeda87f98c9467239f5386a4b562b7">IHumiditySensor::~IHumiditySensor</a></div><div class="ttdeci">virtual ~IHumiditySensor()=default</div><div class="ttdoc">Virtual destructor.</div></div>
 <div class="ttc" id="aclass_i_humidity_sensor_html_ac20f853e4f090989c5b1c2bc5f6ed31e"><div class="ttname"><a href="class_i_humidity_sensor.html#ac20f853e4f090989c5b1c2bc5f6ed31e">IHumiditySensor::getHumidityTimestamp</a></div><div class="ttdeci">virtual unsigned long getHumidityTimestamp() const =0</div><div class="ttdoc">Get timestamp of last humidity reading.</div></div>
 <div class="ttc" id="aclass_i_humidity_sensor_html_afec1199e10ebd2817e7696833b8214e0"><div class="ttname"><a href="class_i_humidity_sensor.html#afec1199e10ebd2817e7696833b8214e0">IHumiditySensor::readHumidity</a></div><div class="ttdeci">virtual float readHumidity()=0</div><div class="ttdoc">Read current humidity from sensor.</div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -1,0 +1,5 @@
+<map id="SHT41Sensor::SHT41Sensor" name="SHT41Sensor::SHT41Sensor">
+<area shape="rect" id="Node000001" title="Constructor for SHT41Sensor." alt="" coords="5,5,199,32"/>
+<area shape="rect" id="Node000002" href="$class_base_sensor.html#a583f6418d773b6a5256c65c81b676494" title="Constructor for BaseSensor." alt="" coords="247,5,418,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,16,231,16,231,21,199,21"/>
+</map>

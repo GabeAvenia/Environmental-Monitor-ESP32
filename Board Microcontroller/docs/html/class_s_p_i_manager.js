@@ -6,7 +6,6 @@ var class_s_p_i_manager =
     [ "beginTransaction", "class_s_p_i_manager.html#abbd8aabd0eb4d1ed8e61a934675bf046", null ],
     [ "endTransaction", "class_s_p_i_manager.html#af508a7575919f62beb2d5380686dcc08", null ],
     [ "getMisoPin", "class_s_p_i_manager.html#a0125c2e5629217c2f8f0648b9f719d46", null ],
-    [ "getMosiPin", "class_s_p_i_manager.html#a287e212ac8f26fb8f49b455d194d8ad0", null ],
     [ "getSckPin", "class_s_p_i_manager.html#afd05519e5b64de45fbe2daf73fbd1b2a", null ],
     [ "getSPI", "class_s_p_i_manager.html#a3bf7a4efdc897c1a947b257757fdbd33", null ],
     [ "isInitialized", "class_s_p_i_manager.html#a839897ce05ef07b89c7e3435aa372e53", null ],

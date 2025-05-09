@@ -1,0 +1,3 @@
+<map id="HumidityReading" name="HumidityReading">
+<area shape="rect" id="Node000001" title="Structure to hold humidity reading data Contains the humidity value, timestamp, and validity informat..." alt="" coords="5,5,137,160"/>
+</map>

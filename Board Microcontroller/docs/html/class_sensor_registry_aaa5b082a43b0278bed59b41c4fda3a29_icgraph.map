@@ -1,0 +1,7 @@
+<map id="SensorRegistry::getInterfaceFrom" name="SensorRegistry::getInterfaceFrom">
+<area shape="rect" id="Node000001" title="Helper to get a specific interface from a sensor if supported." alt="" coords="263,47,481,73"/>
+<area shape="rect" id="Node000002" href="$class_sensor_registry.html#aa26b5698c84019990182364840afcd2a" title="Get all humidity sensors Returns all sensors that implement the IHumiditySensor interface." alt="" coords="15,5,205,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,47,205,41,206,36,247,41"/>
+<area shape="rect" id="Node000003" href="$class_sensor_registry.html#a9ad560deac460f8207cfc9741fcfff45" title="Get all temperature sensors Returns all sensors that implement the ITemperatureSensor interface." alt="" coords="5,72,215,115"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="247,79,215,83,215,77,247,73"/>
+</map>

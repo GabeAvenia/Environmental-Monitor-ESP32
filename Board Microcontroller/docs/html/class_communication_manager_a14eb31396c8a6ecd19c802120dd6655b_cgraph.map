@@ -1,0 +1,7 @@
+<map id="CommunicationManager::collectSensorReadings" name="CommunicationManager::collectSensorReadings">
+<area shape="rect" id="Node000001" title="Collect readings from a sensor into a values vector." alt="" coords="5,23,169,65"/>
+<area shape="rect" id="Node000002" href="$class_i_sensor.html#ac7678115a091121756493cd2da886a5c" title="Check if sensor is connected and working." alt="" coords="231,5,378,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,32,215,26,215,32,169,37"/>
+<area shape="rect" id="Node000003" href="$class_i_sensor.html#a0aa4dae9e1a5405d10ab3d5354b816af" title="Check if sensor supports a specific interface." alt="" coords="217,56,392,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,51,201,55,201,60,169,56"/>
+</map>
