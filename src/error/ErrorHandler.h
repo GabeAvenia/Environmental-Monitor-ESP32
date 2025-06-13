@@ -54,7 +54,6 @@
   * This class manages error reporting and logging throughout the system,
   * providing a centralized mechanism for error handling. It supports:
   * - Multiple configurable output streams with severity filtering
-  * - Error log storage and retrieval
   * - Visual indication of errors via LED
   * - Customizable error routing for different destinations
   */
@@ -99,6 +98,11 @@
    bool useCustomRouting;
    
  public:
+    /**
+     * @brief Get the current message routing configuration status
+     * @return String containing routing status information
+     */
+    String getRoutingStatus() const;
    /**
     * @brief Get the LED manager pointer for debugging
     * @return The LED manager or nullptr if not set
@@ -143,23 +147,6 @@
     * @return true if a FATAL error was logged (for caller to take action)
     */
    bool logError(ErrorSeverity severity, String message);
- 
-   /**
-    * @brief Get all logged error entries
-    * @return Vector of error entries
-    */
-   std::vector<ErrorEntry> getErrorLog();
-   
-   /**
-    * @brief Clear all logged error entries
-    */
-   void clearErrors();
-   
-   /**
-    * @brief Get the current message routing configuration status
-    * @return String containing routing status information
-    */
-   String getRoutingStatus() const;
    
    /**
     * @brief Convert severity level to string
@@ -174,6 +161,18 @@
     * @return ErrorSeverity value (defaults to INFO if not recognized)
     */
    static ErrorSeverity stringToSeverity(const String& severityStr);
+
+   /**
+   * @brief Get the severity of the most recent error
+   * @return The severity of the last logged error, or INFO if no errors
+   */
+  ErrorSeverity getLastSeverity() const;
+
+  /**
+   * @brief Get the message of the most recent error
+   * @return The message of the last logged error, or empty string if no errors
+   */
+  String getLastMessage() const;
  };
  
  /** @} */ // End of error_handling group

@@ -71,12 +71,7 @@
       * @brief Singleton instance for callback access
       */
      static CommunicationManager* instance;
-     
-     /**
-      * @brief Destructor - cleans up allocated resources
-      */
-     ~CommunicationManager();
- 
+
      /**
       * @brief Register all commands with their handlers
       */
@@ -101,49 +96,55 @@
      CommunicationManager(SensorManager* sensorMgr, ConfigManager* configMgr, 
      ErrorHandler* err, LedManager* led = nullptr);
      
+    /**
+     * @brief Initialize the communication system
+     * @param baudRate Serial communication baud rate
+     */
+    void begin(long baudRate);
+
+    /**
+     * @brief Register all commands with both the handler map and SCPI parser
+     */
+    void registerCommands();
+
+    /**
+     * @brief Process a single incoming command line
+     */
+    void processCommandLine();
+
      /**
-      * @brief Initialize the communication system
-      * @param baudRate Serial communication baud rate
+      * @brief Destructor - cleans up allocated resources
       */
-     void begin(long baudRate);
-     
+     ~CommunicationManager();
+ 
      /**
       * @brief Register all SCPI commands with the parser
       */
      void setupCommands();
-     
-     /**
-      * @brief Process incoming serial data and handle complete commands
-      */
-     void processIncomingData();
-     
+
      /**
       * @brief Set the LED manager
       * @param led Pointer to LED manager
       */
      void setLedManager(LedManager* led);
-     
-     /**
-      * @brief Process a single incoming command line
-      */
-     void processCommandLine();
-     
-     /**
-      * @brief Parse a raw command string into command and parameters
-      * @param rawCommand The full command string
-      * @param command Output parameter for the extracted command
-      * @param params Output parameter for the extracted parameters
-      */
-     void parseCommand(const String& rawCommand, String& command, std::vector<String>& params);
- 
-     /**
-      * @brief Process a command using the registered handler
-      * @param command The command to process
-      * @param params The command parameters
-      * @return true if command was found and processed successfully
-      */
-     bool processCommand(const String& command, const std::vector<String>& params);
- 
+
+    /**
+     * @brief Parse a raw command string into command and parameters
+     * @param rawCommand The full command string
+     * @param command Output parameter for the extracted command
+     * @param params Output parameter for the extracted parameters
+     */
+    void parseCommand(const String& rawCommand, String& command, std::vector<String>& params);
+
+    
+    /**
+     * @brief Process a command using the registered handler
+     * @param command The command to process
+     * @param params The command parameters
+     * @return true if command was found and processed successfully
+     */
+    bool processCommand(const String& command, const std::vector<String>& params);
+
      /**
       * @name Command handlers
       * @{
@@ -211,20 +212,6 @@
       * @return true if command processed successfully
       */
      bool handleReset(const std::vector<String>& params);
-     
-     /**
-      * @brief Handle filesystem test command (TEST:FS)
-      * @param params Command parameters (not used)
-      * @return true if command processed successfully
-      */
-     bool handleTestFilesystem(const std::vector<String>& params);
-     
-     /**
-      * @brief Handle configuration update test command (TEST:UPDATE)
-      * @param params Command parameters (not used)
-      * @return true if command processed successfully
-      */
-     bool handleTestUpdateConfig(const std::vector<String>& params);
      
      /**
       * @brief Handle echo command (ECHO)

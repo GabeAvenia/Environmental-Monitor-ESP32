@@ -1,12 +1,11 @@
 #include "ConfigManager.h"
 #include <ArduinoJson.h>
 #include "../Constants.h"
+#include "../sensors/SensorTypes.h"
 
-// Constructor
 ConfigManager::ConfigManager(ErrorHandler* err) : errorHandler(err), notifyingCallbacks(false) {
 }
 
-// Initialize the configuration manager
 bool ConfigManager::begin() {
     return loadConfigFromFile();
 }
@@ -15,7 +14,26 @@ void ConfigManager::disableNotifications(bool disable) {
     notifyingCallbacks = disable;
 }
 
-// Register a callback for configuration changes
+int ConfigManager::i2cPortStringToNumber(const String& portStr) {
+    if (portStr.startsWith("I2C")) {
+        String numStr = portStr.substring(3); // Extract number after "I2C"
+        int portNum = numStr.toInt();
+
+        // Validate port number (0, 1)
+        if (portNum == 0 || portNum == 1) {
+            return portNum;
+        }
+    }
+    
+    errorHandler->logError(ERROR, "Invalid I2C port string: " + portStr + 
+                          " (valid: I2C0, I2C1)");
+    return -1; // Invalid format
+}
+
+String ConfigManager::portNumberToI2CString(int portNum) {
+    return "I2C" + String(portNum);
+}
+
 void ConfigManager::registerChangeCallback(ConfigChangeCallback callback) {
     if (callback) {
         changeCallbacks.push_back(callback);
@@ -47,7 +65,6 @@ void ConfigManager::notifyConfigChanged(const String& newConfig) {
 bool ConfigManager::loadConfigFromFile() {
     errorHandler->logError(INFO, "Loading config file");
     
-    // Define polling rate constraints
     const uint32_t DEFAULT_POLLING_RATE = Constants::System::DEFAULT_POLLING_RATE_MS;
     const uint32_t MIN_POLLING_RATE = Constants::System::MIN_POLLING_RATE_MS;
     const uint32_t MAX_POLLING_RATE = Constants::System::MAX_POLLING_RATE_MS;
@@ -87,11 +104,14 @@ bool ConfigManager::loadConfigFromFile() {
     
     errorHandler->logError(INFO, "JSON parsed successfully");
     
-    // Extract Environmental Monitor IDentifier - handle both old and new key names for backward compatibility
-    if (doc["Environmental Monitor ID"].is<String>()) {
-        boardId = doc["Environmental Monitor ID"].as<String>();
-        errorHandler->logError(INFO, "Using Environmental Monitor ID: " + boardId);
-    } else {
+    // Extract Environment Monitor IDentifier - handle both old and new key names for backward compatibility
+    if (doc["Environment Monitor ID"].is<String>()) {
+        boardId = doc["Environment Monitor ID"].as<String>();
+        errorHandler->logError(INFO, "Using Environment Monitor ID: " + boardId);
+    } else if (doc["Board ID"].is<String>()) {
+        boardId = doc["Board ID"].as<String>();
+        errorHandler->logError(INFO, "Using Board ID: " + boardId);
+    } else {                                                            // No ID found, generate one from MAC address
         boardId = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
         errorHandler->logError(INFO, "No ID found, using default: " + boardId);
     }
@@ -101,7 +121,6 @@ bool ConfigManager::loadConfigFromFile() {
     additionalConfig = "";
     errorHandler->logError(INFO, "Cleared existing configurations");
     
-    // Load I2C peripherals - using the "Peripheral" naming in JSON but "sensor" internally
     JsonArray i2cPeripherals = doc["I2C Peripherals"].as<JsonArray>();
     errorHandler->logError(INFO, "I2C Peripherals array exists: " + String(i2cPeripherals.size() > 0 ? "YES" : "NO"));
     
@@ -117,19 +136,18 @@ bool ConfigManager::loadConfigFromFile() {
             SensorConfig config;
             config.name = peripheral["Peripheral Name"].as<String>();
             config.type = peripheral["Peripheral Type"].as<String>();
+            config.communicationType = CommunicationType::I2C; // Set communication type to I2C
             config.address = peripheral["Address (HEX)"].as<int>();
-            config.isSPI = false;
             
             errorHandler->logError(INFO, "Found I2C peripheral: " + config.name + " of type " + config.type);
             
-            // Handle I2C port (new field)
             if (peripheral["I2C Port"].is<String>()) {
                 String portStr = peripheral["I2C Port"].as<String>();
-                config.i2cPort = I2CManager::stringToPort(portStr);
-                errorHandler->logError(INFO, "Peripheral using I2C port " + portStr);
+                config.portNum = i2cPortStringToNumber(portStr);
+                errorHandler->logError(INFO, "Peripheral using I2C port " + portStr + " (portNum: " + String(config.portNum) + ")");
             } else {
-                // Default to I2C0 if not specified
-                config.i2cPort = I2CPort::I2C0;
+                // Default to port 0 if not specified
+                config.portNum = 0;
                 errorHandler->logError(INFO, "Peripheral defaulting to I2C0 (no port specified)");
             }
             
@@ -156,7 +174,6 @@ bool ConfigManager::loadConfigFromFile() {
                 errorHandler->logError(INFO, "Using default polling rate: " + String(DEFAULT_POLLING_RATE) + "ms");
             }
             
-            // Read additional settings
             if (peripheral["Additional"].is<String>()) {
                 config.additional = peripheral["Additional"].as<String>();
                 errorHandler->logError(INFO, "Additional settings: " + config.additional);
@@ -185,13 +202,11 @@ bool ConfigManager::loadConfigFromFile() {
             SensorConfig config;
             config.name = peripheral["Peripheral Name"].as<String>();
             config.type = peripheral["Peripheral Type"].as<String>();
+            config.communicationType = CommunicationType::SPI; // Set communication type to SPI
             config.address = peripheral["SS Pin"].as<int>();
-            config.isSPI = true;
+            config.portNum = 0; // Default to SPI port 0 for now
             
             errorHandler->logError(INFO, "Found SPI peripheral: " + config.name + " of type " + config.type);
-            
-            // SPI peripherals don't use I2C port
-            config.i2cPort = I2CPort::I2C0; // Default value, not used
             
             // Read and validate polling rate
             if (peripheral["Polling Rate[1000 ms]"].is<uint32_t>()) {
@@ -221,7 +236,7 @@ bool ConfigManager::loadConfigFromFile() {
                 config.additional = peripheral["Additional"].as<String>();
                 errorHandler->logError(INFO, "Additional settings: " + config.additional);
             } else {
-                config.additional = ""; // Empty string for no additional settings
+                config.additional = "";
             }
             
             sensorConfigs.push_back(config);
@@ -230,26 +245,136 @@ bool ConfigManager::loadConfigFromFile() {
     }
     
     // Load Additional configuration if present
-    if (doc["Additional"].is<JsonObject>()) {
-        // Serialize the Additional field to a string
-        String additionalJson;
-        serializeJson(doc["Additional"], additionalJson);
-        additionalConfig = additionalJson;
-        errorHandler->logError(INFO, "Loaded additional configuration section");
-    }
+    if (doc["Additional"].is<String>()) {
+        additionalConfig = doc["Additional"].as<String>();
+        errorHandler->logError(INFO, "Loaded additional configuration: " + additionalConfig);
+    } else {
+        additionalConfig = "";
+    }   
     
     errorHandler->logError(INFO, "Configuration loaded successfully with " + String(sensorConfigs.size()) + " peripherals");
     return true;
 }
 
-// Create a default configuration file
+bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
+    // Log a shorter version of the config to avoid huge logs
+    errorHandler->logError(INFO, "Received config update: " + 
+                         jsonConfig.substring(0, std::min(50, (int)jsonConfig.length())) + 
+                         (jsonConfig.length() > 50 ? "..." : ""));
+    
+    // Extract clean JSON data by finding the opening brace
+    int jsonStart = jsonConfig.indexOf('{');
+    if (jsonStart < 0) {
+        errorHandler->logError(ERROR, "No JSON object found in config");
+        return false;
+    }
+    String cleanJson = jsonConfig.substring(jsonStart);
+    
+    // Parse the JSON
+    JsonDocument doc;
+    DeserializationError error = deserializeJson(doc, cleanJson);
+    
+    if (error || doc.overflowed()) {
+        errorHandler->logError(ERROR, "Failed to parse JSON config: " + 
+                              (error ? String(error.c_str()) : "Document too large"));
+        return false;
+    }
+    
+    // Backup current state in case we need to rollback
+    String originalBoardId = boardId;
+    std::vector<SensorConfig> originalSensorConfigs = sensorConfigs;
+    String originalAdditionalConfig = additionalConfig;
+    
+    bool allUpdatesSuccessful = true;
+    
+    // Update board identifier if present (reuse existing function)
+    if (doc["Environment Monitor ID"].is<String>() || doc["Board ID"].is<String>()) {
+        String newBoardId;
+        if (doc["Environment Monitor ID"].is<String>()) {
+            newBoardId = doc["Environment Monitor ID"].as<String>();
+        } else {
+            newBoardId = doc["Board ID"].as<String>();
+        }
+        
+        if (!setBoardIdentifier(newBoardId)) {
+            errorHandler->logError(ERROR, "Failed to update board identifier");
+            allUpdatesSuccessful = false;
+        }
+    }
+    
+    // Update sensor configuration if present (reuse existing function)
+    if (allUpdatesSuccessful && (doc["I2C Peripherals"].is<JsonArray>() || doc["SPI Peripherals"].is<JsonArray>())) {
+        // Create a JSON string with just the sensor config parts
+        JsonDocument sensorDoc;
+        if (doc["I2C Peripherals"].is<JsonArray>()) {
+            sensorDoc["I2C Peripherals"] = doc["I2C Peripherals"];
+        }
+        if (doc["SPI Peripherals"].is<JsonArray>()) {
+            sensorDoc["SPI Peripherals"] = doc["SPI Peripherals"];
+        }
+        
+        String sensorConfigJson;
+        serializeJson(sensorDoc, sensorConfigJson);
+        
+        if (!updateSensorConfigFromJson(sensorConfigJson)) {
+            errorHandler->logError(ERROR, "Failed to update sensor configuration");
+            allUpdatesSuccessful = false;
+        }
+    }
+    
+    // Update additional configuration if present (reuse existing function)
+    if (allUpdatesSuccessful && doc["Additional"]) {
+        JsonDocument additionalDoc;
+        additionalDoc["Additional"] = doc["Additional"];
+        
+        String additionalConfigJson;
+        serializeJson(additionalDoc, additionalConfigJson);
+        
+        if (!updateAdditionalConfigFromJson(additionalConfigJson)) {
+            errorHandler->logError(ERROR, "Failed to update additional configuration");
+            allUpdatesSuccessful = false;
+        }
+    }
+    
+    // If any update failed, rollback all changes
+    if (!allUpdatesSuccessful) {
+        errorHandler->logError(ERROR, "Configuration update failed, rolling back changes");
+        
+        // Disable notifications during rollback to prevent cascading updates
+        disableNotifications(true);
+        
+        // Rollback board identifier
+        boardId = originalBoardId;
+        setBoardIdentifier(originalBoardId);
+        
+        // Rollback sensor configs
+        updateSensorConfigs(originalSensorConfigs);
+        
+        // Rollback additional config
+        additionalConfig = originalAdditionalConfig;
+        
+        // Re-enable notifications
+        disableNotifications(false);
+        
+        return false;
+    }
+    
+    errorHandler->logError(INFO, "Complete configuration update successful");
+    
+    // Notify about the configuration change (this will be the final combined config)
+    String finalConfig = getConfigJson();
+    notifyConfigChanged(finalConfig);
+    
+    return true;
+}
+
 bool ConfigManager::createDefaultConfig() {
     const uint32_t DEFAULT_POLLING_RATE = Constants::System::DEFAULT_POLLING_RATE_MS;  // Default: 1 second
     
     JsonDocument doc;
     
     // Create default configuration
-    doc["Environmental Monitor ID"] = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
+    doc["Environment Monitor ID"] = "GPower EM-" + String(ESP.getEfuseMac(), HEX);
     
     // Add I2C peripherals array and first peripheral
     JsonArray i2cPeripherals = doc["I2C Peripherals"].to<JsonArray>();
@@ -261,9 +386,8 @@ bool ConfigManager::createDefaultConfig() {
     i2cPeripheral["Polling Rate[1000 ms]"] = DEFAULT_POLLING_RATE;
     i2cPeripheral["Additional"] = "";  // No additional settings by default
     
-    // Add empty SPI peripherals array
-    doc["SPI Peripherals"] = JsonArray();
-    
+    doc["SPI Peripherals"] = JsonArray(); // Empty SPI peripherals by default
+    doc["Additional"] = "";  // Empty "Additional" by default   
     // Save to file
     File configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "w");
     if (!configFile) {
@@ -290,7 +414,7 @@ String ConfigManager::getBoardIdentifier() {
 
 // Set the board identifier
 bool ConfigManager::setBoardIdentifier(String identifier) {
-    // Update Environmental Monitor ID in memory
+    // Update Environment Monitor ID in memory
     boardId = identifier;
     
     // Update config file
@@ -305,12 +429,11 @@ bool ConfigManager::setBoardIdentifier(String identifier) {
     configFile.close();
     
     if (error) {
-        errorHandler->logError(ERROR, "Failed to parse config when updating Environmental Monitor ID");
+        errorHandler->logError(ERROR, "Failed to parse config when updating Environment Monitor ID");
         return false;
     }
     
-    // Update the Environmental Monitor ID in the JSON document
-    doc["Environmental Monitor ID"] = boardId;
+    doc["Environment Monitor ID"] = boardId;
         
     // Save the updated configuration
     configFile = LittleFS.open(Constants::CONFIG_FILE_PATH, "w");
@@ -326,7 +449,7 @@ bool ConfigManager::setBoardIdentifier(String identifier) {
     }
     
     configFile.close();
-    errorHandler->logError(INFO, "Updated Environmental Monitor ID to: " + boardId);
+    errorHandler->logError(INFO, "Updated Environment Monitor ID to: " + boardId);
     
     // Notify about the configuration change
     String configJson;
@@ -336,12 +459,11 @@ bool ConfigManager::setBoardIdentifier(String identifier) {
     return true;
 }
 
-// Get all sensor configurations
 std::vector<SensorConfig> ConfigManager::getSensorConfigs() {
     return sensorConfigs;
 }
 
-// Update sensor configurations - but persist them as "Peripheral" in JSON
+// Sensors are called peripherals in the JSON file
 bool ConfigManager::updateSensorConfigs(const std::vector<SensorConfig>& configs) {
     // Update memory copy
     sensorConfigs = configs;
@@ -371,27 +493,21 @@ bool ConfigManager::updateSensorConfigs(const std::vector<SensorConfig>& configs
     JsonArray spiPeripherals = doc["SPI Peripherals"].to<JsonArray>();
     
     for (const auto& config : configs) {
-        if (config.isSPI) {
+        if (config.communicationType == CommunicationType::SPI) {
             JsonObject peripheral = spiPeripherals.add<JsonObject>();
             peripheral["Peripheral Name"] = config.name;
             peripheral["Peripheral Type"] = config.type;
             peripheral["SS Pin"] = config.address;
             peripheral["Polling Rate[1000 ms]"] = config.pollingRate;
-            // Add the additional field
-            if (config.additional.length() > 0) {
-                peripheral["Additional"] = config.additional;
-            }
-        } else {
+            peripheral["Additional"] = config.additional;  // Always include
+        } else { // I2C
             JsonObject peripheral = i2cPeripherals.add<JsonObject>();
             peripheral["Peripheral Name"] = config.name;
             peripheral["Peripheral Type"] = config.type;
-            peripheral["I2C Port"] = I2CManager::portToString(config.i2cPort);
+            peripheral["I2C Port"] = portNumberToI2CString(config.portNum);
             peripheral["Address (HEX)"] = config.address;
             peripheral["Polling Rate[1000 ms]"] = config.pollingRate;
-            // Add the additional field
-            if (config.additional.length() > 0) {
-                peripheral["Additional"] = config.additional;
-            }
+            peripheral["Additional"] = config.additional;  // Always include
         }
     }
     
@@ -411,7 +527,7 @@ bool ConfigManager::updateSensorConfigs(const std::vector<SensorConfig>& configs
     configFile.close();
     errorHandler->logError(INFO, "Updated peripheral configurations");
     
-    // Notify about the configuration change, but only if we're not already in a notification
+    // Notify about the configuration change, but only if not already in a notification
     if (!notifyingCallbacks) {
         String configJson;
         serializeJson(doc, configJson);
@@ -440,61 +556,156 @@ String ConfigManager::getConfigJson() {
     return configStr;
 }
 
-// Update configuration from JSON string
-bool ConfigManager::updateConfigFromJson(const String& jsonConfig) {
-    // Log a shorter version of the config to avoid huge logs
-    errorHandler->logError(INFO, "Received config update: " + 
-                         jsonConfig.substring(0, std::min(50, (int)jsonConfig.length())) + 
-                         (jsonConfig.length() > 50 ? "..." : ""));
-    
-    // Make a backup of the current configuration
-    String backupConfig = getConfigJson();
-    
-    // Extract clean JSON data by finding the opening brace
-    int jsonStart = jsonConfig.indexOf('{');
-    if (jsonStart < 0) {
-        errorHandler->logError(ERROR, "No JSON object found in config");
-        return false;
+bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
+    // Handle empty input - erase peripherals with warning
+    if (jsonConfig.length() == 0 || jsonConfig == "{}" || jsonConfig == "null") {
+        errorHandler->logError(WARNING, "Empty peripheral configuration received - clearing all peripherals");
+        sensorConfigs.clear();
+        
+        // Update the configuration file (reuse existing function)
+        return updateSensorConfigs(sensorConfigs);
     }
-    String cleanJson = jsonConfig.substring(jsonStart);
     
-    // Parse the JSON
+    // Clean the input JSON and parse it
+    String cleanJson = jsonConfig;
+    int jsonStart = cleanJson.indexOf('{');
+    if (jsonStart > 0) {
+        cleanJson = cleanJson.substring(jsonStart);
+    }
+    
     JsonDocument doc;
     DeserializationError error = deserializeJson(doc, cleanJson);
     
     if (error || doc.overflowed()) {
-        errorHandler->logError(ERROR, "Failed to parse JSON config: " + 
+        errorHandler->logError(ERROR, "Failed to parse peripheral configuration JSON: " + 
                               (error ? String(error.c_str()) : "Document too large"));
         return false;
     }
-
-    // Save to file
-    if (!writeConfigToFile(doc)) {
-        errorHandler->logError(ERROR, "Failed to write new configuration to file");
-        return false;
-    }
     
-    // Reload and notify
-    bool success = loadConfigFromFile();
-    if (success) {
-        errorHandler->logError(INFO, "Config reloaded successfully, notifying listeners");
-        notifyConfigChanged(jsonConfig);
-    } else {
-        errorHandler->logError(ERROR, "Failed to reload configuration, rolling back to previous state");
+    // Temporary storage for new configurations
+    std::vector<SensorConfig> newSensorConfigs;
+    bool allValid = true;
+    
+    // Extract and validate I2C peripherals if present
+    if (doc["I2C Peripherals"].is<JsonArray>()) {
+        JsonArray i2cPeripherals = doc["I2C Peripherals"].as<JsonArray>();
         
-        // Restore the previous configuration
-        JsonDocument backupDoc;
-        DeserializationError backupError = deserializeJson(backupDoc, backupConfig);
-        
-        if (!backupError && writeConfigToFile(backupDoc)) {
-            errorHandler->logError(INFO, "Successfully rolled back to previous configuration");
-            loadConfigFromFile(); // Reload the backup configuration
-        } else {
-            errorHandler->logError(ERROR, "Failed to roll back to previous configuration");
+        for (JsonObject peripheral : i2cPeripherals) {
+            if (!peripheral["Peripheral Name"].is<String>() || !peripheral["Peripheral Type"].is<String>() || 
+                !peripheral["Address (HEX)"].is<int>()) {
+                errorHandler->logError(ERROR, "Missing required fields in I2C peripheral configuration");
+                allValid = false;
+                break;
+            }
+            
+            SensorConfig config;
+            config.name = peripheral["Peripheral Name"].as<String>();
+            config.type = peripheral["Peripheral Type"].as<String>();
+            config.address = peripheral["Address (HEX)"].as<int>();
+            config.communicationType = CommunicationType::I2C;
+            
+            // Handle I2C port with validation
+            if (peripheral["I2C Port"].is<String>()) {
+                String portStr = peripheral["I2C Port"].as<String>();
+                int portNum = i2cPortStringToNumber(portStr);
+                if (portNum == -1) {
+                    errorHandler->logError(ERROR, "Invalid I2C port for peripheral " + config.name + ": " + portStr);
+                    allValid = false;
+                    break;
+                }
+                config.portNum = portNum;
+            } else {
+                config.portNum = 0; // Default to port 0
+            }
+            
+            // Handle polling rate (reuse existing validation logic)
+            config.pollingRate = peripheral["Polling Rate[1000 ms]"].is<uint32_t>() ? 
+                peripheral["Polling Rate[1000 ms]"].as<uint32_t>() : Constants::System::DEFAULT_POLLING_RATE_MS;
+            config.pollingRate = constrain(config.pollingRate, 
+                                         Constants::System::MIN_POLLING_RATE_MS, 
+                                         Constants::System::MAX_POLLING_RATE_MS);
+            
+            config.additional = peripheral["Additional"].is<String>() ? 
+                peripheral["Additional"].as<String>() : "";
+            
+            // Validate configuration
+            String errorMessage;
+            if (!validateSensorConfig(config, errorMessage)) {
+                errorHandler->logError(ERROR, "Invalid I2C peripheral configuration for " + 
+                                     config.name + ": " + errorMessage);
+                allValid = false;
+                break;
+            }
+            
+            newSensorConfigs.push_back(config);
         }
     }
     
-    return success;
+    // Extract and validate SPI peripherals if present (only if I2C validation passed)
+    if (allValid && doc["SPI Peripherals"].is<JsonArray>()) {
+        JsonArray spiPeripherals = doc["SPI Peripherals"].as<JsonArray>();
+        
+        for (JsonObject peripheral : spiPeripherals) {
+            if (!peripheral["Peripheral Name"].is<String>() || !peripheral["Peripheral Type"].is<String>() || 
+                !peripheral["SS Pin"].is<int>()) {
+                errorHandler->logError(ERROR, "Missing required fields in SPI peripheral configuration");
+                allValid = false;
+                break;
+            }
+            
+            SensorConfig config;
+            config.name = peripheral["Peripheral Name"].as<String>();
+            config.type = peripheral["Peripheral Type"].as<String>();
+            config.address = peripheral["SS Pin"].as<int>();
+            config.communicationType = CommunicationType::SPI;
+            config.portNum = 0; // Default to port 0 for SPI
+            
+            // Handle polling rate (reuse existing validation logic)
+            config.pollingRate = peripheral["Polling Rate[1000 ms]"].is<uint32_t>() ? 
+                peripheral["Polling Rate[1000 ms]"].as<uint32_t>() : Constants::System::DEFAULT_POLLING_RATE_MS;
+            config.pollingRate = constrain(config.pollingRate, 
+                                         Constants::System::MIN_POLLING_RATE_MS, 
+                                         Constants::System::MAX_POLLING_RATE_MS);
+            
+            config.additional = peripheral["Additional"].is<String>() ? 
+                peripheral["Additional"].as<String>() : "";
+            
+            // Validate configuration
+            String errorMessage;
+            if (!validateSensorConfig(config, errorMessage)) {
+                errorHandler->logError(ERROR, "Invalid SPI peripheral configuration for " + 
+                                     config.name + ": " + errorMessage);
+                allValid = false;
+                break;
+            }
+            
+            newSensorConfigs.push_back(config);
+        }
+    }
+    
+    // Only apply configuration if all peripherals are valid
+    if (!allValid) {
+        errorHandler->logError(ERROR, "Configuration rejected due to validation errors - no changes applied");
+        return false;
+    }
+    
+    // Check for duplicate sensor names
+    for (size_t i = 0; i < newSensorConfigs.size(); i++) {
+        for (size_t j = i + 1; j < newSensorConfigs.size(); j++) {
+            if (newSensorConfigs[i].name == newSensorConfigs[j].name) {
+                errorHandler->logError(ERROR, "Duplicate sensor name found: " + newSensorConfigs[i].name + 
+                                     " - configuration rejected");
+                return false;
+            }
+        }
+    }
+    
+    // All validation passed - apply the configuration
+    errorHandler->logError(INFO, "Peripheral configuration validation passed with " + 
+                         String(newSensorConfigs.size()) + " peripherals");
+    
+    // Update using existing function (this handles file I/O and notifications)
+    return updateSensorConfigs(newSensorConfigs);
 }
 
 // Helper to write JSON document to file
@@ -540,165 +751,59 @@ bool ConfigManager::readConfigFromFile(JsonDocument& doc) {
     return true;
 }
 
-// Update only the sensor configuration from JSON
-bool ConfigManager::updateSensorConfigFromJson(const String& jsonConfig) {
-    // Handle empty input - erase peripherals with warning
-    if (jsonConfig.length() == 0 || jsonConfig == "{}" || jsonConfig == "null") {
-        errorHandler->logError(WARNING, "Empty peripheral configuration received - clearing all peripherals");
-        sensorConfigs.clear();
-        
-        // Update the configuration file
-        return updateSensorConfigs(sensorConfigs);
-    }
-    
-    // Clean the input JSON and parse it
-    String cleanJson = jsonConfig;
-    int jsonStart = cleanJson.indexOf('{');
-    if (jsonStart > 0) {
-        cleanJson = cleanJson.substring(jsonStart);
-    }
-    
-    JsonDocument doc;
-    DeserializationError error = deserializeJson(doc, cleanJson);
-    
-    if (error || doc.overflowed()) {
-        errorHandler->logError(ERROR, "Failed to parse peripheral configuration JSON: " + 
-                              (error ? String(error.c_str()) : "Document too large"));
+bool ConfigManager::validateSensorConfig(const SensorConfig& config, String& errorMessage) {
+    // Validate sensor name
+    if (config.name.length() == 0) {
+        errorMessage = "Sensor name cannot be empty";
         return false;
     }
     
-    // Temporary storage for new configurations
-    std::vector<SensorConfig> newSensorConfigs;
+    // Validate sensor type
+    if (config.type.length() == 0) {
+        errorMessage = "Sensor type cannot be empty";
+        return false;
+    }
     
-    // Extract I2C peripherals if present
-    if (doc["I2C Peripherals"].is<JsonArray>()) {
-        JsonArray i2cPeripherals = doc["I2C Peripherals"].as<JsonArray>();
+    // Check if sensor type is supported (reuse existing function)
+    SensorType sensorType = sensorTypeFromString(config.type);
+    if (sensorType == SensorType::UNKNOWN) {
+        errorMessage = "Unsupported sensor type: " + config.type;
+        return false;
+    }
+    
+    // Validate communication type specific settings
+    if (config.communicationType == CommunicationType::I2C) {
+        // Validate I2C port number (valid ports: 0, 1, or 100+)
+        if (config.portNum < 0 || (config.portNum > 1 && config.portNum < 100)) {
+            errorMessage = "Invalid I2C port number: " + String(config.portNum) + 
+                         " (valid: 0, 1, or 100+)";
+            return false;
+        }
         
-        for (JsonObject peripheral : i2cPeripherals) {
-            if (!peripheral["Peripheral Name"].is<String>() || !peripheral["Peripheral Type"].is<String>() || 
-                !peripheral["Address (HEX)"].is<int>()) {
-                errorHandler->logError(ERROR, "Missing required fields in I2C peripheral configuration");
-                continue;
-            }
-            
-            SensorConfig config;
-            config.name = peripheral["Peripheral Name"].as<String>();
-            config.type = peripheral["Peripheral Type"].as<String>();
-            config.address = peripheral["Address (HEX)"].as<int>();
-            config.isSPI = false;
-            
-            // Optional fields with defaults
-            config.i2cPort = I2CManager::stringToPort(
-                peripheral["I2C Port"].is<String>() ? peripheral["I2C Port"].as<String>() : "I2C0");
-            config.pollingRate = peripheral["Polling Rate[1000 ms]"].is<uint32_t>() ? 
-                peripheral["Polling Rate[1000 ms]"].as<uint32_t>() : 1000;
-            config.additional = peripheral["Additional"].is<String>() ? 
-                peripheral["Additional"].as<String>() : "";
-            
-            // Apply polling rate limits
-            config.pollingRate = constrain(config.pollingRate, 50, 300000);
-            
-            newSensorConfigs.push_back(config);
+        // Validate I2C address range (standard 7-bit addresses: 0x08-0x77)
+        if (config.address < 0x08 || config.address > 0x77) {
+            errorMessage = "Invalid I2C address: 0x" + String(config.address, HEX) + 
+                         " (valid range: 0x08-0x77)";
+            return false;
+        }
+    } else if (config.communicationType == CommunicationType::SPI) {
+        // Validate SPI SS pin (reuse existing Constants)
+        size_t numSsPins = sizeof(Constants::Pins::SPI::SS_PINS) / sizeof(int);
+        if (config.address < 0 || config.address >= (int)numSsPins) {
+            errorMessage = "Invalid SPI SS pin: " + String(config.address) + 
+                         " (valid range: 0-" + String(numSsPins - 1) + ")";
+            return false;
         }
     }
     
-    // Extract SPI peripherals if present
-    if (doc["SPI Peripherals"].is<JsonArray>()) {
-        JsonArray spiPeripherals = doc["SPI Peripherals"].as<JsonArray>();
-        
-        for (JsonObject peripheral : spiPeripherals) {
-            if (!peripheral["Peripheral Name"].is<String>() || !peripheral["Peripheral Type"].is<String>() || 
-                !peripheral["SS Pin"].is<int>()) {
-                errorHandler->logError(ERROR, "Missing required fields in SPI peripheral configuration");
-                continue;
-            }
-            
-            SensorConfig config;
-            config.name = peripheral["Peripheral Name"].as<String>();
-            config.type = peripheral["Peripheral Type"].as<String>();
-            config.address = peripheral["SS Pin"].as<int>();
-            config.isSPI = true;
-            
-            // Optional fields with defaults
-            config.pollingRate = peripheral["Polling Rate[1000 ms]"].is<uint32_t>() ? 
-                peripheral["Polling Rate[1000 ms]"].as<uint32_t>() : 1000;
-            config.additional = peripheral["Additional"].is<String>() ? 
-                peripheral["Additional"].as<String>() : "";
-            
-            // Apply polling rate limits
-            config.pollingRate = constrain(config.pollingRate, 50, 300000);
-            
-            newSensorConfigs.push_back(config);
-        }
-    }
-    
-    // Verify we have at least one valid peripheral if we received config
-    if (newSensorConfigs.empty() && 
-        (doc["I2C Peripherals"].is<JsonArray>() || doc["SPI Peripherals"].is<JsonArray>())) {
-        errorHandler->logError(WARNING, "No valid peripherals found in configuration, keeping existing peripherals");
+    // Validate polling rate (reuse existing constants)
+    if (config.pollingRate < Constants::System::MIN_POLLING_RATE_MS || 
+        config.pollingRate > Constants::System::MAX_POLLING_RATE_MS) {
+        errorMessage = "Invalid polling rate: " + String(config.pollingRate) + 
+                     "ms (valid range: " + String(Constants::System::MIN_POLLING_RATE_MS) + 
+                     "-" + String(Constants::System::MAX_POLLING_RATE_MS) + "ms)";
         return false;
     }
-    
-    // Backup existing config before updating
-    std::vector<SensorConfig> oldSensorConfigs = sensorConfigs;
-    
-    // Update peripheral configs
-    sensorConfigs = newSensorConfigs;
-    
-    // Read current configuration file to get non-peripheral parts
-    JsonDocument fullDoc;
-    if (!readConfigFromFile(fullDoc)) {
-        // Failed to read existing config, revert to old peripherals
-        sensorConfigs = oldSensorConfigs;
-        return false;
-    }
-    
-    // Clear existing peripheral arrays
-    fullDoc["I2C Peripherals"] = JsonArray();
-    fullDoc["SPI Peripherals"] = JsonArray();
-    
-    // Add updated peripherals
-    JsonArray i2cPeripherals = fullDoc["I2C Peripherals"].to<JsonArray>();
-    JsonArray spiPeripherals = fullDoc["SPI Peripherals"].to<JsonArray>();
-    
-    for (const auto& config : sensorConfigs) {
-        if (config.isSPI) {
-            JsonObject peripheral = spiPeripherals.add<JsonObject>();
-            peripheral["Peripheral Name"] = config.name;
-            peripheral["Peripheral Type"] = config.type;
-            peripheral["SS Pin"] = config.address;
-            peripheral["Polling Rate[1000 ms]"] = config.pollingRate;
-            if (config.additional.length() > 0) {
-                peripheral["Additional"] = config.additional;
-            }
-        } else {
-            JsonObject peripheral = i2cPeripherals.add<JsonObject>();
-            peripheral["Peripheral Name"] = config.name;
-            peripheral["Peripheral Type"] = config.type;
-            peripheral["I2C Port"] = I2CManager::portToString(config.i2cPort);
-            peripheral["Address (HEX)"] = config.address;
-            peripheral["Polling Rate[1000 ms]"] = config.pollingRate;
-            if (config.additional.length() > 0) {
-                peripheral["Additional"] = config.additional;
-            }
-        }
-    }
-    
-    // Write updated configuration to file
-    if (!writeConfigToFile(fullDoc)) {
-        // If writing fails, revert to old configuration
-        sensorConfigs = oldSensorConfigs;
-        errorHandler->logError(ERROR, "Failed to write updated peripheral configuration");
-        return false;
-    }
-    
-    errorHandler->logError(INFO, "Peripheral configuration updated successfully with " + 
-                       String(sensorConfigs.size()) + " peripherals");
-    
-    // Notify about the configuration change
-    String configJson;
-    serializeJson(fullDoc, configJson);
-    notifyConfigChanged(configJson);
     
     return true;
 }

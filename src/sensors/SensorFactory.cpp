@@ -14,50 +14,54 @@ void SensorFactory::setSPIManager(SPIManager* spi) {
 // Template method for I2C sensor creation
 template<typename SensorType>
 ISensor* SensorFactory::createI2CSensor(const SensorConfig& config) {
-    if (config.isSPI) {
-        errorHandler->logError(ERROR, "Sensor type does not support SPI interface");
+    if (config.communicationType != CommunicationType::I2C) {
+        errorHandler->logError(ERROR, "Sensor type does not support I2C interface");
         return nullptr;
     }
     
     // Initialize the appropriate I2C bus if not already done
-    if (!i2cManager->isPortInitialized(config.i2cPort)) {
-        if (!i2cManager->beginPort(config.i2cPort)) {
+    I2CPort i2cPort = static_cast<I2CPort>(config.portNum);
+    if (!i2cManager->isPortInitialized(i2cPort)) {
+        if (!i2cManager->beginPort(i2cPort)) {
             errorHandler->logError(ERROR, "Failed to initialize I2C port " + 
-                                I2CManager::portToString(config.i2cPort) + 
+                                I2CManager::portToString(i2cPort) + 
                                 " for sensor " + config.name);
             return nullptr;
         }
     }
     
     // Get the appropriate TwoWire instance
-    TwoWire* wire = i2cManager->getWire(config.i2cPort);
+    TwoWire* wire = i2cManager->getWire(i2cPort);
     if (!wire) {
         errorHandler->logError(ERROR, "Failed to get I2C bus for port " + 
-                            I2CManager::portToString(config.i2cPort));
+                            I2CManager::portToString(i2cPort));
         return nullptr;
     }
     
     // Create sensor with the specified configuration
-    return new SensorType(config.name, config.address, wire, i2cManager, config.i2cPort, errorHandler);
+    return new SensorType(config.name, config.address, wire, i2cManager, i2cPort, errorHandler);
 }
 
 // Explicit template instantiations for supported sensor types
 template ISensor* SensorFactory::createI2CSensor<SHT41Sensor>(const SensorConfig& config);
 template ISensor* SensorFactory::createI2CSensor<Si7021Sensor>(const SensorConfig& config);
 
-// Updated createSensor method
 ISensor* SensorFactory::createSensor(const SensorConfig& config) {
     SensorType type = sensorTypeFromString(config.type);
     
+    // Get a communication type string for logging
+    String commTypeStr = communicationTypeToString(config.communicationType);
+    
     // Log sensor creation
     errorHandler->logError(INFO, "Creating sensor: " + config.name + " of type " + config.type + 
-                     (config.isSPI ? 
-                      " (SPI, SS Pin: " + String(config.address) + ")" : 
-                      " (I2C, Port: " + I2CManager::portToString(config.i2cPort) + 
+                     " using " + commTypeStr + 
+                     (config.communicationType == CommunicationType::SPI ? 
+                      " (SS Pin: " + String(config.address) + ")" : 
+                      " (Port: " + String(config.portNum) + 
                       ", Address: 0x" + String(config.address, HEX) + ")"));
     
     // Check SPI manager for SPI sensors
-    if (config.isSPI && !spiManager) {
+    if (config.communicationType == CommunicationType::SPI && !spiManager) {
         errorHandler->logError(ERROR, "SPI manager not provided for SPI sensor: " + config.name);
         return nullptr;
     }
@@ -81,7 +85,7 @@ ISensor* SensorFactory::createSensor(const SensorConfig& config) {
 
 // PT100 needs special handling due to additional parameters
 ISensor* SensorFactory::createPT100Sensor(const SensorConfig& config) {
-    if (!config.isSPI) {
+    if (config.communicationType != CommunicationType::SPI) {
         errorHandler->logError(ERROR, "PT100 RTD requires SPI interface");
         return nullptr;
     }
@@ -99,11 +103,10 @@ ISensor* SensorFactory::createPT100Sensor(const SensorConfig& config) {
     // Parse additional settings if provided
     parseAdditionalPT100Settings(config.additional, referenceResistor, wireMode);
     
-    // Map the logical pin to physical pin
-    int physicalSsPin = config.address;
-    
     // Calculate the size of the SS_PINS array instead of using MAX_SS_PINS
     size_t numSsPins = sizeof(Constants::Pins::SPI::SS_PINS) / sizeof(int);
+    int physicalSsPin = config.address;
+    
     if (config.address >= 0 && config.address < numSsPins) {
         physicalSsPin = spiManager->mapLogicalToPhysicalPin(config.address);
     }

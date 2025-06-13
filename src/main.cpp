@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <LittleFS.h>
-#include <esp_heap_caps.h>
 #include "Constants.h"
 #include "error/ErrorHandler.h"
 #include "config/ConfigManager.h"
@@ -10,6 +9,7 @@
 #include "managers/LedManager.h"
 #include "managers/TaskManager.h"
 #include "communication/CommunicationManager.h"
+#include "Constants.h"
 
 // Define UART pins for debug output
 const int UART_TX_PIN = Constants::Pins::UART::TX;
@@ -130,7 +130,7 @@ void setup() {
     }
     
     // Configure sensor cache settings based on fastest polling rate from config
-    uint32_t fastestRate = 1000; // Default 1 second
+    uint32_t fastestRate = Constants::System::DEFAULT_POLLING_RATE_MS;
     auto sensorConfigs = configManager->getSensorConfigs();
     for (const auto& config : sensorConfigs) {
         if (config.pollingRate < fastestRate && config.pollingRate >= 50) {
@@ -141,20 +141,13 @@ void setup() {
     sensorManager->setMaxCacheAge(fastestRate);
     errorHandler->logError(INFO, "Sensor cache configured with " + String(fastestRate) + "ms max age");
     
-    // Give the system time to stabilize
-    delay(20);
-    
     // Setup communication
     commManager = new CommunicationManager(sensorManager, configManager, errorHandler, ledManager);
     commManager->begin(115200);
-    
+
     // Pass the UART debug serial to the CommManager
     setUartDebugSerial(uartDebugSerial);
-    commManager->setupCommands();
-    
-    // Give the system time to stabilize
-    delay(20);
-    
+
     // Initialize TaskManager - core task management
     taskManager = new TaskManager(sensorManager, commManager, ledManager, errorHandler);
     
@@ -190,6 +183,7 @@ void setup() {
     errorHandler->logError(INFO, "System initialization complete");
     errorHandler->logError(INFO, "System ready. Environmental Monitor ID: " + configManager->getBoardIdentifier());
     ledManager->setNormalMode();
+
 }
 
 void loop() {

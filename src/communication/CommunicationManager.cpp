@@ -24,151 +24,147 @@ CommunicationManager::~CommunicationManager() {
     delete scpiParser;
 }
 
-void CommunicationManager::begin(long baudRate) {
-    errorHandler->logError(INFO, "Communication manager initialized");
-    registerCommandHandlers();
-}
-
-void CommunicationManager::setUartDebugSerialPtr(Print* debugSerial) {
-    uartDebugSerial = debugSerial;
-}
-void CommunicationManager::setLedManager(LedManager* led) {
-    ledManager = led;
-}
-
-void CommunicationManager::registerCommandHandlers() {
-    // Register command handlers
-    commandHandlers[Constants::SCPI::IDN] = 
-        [this](const std::vector<String>& params) { return handleIdentify(params); };
+void CommunicationManager::registerCommands() {
+    // Clear existing command registrations
+    commandHandlers.clear();
     
-    commandHandlers[Constants::SCPI::MEASURE_QUERY] = 
-        [this](const std::vector<String>& params) { return handleMeasure(params); };
-    
-    commandHandlers[Constants::SCPI::LIST_SENSORS] = 
-        [this](const std::vector<String>& params) { return handleListSensors(params); };
-    
-    commandHandlers[Constants::SCPI::GET_CONFIG] = 
-        [this](const std::vector<String>& params) { return handleGetConfig(params); };
-    
-    commandHandlers[Constants::SCPI::SET_BOARD_ID] = 
-        [this](const std::vector<String>& params) { return handleSetBoardId(params); };
-    
-    commandHandlers[Constants::SCPI::UPDATE_CONFIG] = 
-        [this](const std::vector<String>& params) { return handleUpdateConfig(params); };
-    
-    commandHandlers[Constants::SCPI::UPDATE_SENSOR_CONFIG] = 
-        [this](const std::vector<String>& params) { return handleUpdateSensorConfig(params); };
-
-    commandHandlers[Constants::SCPI::UPDATE_ADDITIONAL_CONFIG] = 
-        [this](const std::vector<String>& params) { return handleUpdateAdditionalConfig(params); };
-
-    commandHandlers[Constants::SCPI::TEST_FILESYSTEM] = 
-        [this](const std::vector<String>& params) { return handleTestFilesystem(params); };
-    
-    commandHandlers[Constants::SCPI::TEST_UPDATE] = 
-        [this](const std::vector<String>& params) { return handleTestUpdateConfig(params); };
-    
-    commandHandlers[Constants::SCPI::TEST] = 
-        [this](const std::vector<String>& params) { 
-            Serial.println("Serial communication test successful"); 
-            return true; 
-        };
-    
-    commandHandlers[Constants::SCPI::TEST_INFO] = 
-        [this](const std::vector<String>& params) { return handleTestErrorLevel(params, INFO); };
-    
-    commandHandlers[Constants::SCPI::TEST_WARNING] = 
-        [this](const std::vector<String>& params) { return handleTestErrorLevel(params, WARNING); };
-    
-    commandHandlers[Constants::SCPI::TEST_ERROR] = 
-        [this](const std::vector<String>& params) { return handleTestErrorLevel(params, ERROR); };
-    
-    commandHandlers[Constants::SCPI::TEST_FATAL] = 
-        [this](const std::vector<String>& params) { return handleTestErrorLevel(params, FATAL); };
-    
-    commandHandlers[Constants::SCPI::ECHO] = 
-        [this](const std::vector<String>& params) { return handleEcho(params); };
-
-    commandHandlers[Constants::SCPI::RESET] = 
-        [this](const std::vector<String>& params) { return handleReset(params); };
-    
-    // New simplified message routing commands
-    commandHandlers[Constants::SCPI::LOG_STATUS] = 
-        [this](const std::vector<String>& params) { return handleLogStatus(params); };
-
-    commandHandlers[Constants::SCPI::LOG_ROUTE] = 
-        [this](const std::vector<String>& params) { return handleLogRouting(params); };
-
-    commandHandlers[Constants::SCPI::LED_IDENTIFY] = 
-        [this](const std::vector<String>& params) { return handleLedIdentify(params); };
-}
-
-#define REGISTER_COMMAND(cmd, handler) \
-    scpiParser->RegisterCommand(F(cmd), \
-        [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) { \
-            CommunicationManager* instance = CommunicationManager::getInstance(); \
-            if (instance) { \
-                std::vector<String> params; \
-                for (size_t i = 0; i < parameters.Size(); i++) { \
-                    params.push_back(String(parameters[i])); \
+    // Define a macro that registers a command both in our map and with the SCPI parser
+    #define REGISTER_COMMAND(cmdConst, handlerFunc) \
+        commandHandlers[cmdConst] = [this](const std::vector<String>& params) { \
+            return this->handlerFunc(params); \
+        }; \
+        scpiParser->RegisterCommand(F(cmdConst), \
+            [](SCPI_Commands cmds, SCPI_Parameters parameters, Stream& interface) { \
+                CommunicationManager* instance = CommunicationManager::getInstance(); \
+                if (instance) { \
+                    std::vector<String> params; \
+                    for (size_t i = 0; i < parameters.Size(); i++) { \
+                        params.push_back(String(parameters[i])); \
+                    } \
+                    instance->handlerFunc(params); \
                 } \
-                instance->handler(params); \
-            } \
-        });
+            });
 
-void CommunicationManager::setupCommands() {
-    REGISTER_COMMAND("*IDN?", handleIdentify)
-    REGISTER_COMMAND("MEAS?", handleMeasure)
-    REGISTER_COMMAND("SYST:SENS:LIST?", handleListSensors)
-    REGISTER_COMMAND("SYST:CONF?", handleGetConfig)
-    REGISTER_COMMAND("SYST:CONF:BOARD:ID", handleSetBoardId)
-    REGISTER_COMMAND("SYST:CONF:UPDATE", handleUpdateConfig)
-    REGISTER_COMMAND("SYST:CONF:SENS:UPDATE", handleUpdateSensorConfig)
-    REGISTER_COMMAND("SYST:CONF:ADD:UPDATE", handleUpdateAdditionalConfig)
-    REGISTER_COMMAND("TEST", handleEcho)
-    REGISTER_COMMAND("TEST:FS", handleTestFilesystem)
-    REGISTER_COMMAND("TEST:UPDATE", handleTestUpdateConfig)
-    REGISTER_COMMAND("ECHO", handleEcho)
+    // Register all commands using Constants::SCPI namespace
+    REGISTER_COMMAND(Constants::SCPI::IDN, handleIdentify)
+    REGISTER_COMMAND(Constants::SCPI::MEASURE_QUERY, handleMeasure)
+    REGISTER_COMMAND(Constants::SCPI::LIST_SENSORS, handleListSensors)
+    REGISTER_COMMAND(Constants::SCPI::GET_CONFIG, handleGetConfig)
+    REGISTER_COMMAND(Constants::SCPI::SET_BOARD_ID, handleSetBoardId)
+    REGISTER_COMMAND(Constants::SCPI::UPDATE_CONFIG, handleUpdateConfig)
+    REGISTER_COMMAND(Constants::SCPI::UPDATE_SENSOR_CONFIG, handleUpdateSensorConfig)
+    REGISTER_COMMAND(Constants::SCPI::UPDATE_ADDITIONAL_CONFIG, handleUpdateAdditionalConfig)
+    REGISTER_COMMAND(Constants::SCPI::TEST, handleEcho)
+    REGISTER_COMMAND(Constants::SCPI::ECHO, handleEcho)
+    REGISTER_COMMAND(Constants::SCPI::RESET, handleReset)
+    REGISTER_COMMAND(Constants::SCPI::LOG_STATUS, handleLogStatus)
+    REGISTER_COMMAND(Constants::SCPI::LOG_ROUTE, handleLogRouting)
+    REGISTER_COMMAND(Constants::SCPI::LED_IDENTIFY, handleLedIdentify)
+    REGISTER_COMMAND(Constants::SCPI::TEST_INFO, handleTestInfoLevel)
+    REGISTER_COMMAND(Constants::SCPI::TEST_WARNING, handleTestWarningLevel)
+    REGISTER_COMMAND(Constants::SCPI::TEST_ERROR, handleTestErrorLevel)
+    REGISTER_COMMAND(Constants::SCPI::TEST_FATAL, handleTestFatalLevel)
     
-    // New simplified message routing commands
-    REGISTER_COMMAND("SYST:LOG?", handleLogStatus)
-    REGISTER_COMMAND("SYST:LOG", handleLogRouting)
-    
-    REGISTER_COMMAND("SYST:LED:IDENT", handleLedIdentify)
-    REGISTER_COMMAND("TEST:INFO", handleTestInfoLevel)
-    REGISTER_COMMAND("TEST:WARNING", handleTestWarningLevel)
-    REGISTER_COMMAND("TEST:ERROR", handleTestErrorLevel)
-    REGISTER_COMMAND("TEST:FATAL", handleTestFatalLevel)
+    #undef REGISTER_COMMAND
     
     errorHandler->logError(INFO, "SCPI commands registered");
 }
 
-void CommunicationManager::processIncomingData() {
-    // Check if there's data available in the serial buffer
-    if (Serial.available() > 0) {
-        // Read the entire line
-        String rawCommand = Serial.readStringUntil('\n');
-        rawCommand.trim();
-        
-        // Log receipt for debugging
-        errorHandler->logError(INFO, "Processing command: '" + rawCommand + "'");
-        
-        // Parse and process command
-        String command;
-        std::vector<String> params;
-        parseCommand(rawCommand, command, params);
-        
-        // Try to handle with our command processors
-        if (!processCommand(command, params)) {
-            // Fall back to SCPI parser for compatibility
-            char buff[rawCommand.length() + 1];
-            rawCommand.toCharArray(buff, rawCommand.length() + 1);
-            scpiParser->ProcessInput(Serial, buff);
+void CommunicationManager::begin(long baudRate) {
+    errorHandler->logError(INFO, "Communication manager initialized");
+    registerCommands();  // Replace both previous command registration methods
+}
+
+void CommunicationManager::processCommandLine() {
+    // Increased timeout and buffer size - keep within function as requested
+    static constexpr unsigned long COMMAND_TIMEOUT_MS = Constants::Communication::COMMAND_TIMEOUT_MS;
+    static constexpr size_t MAX_BUFFER_SIZE = Constants::Communication::MAX_BUFFER_SIZE;
+    
+    // Read a complete command with timeout
+    String rawCommand = "";
+    unsigned long startTime = millis();
+    
+    // Read until newline, timeout, or buffer full
+    while ((millis() - startTime < COMMAND_TIMEOUT_MS) && (rawCommand.length() < MAX_BUFFER_SIZE)) {
+        if (Serial.available()) {
+            char c = Serial.read();
+            if (c == '\n' || c == '\r') {
+                if (rawCommand.length() > 0) {
+                    break; // Complete command found
+                }
+                // Else ignore empty lines
+            } else {
+                rawCommand += c;
+            }
         }
-        
-        // Ensure all responses are sent
-        Serial.flush();
+        yield(); // Allow other tasks to run
     }
+    
+    // Check for errors or empty command
+    if (rawCommand.length() >= MAX_BUFFER_SIZE) {
+        errorHandler->logError(ERROR, "Command exceeds buffer size limit of " + String(MAX_BUFFER_SIZE) + " characters");
+    }
+    
+    if (rawCommand.length() == 0) {
+        return; // No command to process
+    }
+    
+    // Trim whitespace and process command
+    rawCommand.trim();
+    errorHandler->logError(INFO, "Processing command: '" + 
+                         (rawCommand.length() > 50 ? 
+                            rawCommand.substring(0, 50) + "..." : 
+                            rawCommand) + 
+                         "' (" + String(rawCommand.length()) + " bytes)");
+
+    // Parse and process command
+    String command;
+    std::vector<String> params;
+    parseCommand(rawCommand, command, params);
+    
+    // Track if the command was recognized
+    bool commandRecognized = false;
+    
+    // Handle HELP or ? commands specially
+    if (command.equalsIgnoreCase("HELP") || command.equalsIgnoreCase("?")) {
+        // Provide basic help information
+        Serial.println("Available commands:");
+        Serial.println("*IDN? - Get device identification");
+        Serial.println("MEAS? - Get measurements from all peripherals");
+        Serial.println("MEAS? <sensor>[:measurement] - Get specific measurements");
+        Serial.println("SYST:SENS:LIST? - List all available peripherals");
+        Serial.println("SYST:CONF? - Get device configuration");
+        Serial.println("RESET - Reset the device");
+        Serial.println();
+        commandRecognized = true;
+    }
+    // Try our command handlers
+    else if (processCommand(command, params)) {
+        commandRecognized = true;
+    }
+    // Fall back to SCPI parser for compatibility with shortened commands
+    else {
+        char buff[rawCommand.length() + 1];
+        rawCommand.toCharArray(buff, rawCommand.length() + 1);
+        
+        // Capture output status to detect if SCPI parser handled the command
+        size_t beforeSerialPos = Serial.availableForWrite();
+        scpiParser->ProcessInput(Serial, buff);
+        size_t afterSerialPos = Serial.availableForWrite();
+        
+        commandRecognized = (afterSerialPos != beforeSerialPos);
+    }
+    
+    // Log unrecognized commands
+    if (!commandRecognized) {
+        errorHandler->logError(ERROR, "Unrecognized command: '" + 
+                            (command.length() > 50 ? 
+                               command.substring(0, 50) + "..." : 
+                               command) + "'");
+    }
+    
+    // Ensure all responses are sent
+    Serial.flush();
 }
 
 void CommunicationManager::parseCommand(const String& rawCommand, String& command, std::vector<String>& params) {
@@ -209,109 +205,13 @@ bool CommunicationManager::processCommand(const String& command, const std::vect
     return false;
 }
 
-void CommunicationManager::processCommandLine() {
-    // Increased timeout and buffer size
-    constexpr unsigned long COMMAND_TIMEOUT_MS = Constants::Communication::COMMAND_TIMEOUT_MS;
-    constexpr size_t MAX_BUFFER_SIZE = Constants::Communication::MAX_BUFFER_SIZE;
-    
-    // Read a complete command with timeout
-    String rawCommand = "";
-    unsigned long startTime = millis();
-    
-    // Read until newline, timeout, or buffer full
-    while ((millis() - startTime < COMMAND_TIMEOUT_MS) && (rawCommand.length() < MAX_BUFFER_SIZE)) {
-        if (Serial.available()) {
-            char c = Serial.read();
-            if (c == '\n' || c == '\r') {
-                if (rawCommand.length() > 0) {
-                    break; // Complete command found
-                }
-                // Else ignore empty lines
-            } else {
-                rawCommand += c;
-            }
-        }
-        yield(); // Allow other tasks to run
-    }
-    
-    // Check if we hit the buffer limit
-    if (rawCommand.length() >= MAX_BUFFER_SIZE) {
-        errorHandler->logError(ERROR, "Command exceeds buffer size limit of " + String(MAX_BUFFER_SIZE) + " characters");
-    }
-    
-    if (rawCommand.length() == 0) {
-        return; // No command to process
-    }
-    
-    // Trim whitespace and process command
-    rawCommand.trim();
-    errorHandler->logError(INFO, "Processing command: '" + 
-                         (rawCommand.length() > 50 ? 
-                            rawCommand.substring(0, 50) + "..." : 
-                            rawCommand) + 
-                         "' (" + String(rawCommand.length()) + " bytes)");
-
-    // Parse and process command
-    String command;
-    std::vector<String> params;
-    parseCommand(rawCommand, command, params);
-    
-    // Track if the command was recognized by either system
-    bool commandRecognized = false;
-    
-    // Try to handle with our command processors
-    if (processCommand(command, params)) {
-        commandRecognized = true;
-    } else {
-        // Before falling back to SCPI parser, check if it's a HELP request
-        if (command.equalsIgnoreCase("HELP") || command.equalsIgnoreCase("?")) {
-            // Provide basic help information
-            Serial.println("Available commands:");
-            Serial.println("*IDN? - Get device identification");
-            Serial.println("MEAS? - Get measurements from all peripherals");
-            Serial.println("MEAS? <sensor>[:measurement] - Get specific measurements");
-            Serial.println("SYST:SENS:LIST? - List all available peripherals");
-            Serial.println("SYST:CONF? - Get device configuration");
-            Serial.println("RESET - Reset the device");
-            Serial.println();
-            commandRecognized = true;
-        } else {
-            // Try SCPI parser as a fallback
-            // Since we cannot easily detect if the SCPI parser recognized the command,
-            // we'll capture the original Serial buffer position to see if anything was output
-            size_t beforeSerialPos = Serial.availableForWrite();
-            
-            char buff[rawCommand.length() + 1];
-            rawCommand.toCharArray(buff, rawCommand.length() + 1);
-            scpiParser->ProcessInput(Serial, buff);
-            
-            // Check if SCPI parser generated any output
-            size_t afterSerialPos = Serial.availableForWrite();
-            if (afterSerialPos != beforeSerialPos) {
-                commandRecognized = true;
-            }
-        }
-    }
-    
-    // If the command wasn't recognized by either system, log a warning and send an error response
-    if (!commandRecognized) {
-        errorHandler->logError(ERROR, "Unrecognized command: '" + 
-                            (command.length() > 50 ? 
-                               command.substring(0, 50) + "..." : 
-                               command) + "'");
-    }
-    
-    // Ensure all responses are sent
-    Serial.flush();
-}
-
 // Command handler implementations
 bool CommunicationManager::handleIdentify(const std::vector<String>& params) {
     String response = String(Constants::PRODUCT_NAME) + "," + 
                       configManager->getBoardIdentifier() + "," +
                       String(Constants::FIRMWARE_VERSION);
     Serial.println(response);
-    Serial.flush(); // Ensure the response is sent immediately
+    Serial.flush();
     return true;
 }
 
@@ -330,10 +230,9 @@ bool CommunicationManager::handleMeasure(const std::vector<String>& params) {
                 collectSensorReadings(sensor->getName(), "", values);
             }
         } else {
-            // Process parameters efficiently by batching lookups
             std::map<String, String> sensorRequests;
             
-            // First pass: parse parameters and group by sensor name
+            // Parse parameters and group by sensor name
             for (const auto& param : params) {
                 // Check if parameter contains a colon (sensor:measurements format)
                 int colonPos = param.indexOf(':');
@@ -349,14 +248,26 @@ bool CommunicationManager::handleMeasure(const std::vector<String>& params) {
                     errorHandler->logError(INFO, "MEAS: Reading " + sensorName + " with all available measurements");
                 }
                 
-                // Store most specific measurement request for each sensor
-                if (sensorRequests.find(sensorName) == sensorRequests.end() || 
-                    measurements.length() > sensorRequests[sensorName].length()) {
+                // FIXED: Combine multiple measurement requests for the same sensor
+                if (sensorRequests.find(sensorName) == sensorRequests.end()) {
+                    // First measurement request for this sensor
                     sensorRequests[sensorName] = measurements;
+                } else {
+                    // Additional measurement request for existing sensor
+                    if (measurements.length() > 0) {
+                        if (sensorRequests[sensorName].length() > 0) {
+                            // Combine with existing measurements (comma-separated)
+                            sensorRequests[sensorName] += "," + measurements;
+                        } else {
+                            // Replace empty string (all measurements) with specific measurement
+                            sensorRequests[sensorName] = measurements;
+                        }
+                    }
+                    // If measurements is empty (meaning all measurements), keep existing value
                 }
             }
             
-            // Second pass: collect data for each unique sensor
+            // Collect data for each unique sensor
             for (const auto& [sensorName, measurements] : sensorRequests) {
                 collectSensorReadings(sensorName, measurements, values);
             }
@@ -410,13 +321,10 @@ void CommunicationManager::collectSensorReadings(const String& sensorName, const
     bool readTemp = useAllMeasurements || upperMeasurements.indexOf("TEMP") >= 0;
     bool readHum = useAllMeasurements || upperMeasurements.indexOf("HUM") >= 0;
     
-    // Read temperature if requested and supported
     if (readTemp && sensorOk && sensor->supportsInterface(InterfaceType::TEMPERATURE)) {
-        // Try first reading without any delay
         TemperatureReading tempReading = sensorManager->getTemperatureSafe(sensorName);
         
         if (tempReading.valid) {
-            // Fast path - reading succeeded on first try (most common case)
             values.push_back(String(tempReading.value));
         } else {
             // Only if first read failed, apply retry logic with delays
@@ -528,18 +436,45 @@ bool CommunicationManager::handleSetBoardId(const std::vector<String>& params) {
         return false;
     }
     
-    bool success = configManager->setBoardIdentifier(params[0]);
+    // Join all parameters since the board ID might have spaces
+    String boardId = "";
+    for (const auto& param : params) {
+        if (boardId.length() > 0) boardId += " ";
+        boardId += param;
+    }
+    
+    // Trim any leading/trailing whitespace
+    boardId.trim();
+    
+    // Validate that the board ID is not empty after trimming
+    if (boardId.length() == 0) {
+        errorHandler->logError(ERROR, "Board ID cannot be empty");
+        return false;
+    }
+    
+    // Check for commas which would break the *IDN? response format
+    if (boardId.indexOf(',') >= 0) {
+        errorHandler->logError(ERROR, "Board ID cannot contain commas");
+        return false;
+    }
+    
+    errorHandler->logError(INFO, "Setting board ID to: '" + boardId + "'");
+    
+    bool success = configManager->setBoardIdentifier(boardId);
     if (!success) {
         errorHandler->logError(ERROR, "Failed to update Board ID");
+    } else {
+        errorHandler->logError(INFO, "Successfully updated board ID to: '" + boardId + "'");
     }
     return success;
 }
 
 bool CommunicationManager::handleUpdateConfig(const std::vector<String>& params) {
     if (params.empty()) {
-        errorHandler->logError(ERROR, "No configuration JSON provided");    
+        errorHandler->logError(ERROR, "No configuration JSON provided");
+        return false;
     }
-    
+
     // Join all parameters since the JSON might have spaces
     String jsonConfig = "";
     for (const auto& param : params) {
@@ -576,8 +511,6 @@ bool CommunicationManager::handleUpdateSensorConfig(const std::vector<String>& p
         errorHandler->logError(ERROR, "Failed to update sensor configuration");
         return false;
     }
-    
-    // Add this block to explicitly reinitialize the sensors
     errorHandler->logError(INFO, "Reinitializing peripherals with new configuration");
     if (sensorManager->initializeSensors()) {
         errorHandler->logError(INFO, "Successfully reinitialized peripherals with new configuration");
@@ -619,25 +552,12 @@ bool CommunicationManager::handleReset(const std::vector<String>& params) {
     return true;
 }
 
-bool CommunicationManager::handleTestFilesystem(const std::vector<String>& params) {
-    // Implement filesystem test logic here (moved from original)
-    // (Implementation omitted for brevity)
-    return true;
-}
-
-bool CommunicationManager::handleTestUpdateConfig(const std::vector<String>& params) {
-    // Implement config update test logic here (moved from original)
-    // (Implementation omitted for brevity)
-    return true;
-}
-
 bool CommunicationManager::handleEcho(const std::vector<String>& params) {
     String message = params.empty() ? "ECHO" : params[0];
     Serial.println("ECHO: " + message);
     return true;
 }
 
-// New simplified message routing handlers
 bool CommunicationManager::handleLogStatus(const std::vector<String>& params) {
     String status = errorHandler->getRoutingStatus();
     Serial.println(status);
@@ -716,10 +636,8 @@ bool CommunicationManager::handleTestErrorLevel(const std::vector<String>& param
     if (params.size() > 0) {
         message = params[0];
     }
-    // Log the message
     bool isFatal = errorHandler->logError(severity, message);
     
-    // Extra direct LED control for debugging
     if (ledManager && severity >= WARNING) {
         if (severity == WARNING) ledManager->indicateWarning();
         if (severity == ERROR) ledManager->indicateError();
@@ -754,6 +672,10 @@ bool CommunicationManager::handleTestErrorLevel(const std::vector<String>& param
     }
     
     return true;
+}
+
+void CommunicationManager::setUartDebugSerialPtr(Print* debugSerial) {
+    uartDebugSerial = debugSerial;
 }
 
 CommunicationManager* CommunicationManager::getInstance() {

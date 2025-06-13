@@ -18,18 +18,51 @@
  #include "../managers/I2CManager.h"
  
  /**
+  * @brief Sensor communication protocols
+  * Defines the supported communication protocols for sensors
+  */
+ enum class CommunicationType { 
+     I2C,  ///< I2C protocol
+     SPI   ///< SPI protocol
+     // Future protocols can be added here
+ };
+
+ /**
+  * @brief Convert communication type to string
+  * @param type The communication type
+  * @return String representation of the communication type
+  */
+ inline String communicationTypeToString(CommunicationType type) {
+     switch (type) {
+         case CommunicationType::I2C: return "I2C";
+         case CommunicationType::SPI: return "SPI";
+         default: return "UNKNOWN";
+     }
+ }
+
+ /**
+  * @brief Convert string to communication type
+  * @param str The string representation
+  * @return The corresponding communication type
+  */
+ inline CommunicationType stringToCommunicationType(const String& str) {
+     if (str.equalsIgnoreCase("SPI")) return CommunicationType::SPI;
+     return CommunicationType::I2C; // Default to I2C
+ }
+ 
+ /**
   * @brief Structure for sensor configurations
   * Holds all configuration parameters for a specific sensor,
   * including communication settings and operational parameters.
   */
  struct SensorConfig {
-     String name;          ///< Unique name identifier for the sensor
-     String type;          ///< Type/model of the sensor
-     int address;          ///< I2C address or SPI SS pin
-     bool isSPI;           ///< True if this is an SPI sensor
-     I2CPort i2cPort;      ///< Which I2C bus to use (only for I2C sensors)
-     uint32_t pollingRate; ///< Polling rate in milliseconds
-     String additional;    ///< Additional sensor-specific settings
+     String name;                          ///< Unique name identifier for the sensor
+     String type;                          ///< Type/model of the sensor
+     CommunicationType communicationType;  ///< Which communication type is used
+     int portNum;                          ///< Which communication bus to use (0-indexed)
+     int address;                          ///< Address on the selected bus (0-indexed)
+     uint32_t pollingRate;                 ///< Polling rate in milliseconds
+     String additional;                    ///< Additional sensor-specific settings
      
      /**
       * @brief Equality operator for comparing configurations
@@ -39,9 +72,9 @@
      bool operator==(const SensorConfig& other) const {
          return name == other.name && 
                 type == other.type && 
-                address == other.address && 
-                isSPI == other.isSPI &&
-                i2cPort == other.i2cPort &&
+                communicationType == other.communicationType &&
+                portNum == other.portNum &&
+                address == other.address &&
                 pollingRate == other.pollingRate &&
                 additional == other.additional;
      }
@@ -125,6 +158,28 @@
      bool writeConfigToFile(const JsonDocument& doc);
      bool readConfigFromFile(JsonDocument& doc);
      /** @} */
+
+     /**
+      * @brief Convert I2C port string to port number
+      * @param portStr The I2C port string (e.g., "I2C0", "I2C1")
+      * @return The port number (0, 1, etc.)
+      */
+     int i2cPortStringToNumber(const String& portStr);
+
+     /**
+      * @brief Convert port number to I2C port string
+      * @param portNum The port number (0, 1, etc.)
+      * @return The I2C port string (e.g., "I2C0", "I2C1")
+      */
+     String portNumberToI2CString(int portNum);
+
+     /**
+     * @brief Validate a sensor configuration
+     * @param config The sensor configuration to validate
+     * @param errorMessage Output parameter for error description
+     * @return true if configuration is valid, false otherwise
+     */
+    bool validateSensorConfig(const SensorConfig& config, String& errorMessage);
  
  public:
      /**

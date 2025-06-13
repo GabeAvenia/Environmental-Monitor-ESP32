@@ -19,7 +19,7 @@
  enum class InterfaceType {
      TEMPERATURE,  ///< Temperature measurement capability
      HUMIDITY,     ///< Humidity measurement capability
-     CO2           ///< CO2 measurement capability
+     CO2           ///< CO2 measurement to be added in future versions
  };
  
  /** @} */ // End of sensor_interfaces group

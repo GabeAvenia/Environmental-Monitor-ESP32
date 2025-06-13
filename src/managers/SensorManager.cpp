@@ -13,7 +13,6 @@ SensorManager::SensorManager(ConfigManager* configMgr, I2CManager* i2c, ErrorHan
 }
 
 SensorManager::~SensorManager() {
-    // Clean up all sensor instances
     auto sensors = registry.clear();
     for (auto sensor : sensors) {
         delete sensor;
@@ -61,7 +60,6 @@ bool SensorManager::initializeSensors() {
         errorHandler->logError(WARNING, "No I2C devices found on any bus - check wiring if using I2C sensors!");
     }
     
-    // Get sensor configurations
     auto sensorConfigs = configManager->getSensorConfigs();
     bool atLeastOneInitialized = false;
     
@@ -74,14 +72,15 @@ bool SensorManager::initializeSensors() {
     // Create and initialize sensors
     for (const auto& config : sensorConfigs) {
         // Test communication before initializing sensor
-        if (config.isSPI) {
+        if (config.communicationType == CommunicationType::SPI) {
             if (!spiManager) {
                 errorHandler->logError(ERROR, "SPI manager not available for sensor: " + config.name);
                 continue;
             }
             testSPICommunication(config.address);
         } else {
-            testI2CCommunication(config.i2cPort, config.address);
+            // Default to I2C
+            testI2CCommunication(static_cast<I2CPort>(config.portNum), config.address);
         }
         
         // Create the sensor
@@ -139,11 +138,21 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
             config.name = peripheral["Peripheral Name"].as<String>();
             config.type = peripheral["Peripheral Type"].as<String>();
             config.address = peripheral["Address (HEX)"].as<int>();
-            config.isSPI = false;
+            config.communicationType = CommunicationType::I2C;
             
             // Optional fields with defaults
-            config.i2cPort = I2CManager::stringToPort(
-                peripheral["I2C Port"].isNull() ? "I2C0" : peripheral["I2C Port"].as<String>());
+            if (peripheral["I2C Port"].is<String>()) {
+                String portStr = peripheral["I2C Port"].as<String>();
+                // Extract port number (I2C0 -> 0, I2C1 -> 1, etc.)
+                if (portStr.startsWith("I2C")) {
+                    config.portNum = portStr.substring(3).toInt();
+                } else {
+                    config.portNum = 0; // Default to I2C0
+                }
+            } else {
+                config.portNum = 0; // Default to I2C0
+            }
+            
             config.pollingRate = peripheral["Polling Rate[1000 ms]"].isNull() ? 
                 1000 : peripheral["Polling Rate[1000 ms]"].as<uint32_t>();
             config.additional = peripheral["Additional"].isNull() ? 
@@ -166,7 +175,8 @@ bool SensorManager::reconfigureSensors(const String& configJson) {
             config.name = peripheral["Peripheral Name"].as<String>();
             config.type = peripheral["Peripheral Type"].as<String>();
             config.address = peripheral["SS Pin"].as<int>();
-            config.isSPI = true;
+            config.communicationType = CommunicationType::SPI;
+            config.portNum = 0; // Default to SPI port 0
             
             // Optional fields with defaults
             config.pollingRate = peripheral["Polling Rate[1000 ms]"].isNull() ? 
@@ -259,9 +269,9 @@ void SensorManager::compareConfigurations(
             if (newConfig.name == oldConfig.name) {
                 // Check if configuration changed
                 if (newConfig.type != oldConfig.type ||
+                    newConfig.communicationType != oldConfig.communicationType ||
                     newConfig.address != oldConfig.address ||
-                    newConfig.isSPI != oldConfig.isSPI ||
-                    (!newConfig.isSPI && newConfig.i2cPort != oldConfig.i2cPort)) {
+                    newConfig.portNum != oldConfig.portNum) {
                     // Configuration changed, remove and re-add
                     toRemove.push_back(newConfig.name);
                     toAdd.push_back(newConfig);

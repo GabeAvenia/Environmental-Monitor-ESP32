@@ -119,32 +119,6 @@ bool ErrorHandler::logError(ErrorSeverity severity, String message) {
   return (severity == FATAL);
 }
 
-std::vector<ErrorEntry> ErrorHandler::getErrorLog() {
-  return errorLog;
-}
-
-void ErrorHandler::clearErrors() {
-  errorLog.clear();
-}
-
-String ErrorHandler::getRoutingStatus() const {
-  String status = "Message Routing:\n";
-  status += "Custom Routing: " + String(useCustomRouting ? "Enabled" : "Disabled") + "\n";
-  
-  status += "USB output: " + 
-            (usbOutput.stream ? "Enabled (min severity: " + severityToString(usbOutput.minSeverity) + ")" : "Disabled") + 
-            "\n";
-  
-  status += "UART output: " + 
-            (uartOutput.stream ? "Enabled (min severity: " + severityToString(uartOutput.minSeverity) + ")" : "Disabled") + 
-            "\n";
-  
-  // Add statistics
-  status += "Log entries: " + String(errorLog.size()) + "\n";
-  
-  return status;
-}
-
 String ErrorHandler::severityToString(ErrorSeverity severity) {
   switch (severity) {
     case INFO: return "INFO";
@@ -165,4 +139,36 @@ ErrorSeverity ErrorHandler::stringToSeverity(const String& severityStr) {
   
   // Default to INFO for unrecognized values
   return INFO;
+}
+
+String ErrorHandler::getRoutingStatus() const {
+  String status = "Message Routing:\n";
+  status += "Custom Routing: " + String(useCustomRouting ? "Enabled" : "Disabled") + "\n";
+  
+  status += "USB output: " + 
+            (usbOutput.stream ? "Enabled (min severity: " + severityToString(usbOutput.minSeverity) + ")" : "Disabled") + 
+            "\n";
+  
+  status += "UART output: " + 
+            (uartOutput.stream ? "Enabled (min severity: " + severityToString(uartOutput.minSeverity) + ")" : "Disabled") + 
+            "\n";
+  
+  // Add statistics
+  status += "Log entries: " + String(errorLog.size()) + "\n";
+  
+  return status;
+}
+
+ErrorSeverity ErrorHandler::getLastSeverity() const {
+    if (errorLog.empty()) {
+        return INFO;  // Default to INFO if no errors
+    }
+    return errorLog.back().severity;
+}
+
+String ErrorHandler::getLastMessage() const {
+    if (errorLog.empty()) {
+        return "";  // Return empty string if no errors
+    }
+    return errorLog.back().message;
 }

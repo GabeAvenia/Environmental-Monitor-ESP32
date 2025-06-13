@@ -1,7 +1,7 @@
 @echo off
 REM Script to generate Doxygen documentation for the Environmental Monitor project
 
-echo Generating Doxygen documentation for Environmental Monitor...
+echo Generating Doxygen documentation for Environment Monitor...
 
 REM Check if Doxygen is installed (by checking if doxygen command works)
 where doxygen >nul 2>&1
